@@ -7907,15 +7907,15 @@ function render(){
   else if(!localStorage.getItem('onboardingComplete')){
     // Define pack categories for onboarding
     const onboardingPacks=[
-      {category:'Bible',packs:[
+      {category:'Christian',packs:[
         {id:'old-testament',name:'Old Testament',icon:'📜',desc:'Genesis, Psalms, Proverbs...'},
-        {id:'new-testament',name:'New Testament',icon:'✝️',desc:'Matthew, John, Romans...'}
-      ]},
-      {category:'Latter-day Saints',packs:[
+        {id:'new-testament',name:'New Testament',icon:'✝️',desc:'Matthew, John, Romans...'},
         {id:'book-of-mormon',name:'Book of Mormon',icon:'📘',desc:'1 Nephi, Alma, Moroni...'},
         {id:'doctrine-covenants',name:'Doctrine & Covenants',icon:'📙',desc:'Modern revelations'},
         {id:'articles-of-faith',name:'Articles of Faith',icon:'📜',desc:'13 core beliefs'},
-        {id:'lds-quotes',name:'LDS Leader Quotes',icon:'🎤',desc:'Prophet teachings'}
+        {id:'lds-quotes',name:'LDS Leader Quotes',icon:'🎤',desc:'Prophet teachings'},
+        {id:'catholic-prayers',name:'Catholic Prayers',icon:'🙏',desc:'Traditional prayers'},
+        {id:'christian-classics',name:'Christian Classics',icon:'📚',desc:'C.S. Lewis, etc.'}
       ]},
       {category:'Judaism',packs:[
         {id:'torah',name:'Torah & Tanakh',icon:'✡️',desc:'Hebrew scriptures'},
@@ -7934,10 +7934,6 @@ function render(){
       ]},
       {category:'Sikhism',packs:[
         {id:'guru-granth',name:'Guru Granth Sahib',icon:'🙏',desc:'Sikh scripture'}
-      ]},
-      {category:'Christian Classics',packs:[
-        {id:'catholic-prayers',name:'Catholic Prayers',icon:'✝️',desc:'Traditional prayers'},
-        {id:'christian-classics',name:'Christian Classics',icon:'📚',desc:'C.S. Lewis, etc.'}
       ]}
     ];
 
