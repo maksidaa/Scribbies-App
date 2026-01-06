@@ -7688,8 +7688,8 @@ const completePractice=()=>{
     S.eggXP=(S.eggXP||0)+xp;
   }else if(S.buddyStage!=='adult'){
     // Blob, child, and teen stages grow from practice too!
-    // Practice gives growth at 50% rate compared to feeding
-    const practiceGrowth=Math.round(xp*0.5);
+    // Practice gives growth at 75% rate - about 10-11 days to graduate a scribby
+    const practiceGrowth=Math.round(xp*0.75);
     S.growthXP=(S.growthXP||0)+practiceGrowth;
   }
 
