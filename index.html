@@ -740,6 +740,9 @@ if(S.growthXP>100&&S.buddyStage!=='egg'&&S.buddyStage!=='adult'){
   S.growthXP=99;
   save();
 }
+// Owner email - only this account can see the Guide button
+const OWNER_EMAIL = 'adgoodinw82@gmail.com';
+
 let screen='home',modal=null,editV=null,form={type:'scripture',ref:'',text:'',tags:[]};
 let pMode=null,pVerse=null,pState={},selectedVerse=null,filterTag=null;
 let feedingState=null; // {food: foodObj, accepted: bool, growing: bool}
@@ -6606,7 +6609,7 @@ const toggleTag=t=>{const i=form.tags.indexOf(t);if(i>=0)form.tags.splice(i,1);e
 const saveVerse=()=>{
   if(!form.text.trim()||!form.ref.trim())return;
   if(editV){const v=S.verses.find(x=>x.id===editV.id);if(v){v.type=form.type;v.ref=form.ref;v.text=form.text;v.tags=form.tags.slice()}}
-  else{S.verses.push({id:S.nextId++,type:form.type,ref:form.ref,text:form.text,tags:form.tags.slice(),mastery:0});S.xp+=5}
+  else{S.verses.push({id:S.nextId++,type:form.type,ref:form.ref,text:form.text,tags:form.tags.slice(),mastery:0,userAdded:true});S.xp+=5}
   save();closeModal();
 };
 const deleteVerse=id=>{S.verses=S.verses.filter(v=>v.id!==id);save();closeModal()};
@@ -7438,7 +7441,7 @@ function render(){
             <button onclick="setScreen('closet')" class="flex flex-col items-center gap-0.5 p-1 rounded-lg hover:bg-white/50 transition-colors" title="Closet & Shop">${renderWearIcon(26)}<span class="text-[8px] text-purple-600 leading-none font-medium">Wear</span></button>
             <button onclick="setScreen('room')" class="flex flex-col items-center gap-0.5 p-1 rounded-lg hover:bg-white/50 transition-colors" title="Room & Furniture">${renderRoomIcon(26)}<span class="text-[8px] text-purple-600 leading-none font-medium">Room</span></button>
             <button onclick="setScreen('album')" class="flex flex-col items-center gap-0.5 p-1 rounded-lg hover:bg-white/50 transition-colors" title="Scribby Collection">${renderAlbumIcon(26)}<span class="text-[8px] text-purple-600 leading-none font-medium">Album</span></button>
-            <button onclick="setScreen('guide')" class="flex flex-col items-center gap-0.5 p-1 rounded-lg hover:bg-white/50 transition-colors" title="Scribby Guide">${renderGuideIcon(26)}<span class="text-[8px] text-purple-600 leading-none font-medium">Guide</span></button>
+            ${window.currentUser?.email===OWNER_EMAIL?`<button onclick="setScreen('guide')" class="flex flex-col items-center gap-0.5 p-1 rounded-lg hover:bg-white/50 transition-colors" title="Scribby Guide">${renderGuideIcon(26)}<span class="text-[8px] text-purple-600 leading-none font-medium">Guide</span></button>`:''}
             <button onclick="setScreen('settings')" class="flex flex-col items-center gap-0.5 p-1 rounded-lg hover:bg-white/50 transition-colors" title="Settings">${renderMenuIcon(26)}<span class="text-[8px] text-purple-600 leading-none font-medium">Menu</span></button>
           </div>
         </div>
@@ -8139,7 +8142,7 @@ function render(){
     const filteredVerses=filterTag?S.verses.filter(v=>v.tags.includes(filterTag)):S.verses;
     const usedTags=[...new Set(S.verses.flatMap(v=>v.tags))].sort();
     const list=filteredVerses.map(v=>`<div class="bg-white rounded-2xl p-4 mb-3 flex gap-3">
-      <div class="flex-1" onclick="openModal('edit',${JSON.stringify(v).replace(/"/g,'&quot;')})">
+      <div class="flex-1${v.userAdded?' cursor-pointer':''}" ${v.userAdded?`onclick="openModal('edit',${JSON.stringify(v).replace(/"/g,'&quot;')})"`:''}>
         <div class="flex justify-between mb-1">
           <p class="font-bold text-purple-800">${v.ref}</p>
           <div class="text-right">
