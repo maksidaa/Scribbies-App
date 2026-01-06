@@ -3054,9 +3054,12 @@ function renderBuddyVisual(){
   const stage=S.buddyStage||'egg';
   let buddyHTML='';
 
-  // Check if scribby is sleeping (0-10% growth for non-egg, non-adult stages)
+  // Check if scribby is sleeping (0-10% growth)
   let isSleeping=false;
-  if(stage!=='egg'&&stage!=='adult'){
+  if(stage==='egg'){
+    const eggPct=(S.eggXP||0)/STAGES.egg.hatchXP*100;
+    isSleeping=eggPct<10;
+  }else if(stage!=='adult'){
     const stageData=STAGES[stage];
     const growthPct=(S.growthXP||0)/stageData.growthNeeded*100;
     isSleeping=growthPct<10;
