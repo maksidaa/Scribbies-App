@@ -1596,19 +1596,51 @@ function completeOnboarding(){
   // Download all selected packs
   const selectedPacks=Object.entries(onboardingSelections).filter(([id,selected])=>selected).map(([id])=>id);
 
-  let totalItems=0;
+  let totalLibraryItems=0;
+  let starterVersesAdded=0;
+  const STARTER_VERSES_PER_PACK=12; // Add 12 starter verses from each pack
+
   for(const packId of selectedPacks){
     const pack=SCRIPTURE_PACKS[packId];
     if(pack){
-      // Silently download without individual alerts
+      // Download the full pack (makes all verses available in library)
       let downloadedPacks=JSON.parse(localStorage.getItem('downloadedPacks')||'[]');
       if(!downloadedPacks.includes(packId)){
         downloadedPacks.push(packId);
         localStorage.setItem('downloadedPacks',JSON.stringify(downloadedPacks));
-        totalItems+=getPackVerseCount(packId);
+        totalLibraryItems+=getPackVerseCount(packId);
+      }
+
+      // Add starter verses to user's active verse list
+      const packVerses=pack.verses||[];
+      const packQuotes=pack.quotes||[];
+      const allItems=[...packVerses,...packQuotes];
+
+      // Take first 12 (or all if fewer) as starter verses
+      const starterItems=allItems.slice(0,STARTER_VERSES_PER_PACK);
+
+      for(const item of starterItems){
+        // Check if verse already exists (by ref)
+        const exists=S.verses.some(v=>v.ref===item.ref);
+        if(!exists){
+          S.verses.push({
+            id:S.nextId++,
+            type:item.speaker?'quote':'scripture',
+            ref:item.ref,
+            text:item.text,
+            tags:item.tags||[],
+            mastery:0,
+            modeUsage:{predict:0,blanks:0,jumble:0,first:0,recall:0},
+            lastPracticed:null
+          });
+          starterVersesAdded++;
+        }
       }
     }
   }
+
+  // Save the updated verses
+  save();
 
   // Mark onboarding as complete
   localStorage.setItem('onboardingComplete','true');
@@ -1616,9 +1648,10 @@ function completeOnboarding(){
   // Reset selections
   onboardingSelections={};
 
-  // Show summary if packs were added
-  if(totalItems>0){
-    alert(`Welcome! Added ${selectedPacks.length} scripture pack${selectedPacks.length!==1?'s':''} with ${totalItems} verses to learn!`);
+  // Show clear summary message
+  if(selectedPacks.length>0){
+    const moreAvailable=totalLibraryItems-starterVersesAdded;
+    alert(`Welcome to Scribbies!\n\n✅ Added ${starterVersesAdded} starter verses to practice\n📚 ${moreAvailable} more verses available in Library\n\nTip: Visit the Library anytime to add more verses from your selected scriptures!`);
   }else{
     alert('Welcome to Scribbies! You can add scriptures anytime from the Library.');
   }
@@ -7886,7 +7919,11 @@ function render(){
         <div class="text-center mb-6">
           <div class="text-6xl mb-3">📚✨</div>
           <h2 class="text-2xl font-bold text-purple-800 mb-2">Welcome to Scribbies!</h2>
-          <p class="text-purple-600 text-sm">Choose the scriptures you'd like to learn. You can always add more later!</p>
+          <p class="text-purple-600 text-sm mb-2">Choose the scriptures you'd like to learn:</p>
+          <div class="bg-purple-50 rounded-xl p-2 text-xs text-purple-700">
+            <p>✅ Get <b>starter verses</b> to practice right away</p>
+            <p>📚 Full library unlocked to add more anytime!</p>
+          </div>
         </div>
 
         <div class="space-y-4 mb-6">
@@ -7912,7 +7949,7 @@ function render(){
         <button onclick="completeOnboarding()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-4 rounded-2xl mb-2">
           Start My Journey!
         </button>
-        <p class="text-center text-purple-400 text-xs">You can skip and add scriptures anytime from the Library</p>
+        <p class="text-center text-purple-400 text-xs">Selecting a pack gives you starter verses + full library access</p>
         <button onclick="skipOnboarding()" class="w-full text-purple-500 font-medium py-2 text-sm">
           Skip for now
         </button>
