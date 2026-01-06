@@ -843,9 +843,9 @@ function buyFoodQty(){
   const totalCost=food.cost*foodPopup.qty;
   if(S.xp<totalCost)return;
 
-  // Add to inventory
+  // Add to foodInventory (stores food indexes)
   for(let i=0;i<foodPopup.qty;i++){
-    S.inventory.push({type:'food',food:food});
+    S.foodInventory.push(foodPopup.foodIdx);
   }
   S.xp-=totalCost;
   save();
@@ -856,8 +856,8 @@ function buyFoodQty(){
 function getScribbyFoodPreference(food){
   if(food.cat==='yummy'){
     return{icon:'😋',text:'All Scribbies love this!',color:'text-green-600'};
-  }else if(food.cat==='special'){
-    return{icon:'⭐',text:'Special treat - everyone loves it!',color:'text-yellow-600'};
+  }else if(food.cat==='premium'){
+    return{icon:'👑',text:'Premium treat - everyone loves it!',color:'text-yellow-600'};
   }else if(food.cat==='healthy'){
     const rate=food.acceptRate||50;
     if(rate>=70)return{icon:'🙂',text:`Most Scribbies like this (${rate}% accept)`,color:'text-green-600'};
@@ -1235,17 +1235,6 @@ const FOODS=[
   {emoji:'🍎',name:'Apple',cost:20,cat:'healthy',acceptRate:80,growthMult:1.3,happiness:10,happinessPenalty:15,health:20},
   {emoji:'🍌',name:'Banana',cost:20,cat:'healthy',acceptRate:70,growthMult:1.3,happiness:10,happinessPenalty:15,health:20},
   {emoji:'🍇',name:'Grapes',cost:20,cat:'healthy',acceptRate:75,growthMult:1.3,happiness:10,happinessPenalty:15,health:20},
-  // Special Treats - Always accepted, 1.5x growth (sorted by cost)
-  {emoji:'🍬',name:'Green Jello',cost:20,cat:'special',growthMult:1.5,happiness:20,health:15},
-  {emoji:'🥛',name:'Milk & Graham Crackers',cost:20,cat:'special',growthMult:1.5,happiness:20,health:15},
-  {emoji:'🍞',name:'Sister\'s Bread',cost:25,cat:'special',growthMult:1.5,happiness:20,health:15},
-  {emoji:'🍪',name:'Missionary Cookies',cost:30,cat:'special',growthMult:1.5,happiness:20,health:15},
-  {emoji:'🍩',name:'Conference Donuts',cost:30,cat:'special',growthMult:1.5,happiness:20,health:15},
-  {emoji:'🥧',name:'Funeral Potatoes',cost:35,cat:'special',growthMult:1.5,happiness:20,health:15},
-  {emoji:'🥣',name:'Lion House Rolls',cost:35,cat:'special',growthMult:1.5,happiness:20,health:15},
-  {emoji:'🥤',name:'Dirty Soda',cost:40,cat:'special',growthMult:1.5,happiness:20,health:15},
-  {emoji:'🍦',name:'BYU Creamery',cost:40,cat:'special',growthMult:1.5,happiness:20,health:15},
-  {emoji:'🥤',name:'Crumbl Cookie',cost:50,cat:'special',growthMult:1.5,happiness:20,health:15},
   // Premium Foods - Always accepted, 2x growth (sorted by cost)
   {emoji:'🍱',name:'Bento Box',cost:50,cat:'premium',growthMult:2.0,happiness:30,health:25},
   {emoji:'🥩',name:'Steak',cost:60,cat:'premium',growthMult:2.0,happiness:30,health:25},
@@ -7299,9 +7288,11 @@ function feedBuddy(foodItem){
   S.xp-=cost;
 
   // Calculate growth value with food multiplier AND health multiplier
+  // Use growthBase if provided (for pre-bought food), otherwise use cost
+  const growthBase=foodItem.growthBase??cost;
   const foodMult=foodItem.growthMult||1.0;
   const healthMult=getHealthGrowthMultiplier();
-  const growthValue=Math.round(cost*foodMult*healthMult);
+  const growthValue=Math.round(growthBase*foodMult*healthMult);
 
   // Check for milestone confetti (only for non-egg, non-adult stages)
   if(S.buddyStage!=='egg'&&S.buddyStage!=='adult'){
@@ -7491,7 +7482,8 @@ const PACK_TO_COLLECTION={
   'old-testament':'Old Testament',
   'new-testament':'New Testament',
   'book-of-mormon':'Book of Mormon',
-  'doctrine-covenants':'Doctrine and Covenants'
+  'doctrine-covenants':'Doctrine and Covenants',
+  'pearl-great-price':'Pearl of Great Price'
 };
 
 // Check which collections are downloaded
@@ -7697,8 +7689,8 @@ const feedFromInventory=invIdx=>{
       save();
     }else{
       feedingState.accepted=true;
-      // Feed with cost:0 since user already paid when buying
-      const result=feedBuddy({...food,cost:0});
+      // Feed with cost:0 since user already paid when buying, but use growthBase for growth calculation
+      const result=feedBuddy({...food,cost:0,growthBase:food.cost});
       feedingState.growing=result==='hatched'||result==='grew';
       feedingState.statChanges={
         health:S.health-beforeStats.health,
@@ -7711,8 +7703,8 @@ const feedFromInventory=invIdx=>{
   }else{
     // Always accept yummy, special, premium foods
     feedingState.accepted=true;
-    // Feed with cost:0 since user already paid when buying
-    const result=feedBuddy({...food,cost:0});
+    // Feed with cost:0 since user already paid when buying, but use growthBase for growth calculation
+    const result=feedBuddy({...food,cost:0,growthBase:food.cost});
     feedingState.growing=result==='hatched'||result==='grew';
     feedingState.statChanges={
       health:S.health-beforeStats.health,
@@ -10013,7 +10005,7 @@ function render(){
   if(modal){
     if(modal==='feed'){
       // Feed modal with tabs
-      const categories={yummy:'🍪 Yummy',healthy:'🥦 Healthy',special:'✨ Special Treats',premium:'👑 Premium'};
+      const categories={yummy:'🍪 Yummy',healthy:'🥦 Healthy',premium:'👑 Premium'};
       const foodsByCategory={};
       FOODS.forEach(f=>{
         if(!foodsByCategory[f.cat])foodsByCategory[f.cat]=[];
@@ -10023,7 +10015,6 @@ function render(){
       const catInfo={
         yummy:'Safe - always accepted • ×1.0 growth • 😊 +15-25 • ❤️ +5 or -10 (junk food reduces health!)',
         healthy:'Risky but efficient - may refuse (keeps food, loses happiness) • ×1.3 growth • 😊 +10/-15 • ❤️ +20',
-        special:'Premium quality - always accepted • ×1.5 growth • 😊 +20 • ❤️ +15',
         premium:'Best value - always accepted, max benefits • ×2.0 growth • 😊 +30 • ❤️ +25'
       };
 
