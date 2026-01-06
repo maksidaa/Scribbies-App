@@ -3281,10 +3281,10 @@ function renderBuddyVisual(){
     xpState='happy';
   }else if(growthPct<90){
     xpState='excited';
-  }else if(growthPct<100){
-    xpState='ready-evolve';
+  }else if(stage!=='adult'){
+    xpState='ready-evolve'; // 90%+ and not adult = ready to evolve
   }else{
-    xpState=''; // 100% or adult - no special state
+    xpState=''; // Adult - no special state
   }
 
   if(stage==='egg'){
@@ -7227,8 +7227,11 @@ function checkBuddyGrowth(){
   const category=CREATURE_CATEGORIES[S.creatureCategory];
   if(!category)return null;
 
-  // All stages need 100 XP to evolve
-  if(S.growthXP>=100){
+  // Check if growthXP has reached the stage requirement
+  const stageData=STAGES[S.buddyStage];
+  if(!stageData||!stageData.growthNeeded)return null;
+
+  if(S.growthXP>=stageData.growthNeeded){
     // Check if buddy is healthy/happy enough to evolve
     if(!canEvolve()){
       return'tooSick'; // Can't evolve when health or happiness < 20
