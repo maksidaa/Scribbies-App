@@ -827,13 +827,30 @@ function closeFoodPopup(){
   render();
 }
 
-// Update quantity in food popup
+// Update quantity in food popup (direct DOM update to avoid flicker)
 function setFoodQty(qty){
   if(!foodPopup)return;
   const food=FOODS[foodPopup.foodIdx];
   const maxQty=Math.floor(S.xp/food.cost);
   foodPopup.qty=Math.max(1,Math.min(qty,maxQty));
-  render();
+
+  // Update DOM elements directly to avoid popup flicker
+  const qtyDisplay=document.getElementById('foodPopupQty');
+  const totalDisplay=document.getElementById('foodPopupTotal');
+  const buyBtn=document.getElementById('foodPopupBuyBtn');
+  const minusBtn=document.getElementById('foodPopupMinus');
+  const plusBtn=document.getElementById('foodPopupPlus');
+
+  if(qtyDisplay&&totalDisplay&&buyBtn){
+    const totalCost=food.cost*foodPopup.qty;
+    const canBuy=S.xp>=totalCost&&maxQty>=1;
+    qtyDisplay.textContent=foodPopup.qty;
+    totalDisplay.textContent=`Buy ${foodPopup.qty} for ${totalCost} XP`;
+    buyBtn.disabled=!canBuy;
+    buyBtn.className=`w-full py-4 rounded-2xl ${canBuy?'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white':'bg-gray-200 text-gray-500'} font-bold text-lg`;
+    if(minusBtn)minusBtn.disabled=foodPopup.qty<=1;
+    if(plusBtn)plusBtn.disabled=foodPopup.qty>=maxQty;
+  }
 }
 
 // Buy food with quantity
@@ -10113,9 +10130,18 @@ function render(){
             <div class="grid grid-cols-3 gap-2">
               ${S.foodInventory.map((foodIdx,invIdx)=>{
                 const f=FOODS[foodIdx];
+                const healthStr=f.health>=0?`+${f.health}`:`${f.health}`;
+                const healthColor=f.health>=0?'text-green-600':'text-red-500';
+                const happyStr=f.happiness>=0?`+${f.happiness}`:`${f.happiness}`;
+                const happyColor=f.happiness>=0?'text-yellow-600':'text-red-500';
                 return`<button onclick="feedFromInventory(${invIdx})" class="p-3 rounded-xl bg-purple-50 hover:bg-purple-100 text-center">
                   <div class="text-3xl mb-1">${f.emoji}</div>
-                  <div class="text-xs text-purple-800 font-semibold">${f.name}</div>
+                  <div class="text-xs text-purple-800 font-semibold mb-1">${f.name}</div>
+                  <div class="text-[10px] flex justify-center gap-1">
+                    <span class="${happyColor}">😊${happyStr}</span>
+                    <span class="${healthColor}">❤️${healthStr}</span>
+                  </div>
+                  ${f.growthMult>1?`<div class="text-[10px] text-blue-600">×${f.growthMult} growth</div>`:''}
                 </button>`;
               }).join('')}
               ${storedFood.map(acc=>`
@@ -10217,10 +10243,18 @@ function render(){
           <p class="text-purple-600 text-xs font-bold mb-2">📖 Bible</p>`;
           content+=bibleCollections.map(collName=>{
             const count=collectionStats[collName]||0;
-            return`<button onclick="libraryView.collection='${collName.replace(/'/g,"\\'")}';render()" class="w-full bg-purple-50 rounded-xl p-3 mb-2 text-left hover:bg-purple-100">
-              <p class="font-semibold text-purple-800">${collName}</p>
-              <p class="text-xs text-purple-600">${count} verses</p>
-            </button>`;
+            const hasDownload=localStorage.getItem(COLLECTION_STORAGE_KEYS[collName]);
+            const needsDownload=!hasDownload&&COLLECTION_URLS[collName];
+            const statusText=hasDownload?' ✓ Full':needsDownload?' (curated)':'';
+            const statusColor=hasDownload?'text-green-600':'text-orange-500';
+            return`<div class="w-full bg-purple-50 rounded-xl p-3 mb-2 flex items-center gap-2">
+              <button onclick="libraryView.collection='${collName.replace(/'/g,"\\'")}';render()" class="flex-1 text-left hover:bg-purple-100 rounded-lg -m-1 p-1">
+                <p class="font-semibold text-purple-800">${collName}</p>
+                <p class="text-xs text-purple-600">${count} verses<span class="${statusColor}">${statusText}</span></p>
+              </button>
+              ${needsDownload?`<button onclick="event.stopPropagation();downloadCollection('${collName}')" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-xs font-bold px-2 py-1 rounded-lg shrink-0">⬇️</button>`:''}
+              ${hasDownload?`<button onclick="event.stopPropagation();deleteCollection('${collName}')" class="text-red-400 hover:text-red-600 shrink-0" title="Delete">🗑️</button>`:''}
+            </div>`;
           }).join('');
 
           // Downloaded packs
@@ -10234,10 +10268,18 @@ function render(){
               const collData=COLLECTIONS[collName];
               const pack=SCRIPTURE_PACKS[collData.packId];
               const count=collectionStats[collName]||0;
-              return`<button onclick="libraryView.collection='${collName.replace(/'/g,"\\'")}';render()" class="w-full bg-purple-50 rounded-xl p-3 mb-2 text-left hover:bg-purple-100">
-                <p class="font-semibold text-purple-800">${pack?pack.icon:''} ${collName}</p>
-                <p class="text-xs text-purple-600">${count} verses</p>
-              </button>`;
+              const hasDownload=localStorage.getItem(COLLECTION_STORAGE_KEYS[collName]);
+              const needsDownload=!hasDownload&&COLLECTION_URLS[collName];
+              const statusText=hasDownload?' ✓ Full':needsDownload?' (curated)':'';
+              const statusColor=hasDownload?'text-green-600':'text-orange-500';
+              return`<div class="w-full bg-purple-50 rounded-xl p-3 mb-2 flex items-center gap-2">
+                <button onclick="libraryView.collection='${collName.replace(/'/g,"\\'")}';render()" class="flex-1 text-left hover:bg-purple-100 rounded-lg -m-1 p-1">
+                  <p class="font-semibold text-purple-800">${pack?pack.icon:''} ${collName}</p>
+                  <p class="text-xs text-purple-600">${count} verses<span class="${statusColor}">${statusText}</span></p>
+                </button>
+                ${needsDownload?`<button onclick="event.stopPropagation();downloadCollection('${collName}')" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-xs font-bold px-2 py-1 rounded-lg shrink-0">⬇️</button>`:''}
+                ${hasDownload?`<button onclick="event.stopPropagation();deleteCollection('${collName}')" class="text-red-400 hover:text-red-600 shrink-0" title="Delete">🗑️</button>`:''}
+              </div>`;
             }).join('');
           }
 
@@ -10403,12 +10445,12 @@ function render(){
         <div class="bg-purple-50 rounded-xl p-4 mb-4">
           <p class="text-xs text-purple-500 font-semibold mb-2">QUANTITY:</p>
           <div class="flex items-center justify-center gap-4">
-            <button onclick="setFoodQty(${foodPopup.qty-1})" class="w-10 h-10 rounded-full bg-purple-200 text-purple-800 font-bold text-xl" ${foodPopup.qty<=1?'disabled':''}>-</button>
+            <button id="foodPopupMinus" onclick="setFoodQty(foodPopup.qty-1)" class="w-10 h-10 rounded-full bg-purple-200 text-purple-800 font-bold text-xl" ${foodPopup.qty<=1?'disabled':''}>-</button>
             <div class="text-center">
-              <p class="text-3xl font-bold text-purple-800">${foodPopup.qty}</p>
+              <p id="foodPopupQty" class="text-3xl font-bold text-purple-800">${foodPopup.qty}</p>
               <p class="text-xs text-purple-500">Max: ${maxQty}</p>
             </div>
-            <button onclick="setFoodQty(${foodPopup.qty+1})" class="w-10 h-10 rounded-full bg-purple-200 text-purple-800 font-bold text-xl" ${foodPopup.qty>=maxQty?'disabled':''}>+</button>
+            <button id="foodPopupPlus" onclick="setFoodQty(foodPopup.qty+1)" class="w-10 h-10 rounded-full bg-purple-200 text-purple-800 font-bold text-xl" ${foodPopup.qty>=maxQty?'disabled':''}>+</button>
           </div>
           <div class="flex justify-center gap-2 mt-2">
             <button onclick="setFoodQty(5)" class="px-3 py-1 rounded-full bg-purple-200 text-purple-700 text-xs font-semibold">5</button>
@@ -10418,8 +10460,8 @@ function render(){
         </div>
 
         <!-- Buy Button -->
-        <button onclick="buyFoodQty()" class="w-full py-4 rounded-2xl ${canBuy?'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white':'bg-gray-200 text-gray-500'} font-bold text-lg" ${!canBuy?'disabled':''}>
-          Buy ${foodPopup.qty} for ${totalCost} XP
+        <button id="foodPopupBuyBtn" onclick="buyFoodQty()" class="w-full py-4 rounded-2xl ${canBuy?'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white':'bg-gray-200 text-gray-500'} font-bold text-lg" ${!canBuy?'disabled':''}>
+          <span id="foodPopupTotal">Buy ${foodPopup.qty} for ${totalCost} XP</span>
         </button>
         <p class="text-center text-purple-400 text-xs mt-2">Your XP: ${S.xp}</p>
       </div>
