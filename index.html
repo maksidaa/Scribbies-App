@@ -872,6 +872,17 @@ function endDrag(e){
 let activeInputId=null;
 let cursorPos=null;
 
+// Debounced search for mobile keyboard fix
+let searchDebounceTimer=null;
+function debouncedSearchRender(value){
+  searchQuery=value;
+  clearTimeout(searchDebounceTimer);
+  searchDebounceTimer=setTimeout(()=>{
+    activeInputId='library-search';
+    render();
+  },300);
+}
+
 // XP multiplier based on mode usage
 function getModeMultiplier(verse,mode){
   if(!verse.modeUsage)verse.modeUsage={predict:0,blanks:0,jumble:0,first:0,recall:0};
@@ -2173,6 +2184,60 @@ function renderHappinessIcon(size=18){
         <stop offset="0%" style="stop-color:#fef9c3"/>
         <stop offset="50%" style="stop-color:#fde047"/>
         <stop offset="100%" style="stop-color:#facc15"/>
+      </linearGradient>
+    </defs>
+  </svg>
+</div>`;
+}
+
+// Render XP icon - sparkle star with shine
+function renderXPIcon(size=24){
+  const s=size;
+  return`
+<div style="position:relative;width:${s}px;height:${s}px;background:linear-gradient(145deg,#fef9c3,#fde047);border:2px solid #ca8a04;border-radius:${s*0.32}px;box-shadow:0 2px 4px rgba(0,0,0,0.15),inset 0 1px 2px rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;">
+  <svg width="${s*0.7}" height="${s*0.7}" viewBox="0 0 24 24">
+    <!-- 4-pointed star -->
+    <path d="M12 2 L14 9 L21 9 L15.5 13.5 L17.5 21 L12 16.5 L6.5 21 L8.5 13.5 L3 9 L10 9 Z"
+          fill="url(#xpGrad${s})" stroke="#b45309" stroke-width="1"/>
+    <!-- Inner sparkle -->
+    <circle cx="12" cy="11" r="2.5" fill="#fef9c3" opacity="0.8"/>
+    <!-- Shine dots -->
+    <circle cx="9" cy="7" r="1" fill="#fff" opacity="0.7"/>
+    <circle cx="15" cy="13" r="0.8" fill="#fff" opacity="0.5"/>
+    <defs>
+      <linearGradient id="xpGrad${s}" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#fef08a"/>
+        <stop offset="50%" style="stop-color:#fbbf24"/>
+        <stop offset="100%" style="stop-color:#f59e0b"/>
+      </linearGradient>
+    </defs>
+  </svg>
+</div>`;
+}
+
+// Render streak icon - flame with warm glow
+function renderStreakIcon(size=24){
+  const s=size;
+  return`
+<div style="position:relative;width:${s}px;height:${s}px;background:linear-gradient(145deg,#fed7aa,#fdba74);border:2px solid #ea580c;border-radius:${s*0.32}px;box-shadow:0 2px 4px rgba(0,0,0,0.15),inset 0 1px 2px rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;">
+  <svg width="${s*0.65}" height="${s*0.75}" viewBox="0 0 20 24">
+    <!-- Outer flame -->
+    <path d="M10 2 C10 2 4 8 4 14 C4 18 6.5 21 10 21 C13.5 21 16 18 16 14 C16 8 10 2 10 2 Z"
+          fill="url(#flameGrad${s})" stroke="#c2410c" stroke-width="1"/>
+    <!-- Inner flame -->
+    <path d="M10 8 C10 8 7 12 7 15 C7 17 8.5 18.5 10 18.5 C11.5 18.5 13 17 13 15 C13 12 10 8 10 8 Z"
+          fill="url(#innerFlameGrad${s})"/>
+    <!-- Highlight -->
+    <ellipse cx="8" cy="12" rx="1.5" ry="2" fill="#fef3c7" opacity="0.6"/>
+    <defs>
+      <linearGradient id="flameGrad${s}" x1="50%" y1="100%" x2="50%" y2="0%">
+        <stop offset="0%" style="stop-color:#dc2626"/>
+        <stop offset="40%" style="stop-color:#f97316"/>
+        <stop offset="100%" style="stop-color:#fbbf24"/>
+      </linearGradient>
+      <linearGradient id="innerFlameGrad${s}" x1="50%" y1="100%" x2="50%" y2="0%">
+        <stop offset="0%" style="stop-color:#f97316"/>
+        <stop offset="100%" style="stop-color:#fef08a"/>
       </linearGradient>
     </defs>
   </svg>
@@ -7422,14 +7487,14 @@ function render(){
         <div class="bg-gradient-to-r from-purple-100 to-pink-100 px-2 py-2 flex items-center justify-between border-b border-purple-200">
           <div class="flex items-center gap-2">
             <div class="flex items-center gap-1.5">
-              ${renderScribbyIcon('✨',24,ICON_STYLES.xp)}
+              ${renderXPIcon(24)}
               <div>
                 <div class="text-purple-400 text-[9px] leading-none mb-0.5">XP</div>
                 <div class="font-bold text-purple-700 text-xs">${S.xp}</div>
               </div>
             </div>
             <div class="flex items-center gap-1.5">
-              ${renderScribbyIcon('🔥',24,ICON_STYLES.streak)}
+              ${renderStreakIcon(24)}
               <div>
                 <div class="text-purple-400 text-[9px] leading-none mb-0.5">Streak</div>
                 <div class="font-bold text-purple-700 text-xs">${S.streak}d</div>
@@ -7657,12 +7722,11 @@ function render(){
           </div>
         </div>
       </div>
-      <div class="grid grid-cols-4 gap-2 mb-4">
+      <div class="grid grid-cols-3 gap-2 mb-4">
         <button onclick="setScreen('verses')" class="bg-white/20 rounded-2xl p-3 text-center hover:bg-white/30 transition-colors flex flex-col items-center">
           <div class="relative">${renderVersesIcon(36)}<div class="absolute -top-1 -right-1 bg-white text-purple-700 text-xs font-bold min-w-[18px] h-[18px] rounded-full flex items-center justify-center shadow">${S.verses.length}</div></div>
           <p class="text-white/90 text-xs mt-1 font-medium">Verses</p>
         </button>
-        <button onclick="setScreen('library')" class="bg-white/20 rounded-2xl p-3 text-center hover:bg-white/30 transition-colors flex flex-col items-center">${renderLibraryIcon(36)}<p class="text-white/90 text-xs mt-1 font-medium">Library</p></button>
         <button onclick="openModal('mastered')" class="bg-white/20 rounded-2xl p-3 text-center hover:bg-white/30 transition-colors flex flex-col items-center">
           <div class="relative">${renderScribbyIcon('⭐',36,{bg:'#fde047',border:'#ca8a04',gradient:'#fef08a'})}<div class="absolute -top-1 -right-1 bg-white text-amber-700 text-xs font-bold min-w-[18px] h-[18px] rounded-full flex items-center justify-center shadow">${M}</div></div>
           <p class="text-white/90 text-xs mt-1 font-medium">Mastered</p>
@@ -7689,6 +7753,27 @@ function render(){
   }
 
   else if(screen==='trade'&&!pMode){
+    // Show sign-in message if not logged in
+    if(!window.currentUser){
+      h=`<div class="p-5 pb-6">
+        <div class="flex items-center justify-between mb-4">
+          <button onclick="setScreen('home')" class="bg-white/20 text-white font-bold w-10 h-10 rounded-xl flex items-center justify-center text-xl">←</button>
+          <div class="text-center">
+            <p class="text-white text-lg font-bold">Trade with Friends</p>
+          </div>
+          <div class="w-10"></div>
+        </div>
+        <div class="bg-white rounded-3xl p-8 text-center">
+          <div class="text-6xl mb-4">🤝</div>
+          <h2 class="text-2xl font-bold text-purple-800 mb-3">Sign In to Trade</h2>
+          <p class="text-purple-600 mb-6">Trade Scribbies and items with friends! Sign in with Google to get started.</p>
+          <button onclick="signInWithGoogle()" class="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-3 text-lg">
+            <svg class="w-6 h-6" viewBox="0 0 24 24"><path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+            Sign in with Google
+          </button>
+        </div>
+      </div>`;
+    } else {
     // Check for claimed trades in background (will re-render if any found)
     checkClaimedTrades();
 
@@ -7988,6 +8073,7 @@ function render(){
         </div>
       </div>
     </div>`;
+    }
   }
 
   else if(screen==='album'&&!pMode){
@@ -8212,7 +8298,7 @@ function render(){
         <!-- Search Bar -->
         <div class="mb-4">
           <input type="text" id="library-search" placeholder="Search verses..." value="${searchQuery}"
-            oninput="searchQuery=this.value;activeInputId='library-search';cursorPos=this.selectionStart;render()"
+            oninput="debouncedSearchRender(this.value)"
             class="w-full px-4 py-3 rounded-2xl bg-white/95 text-purple-800 placeholder-purple-400 outline-none focus:ring-2 focus:ring-white">
         </div>
 
@@ -8467,10 +8553,6 @@ function render(){
           </button>
         </div>
         ${S.verses.length?`
-          <button onclick="selectVerse('random')" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-2xl p-4 mb-3 font-bold flex items-center justify-center gap-2">
-            <span class="text-2xl">🎲</span>
-            <span>Random Practice</span>
-          </button>
           ${reviewList.length?`<button onclick="selectVerse('review')" class="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-2xl p-4 mb-4 font-bold flex items-center justify-center gap-2">
             <span class="text-2xl">📚</span>
             <div class="flex-1 text-left">
@@ -8491,7 +8573,7 @@ function render(){
       </div>`;
     }else{
       // Mode selection screen
-      const modes=[{id:'predict',n:'Predict',i:'🎯',s:'⭐',x:'1-5'},{id:'blanks',n:'Fill Blanks',i:'✏️',s:'⭐⭐',x:'5'},{id:'hangman',n:'Hangman',i:'⚔️',s:'⭐⭐⭐',x:'3-6'},{id:'jumble',n:'Word Jumble',i:'🔀',s:'⭐⭐⭐',x:'7'},{id:'first',n:'First Letters',i:'🔤',s:'⭐⭐⭐⭐',x:'8'},{id:'recall',n:'Full Recall',i:'💭',s:'⭐⭐⭐⭐⭐',x:'10-15'}];
+      const modes=[{id:'predict',n:'Predict',i:'🎯',s:'⭐',x:'1-5'},{id:'blanks',n:'Fill Blanks',i:'✏️',s:'⭐⭐',x:'5'},{id:'jumble',n:'Word Jumble',i:'🔀',s:'⭐⭐⭐',x:'7'},{id:'first',n:'First Letters',i:'🔤',s:'⭐⭐⭐⭐',x:'8'},{id:'recall',n:'Full Recall',i:'💭',s:'⭐⭐⭐⭐⭐',x:'10-15'}];
       const btns=modes.map(m=>`<button onclick="startPractice('${m.id}')" class="w-full bg-white/95 rounded-2xl p-4 mb-3 flex items-center gap-3 text-left">
         <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center text-2xl">${m.i}</div>
         <div class="flex-1"><p class="font-bold text-purple-800">${m.n} <span class="text-yellow-500 text-sm">${m.s}</span></p></div>
@@ -8510,10 +8592,7 @@ function render(){
           <p class="text-purple-800 font-bold">📚 Review Mode</p>
           <p class="text-purple-600 text-sm">A mastered verse will be chosen for you</p>
           <p class="text-green-600 text-sm font-semibold mt-1">+Bonus XP for reviewing!</p>
-        </div>`:`<div class="bg-white/90 rounded-2xl p-4 mb-4 text-center">
-          <p class="text-purple-800 font-bold">🎲 Random Practice</p>
-          <p class="text-purple-600 text-sm">A verse will be chosen for you</p>
-        </div>`}
+        </div>`:''}
         ${btns}
       </div>`;
     }
@@ -8660,6 +8739,11 @@ function render(){
   }
 
   else if(screen==='guide'&&!pMode){
+    // Only owner can access guide
+    if(window.currentUser?.email!==OWNER_EMAIL){
+      setScreen('home');
+      return;
+    }
     h=`<div class="p-5 pb-6">
       <div class="flex items-center gap-3 mb-4">
         <button onclick="setScreen('home')" class="bg-white/20 text-white font-bold w-10 h-10 rounded-xl flex items-center justify-center text-xl">←</button>
