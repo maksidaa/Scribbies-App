@@ -1146,46 +1146,61 @@ const ACCESSORIES=[
 
 // Curated Scripture Library (Popular Verses)
 const LIBRARY={
-  curated:[
-    // Bible - Old Testament
-    {book:'Genesis',chapter:1,verse:1,ref:'Genesis 1:1',text:'In the beginning God created the heaven and the earth.',tags:['Faith','Creation']},
-    {book:'Joshua',chapter:1,verse:9,ref:'Joshua 1:9',text:'Have not I commanded thee? Be strong and of a good courage; be not afraid, neither be thou dismayed: for the Lord thy God is with thee whithersoever thou goest.',tags:['Courage','Faith']},
-    {book:'Psalms',chapter:23,verse:1,ref:'Psalm 23:1-4',text:'The Lord is my shepherd; I shall not want. He maketh me to lie down in green pastures: he leadeth me beside the still waters. He restoreth my soul.',tags:['Peace','Faith','Jesus Christ']},
-    {book:'Psalms',chapter:46,verse:10,ref:'Psalm 46:10',text:'Be still, and know that I am God.',tags:['Peace','Faith']},
-    {book:'Psalms',chapter:119,verse:105,ref:'Psalm 119:105',text:'Thy word is a lamp unto my feet, and a light unto my path.',tags:['Wisdom','Faith']},
-    {book:'Proverbs',chapter:3,verse:5,ref:'Proverbs 3:5-6',text:'Trust in the Lord with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths.',tags:['Faith','Wisdom']},
-    {book:'Proverbs',chapter:22,verse:6,ref:'Proverbs 22:6',text:'Train up a child in the way he should go: and when he is old, he will not depart from it.',tags:['Family','Wisdom']},
-    {book:'Isaiah',chapter:40,verse:31,ref:'Isaiah 40:31',text:'But they that wait upon the Lord shall renew their strength; they shall mount up with wings as eagles; they shall run, and not be weary; and they shall walk, and not faint.',tags:['Faith','Patience','Trials']},
-    {book:'Isaiah',chapter:41,verse:10,ref:'Isaiah 41:10',text:'Fear thou not; for I am with thee: be not dismayed; for I am thy God: I will strengthen thee; yea, I will help thee; yea, I will uphold thee with the right hand of my righteousness.',tags:['Courage','Faith']},
-    {book:'Jeremiah',chapter:29,verse:11,ref:'Jeremiah 29:11',text:'For I know the thoughts that I think toward you, saith the Lord, thoughts of peace, and not of evil, to give you an expected end.',tags:['Hope','Peace','Faith']},
-    // Bible - New Testament
-    {book:'Matthew',chapter:5,verse:16,ref:'Matthew 5:16',text:'Let your light so shine before men, that they may see your good works, and glorify your Father which is in heaven.',tags:['Service','Love']},
-    {book:'Matthew',chapter:6,verse:33,ref:'Matthew 6:33',text:'But seek ye first the kingdom of God, and his righteousness; and all these things shall be added unto you.',tags:['Faith','Obedience']},
-    {book:'Matthew',chapter:7,verse:7,ref:'Matthew 7:7',text:'Ask, and it shall be given you; seek, and ye shall find; knock, and it shall be opened unto you.',tags:['Prayer','Faith']},
-    {book:'Matthew',chapter:11,verse:28,ref:'Matthew 11:28-30',text:'Come unto me, all ye that labour and are heavy laden, and I will give you rest. Take my yoke upon you, and learn of me; for I am meek and lowly in heart: and ye shall find rest unto your souls.',tags:['Jesus Christ','Peace']},
-    {book:'Matthew',chapter:28,verse:19,ref:'Matthew 28:19-20',text:'Go ye therefore, and teach all nations, baptizing them in the name of the Father, and of the Son, and of the Holy Ghost: Teaching them to observe all things whatsoever I have commanded you.',tags:['Service','Faith']},
-    {book:'John',chapter:3,verse:16,ref:'John 3:16',text:'For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.',tags:['Love','Jesus Christ','Faith']},
-    {book:'John',chapter:8,verse:32,ref:'John 8:32',text:'And ye shall know the truth, and the truth shall make you free.',tags:['Wisdom','Faith']},
-    {book:'John',chapter:13,verse:35,ref:'John 13:35',text:'By this shall all men know that ye are my disciples, if ye have love one to another.',tags:['Love','Charity']},
-    {book:'John',chapter:14,verse:6,ref:'John 14:6',text:'Jesus saith unto him, I am the way, the truth, and the life: no man cometh unto the Father, but by me.',tags:['Jesus Christ','Faith']},
-    {book:'John',chapter:14,verse:27,ref:'John 14:27',text:'Peace I leave with you, my peace I give unto you: not as the world giveth, give I unto you. Let not your heart be troubled, neither let it be afraid.',tags:['Peace','Jesus Christ']},
-    {book:'Romans',chapter:8,verse:28,ref:'Romans 8:28',text:'And we know that all things work together for good to them that love God.',tags:['Faith','Love','Trials']},
-    {book:'Romans',chapter:12,verse:2,ref:'Romans 12:2',text:'And be not conformed to this world: but be ye transformed by the renewing of your mind, that ye may prove what is that good, and acceptable, and perfect, will of God.',tags:['Wisdom','Obedience']},
-    {book:'1 Corinthians',chapter:13,verse:4,ref:'1 Corinthians 13:4-7',text:'Charity suffereth long, and is kind; charity envieth not; charity vaunteth not itself, is not puffed up, Doth not behave itself unseemly, seeketh not her own, is not easily provoked, thinketh no evil.',tags:['Charity','Love','Patience']},
-    {book:'Galatians',chapter:5,verse:22,ref:'Galatians 5:22-23',text:'But the fruit of the Spirit is love, joy, peace, longsuffering, gentleness, goodness, faith, Meekness, temperance: against such there is no law.',tags:['Peace','Love','Faith']},
-    {book:'Ephesians',chapter:6,verse:10,ref:'Ephesians 6:10-11',text:'Finally, my brethren, be strong in the Lord, and in the power of his might. Put on the whole armour of God, that ye may be able to stand against the wiles of the devil.',tags:['Courage','Faith']},
-    {book:'Philippians',chapter:4,verse:6,ref:'Philippians 4:6-7',text:'Be careful for nothing; but in every thing by prayer and supplication with thanksgiving let your requests be made known unto God. And the peace of God, which passeth all understanding, shall keep your hearts and minds through Christ Jesus.',tags:['Prayer','Peace']},
-    {book:'Philippians',chapter:4,verse:13,ref:'Philippians 4:13',text:'I can do all things through Christ which strengtheneth me.',tags:['Courage','Jesus Christ','Faith']},
-    {book:'Hebrews',chapter:11,verse:1,ref:'Hebrews 11:1',text:'Now faith is the substance of things hoped for, the evidence of things not seen.',tags:['Faith','Hope']},
-    {book:'James',chapter:1,verse:5,ref:'James 1:5',text:'If any of you lack wisdom, let him ask of God, that giveth to all men liberally, and upbraideth not; and it shall be given him.',tags:['Prayer','Wisdom']},
-    {book:'1 Peter',chapter:5,verse:7,ref:'1 Peter 5:7',text:'Casting all your care upon him; for he careth for you.',tags:['Faith','Peace','Trials']},
-  ],
+  curated:[], // Empty by default - users choose their scriptures on first launch
   downloadedPacks:[], // Array of pack IDs that have been downloaded
   downloaded:null // Will hold full library when downloaded
 };
 
 // Downloadable Scripture Packs
 const SCRIPTURE_PACKS={
+  // ===== BIBLE =====
+  'old-testament':{
+    id:'old-testament',
+    name:'Old Testament',
+    description:'Hebrew Bible / Old Testament',
+    icon:'📜',
+    verses:[
+      {book:'Genesis',chapter:1,verse:1,ref:'Genesis 1:1',text:'In the beginning God created the heaven and the earth.',tags:['Faith','Creation']},
+      {book:'Joshua',chapter:1,verse:9,ref:'Joshua 1:9',text:'Have not I commanded thee? Be strong and of a good courage; be not afraid, neither be thou dismayed: for the Lord thy God is with thee whithersoever thou goest.',tags:['Courage','Faith']},
+      {book:'Psalms',chapter:23,verse:1,ref:'Psalm 23:1-4',text:'The Lord is my shepherd; I shall not want. He maketh me to lie down in green pastures: he leadeth me beside the still waters. He restoreth my soul.',tags:['Peace','Faith']},
+      {book:'Psalms',chapter:46,verse:10,ref:'Psalm 46:10',text:'Be still, and know that I am God.',tags:['Peace','Faith']},
+      {book:'Psalms',chapter:119,verse:105,ref:'Psalm 119:105',text:'Thy word is a lamp unto my feet, and a light unto my path.',tags:['Wisdom','Faith']},
+      {book:'Proverbs',chapter:3,verse:5,ref:'Proverbs 3:5-6',text:'Trust in the Lord with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths.',tags:['Faith','Wisdom']},
+      {book:'Proverbs',chapter:22,verse:6,ref:'Proverbs 22:6',text:'Train up a child in the way he should go: and when he is old, he will not depart from it.',tags:['Family','Wisdom']},
+      {book:'Isaiah',chapter:40,verse:31,ref:'Isaiah 40:31',text:'But they that wait upon the Lord shall renew their strength; they shall mount up with wings as eagles; they shall run, and not be weary; and they shall walk, and not faint.',tags:['Faith','Patience','Trials']},
+      {book:'Isaiah',chapter:41,verse:10,ref:'Isaiah 41:10',text:'Fear thou not; for I am with thee: be not dismayed; for I am thy God: I will strengthen thee; yea, I will help thee; yea, I will uphold thee with the right hand of my righteousness.',tags:['Courage','Faith']},
+      {book:'Jeremiah',chapter:29,verse:11,ref:'Jeremiah 29:11',text:'For I know the thoughts that I think toward you, saith the Lord, thoughts of peace, and not of evil, to give you an expected end.',tags:['Hope','Peace','Faith']},
+    ]
+  },
+  'new-testament':{
+    id:'new-testament',
+    name:'New Testament',
+    description:'Christian New Testament',
+    icon:'✝️',
+    verses:[
+      {book:'Matthew',chapter:5,verse:16,ref:'Matthew 5:16',text:'Let your light so shine before men, that they may see your good works, and glorify your Father which is in heaven.',tags:['Service','Love']},
+      {book:'Matthew',chapter:6,verse:33,ref:'Matthew 6:33',text:'But seek ye first the kingdom of God, and his righteousness; and all these things shall be added unto you.',tags:['Faith','Obedience']},
+      {book:'Matthew',chapter:7,verse:7,ref:'Matthew 7:7',text:'Ask, and it shall be given you; seek, and ye shall find; knock, and it shall be opened unto you.',tags:['Prayer','Faith']},
+      {book:'Matthew',chapter:11,verse:28,ref:'Matthew 11:28-30',text:'Come unto me, all ye that labour and are heavy laden, and I will give you rest. Take my yoke upon you, and learn of me; for I am meek and lowly in heart: and ye shall find rest unto your souls.',tags:['Jesus Christ','Peace']},
+      {book:'Matthew',chapter:28,verse:19,ref:'Matthew 28:19-20',text:'Go ye therefore, and teach all nations, baptizing them in the name of the Father, and of the Son, and of the Holy Ghost: Teaching them to observe all things whatsoever I have commanded you.',tags:['Service','Faith']},
+      {book:'John',chapter:3,verse:16,ref:'John 3:16',text:'For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.',tags:['Love','Jesus Christ','Faith']},
+      {book:'John',chapter:8,verse:32,ref:'John 8:32',text:'And ye shall know the truth, and the truth shall make you free.',tags:['Wisdom','Faith']},
+      {book:'John',chapter:13,verse:35,ref:'John 13:35',text:'By this shall all men know that ye are my disciples, if ye have love one to another.',tags:['Love','Charity']},
+      {book:'John',chapter:14,verse:6,ref:'John 14:6',text:'Jesus saith unto him, I am the way, the truth, and the life: no man cometh unto the Father, but by me.',tags:['Jesus Christ','Faith']},
+      {book:'John',chapter:14,verse:27,ref:'John 14:27',text:'Peace I leave with you, my peace I give unto you: not as the world giveth, give I unto you. Let not your heart be troubled, neither let it be afraid.',tags:['Peace','Jesus Christ']},
+      {book:'Romans',chapter:8,verse:28,ref:'Romans 8:28',text:'And we know that all things work together for good to them that love God.',tags:['Faith','Love','Trials']},
+      {book:'Romans',chapter:12,verse:2,ref:'Romans 12:2',text:'And be not conformed to this world: but be ye transformed by the renewing of your mind, that ye may prove what is that good, and acceptable, and perfect, will of God.',tags:['Wisdom','Obedience']},
+      {book:'1 Corinthians',chapter:13,verse:4,ref:'1 Corinthians 13:4-7',text:'Charity suffereth long, and is kind; charity envieth not; charity vaunteth not itself, is not puffed up, Doth not behave itself unseemly, seeketh not her own, is not easily provoked, thinketh no evil.',tags:['Charity','Love','Patience']},
+      {book:'Galatians',chapter:5,verse:22,ref:'Galatians 5:22-23',text:'But the fruit of the Spirit is love, joy, peace, longsuffering, gentleness, goodness, faith, Meekness, temperance: against such there is no law.',tags:['Peace','Love','Faith']},
+      {book:'Ephesians',chapter:6,verse:10,ref:'Ephesians 6:10-11',text:'Finally, my brethren, be strong in the Lord, and in the power of his might. Put on the whole armour of God, that ye may be able to stand against the wiles of the devil.',tags:['Courage','Faith']},
+      {book:'Philippians',chapter:4,verse:6,ref:'Philippians 4:6-7',text:'Be careful for nothing; but in every thing by prayer and supplication with thanksgiving let your requests be made known unto God. And the peace of God, which passeth all understanding, shall keep your hearts and minds through Christ Jesus.',tags:['Prayer','Peace']},
+      {book:'Philippians',chapter:4,verse:13,ref:'Philippians 4:13',text:'I can do all things through Christ which strengtheneth me.',tags:['Courage','Jesus Christ','Faith']},
+      {book:'Hebrews',chapter:11,verse:1,ref:'Hebrews 11:1',text:'Now faith is the substance of things hoped for, the evidence of things not seen.',tags:['Faith','Hope']},
+      {book:'James',chapter:1,verse:5,ref:'James 1:5',text:'If any of you lack wisdom, let him ask of God, that giveth to all men liberally, and upbraideth not; and it shall be given him.',tags:['Prayer','Wisdom']},
+      {book:'1 Peter',chapter:5,verse:7,ref:'1 Peter 5:7',text:'Casting all your care upon him; for he careth for you.',tags:['Faith','Peace','Trials']},
+    ]
+  },
+  // ===== LDS =====
   'book-of-mormon':{
     id:'book-of-mormon',
     name:'Book of Mormon',
@@ -2445,19 +2460,49 @@ function renderMenuIcon(size=26){
 </div>`;
 }
 
-// Render growth icon - small person with up arrow above head
-function renderGrowthIcon(size=18){
+// Render growth icon - purple background with mini stage preview
+function renderGrowthIcon(size=18, stage='blob', category='mammals'){
   const s=size;
+  // Get a mini representation of the current stage
+  let stageIcon='';
+  const cat=CREATURE_CATEGORIES[category]||CREATURE_CATEGORIES.mammals;
+  if(stage==='blob'){
+    // Mini blob - pink fluffy ball with eyes
+    stageIcon=`<div style="width:${s*0.65}px;height:${s*0.65}px;background:radial-gradient(circle at 35% 35%,#fff,#ec4899,#a855f7);border-radius:50%;position:relative;box-shadow:0 1px 2px rgba(0,0,0,0.2);">
+      <div style="position:absolute;top:35%;left:25%;width:${s*0.12}px;height:${s*0.12}px;background:#000;border-radius:50%;"></div>
+      <div style="position:absolute;top:35%;right:25%;width:${s*0.12}px;height:${s*0.12}px;background:#000;border-radius:50%;"></div>
+    </div>`;
+  }else if(stage==='baby'){
+    // Mini baby - rounder body with small arms
+    stageIcon=`<div style="width:${s*0.6}px;height:${s*0.7}px;position:relative;">
+      <div style="width:100%;height:${s*0.45}px;background:radial-gradient(circle at 40% 30%,#fff,#ec4899,#a855f7);border-radius:50%;position:absolute;top:0;box-shadow:0 1px 2px rgba(0,0,0,0.2);">
+        <div style="position:absolute;top:35%;left:22%;width:${s*0.1}px;height:${s*0.1}px;background:#000;border-radius:50%;"></div>
+        <div style="position:absolute;top:35%;right:22%;width:${s*0.1}px;height:${s*0.1}px;background:#000;border-radius:50%;"></div>
+      </div>
+      <div style="width:${s*0.5}px;height:${s*0.35}px;background:linear-gradient(180deg,#ec4899,#a855f7);border-radius:40% 40% 50% 50%;position:absolute;bottom:0;left:50%;transform:translateX(-50%);"></div>
+    </div>`;
+  }else if(stage==='teen'){
+    // Mini teen - taller with more defined shape
+    stageIcon=`<div style="width:${s*0.55}px;height:${s*0.75}px;position:relative;">
+      <div style="width:${s*0.4}px;height:${s*0.35}px;background:radial-gradient(circle at 40% 30%,#fff,#a855f7,#7c3aed);border-radius:45%;position:absolute;top:0;left:50%;transform:translateX(-50%);box-shadow:0 1px 2px rgba(0,0,0,0.2);">
+        <div style="position:absolute;top:40%;left:25%;width:${s*0.08}px;height:${s*0.08}px;background:#000;border-radius:50%;"></div>
+        <div style="position:absolute;top:40%;right:25%;width:${s*0.08}px;height:${s*0.08}px;background:#000;border-radius:50%;"></div>
+      </div>
+      <div style="width:${s*0.45}px;height:${s*0.45}px;background:linear-gradient(180deg,#a855f7,#7c3aed);border-radius:35% 35% 45% 45%;position:absolute;bottom:0;left:50%;transform:translateX(-50%);"></div>
+    </div>`;
+  }else{
+    // Adult - fully formed creature silhouette
+    stageIcon=`<div style="width:${s*0.55}px;height:${s*0.7}px;position:relative;">
+      <div style="width:${s*0.38}px;height:${s*0.32}px;background:radial-gradient(circle at 40% 30%,#fff,#7c3aed,#5b21b6);border-radius:45%;position:absolute;top:0;left:50%;transform:translateX(-50%);box-shadow:0 1px 2px rgba(0,0,0,0.2);">
+        <div style="position:absolute;top:38%;left:25%;width:${s*0.07}px;height:${s*0.07}px;background:#000;border-radius:50%;"></div>
+        <div style="position:absolute;top:38%;right:25%;width:${s*0.07}px;height:${s*0.07}px;background:#000;border-radius:50%;"></div>
+      </div>
+      <div style="width:${s*0.5}px;height:${s*0.45}px;background:linear-gradient(180deg,#7c3aed,#5b21b6);border-radius:30% 30% 45% 45%;position:absolute;bottom:0;left:50%;transform:translateX(-50%);"></div>
+    </div>`;
+  }
   return`
-<div style="position:relative;width:${s}px;height:${s}px;background:linear-gradient(145deg,#bbf7d0,#86efac);border:2px solid #16a34a;border-radius:${s*0.32}px;box-shadow:0 2px 4px rgba(0,0,0,0.15),inset 0 1px 2px rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;">
-  <!-- Up arrow above head -->
-  <div style="position:absolute;top:${s*0.08}px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:${s*0.12}px solid transparent;border-right:${s*0.12}px solid transparent;border-bottom:${s*0.14}px solid #15803d;"></div>
-  <!-- Arrow stem -->
-  <div style="position:absolute;top:${s*0.2}px;left:50%;transform:translateX(-50%);width:${s*0.08}px;height:${s*0.1}px;background:#15803d;border-radius:1px;"></div>
-  <!-- Small person head -->
-  <div style="position:absolute;top:${s*0.32}px;left:50%;transform:translateX(-50%);width:${s*0.28}px;height:${s*0.28}px;background:linear-gradient(180deg,#c4b5fd,#a78bfa);border:1.5px solid #7c3aed;border-radius:50%;"></div>
-  <!-- Small person body -->
-  <div style="position:absolute;top:${s*0.55}px;left:50%;transform:translateX(-50%);width:${s*0.32}px;height:${s*0.35}px;background:linear-gradient(180deg,#c4b5fd,#a78bfa);border:1.5px solid #7c3aed;border-radius:40% 40% 45% 45%;"></div>
+<div style="position:relative;width:${s}px;height:${s}px;background:linear-gradient(145deg,#c4b5fd,#a78bfa);border:2px solid #7c3aed;border-radius:${s*0.32}px;box-shadow:0 2px 4px rgba(0,0,0,0.15),inset 0 1px 2px rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;overflow:hidden;">
+  ${stageIcon}
 </div>`;
 }
 
@@ -7977,7 +8022,7 @@ function render(){
               </div>
             `:stage==='adult'?`
               <div class="flex items-center gap-2">
-                ${renderGrowthIcon(18)}
+                ${renderGrowthIcon(18,'adult',S.creatureCategory)}
                 <div class="flex-1">
                   <div class="h-2.5 bg-purple-100 rounded-full overflow-hidden">
                     <div class="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full transition-all duration-500" style="width:100%"></div>
@@ -7989,7 +8034,7 @@ function render(){
               const stageData=STAGES[stage];
               const pct=Math.min((S.growthXP||0)/stageData.growthNeeded*100,100);
               return`<div class="flex items-center gap-2">
-                ${renderGrowthIcon(18)}
+                ${renderGrowthIcon(18,stage,S.creatureCategory)}
                 <div class="flex-1">
                   <div class="h-2.5 bg-purple-100 rounded-full overflow-hidden">
                     <div class="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full transition-all duration-500" style="width:${pct}%"></div>
@@ -8497,21 +8542,22 @@ function render(){
             <!-- Teen Stage -->
             <div class="mb-3 pb-3 border-b border-purple-200">
               <p class="text-purple-600 text-sm font-semibold mb-2">Teen Stage</p>
-              <div class="grid grid-cols-5 gap-2">
-                ${category.teenNames.map((name,idx)=>{
-                  const isCollected=collectedVariants.has(idx);
-                  const buddyInfo=categoryBuddies.find(b=>b.creatureVariant===idx);
-                  return`<div class="flex flex-col items-center ${isCollected?'cursor-pointer hover:bg-purple-50 rounded-lg':''}" ${isCollected&&buddyInfo?`onclick="showScribbyCard('${categoryKey}',${idx},${buddyInfo.id},'teen')"`:''}>
-                    <div style="width:55px;height:60px;overflow:visible;display:flex;align-items:center;justify-content:center;">
+              <div class="flex items-center justify-around gap-4">
+                ${[0,5,8].map(variantIdx=>{
+                  const isCollected=collectedVariants.has(variantIdx);
+                  const buddyInfo=categoryBuddies.find(b=>b.creatureVariant===variantIdx);
+                  const name=category.teenNames[variantIdx];
+                  return`<div class="flex flex-col items-center ${isCollected?'cursor-pointer hover:bg-purple-50 rounded-lg p-2':''}" ${isCollected&&buddyInfo?`onclick="showScribbyCard('${categoryKey}',${variantIdx},${buddyInfo.id},'teen')"`:''}>
+                    <div style="width:70px;height:75px;overflow:visible;display:flex;align-items:center;justify-content:center;">
                       ${isCollected?`
-                        <div style="transform:scale(0.35);transform-origin:center;">${renderTeen(categoryKey,idx)}</div>
+                        <div style="transform:scale(0.45);transform-origin:center;">${renderTeen(categoryKey,variantIdx)}</div>
                       `:`
-                        <div style="width:40px;height:40px;border-radius:50%;border:2px dashed rgba(147,112,219,0.25);display:flex;align-items:center;justify-content:center;">
-                          <span class="text-purple-200 text-lg">?</span>
+                        <div style="width:50px;height:50px;border-radius:50%;border:2px dashed rgba(147,112,219,0.25);display:flex;align-items:center;justify-content:center;">
+                          <span class="text-purple-200 text-xl">?</span>
                         </div>
                       `}
                     </div>
-                    <p class="text-[8px] ${isCollected?'text-purple-600':'text-purple-300'} leading-tight text-center">${isCollected?name:'???'}</p>
+                    <p class="text-[9px] ${isCollected?'text-purple-600':'text-purple-300'} leading-tight text-center">${isCollected?name:'???'}</p>
                   </div>`;
                 }).join('')}
               </div>
