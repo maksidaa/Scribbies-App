@@ -1708,6 +1708,28 @@ function removeScripturePack(packId){
   render();
 }
 
+// Delete an entire collection (removes from localStorage)
+function deleteCollection(collectionName){
+  if(!confirm(`Delete all ${collectionName} verses from your library?\n\nThis will free up storage space. You can re-download anytime.`))return;
+
+  const storageKey=COLLECTION_STORAGE_KEYS[collectionName];
+  if(storageKey){
+    localStorage.removeItem(storageKey);
+    LIBRARY.downloaded=loadDownloadedCollections();
+  }
+
+  // Also remove the corresponding pack from downloadedPacks
+  const packIdMap={'Old Testament':'old-testament','New Testament':'new-testament','Book of Mormon':'book-of-mormon','Doctrine and Covenants':'doctrine-covenants'};
+  const packId=packIdMap[collectionName];
+  if(packId){
+    let downloadedPacks=JSON.parse(localStorage.getItem('downloadedPacks')||'[]');
+    downloadedPacks=downloadedPacks.filter(p=>p!==packId);
+    localStorage.setItem('downloadedPacks',JSON.stringify(downloadedPacks));
+  }
+
+  render();
+}
+
 // Retry/refresh a scripture pack download
 function retryScripturePack(packId){
   removeScripturePack(packId);
@@ -1715,35 +1737,88 @@ function retryScripturePack(packId){
 }
 
 // Complete onboarding and download selected packs
-function completeOnboarding(){
-  // Download all selected packs
+async function completeOnboarding(){
+  // Get all selected packs
   const selectedPacks=Object.entries(onboardingSelections).filter(([id,selected])=>selected).map(([id])=>id);
 
-  let totalLibraryItems=0;
-  let starterVersesAdded=0;
-  const STARTER_VERSES_PER_PACK=12; // Add 12 starter verses from each pack
+  // Mark onboarding as complete first (so we don't show onboarding screen during downloads)
+  localStorage.setItem('onboardingComplete','true');
+  onboardingSelections={};
 
+  // Find which packs need full collection downloads
+  const collectionsToDownload=selectedPacks
+    .filter(packId=>PACK_TO_COLLECTION[packId])
+    .map(packId=>PACK_TO_COLLECTION[packId]);
+
+  // Download full collections if any
+  if(collectionsToDownload.length>0){
+    for(const collectionName of collectionsToDownload){
+      // Check if already downloaded
+      const storageKey=COLLECTION_STORAGE_KEYS[collectionName];
+      if(!localStorage.getItem(storageKey)){
+        // Show download progress
+        downloadProgress={current:0,total:1,status:'downloading',currentBook:collectionName};
+        render();
+
+        try{
+          const url=COLLECTION_URLS[collectionName];
+          const response=await fetch(url);
+          if(!response.ok)throw new Error(`Failed to download ${collectionName}`);
+
+          const data=await response.json();
+          const verses=[];
+
+          // Process the JSON structure
+          if(data.books){
+            data.books.forEach(book=>{
+              if(book.chapters){
+                book.chapters.forEach(chapter=>{
+                  if(chapter.verses){
+                    chapter.verses.forEach(verse=>{
+                      verses.push({b:book.book||collectionName,c:chapter.chapter,v:verse.verse,t:verse.text});
+                    });
+                  }
+                });
+              }
+            });
+          }
+
+          downloadProgress.status='processing';
+          render();
+
+          // Store the collection
+          localStorage.setItem(storageKey,JSON.stringify(verses));
+          LIBRARY.downloaded=loadDownloadedCollections();
+
+        }catch(error){
+          console.error('Download failed:',error);
+          // Continue with other downloads even if one fails
+        }
+      }
+    }
+    downloadProgress=null;
+  }
+
+  // Also mark smaller packs as downloaded (Articles of Faith, quotes, etc.)
+  let downloadedPacks=JSON.parse(localStorage.getItem('downloadedPacks')||'[]');
+  for(const packId of selectedPacks){
+    if(!downloadedPacks.includes(packId)){
+      downloadedPacks.push(packId);
+    }
+  }
+  localStorage.setItem('downloadedPacks',JSON.stringify(downloadedPacks));
+
+  // Add starter verses from SCRIPTURE_PACKS (curated verses)
+  const STARTER_VERSES_PER_PACK=12;
   for(const packId of selectedPacks){
     const pack=SCRIPTURE_PACKS[packId];
     if(pack){
-      // Download the full pack (makes all verses available in library)
-      let downloadedPacks=JSON.parse(localStorage.getItem('downloadedPacks')||'[]');
-      if(!downloadedPacks.includes(packId)){
-        downloadedPacks.push(packId);
-        localStorage.setItem('downloadedPacks',JSON.stringify(downloadedPacks));
-        totalLibraryItems+=getPackVerseCount(packId);
-      }
-
-      // Add starter verses to user's active verse list
       const packVerses=pack.verses||[];
       const packQuotes=pack.quotes||[];
       const allItems=[...packVerses,...packQuotes];
-
-      // Take first 12 (or all if fewer) as starter verses
       const starterItems=allItems.slice(0,STARTER_VERSES_PER_PACK);
 
       for(const item of starterItems){
-        // Check if verse already exists (by ref)
         const exists=S.verses.some(v=>v.ref===item.ref);
         if(!exists){
           S.verses.push({
@@ -1756,22 +1831,12 @@ function completeOnboarding(){
             modeUsage:{predict:0,blanks:0,jumble:0,first:0,recall:0},
             lastPracticed:null
           });
-          starterVersesAdded++;
         }
       }
     }
   }
 
-  // Save the updated verses
   save();
-
-  // Mark onboarding as complete
-  localStorage.setItem('onboardingComplete','true');
-
-  // Reset selections
-  onboardingSelections={};
-
-  // Start the tutorial
   showTutorial();
 }
 
@@ -6887,26 +6952,27 @@ function updateHappiness(){
   const now=Date.now();
   const lastUpdate=S.lastHappinessUpdate||now;
   const hoursSinceUpdate=(now-lastUpdate)/(1000*60*60);
-  if(hoursSinceUpdate<6)return; // Check every 6 hours (4x per day)
+  if(hoursSinceUpdate<4)return; // Check every 4 hours (6x per day)
 
-  // More aggressive passive decay (3 points per day = 0.75 per 6hr)
-  const decayAmount=Math.floor(hoursSinceUpdate/6)*0.75;
+  // Aggressive passive decay (10 points per day = 1.67 per 4hr)
+  const decayAmount=Math.floor(hoursSinceUpdate/4)*1.7;
   if(S.happiness>0&&decayAmount>0){
-    S.happiness=Math.max(0,S.happiness-decayAmount);
+    S.happiness=Math.max(0,Math.round(S.happiness-decayAmount));
   }
 
-  // Neglect penalty for not playing/practicing (after 1+ days)
+  // Neglect penalty for not playing/practicing (after 12+ hours)
   const lastPractice=S.todayDate;
   if(lastPractice){
-    const daysSincePractice=Math.floor((now-new Date(lastPractice).getTime())/(1000*60*60*24));
-    if(daysSincePractice>=1){
-      S.happiness=Math.max(0,S.happiness-(daysSincePractice*4));
+    const hoursSincePractice=(now-new Date(lastPractice).getTime())/(1000*60*60);
+    if(hoursSincePractice>=12){
+      const neglectPenalty=Math.floor(hoursSincePractice/12)*5;
+      S.happiness=Math.max(0,S.happiness-neglectPenalty);
     }
   }
 
-  // Loneliness penalty (after 12 hours of no interaction)
-  if(hoursSinceUpdate>=12){
-    const lonelinessPenalty=Math.floor(hoursSinceUpdate/12)*2;
+  // Loneliness penalty (after 8 hours of no interaction)
+  if(hoursSinceUpdate>=8){
+    const lonelinessPenalty=Math.floor(hoursSinceUpdate/8)*3;
     S.happiness=Math.max(0,S.happiness-lonelinessPenalty);
   }
 
@@ -6936,19 +7002,25 @@ function updateHealth(){
   const now=Date.now();
   const lastUpdate=S.lastHealthUpdate||now;
   const hoursSinceUpdate=(now-lastUpdate)/(1000*60*60);
-  if(hoursSinceUpdate<6)return; // Check every 6 hours (4x per day)
+  if(hoursSinceUpdate<4)return; // Check every 4 hours (6x per day)
 
-  // More aggressive passive decay (2 points per day = 0.5 per 6hr)
-  const decayAmount=Math.floor(hoursSinceUpdate/6)*0.5;
+  // Aggressive passive decay (6 points per day = 1 per 4hr)
+  const decayAmount=Math.floor(hoursSinceUpdate/4)*1;
   if(S.health>0&&decayAmount>0){
-    S.health=Math.max(0,S.health-decayAmount);
+    S.health=Math.max(0,Math.round(S.health-decayAmount));
   }
 
-  // Hunger penalty for not feeding (kicks in after 12 hours, severe after 1 day)
+  // Hunger penalty for not feeding (kicks in after 8 hours)
   if(S.lastFed){
     const hoursSinceFed=(now-new Date(S.lastFed).getTime())/(1000*60*60);
-    if(hoursSinceFed>=12){
-      const hungerPenalty=Math.floor(hoursSinceFed/12)*3; // -3 every 12 hours
+    if(hoursSinceFed>=8){
+      const hungerPenalty=Math.floor(hoursSinceFed/8)*5; // -5 every 8 hours
+      S.health=Math.max(0,S.health-hungerPenalty);
+    }
+  }else{
+    // Never fed - apply hunger penalty based on time since hatch/stage change
+    if(hoursSinceUpdate>=8){
+      const hungerPenalty=Math.floor(hoursSinceUpdate/8)*5;
       S.health=Math.max(0,S.health-hungerPenalty);
     }
   }
@@ -7368,6 +7440,14 @@ const COLLECTION_URLS={
   'Book of Mormon':'https://raw.githubusercontent.com/bcbooks/scriptures-json/master/book-of-mormon.json',
   'Doctrine and Covenants':'https://raw.githubusercontent.com/bcbooks/scriptures-json/master/doctrine-and-covenants.json',
   'Pearl of Great Price':'https://raw.githubusercontent.com/bcbooks/scriptures-json/master/pearl-of-great-price.json'
+};
+
+// Map onboarding pack IDs to collection names for full download
+const PACK_TO_COLLECTION={
+  'old-testament':'Old Testament',
+  'new-testament':'New Testament',
+  'book-of-mormon':'Book of Mormon',
+  'doctrine-covenants':'Doctrine and Covenants'
 };
 
 // Check which collections are downloaded
@@ -9063,12 +9143,14 @@ function render(){
           ${bibleCollections.map(collName=>{
             const collData=COLLECTIONS[collName];
             const count=collectionStats[collName]||0;
+            const hasDownload=localStorage.getItem(COLLECTION_STORAGE_KEYS[collName]);
             return`<div class="w-full bg-white rounded-2xl p-4 mb-3">
               <div class="flex justify-between items-center gap-3">
                 <button onclick="libraryView.collection='${collName.replace(/'/g,"\\'")}';render()" class="flex-1 text-left min-w-0">
                   <p class="font-bold text-purple-800">${collName}</p>
-                  <p class="text-xs text-purple-600 mt-1">${count} verses</p>
+                  <p class="text-xs text-purple-600 mt-1">${count} verses${hasDownload?' ✓ Downloaded':''}</p>
                 </button>
+                ${hasDownload?`<button onclick="deleteCollection('${collName}')" class="text-red-400 hover:text-red-600 p-2" title="Delete collection">🗑️</button>`:''}
                 <span class="text-2xl">📖</span>
               </div>
             </div>`;
@@ -9084,12 +9166,14 @@ function render(){
               const collData=COLLECTIONS[collName];
               const pack=SCRIPTURE_PACKS[collData.packId];
               const count=collectionStats[collName]||0;
+              const hasExternalDownload=localStorage.getItem(COLLECTION_STORAGE_KEYS[collName]);
               return`<div class="w-full bg-white rounded-2xl p-4 mb-3">
                 <div class="flex justify-between items-center gap-3">
                   <button onclick="libraryView.collection='${collName.replace(/'/g,"\\'")}';render()" class="flex-1 text-left min-w-0">
                     <p class="font-bold text-purple-800">${collName}</p>
-                    <p class="text-xs text-purple-600 mt-1">${count} verses</p>
+                    <p class="text-xs text-purple-600 mt-1">${count} verses${hasExternalDownload?' ✓ Full':''}</p>
                   </button>
+                  <button onclick="deleteCollection('${collName}')" class="text-red-400 hover:text-red-600 p-2" title="Delete collection">🗑️</button>
                   <span class="text-2xl">${pack?pack.icon:'📚'}</span>
                 </div>
               </div>`;
