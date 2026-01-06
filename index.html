@@ -745,6 +745,7 @@ const OWNER_EMAIL = 'adgoodwin82@gmail.com';
 
 let screen='home',modal=null,editV=null,form={type:'scripture',ref:'',text:'',tags:[]};
 let pMode=null,pVerse=null,pState={},selectedVerse=null,filterTag=null;
+let onboardingSelections={}; // Track selected packs during onboarding
 let feedingState=null; // {food: foodObj, accepted: bool, growing: bool}
 let feedTab='buy'; // 'buy' or 'myFood'
 let downloadProgress=null; // {current: n, total: n, status: 'downloading'|'processing'|'complete'}
@@ -1571,6 +1572,48 @@ function removeScripturePack(packId){
 function retryScripturePack(packId){
   removeScripturePack(packId);
   setTimeout(()=>downloadScripturePack(packId),100);
+}
+
+// Complete onboarding and download selected packs
+function completeOnboarding(){
+  // Download all selected packs
+  const selectedPacks=Object.entries(onboardingSelections).filter(([id,selected])=>selected).map(([id])=>id);
+
+  let totalItems=0;
+  for(const packId of selectedPacks){
+    const pack=SCRIPTURE_PACKS[packId];
+    if(pack){
+      // Silently download without individual alerts
+      let downloadedPacks=JSON.parse(localStorage.getItem('downloadedPacks')||'[]');
+      if(!downloadedPacks.includes(packId)){
+        downloadedPacks.push(packId);
+        localStorage.setItem('downloadedPacks',JSON.stringify(downloadedPacks));
+        totalItems+=getPackVerseCount(packId);
+      }
+    }
+  }
+
+  // Mark onboarding as complete
+  localStorage.setItem('onboardingComplete','true');
+
+  // Reset selections
+  onboardingSelections={};
+
+  // Show summary if packs were added
+  if(totalItems>0){
+    alert(`Welcome! Added ${selectedPacks.length} scripture pack${selectedPacks.length!==1?'s':''} with ${totalItems} verses to learn!`);
+  }else{
+    alert('Welcome to Scribbies! You can add scriptures anytime from the Library.');
+  }
+
+  render();
+}
+
+// Skip onboarding
+function skipOnboarding(){
+  localStorage.setItem('onboardingComplete','true');
+  onboardingSelections={};
+  render();
 }
 
 // Get all library verses including downloaded packs
@@ -7768,6 +7811,83 @@ function render(){
         </button>
         <button onclick="graduationCeremony=false;render()" class="w-full bg-purple-100 text-purple-700 font-semibold py-3 rounded-2xl">
           Not Yet
+        </button>
+      </div>
+    </div>`;
+  }
+
+  // First-time onboarding screen
+  else if(!localStorage.getItem('onboardingComplete')){
+    // Define pack categories for onboarding
+    const onboardingPacks=[
+      {category:'Bible',packs:[
+        {id:'old-testament',name:'Old Testament',icon:'📜',desc:'Genesis, Psalms, Proverbs...'},
+        {id:'new-testament',name:'New Testament',icon:'✝️',desc:'Matthew, John, Romans...'}
+      ]},
+      {category:'Latter-day Saints',packs:[
+        {id:'book-of-mormon',name:'Book of Mormon',icon:'📘',desc:'1 Nephi, Alma, Moroni...'},
+        {id:'doctrine-covenants',name:'Doctrine & Covenants',icon:'📙',desc:'Modern revelations'},
+        {id:'articles-of-faith',name:'Articles of Faith',icon:'📜',desc:'13 core beliefs'},
+        {id:'lds-quotes',name:'LDS Leader Quotes',icon:'🎤',desc:'Prophet teachings'}
+      ]},
+      {category:'Judaism',packs:[
+        {id:'torah',name:'Torah & Tanakh',icon:'✡️',desc:'Hebrew scriptures'},
+        {id:'jewish-wisdom',name:'Jewish Wisdom',icon:'📖',desc:'Talmud & teachings'}
+      ]},
+      {category:'Islam',packs:[
+        {id:'quran',name:'Quran',icon:'☪️',desc:'Holy Quran verses'},
+        {id:'hadith',name:'Hadith',icon:'📿',desc:'Prophet Muhammad teachings'}
+      ]},
+      {category:'Buddhism',packs:[
+        {id:'buddhist-sutras',name:'Buddhist Teachings',icon:'☸️',desc:'Sutras & wisdom'}
+      ]},
+      {category:'Hinduism',packs:[
+        {id:'bhagavad-gita',name:'Bhagavad Gita',icon:'🕉️',desc:'Sacred dialogue'},
+        {id:'hindu-wisdom',name:'Hindu Wisdom',icon:'📿',desc:'Vedic teachings'}
+      ]},
+      {category:'Sikhism',packs:[
+        {id:'guru-granth',name:'Guru Granth Sahib',icon:'🙏',desc:'Sikh scripture'}
+      ]},
+      {category:'Christian Classics',packs:[
+        {id:'catholic-prayers',name:'Catholic Prayers',icon:'✝️',desc:'Traditional prayers'},
+        {id:'christian-classics',name:'Christian Classics',icon:'📚',desc:'C.S. Lewis, etc.'}
+      ]}
+    ];
+
+    h=`<div class="p-5 min-h-screen flex items-center justify-center">
+      <div class="bg-white/95 rounded-3xl p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
+        <div class="text-center mb-6">
+          <div class="text-6xl mb-3">📚✨</div>
+          <h2 class="text-2xl font-bold text-purple-800 mb-2">Welcome to Scribbies!</h2>
+          <p class="text-purple-600 text-sm">Choose the scriptures you'd like to learn. You can always add more later!</p>
+        </div>
+
+        <div class="space-y-4 mb-6">
+          ${onboardingPacks.map(cat=>`
+            <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-3">
+              <p class="font-bold text-purple-800 mb-2">${cat.category}</p>
+              <div class="space-y-2">
+                ${cat.packs.map(pack=>`
+                  <label class="flex items-center gap-3 bg-white rounded-lg p-2 cursor-pointer hover:bg-purple-50 transition-colors">
+                    <input type="checkbox" id="ob-${pack.id}" onchange="onboardingSelections['${pack.id}']=this.checked" class="w-5 h-5 accent-purple-600 rounded">
+                    <span class="text-xl">${pack.icon}</span>
+                    <div class="flex-1">
+                      <p class="font-semibold text-purple-800 text-sm">${pack.name}</p>
+                      <p class="text-purple-500 text-xs">${pack.desc}</p>
+                    </div>
+                  </label>
+                `).join('')}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+
+        <button onclick="completeOnboarding()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-4 rounded-2xl mb-2">
+          Start My Journey!
+        </button>
+        <p class="text-center text-purple-400 text-xs">You can skip and add scriptures anytime from the Library</p>
+        <button onclick="skipOnboarding()" class="w-full text-purple-500 font-medium py-2 text-sm">
+          Skip for now
         </button>
       </div>
     </div>`;
