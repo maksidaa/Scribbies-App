@@ -298,12 +298,13 @@
     .sleeping .s-eye{transform:scaleY(0.15) !important;animation:none !important}
     .sleeping .f-eye{transform:scaleY(0.15) !important;animation:none !important}
     .sleeping .tn-eye{transform:scaleY(0.15) !important;animation:none !important}
+    .sleeping .dr-eye{transform:scaleY(0.15) !important;animation:none !important}
 
     /* XP State Animations */
     /* 10-25%: Drowsy - slow sway, half-closed eyes */
     @keyframes drowsy-sway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
     .drowsy{animation:drowsy-sway 4s ease-in-out infinite !important}
-    .drowsy .bl-eye,.drowsy .s-eye,.drowsy .f-eye,.drowsy .tn-eye{transform:scaleY(0.6) !important}
+    .drowsy .bl-eye,.drowsy .s-eye,.drowsy .f-eye,.drowsy .tn-eye,.drowsy .dr-eye{transform:scaleY(0.6) !important}
 
     /* 25-50%: Awake - normal idle, looking around */
     @keyframes awake-idle{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
@@ -1179,84 +1180,84 @@ const STAGES={
 };
 
 const FOODS=[
-  // Yummy Foods - Always accepted, 1x growth, varied happiness/health balance (sorted by cost)
-  {emoji:'🧃',name:'Juice Box',cost:10,cat:'yummy',growthMult:1.0,happiness:18,health:-4},
-  {emoji:'🟩',name:'Jello',cost:12,cat:'yummy',growthMult:1.0,happiness:14,health:-1},
-  {emoji:'🍭',name:'Lollipop',cost:12,cat:'yummy',growthMult:1.0,happiness:20,health:-5},
-  {emoji:'🥤',name:'Soda',cost:15,cat:'yummy',growthMult:1.0,happiness:22,health:-8},
-  {emoji:'🍧',name:'Popsicle',cost:15,cat:'yummy',growthMult:1.0,happiness:16,health:-2},
-  {emoji:'🍬',name:'Gummy Bears',cost:15,cat:'yummy',growthMult:1.0,happiness:23,health:-6},
-  {emoji:'🍬',name:'Fruit Snacks',cost:18,cat:'yummy',growthMult:1.0,happiness:16,health:-4},
-  {emoji:'🍡',name:'Cotton Candy',cost:18,cat:'yummy',growthMult:1.0,happiness:24,health:-7},
-  {emoji:'🥣',name:'Cereal',cost:20,cat:'yummy',growthMult:1.0,happiness:15,health:1},
-  {emoji:'🍮',name:'Pudding',cost:20,cat:'yummy',growthMult:1.0,happiness:16,health:-2},
-  {emoji:'🍫',name:'Candy Bar',cost:20,cat:'yummy',growthMult:1.0,happiness:25,health:-5},
-  {emoji:'🥜',name:'PB&J Sandwich',cost:22,cat:'yummy',growthMult:1.0,happiness:16,health:2},
-  {emoji:'🍪',name:'Sugar Cookies',cost:22,cat:'yummy',growthMult:1.0,happiness:24,health:-6},
-  {emoji:'🥔',name:'Tater Tots',cost:24,cat:'yummy',growthMult:1.0,happiness:16,health:-3},
-  {emoji:'🍪',name:'Cookie',cost:25,cat:'yummy',growthMult:1.0,happiness:15,health:0},
-  {emoji:'🍟',name:'Fries',cost:25,cat:'yummy',growthMult:1.0,happiness:16,health:-3},
-  {emoji:'🍿',name:'Popcorn',cost:25,cat:'yummy',growthMult:1.0,happiness:15,health:2},
-  {emoji:'🌭',name:'Hot Dog',cost:25,cat:'yummy',growthMult:1.0,happiness:16,health:-2},
-  {emoji:'⚡',name:'Energy Drink',cost:25,cat:'yummy',growthMult:1.0,happiness:25,health:-10},
-  {emoji:'🥪',name:'Grilled Cheese',cost:26,cat:'yummy',growthMult:1.0,happiness:16,health:2},
-  {emoji:'🐟',name:'Fish Sticks',cost:26,cat:'yummy',growthMult:1.0,happiness:15,health:0},
-  {emoji:'🧀',name:'Mac & Cheese',cost:28,cat:'yummy',growthMult:1.0,happiness:18,health:2},
-  {emoji:'🌭',name:'Corn Dog',cost:28,cat:'yummy',growthMult:1.0,happiness:17,health:-3},
-  {emoji:'🍕',name:'Pizza',cost:30,cat:'yummy',growthMult:1.0,happiness:16,health:3},
-  {emoji:'🌮',name:'Taco',cost:30,cat:'yummy',growthMult:1.0,happiness:16,health:5},
-  {emoji:'🫓',name:'Quesadilla',cost:30,cat:'yummy',growthMult:1.0,happiness:17,health:3},
-  {emoji:'🍗',name:'Chicken Nuggets',cost:30,cat:'yummy',growthMult:1.0,happiness:19,health:-2},
-  {emoji:'🌮',name:'Nachos',cost:30,cat:'yummy',growthMult:1.0,happiness:18,health:-2},
-  {emoji:'🍩',name:'Donut',cost:30,cat:'yummy',growthMult:1.0,happiness:18,health:-4},
-  {emoji:'🧁',name:'Cupcake',cost:30,cat:'yummy',growthMult:1.0,happiness:18,health:-4},
-  {emoji:'🍫',name:'Chocolate',cost:30,cat:'yummy',growthMult:1.0,happiness:18,health:-3},
-  {emoji:'🍞',name:'French Toast',cost:32,cat:'yummy',growthMult:1.0,happiness:17,health:0},
-  {emoji:'🍝',name:'Spaghetti',cost:32,cat:'yummy',growthMult:1.0,happiness:17,health:3},
-  {emoji:'🧀',name:'Mozzarella Sticks',cost:32,cat:'yummy',growthMult:1.0,happiness:18,health:-3},
-  {emoji:'🍔',name:'Hamburger',cost:35,cat:'yummy',growthMult:1.0,happiness:17,health:3},
-  {emoji:'🥞',name:'Pancakes',cost:35,cat:'yummy',growthMult:1.0,happiness:16,health:0},
-  {emoji:'🧇',name:'Waffle',cost:35,cat:'yummy',growthMult:1.0,happiness:17,health:0},
-  {emoji:'🍦',name:'Ice Cream',cost:35,cat:'yummy',growthMult:1.0,happiness:19,health:-3},
-  {emoji:'🥤',name:'Boba Drink',cost:35,cat:'yummy',growthMult:1.0,happiness:18,health:-3},
-  {emoji:'🍣',name:'Sushi',cost:40,cat:'yummy',growthMult:1.0,happiness:18,health:8},
-  {emoji:'🍰',name:'Cake',cost:40,cat:'yummy',growthMult:1.0,happiness:19,health:-4},
-  // Healthy Foods - Can be rejected, 1.3x growth (sorted by cost)
-  {emoji:'🥒',name:'Pickles',cost:1,cat:'healthy',acceptRate:15,growthMult:1.3,happiness:10,happinessPenalty:25,health:20},
-  {emoji:'🥫',name:'Canned Peas',cost:1,cat:'healthy',acceptRate:18,growthMult:1.3,happiness:10,happinessPenalty:25,health:20},
-  {emoji:'🫛',name:'Lima Beans',cost:1,cat:'healthy',acceptRate:8,growthMult:1.3,happiness:10,happinessPenalty:25,health:20},
-  {emoji:'🍄',name:'Mushrooms',cost:2,cat:'healthy',acceptRate:10,growthMult:1.3,happiness:10,happinessPenalty:25,health:20},
-  {emoji:'🧄',name:'Garlic',cost:2,cat:'healthy',acceptRate:5,growthMult:1.3,happiness:10,happinessPenalty:25,health:20},
-  {emoji:'🧅',name:'Onions',cost:2,cat:'healthy',acceptRate:8,growthMult:1.3,happiness:10,happinessPenalty:25,health:20},
-  {emoji:'🍃',name:'Spinach',cost:2,cat:'healthy',acceptRate:10,growthMult:1.3,happiness:10,happinessPenalty:25,health:20},
-  {emoji:'🦗',name:'Crickets',cost:2,cat:'healthy',acceptRate:8,growthMult:1.3,happiness:10,happinessPenalty:25,health:20},
-  {emoji:'🥚',name:'Hard Boiled Egg',cost:3,cat:'healthy',acceptRate:12,growthMult:1.3,happiness:10,happinessPenalty:25,health:20},
-  {emoji:'🪱',name:'Fried Worms',cost:3,cat:'healthy',acceptRate:10,growthMult:1.3,happiness:10,happinessPenalty:25,health:20},
-  {emoji:'🫘',name:'Brussels Sprouts',cost:5,cat:'healthy',acceptRate:10,growthMult:1.3,happiness:10,happinessPenalty:20,health:20},
-  {emoji:'🥩',name:'Liver',cost:5,cat:'healthy',acceptRate:5,growthMult:1.3,happiness:10,happinessPenalty:20,health:20},
-  {emoji:'🥣',name:'Plain Oatmeal',cost:5,cat:'healthy',acceptRate:25,growthMult:1.3,happiness:10,happinessPenalty:20,health:20},
-  {emoji:'🥬',name:'Kale',cost:5,cat:'healthy',acceptRate:15,growthMult:1.3,happiness:10,happinessPenalty:20,health:20},
-  {emoji:'🥚',name:'Century Egg',cost:5,cat:'healthy',acceptRate:5,growthMult:1.3,happiness:10,happinessPenalty:25,health:20},
-  {emoji:'🐟',name:'Anchovies',cost:8,cat:'healthy',acceptRate:15,growthMult:1.3,happiness:10,happinessPenalty:20,health:20},
-  {emoji:'🍬',name:'Black Licorice',cost:8,cat:'healthy',acceptRate:20,growthMult:1.3,happiness:10,happinessPenalty:20,health:20},
-  {emoji:'🫑',name:'Green Pepper',cost:8,cat:'healthy',acceptRate:30,growthMult:1.3,happiness:10,happinessPenalty:20,health:20},
-  {emoji:'🐸',name:'Frog Legs',cost:8,cat:'healthy',acceptRate:12,growthMult:1.3,happiness:10,happinessPenalty:20,health:20},
-  {emoji:'🧀',name:'Cottage Cheese',cost:10,cat:'healthy',acceptRate:20,growthMult:1.3,happiness:10,happinessPenalty:20,health:20},
-  {emoji:'🦪',name:'Raw Oysters',cost:10,cat:'healthy',acceptRate:18,growthMult:1.3,happiness:10,happinessPenalty:20,health:20},
-  {emoji:'🦑',name:'Octopus',cost:12,cat:'healthy',acceptRate:15,growthMult:1.3,happiness:10,happinessPenalty:20,health:20},
-  {emoji:'🐙',name:'Squid Ink Pasta',cost:14,cat:'healthy',acceptRate:22,growthMult:1.3,happiness:10,happinessPenalty:20,health:20},
-  {emoji:'🥦',name:'Broccoli',cost:15,cat:'healthy',acceptRate:40,growthMult:1.3,happiness:10,happinessPenalty:15,health:20},
-  {emoji:'🥕',name:'Carrot',cost:15,cat:'healthy',acceptRate:60,growthMult:1.3,happiness:10,happinessPenalty:15,health:20},
-  {emoji:'🥗',name:'Salad',cost:15,cat:'healthy',acceptRate:30,growthMult:1.3,happiness:10,happinessPenalty:15,health:20},
-  {emoji:'🐌',name:'Escargot',cost:15,cat:'healthy',acceptRate:20,growthMult:1.3,happiness:10,happinessPenalty:20,health:20},
-  {emoji:'🍎',name:'Apple',cost:20,cat:'healthy',acceptRate:80,growthMult:1.3,happiness:10,happinessPenalty:15,health:20},
-  {emoji:'🍌',name:'Banana',cost:20,cat:'healthy',acceptRate:70,growthMult:1.3,happiness:10,happinessPenalty:15,health:20},
-  {emoji:'🍇',name:'Grapes',cost:20,cat:'healthy',acceptRate:75,growthMult:1.3,happiness:10,happinessPenalty:15,health:20},
-  // Premium Foods - Always accepted, 2x growth (sorted by cost)
-  {emoji:'🍱',name:'Bento Box',cost:50,cat:'premium',growthMult:2.0,happiness:30,health:25},
-  {emoji:'🥩',name:'Steak',cost:60,cat:'premium',growthMult:2.0,happiness:30,health:25},
-  {emoji:'🦞',name:'Lobster',cost:75,cat:'premium',growthMult:2.0,happiness:30,health:25},
-  {emoji:'🎂',name:'Birthday Cake',cost:100,cat:'premium',growthMult:2.0,happiness:30,health:25},
+  // Yummy Foods - Always accepted, high happiness but may reduce health (sorted by cost)
+  {emoji:'🧃',name:'Juice Box',cost:10,cat:'yummy',happiness:18,health:-4},
+  {emoji:'🟩',name:'Jello',cost:12,cat:'yummy',happiness:14,health:-1},
+  {emoji:'🍭',name:'Lollipop',cost:12,cat:'yummy',happiness:20,health:-5},
+  {emoji:'🥤',name:'Soda',cost:15,cat:'yummy',happiness:22,health:-8},
+  {emoji:'🍧',name:'Popsicle',cost:15,cat:'yummy',happiness:16,health:-2},
+  {emoji:'🍬',name:'Gummy Bears',cost:15,cat:'yummy',happiness:23,health:-6},
+  {emoji:'🍬',name:'Fruit Snacks',cost:18,cat:'yummy',happiness:16,health:-4},
+  {emoji:'🍡',name:'Cotton Candy',cost:18,cat:'yummy',happiness:24,health:-7},
+  {emoji:'🥣',name:'Cereal',cost:20,cat:'yummy',happiness:15,health:1},
+  {emoji:'🍮',name:'Pudding',cost:20,cat:'yummy',happiness:16,health:-2},
+  {emoji:'🍫',name:'Candy Bar',cost:20,cat:'yummy',happiness:25,health:-5},
+  {emoji:'🥜',name:'PB&J Sandwich',cost:22,cat:'yummy',happiness:16,health:2},
+  {emoji:'🍪',name:'Sugar Cookies',cost:22,cat:'yummy',happiness:24,health:-6},
+  {emoji:'🥔',name:'Tater Tots',cost:24,cat:'yummy',happiness:16,health:-3},
+  {emoji:'🍪',name:'Cookie',cost:25,cat:'yummy',happiness:15,health:0},
+  {emoji:'🍟',name:'Fries',cost:25,cat:'yummy',happiness:16,health:-3},
+  {emoji:'🍿',name:'Popcorn',cost:25,cat:'yummy',happiness:15,health:2},
+  {emoji:'🌭',name:'Hot Dog',cost:25,cat:'yummy',happiness:16,health:-2},
+  {emoji:'⚡',name:'Energy Drink',cost:25,cat:'yummy',happiness:25,health:-10},
+  {emoji:'🥪',name:'Grilled Cheese',cost:26,cat:'yummy',happiness:16,health:2},
+  {emoji:'🐟',name:'Fish Sticks',cost:26,cat:'yummy',happiness:15,health:0},
+  {emoji:'🧀',name:'Mac & Cheese',cost:28,cat:'yummy',happiness:18,health:2},
+  {emoji:'🌭',name:'Corn Dog',cost:28,cat:'yummy',happiness:17,health:-3},
+  {emoji:'🍕',name:'Pizza',cost:30,cat:'yummy',happiness:16,health:3},
+  {emoji:'🌮',name:'Taco',cost:30,cat:'yummy',happiness:16,health:5},
+  {emoji:'🫓',name:'Quesadilla',cost:30,cat:'yummy',happiness:17,health:3},
+  {emoji:'🍗',name:'Chicken Nuggets',cost:30,cat:'yummy',happiness:19,health:-2},
+  {emoji:'🌮',name:'Nachos',cost:30,cat:'yummy',happiness:18,health:-2},
+  {emoji:'🍩',name:'Donut',cost:30,cat:'yummy',happiness:18,health:-4},
+  {emoji:'🧁',name:'Cupcake',cost:30,cat:'yummy',happiness:18,health:-4},
+  {emoji:'🍫',name:'Chocolate',cost:30,cat:'yummy',happiness:18,health:-3},
+  {emoji:'🍞',name:'French Toast',cost:32,cat:'yummy',happiness:17,health:0},
+  {emoji:'🍝',name:'Spaghetti',cost:32,cat:'yummy',happiness:17,health:3},
+  {emoji:'🧀',name:'Mozzarella Sticks',cost:32,cat:'yummy',happiness:18,health:-3},
+  {emoji:'🍔',name:'Hamburger',cost:35,cat:'yummy',happiness:17,health:3},
+  {emoji:'🥞',name:'Pancakes',cost:35,cat:'yummy',happiness:16,health:0},
+  {emoji:'🧇',name:'Waffle',cost:35,cat:'yummy',happiness:17,health:0},
+  {emoji:'🍦',name:'Ice Cream',cost:35,cat:'yummy',happiness:19,health:-3},
+  {emoji:'🥤',name:'Boba Drink',cost:35,cat:'yummy',happiness:18,health:-3},
+  {emoji:'🍣',name:'Sushi',cost:40,cat:'yummy',happiness:18,health:8},
+  {emoji:'🍰',name:'Cake',cost:40,cat:'yummy',happiness:19,health:-4},
+  // Healthy Foods - Can be rejected, great for health but may hurt happiness (sorted by cost)
+  {emoji:'🥒',name:'Pickles',cost:1,cat:'healthy',acceptRate:15,happiness:10,happinessPenalty:25,health:20},
+  {emoji:'🥫',name:'Canned Peas',cost:1,cat:'healthy',acceptRate:18,happiness:10,happinessPenalty:25,health:20},
+  {emoji:'🫛',name:'Lima Beans',cost:1,cat:'healthy',acceptRate:8,happiness:10,happinessPenalty:25,health:20},
+  {emoji:'🍄',name:'Mushrooms',cost:2,cat:'healthy',acceptRate:10,happiness:10,happinessPenalty:25,health:20},
+  {emoji:'🧄',name:'Garlic',cost:2,cat:'healthy',acceptRate:5,happiness:10,happinessPenalty:25,health:20},
+  {emoji:'🧅',name:'Onions',cost:2,cat:'healthy',acceptRate:8,happiness:10,happinessPenalty:25,health:20},
+  {emoji:'🍃',name:'Spinach',cost:2,cat:'healthy',acceptRate:10,happiness:10,happinessPenalty:25,health:20},
+  {emoji:'🦗',name:'Crickets',cost:2,cat:'healthy',acceptRate:8,happiness:10,happinessPenalty:25,health:20},
+  {emoji:'🥚',name:'Hard Boiled Egg',cost:3,cat:'healthy',acceptRate:12,happiness:10,happinessPenalty:25,health:20},
+  {emoji:'🪱',name:'Fried Worms',cost:3,cat:'healthy',acceptRate:10,happiness:10,happinessPenalty:25,health:20},
+  {emoji:'🫘',name:'Brussels Sprouts',cost:5,cat:'healthy',acceptRate:10,happiness:10,happinessPenalty:20,health:20},
+  {emoji:'🥩',name:'Liver',cost:5,cat:'healthy',acceptRate:5,happiness:10,happinessPenalty:20,health:20},
+  {emoji:'🥣',name:'Plain Oatmeal',cost:5,cat:'healthy',acceptRate:25,happiness:10,happinessPenalty:20,health:20},
+  {emoji:'🥬',name:'Kale',cost:5,cat:'healthy',acceptRate:15,happiness:10,happinessPenalty:20,health:20},
+  {emoji:'🥚',name:'Century Egg',cost:5,cat:'healthy',acceptRate:5,happiness:10,happinessPenalty:25,health:20},
+  {emoji:'🐟',name:'Anchovies',cost:8,cat:'healthy',acceptRate:15,happiness:10,happinessPenalty:20,health:20},
+  {emoji:'🍬',name:'Black Licorice',cost:8,cat:'healthy',acceptRate:20,happiness:10,happinessPenalty:20,health:20},
+  {emoji:'🫑',name:'Green Pepper',cost:8,cat:'healthy',acceptRate:30,happiness:10,happinessPenalty:20,health:20},
+  {emoji:'🐸',name:'Frog Legs',cost:8,cat:'healthy',acceptRate:12,happiness:10,happinessPenalty:20,health:20},
+  {emoji:'🧀',name:'Cottage Cheese',cost:10,cat:'healthy',acceptRate:20,happiness:10,happinessPenalty:20,health:20},
+  {emoji:'🦪',name:'Raw Oysters',cost:10,cat:'healthy',acceptRate:18,happiness:10,happinessPenalty:20,health:20},
+  {emoji:'🦑',name:'Octopus',cost:12,cat:'healthy',acceptRate:15,happiness:10,happinessPenalty:20,health:20},
+  {emoji:'🐙',name:'Squid Ink Pasta',cost:14,cat:'healthy',acceptRate:22,happiness:10,happinessPenalty:20,health:20},
+  {emoji:'🥦',name:'Broccoli',cost:15,cat:'healthy',acceptRate:40,happiness:10,happinessPenalty:15,health:20},
+  {emoji:'🥕',name:'Carrot',cost:15,cat:'healthy',acceptRate:60,happiness:10,happinessPenalty:15,health:20},
+  {emoji:'🥗',name:'Salad',cost:15,cat:'healthy',acceptRate:30,happiness:10,happinessPenalty:15,health:20},
+  {emoji:'🐌',name:'Escargot',cost:15,cat:'healthy',acceptRate:20,happiness:10,happinessPenalty:20,health:20},
+  {emoji:'🍎',name:'Apple',cost:20,cat:'healthy',acceptRate:80,happiness:10,happinessPenalty:15,health:20},
+  {emoji:'🍌',name:'Banana',cost:20,cat:'healthy',acceptRate:70,happiness:10,happinessPenalty:15,health:20},
+  {emoji:'🍇',name:'Grapes',cost:20,cat:'healthy',acceptRate:75,happiness:10,happinessPenalty:15,health:20},
+  // Premium Foods - Always accepted, excellent happiness AND health (sorted by cost)
+  {emoji:'🍱',name:'Bento Box',cost:50,cat:'premium',happiness:30,health:25},
+  {emoji:'🥩',name:'Steak',cost:60,cat:'premium',happiness:30,health:25},
+  {emoji:'🦞',name:'Lobster',cost:75,cat:'premium',happiness:30,health:25},
+  {emoji:'🎂',name:'Birthday Cake',cost:100,cat:'premium',happiness:30,health:25},
 ];
 
 const ACCESSORIES=[
@@ -1439,6 +1440,21 @@ const SCRIPTURE_PACKS={
       {book:'D&C',chapter:82,verse:10,ref:'D&C 82:10',text:'I, the Lord, am bound when ye do what I say; but when ye do not what I say, ye have no promise.',tags:['Obedience','Faith']},
       {book:'D&C',chapter:88,verse:63,ref:'D&C 88:63',text:'Draw near unto me and I will draw near unto you; seek me diligently and ye shall find me; ask, and ye shall receive; knock, and it shall be opened unto you.',tags:['Prayer','Faith','Jesus Christ']},
       {book:'D&C',chapter:121,verse:45,ref:'D&C 121:45-46',text:'Let thy bowels also be full of charity towards all men, and to the household of faith, and let virtue garnish thy thoughts unceasingly; then shall thy confidence wax strong in the presence of God.',tags:['Charity','Love','Virtue']},
+    ]
+  },
+  'pearl-great-price':{
+    id:'pearl-great-price',
+    name:'Pearl of Great Price',
+    description:'Selections from the Pearl of Great Price',
+    icon:'💎',
+    verses:[
+      {book:'Moses',chapter:1,verse:39,ref:'Moses 1:39',text:'For behold, this is my work and my glory—to bring to pass the immortality and eternal life of man.',tags:['Faith','Hope']},
+      {book:'Moses',chapter:7,verse:18,ref:'Moses 7:18',text:'And the Lord called his people Zion, because they were of one heart and one mind, and dwelt in righteousness; and there was no poor among them.',tags:['Charity','Love']},
+      {book:'Abraham',chapter:3,verse:22,ref:'Abraham 3:22-23',text:'Now the Lord had shown unto me, Abraham, the intelligences that were organized before the world was; and among all these there were many of the noble and great ones.',tags:['Faith','Wisdom']},
+      {book:'Abraham',chapter:3,verse:25,ref:'Abraham 3:25',text:'And we will prove them herewith, to see if they will do all things whatsoever the Lord their God shall command them.',tags:['Obedience','Trials']},
+      {book:'Joseph Smith—Matthew',chapter:1,verse:37,ref:'JS—Matthew 1:37',text:'And whoso treasureth up my word, shall not be deceived.',tags:['Faith','Wisdom']},
+      {book:'Joseph Smith—History',chapter:1,verse:17,ref:'JS—History 1:17',text:'I saw a pillar of light exactly over my head, above the brightness of the sun, which descended gradually until it fell upon me.',tags:['Faith','Prayer']},
+      {book:'Joseph Smith—History',chapter:1,verse:19,ref:'JS—History 1:19',text:'I was answered that I must join none of them, for they were all wrong.',tags:['Faith','Wisdom']},
     ]
   },
   'articles-of-faith':{
@@ -1685,13 +1701,14 @@ const COLLECTIONS={
   // LDS
   'Book of Mormon':{books:['1 Nephi','2 Nephi','Jacob','Enos','Jarom','Omni','Words of Mormon','Mosiah','Alma','Helaman','3 Nephi','4 Nephi','Mormon','Ether','Moroni'],downloadable:true,packId:'book-of-mormon'},
   'Doctrine and Covenants':{books:['D&C'],downloadable:true,packId:'doctrine-covenants'},
+  'Pearl of Great Price':{books:['Moses','Abraham','Joseph Smith—Matthew','Joseph Smith—History'],downloadable:true,packId:'pearl-great-price'},
   'Articles of Faith':{books:['Articles of Faith'],isSpecial:true,downloadable:true,packId:'articles-of-faith'},
   'LDS Leader Quotes':{books:['LDS Quotes'],isSpecial:true,downloadable:true,packId:'lds-quotes'},
   // Judaism
-  'Torah & Tanakh':{books:['Torah'],isSpecial:true,downloadable:true,packId:'torah'},
+  'Torah & Tanakh':{books:['Genesis','Exodus','Leviticus','Numbers','Deuteronomy','Joshua','Judges','Ruth','1 Samuel','2 Samuel','1 Kings','2 Kings','1 Chronicles','2 Chronicles','Ezra','Nehemiah','Esther','Job','Psalms','Proverbs','Ecclesiastes','Song of Solomon','Isaiah','Jeremiah','Lamentations','Ezekiel','Daniel','Hosea','Joel','Amos','Obadiah','Jonah','Micah','Nahum','Habakkuk','Zephaniah','Haggai','Zechariah','Malachi','Torah'],downloadable:true,packId:'torah'},
   'Jewish Wisdom':{books:['Jewish Wisdom'],isSpecial:true,downloadable:true,packId:'jewish-wisdom'},
   // Islam
-  'Quran':{books:['Quran'],isSpecial:true,downloadable:true,packId:'quran'},
+  'Quran':{books:['Al-Faatiha','Al-Baqara','Aal-i-Imraan','An-Nisaa','Al-Maaida','Al-Anaam','Al-Araaf','Al-Anfaal','At-Tawba','Yunus','Hud','Yusuf','Ar-Rad','Ibrahim','Al-Hijr','An-Nahl','Al-Israa','Al-Kahf','Maryam','Taa-Haa','Al-Anbiyaa','Al-Hajj','Al-Muminoon','An-Noor','Al-Furqaan','Ash-Shuaraa','An-Naml','Al-Qasas','Al-Ankaboot','Ar-Room','Luqman','As-Sajda','Al-Ahzaab','Saba','Faatir','Yaseen','As-Saaffaat','Saad','Az-Zumar','Ghafir','Fussilat','Ash-Shura','Az-Zukhruf','Ad-Dukhaan','Al-Jaathiya','Al-Ahqaf','Muhammad','Al-Fath','Al-Hujuraat','Qaaf','Adh-Dhaariyat','At-Tur','An-Najm','Al-Qamar','Ar-Rahmaan','Al-Waaqia','Al-Hadid','Al-Mujaadila','Al-Hashr','Al-Mumtahana','As-Saff','Al-Jumua','Al-Munaafiqoon','At-Taghaabun','At-Talaaq','At-Tahrim','Al-Mulk','Al-Qalam','Al-Haaqqa','Al-Maarij','Nooh','Al-Jinn','Al-Muzzammil','Al-Muddaththir','Al-Qiyaama','Al-Insaan','Al-Mursalaat','An-Naba','An-Naaziat','Abasa','At-Takwir','Al-Infitaar','Al-Mutaffifin','Al-Inshiqaaq','Al-Burooj','At-Taariq','Al-Alaa','Al-Ghaashiya','Al-Fajr','Al-Balad','Ash-Shams','Al-Lail','Ad-Dhuhaa','Ash-Sharh','At-Tin','Al-Alaq','Al-Qadr','Al-Bayyina','Az-Zalzala','Al-Aadiyaat','Al-Qaaria','At-Takaathur','Al-Asr','Al-Humaza','Al-Fil','Quraish','Al-Maaun','Al-Kawthar','Al-Kaafiroon','An-Nasr','Al-Masad','Al-Ikhlaas','Al-Falaq','An-Naas','Quran'],downloadable:true,packId:'quran'},
   'Hadith':{books:['Hadith'],isSpecial:true,downloadable:true,packId:'hadith'},
   // Buddhism
   'Buddhist Teachings':{books:['Buddhist'],isSpecial:true,downloadable:true,packId:'buddhist-sutras'},
@@ -1769,7 +1786,7 @@ function deleteCollection(collectionName){
   }
 
   // Also remove the corresponding pack from downloadedPacks
-  const packIdMap={'Old Testament':'old-testament','New Testament':'new-testament','Book of Mormon':'book-of-mormon','Doctrine and Covenants':'doctrine-covenants'};
+  const packIdMap={'Old Testament':'old-testament','New Testament':'new-testament','Book of Mormon':'book-of-mormon','Doctrine and Covenants':'doctrine-covenants','Pearl of Great Price':'pearl-great-price','Torah & Tanakh':'torah','Quran':'quran'};
   const packId=packIdMap[collectionName];
   if(packId){
     let downloadedPacks=JSON.parse(localStorage.getItem('downloadedPacks')||'[]');
@@ -1897,22 +1914,58 @@ function skipOnboarding(){
   render();
 }
 
-// Get all library verses including downloaded packs
+// Get all library verses including downloaded packs and full library downloads
 function getAllLibraryVerses(){
   let verses=[...LIBRARY.curated];
+
+  // Include full library downloads (Old Testament, New Testament, Book of Mormon, etc.)
+  if(LIBRARY.downloaded&&LIBRARY.downloaded.length>0){
+    verses=[...verses,...LIBRARY.downloaded];
+  }
+
   const downloadedPacks=JSON.parse(localStorage.getItem('downloadedPacks')||'[]');
+
+  // Track which collections have full downloads to avoid duplicates
+  const collectionsWithFullDownload=new Set();
+  for(const [collName,storageKey] of Object.entries(COLLECTION_STORAGE_KEYS)){
+    if(localStorage.getItem(storageKey)){
+      collectionsWithFullDownload.add(collName);
+    }
+  }
+
+  // Track which book names are already in the library from full downloads
+  const booksInLibrary=new Set(verses.map(v=>v.book||v.b));
 
   for(const packId of downloadedPacks){
     const pack=SCRIPTURE_PACKS[packId];
     if(pack){
+      // Skip pack verses if we already have verses from those books (from full library download)
+      // This prevents duplicates when e.g. Pearl of Great Price download includes Articles of Faith
       if(pack.verses){
-        verses=[...verses,...pack.verses];
+        const packBooks=[...new Set(pack.verses.map(v=>v.book))];
+        const alreadyHaveBooks=packBooks.some(b=>booksInLibrary.has(b));
+        if(!alreadyHaveBooks){
+          verses=[...verses,...pack.verses];
+          packBooks.forEach(b=>booksInLibrary.add(b));
+        }
       }
       if(pack.quotes){
         // Convert quotes to verse format for display
+        // Map packId to the correct book name for each collection
+        const packToBook={
+          'lds-quotes':'LDS Quotes',
+          'jewish-wisdom':'Jewish Wisdom',
+          'hadith':'Hadith',
+          'buddhist-sutras':'Buddhist',
+          'hindu-wisdom':'Hindu Wisdom',
+          'guru-granth':'Sikh',
+          'catholic-prayers':'Catholic',
+          'christian-classics':'Christian Classics'
+        };
+        const bookName=packToBook[packId]||'Quotes';
         for(const q of pack.quotes){
           verses.push({
-            book:'LDS Quotes',
+            book:bookName,
             chapter:1,
             verse:1,
             ref:q.ref,
@@ -1933,10 +1986,52 @@ function getBookOrder(bookName){
 }
 
 function getBookCollection(bookName){
+  // First, try to find a downloaded collection that contains this book
+  // This handles cases where books overlap (e.g., Genesis is in both Old Testament and Torah & Tanakh)
+  const downloadedPacks=JSON.parse(localStorage.getItem('downloadedPacks')||'[]');
+
   for(const [collectionName,collectionData] of Object.entries(COLLECTIONS)){
-    if(collectionData.books.includes(bookName))return collectionName;
+    if(collectionData.books&&collectionData.books.includes(bookName)){
+      // Check if this collection has a full library download
+      const storageKey=COLLECTION_STORAGE_KEYS[collectionName];
+      if(storageKey&&localStorage.getItem(storageKey)){
+        return collectionName;
+      }
+      // Check if this collection's pack is downloaded
+      if(collectionData.packId&&downloadedPacks.includes(collectionData.packId)){
+        return collectionName;
+      }
+    }
+  }
+  // Fallback: return first matching collection
+  for(const [collectionName,collectionData] of Object.entries(COLLECTIONS)){
+    if(collectionData.books&&collectionData.books.includes(bookName))return collectionName;
   }
   return null;
+}
+
+// Extract book name from verse reference (e.g., "John 3:16" -> "John", "1 Corinthians 13:4" -> "1 Corinthians")
+function getBookFromRef(ref){
+  if(!ref)return null;
+  // Match everything before the last number:number pattern
+  const match=ref.match(/^(.+?)\s+\d+:\d+/);
+  return match?match[1].trim():null;
+}
+
+// Count practiced verses per collection
+function getPracticedCountsByCollection(){
+  const counts={};
+  S.verses.forEach(v=>{
+    const bookName=getBookFromRef(v.ref);
+    if(bookName){
+      const coll=getBookCollection(bookName);
+      if(coll){
+        if(!counts[coll])counts[coll]=0;
+        counts[coll]++;
+      }
+    }
+  });
+  return counts;
 }
 
 function getBuddyEmoji(){
@@ -4013,22 +4108,59 @@ function renderBaby(categoryKey){
       </div>
     `,
     dragons:`
-      <div style="position:relative;width:115px;height:124px;display:inline-block;animation:bounce-slow 1.8s ease-in-out infinite;">
-        <!-- Round dragon body -->
-        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:79px;height:79px;background:radial-gradient(ellipse at 35% 30%,#fca5a5 0%,#ef4444 45%,#b91c1c 100%);border-radius:50%;box-shadow:inset 7px 7px 16px rgba(254,202,202,0.5),inset -5px -5px 13px rgba(153,27,27,0.4),0 0 25px rgba(239,68,68,0.3);">
-          <div style="position:absolute;width:23px;height:16px;background:rgba(255,255,255,0.35);border-radius:50%;top:13px;left:13px;filter:blur(3px);"></div>
+      <div style="position:relative;width:105px;height:115px;display:inline-block;animation:bounce-slow 2s ease-in-out infinite;">
+        <!-- Heavy smoke/steam rising -->
+        <div style="position:absolute;width:10px;height:22px;background:linear-gradient(to top,rgba(168,85,247,0.5),rgba(139,92,246,0.3),transparent);border-radius:50%;top:-22px;left:38%;filter:blur(3px);animation:egg-float 1.8s ease-in-out infinite;"></div>
+        <div style="position:absolute;width:8px;height:18px;background:linear-gradient(to top,rgba(236,72,153,0.45),rgba(244,114,182,0.25),transparent);border-radius:50%;top:-18px;right:32%;filter:blur(2.5px);animation:egg-float 2.2s ease-in-out infinite 0.3s;"></div>
+        <div style="position:absolute;width:7px;height:16px;background:linear-gradient(to top,rgba(251,146,60,0.5),rgba(251,191,36,0.3),transparent);border-radius:50%;top:-16px;left:50%;filter:blur(2px);animation:egg-float 2s ease-in-out infinite 0.6s;"></div>
+        <div style="position:absolute;width:6px;height:14px;background:linear-gradient(to top,rgba(239,68,68,0.4),rgba(248,113,113,0.2),transparent);border-radius:50%;top:-14px;left:28%;filter:blur(2px);animation:egg-float 2.5s ease-in-out infinite 0.9s;"></div>
+        <div style="position:absolute;width:5px;height:12px;background:linear-gradient(to top,rgba(168,85,247,0.35),transparent);border-radius:50%;top:-12px;right:25%;filter:blur(2px);animation:egg-float 2.8s ease-in-out infinite 1.2s;"></div>
+        <!-- Flame/ember sparks -->
+        <div style="position:absolute;width:6px;height:6px;background:#fbbf24;border-radius:50%;top:-20px;left:45%;box-shadow:0 0 8px #f59e0b,0 0 16px rgba(251,146,60,0.6);animation:sparkle-twinkle 1s ease-in-out infinite;"></div>
+        <div style="position:absolute;width:5px;height:5px;background:#fb923c;border-radius:50%;top:-15px;right:28%;box-shadow:0 0 6px #ea580c,0 0 12px rgba(234,88,12,0.5);animation:sparkle-twinkle 1.3s ease-in-out infinite 0.2s;"></div>
+        <div style="position:absolute;width:4px;height:4px;background:#f87171;border-radius:50%;top:-12px;left:32%;box-shadow:0 0 5px #ef4444;animation:sparkle-twinkle 1.6s ease-in-out infinite 0.5s;"></div>
+        <div style="position:absolute;width:4px;height:4px;background:#fde68a;border-radius:50%;top:-8px;right:40%;box-shadow:0 0 4px #fbbf24;animation:sparkle-twinkle 1.8s ease-in-out infinite 0.8s;"></div>
+        <div style="position:absolute;width:3px;height:3px;background:#c4b5fd;border-radius:50%;top:-5px;left:55%;box-shadow:0 0 4px #a855f7;animation:sparkle-twinkle 2s ease-in-out infinite 1s;"></div>
+        <!-- Warm glow aura -->
+        <div style="position:absolute;width:100px;height:100px;top:8px;left:2px;background:radial-gradient(circle,rgba(251,146,60,0.15),rgba(236,72,153,0.1),transparent 55%);border-radius:50%;animation:pulse-grow 2.5s ease-in-out infinite;"></div>
+        <!-- Dragon wings (cute but defined) -->
+        <div style="position:absolute;left:-8px;top:35px;width:22px;height:32px;background:linear-gradient(135deg,rgba(244,114,182,0.9),rgba(219,39,119,0.75));border-radius:60% 10% 60% 20%;animation:bl-arm-wiggle 1s ease-in-out infinite;box-shadow:inset 3px 3px 6px rgba(255,255,255,0.4),0 2px 4px rgba(0,0,0,0.1);border:2px solid rgba(190,24,93,0.5);"></div>
+        <div style="position:absolute;right:-8px;top:35px;width:22px;height:32px;background:linear-gradient(225deg,rgba(244,114,182,0.9),rgba(219,39,119,0.75));border-radius:10% 60% 20% 60%;animation:bl-arm-wiggle 1s ease-in-out infinite;box-shadow:inset -3px 3px 6px rgba(255,255,255,0.4),0 2px 4px rgba(0,0,0,0.1);border:2px solid rgba(190,24,93,0.5);"></div>
+        <!-- Dragon body (slightly elongated, more evolved than blob) -->
+        <div style="position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);width:72px;height:78px;background:radial-gradient(ellipse at 38% 32%,#f9a8d4 0%,#ec4899 45%,#db2777 100%);border-radius:48% 48% 45% 45%;box-shadow:inset 6px 6px 14px rgba(251,207,232,0.5),inset -4px -4px 10px rgba(157,23,77,0.3),0 4px 8px rgba(0,0,0,0.15);">
+          <!-- Scale pattern overlay -->
+          <div style="position:absolute;width:100%;height:100%;background:repeating-conic-gradient(from 0deg at 50% 50%,transparent 0deg,rgba(190,24,93,0.08) 8deg,transparent 16deg);border-radius:48% 48% 45% 45%;"></div>
+          <!-- Individual scales -->
+          <div style="position:absolute;width:8px;height:5px;background:rgba(190,24,93,0.18);border-radius:50%;top:55%;left:22%;transform:rotate(-10deg);"></div>
+          <div style="position:absolute;width:7px;height:4px;background:rgba(190,24,93,0.15);border-radius:50%;top:62%;right:25%;transform:rotate(15deg);"></div>
+          <div style="position:absolute;width:6px;height:4px;background:rgba(190,24,93,0.12);border-radius:50%;top:48%;left:65%;"></div>
+          <div style="position:absolute;width:6px;height:3px;background:rgba(190,24,93,0.1);border-radius:50%;top:70%;left:45%;"></div>
+          <!-- Belly glow -->
+          <div style="position:absolute;width:38px;height:32px;background:radial-gradient(ellipse,rgba(253,242,248,0.6),rgba(252,231,243,0.3));border-radius:50%;bottom:8px;left:50%;transform:translateX(-50%);"></div>
         </div>
-        <!-- Tiny horn nubs -->
-        <div style="position:absolute;left:28%;top:22%;width:10px;height:13px;background:radial-gradient(ellipse,#a16207,#78350f);border-radius:50% 50% 0 0;box-shadow:inset 2px 2px 3px rgba(255,255,255,0.3);"></div>
-        <div style="position:absolute;right:28%;top:22%;width:10px;height:13px;background:radial-gradient(ellipse,#a16207,#78350f);border-radius:50% 50% 0 0;box-shadow:inset 2px 2px 3px rgba(255,255,255,0.3);"></div>
-        <!-- Big cute eyes (but fierce!) -->
-        <div style="position:absolute;left:50%;top:48%;transform:translateX(-50%);display:flex;gap:16px;">
-          <div style="width:18px;height:18px;background:radial-gradient(circle at 35% 35%,#fef08a,#fbbf24);border-radius:50%;border:3px solid #1a1a1a;animation:blink 3s infinite;box-shadow:0 0 7px rgba(251,191,36,0.5);"></div>
-          <div style="width:18px;height:18px;background:radial-gradient(circle at 35% 35%,#fef08a,#fbbf24);border-radius:50%;border:3px solid #1a1a1a;animation:blink 3s infinite;box-shadow:0 0 7px rgba(251,191,36,0.5);"></div>
+        <!-- Dragon head (slightly more defined) -->
+        <div style="position:absolute;left:50%;top:18px;transform:translateX(-50%);width:52px;height:48px;background:radial-gradient(circle at 35% 30%,#f472b6,#ec4899,#db2777);border-radius:50% 50% 45% 45%;box-shadow:inset 4px 4px 10px rgba(251,207,232,0.5);">
+          <!-- Head scales -->
+          <div style="position:absolute;width:5px;height:3px;background:rgba(190,24,93,0.15);border-radius:50%;top:60%;left:18%;"></div>
+          <div style="position:absolute;width:5px;height:3px;background:rgba(190,24,93,0.15);border-radius:50%;top:60%;right:18%;"></div>
         </div>
-        <!-- Tiny wing nubs -->
-        <div style="position:absolute;left:8px;top:50%;transform:translateY(-50%);width:13px;height:16px;background:radial-gradient(ellipse at 40% 40%,#f87171,#dc2626);border-radius:50% 0 0 50%;animation:wiggle 2s ease-in-out infinite;box-shadow:inset 2px 2px 5px rgba(254,202,202,0.4);"></div>
-        <div style="position:absolute;right:8px;top:50%;transform:translateY(-50%);width:13px;height:16px;background:radial-gradient(ellipse at 60% 40%,#f87171,#dc2626);border-radius:0 50% 50% 0;animation:wiggle 2s ease-in-out infinite;box-shadow:inset -2px 2px 5px rgba(254,202,202,0.4);"></div>
+        <!-- Tiny ear nubs (cute, not horns) -->
+        <div style="position:absolute;left:28px;top:12px;width:10px;height:10px;background:radial-gradient(circle,#f9a8d4,#f472b6);border-radius:50%;border:2px solid rgba(190,24,93,0.4);"></div>
+        <div style="position:absolute;right:28px;top:12px;width:10px;height:10px;background:radial-gradient(circle,#f9a8d4,#f472b6);border-radius:50%;border:2px solid rgba(190,24,93,0.4);"></div>
+        <!-- Big cute eyes -->
+        <div style="position:absolute;left:50%;top:28px;transform:translateX(-50%);display:flex;gap:14px;">
+          <div class="dr-eye" style="width:16px;height:16px;background:radial-gradient(circle at 30% 30%,#374151,#000);border-radius:50%;animation:blink 4s infinite;"><div style="position:absolute;width:5px;height:5px;background:white;border-radius:50%;top:3px;left:3px;"></div></div>
+          <div class="dr-eye" style="width:16px;height:16px;background:radial-gradient(circle at 30% 30%,#374151,#000);border-radius:50%;animation:blink 4s infinite;"><div style="position:absolute;width:5px;height:5px;background:white;border-radius:50%;top:3px;left:3px;"></div></div>
+        </div>
+        <!-- Cute snout -->
+        <div style="position:absolute;left:50%;top:46px;transform:translateX(-50%);width:10px;height:7px;background:radial-gradient(ellipse,#be185d,#9d174d);border-radius:50%;"></div>
+        <!-- Little smile -->
+        <div style="position:absolute;left:50%;top:52px;transform:translateX(-50%);width:14px;height:5px;border-bottom:2px solid #9d174d;border-radius:0 0 50% 50%;"></div>
+        <!-- Small dragon legs/feet -->
+        <div style="position:absolute;left:22px;bottom:2px;width:14px;height:16px;background:radial-gradient(ellipse,#f472b6,#ec4899);border-radius:40% 40% 50% 50%;box-shadow:inset 2px 2px 4px rgba(255,255,255,0.3);"></div>
+        <div style="position:absolute;right:22px;bottom:2px;width:14px;height:16px;background:radial-gradient(ellipse,#f472b6,#ec4899);border-radius:40% 40% 50% 50%;box-shadow:inset 2px 2px 4px rgba(255,255,255,0.3);"></div>
+        <!-- Tiny tail -->
+        <div style="position:absolute;left:50%;bottom:8px;transform:translateX(-50%);width:16px;height:12px;background:linear-gradient(to bottom,#ec4899,#db2777);border-radius:50%;"></div>
       </div>
     `,
     insects:`
@@ -4400,73 +4532,106 @@ function renderTeen(categoryKey, variantIndex, level = 1){
     dragons:{
       0:`
         <div style="position:relative;width:168px;height:180px;display:inline-block;animation:bounce-slow 1.5s ease-in-out infinite;">
-          <!-- Small dragon body (crimson) -->
-          <div style="position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);width:96px;height:91px;background:radial-gradient(ellipse at 35% 30%,rgba(220,20,60,1),rgba(178,34,34,0.9));border-radius:48%;box-shadow:inset 9px 9px 20px rgba(255,80,100,0.5),inset -6px -6px 14px rgba(140,20,40,0.3);"></div>
-          <!-- Head/snout (darker red) -->
-          <div style="position:absolute;left:50%;top:28%;transform:translateX(-50%);width:67px;height:62px;background:radial-gradient(circle at 35% 30%,rgba(178,34,34,1),rgba(139,0,0,0.9));border-radius:50%;box-shadow:inset 6px 6px 14px rgba(220,60,80,0.5);"></div>
-          <!-- Small horns (gold) -->
-          <div style="position:absolute;left:32%;top:18%;width:12px;height:22px;background:linear-gradient(to top,rgba(255,215,0,0.9),rgba(218,165,32,0.8));border-radius:50% 50% 0 0;"></div>
-          <div style="position:absolute;right:32%;top:18%;width:12px;height:22px;background:linear-gradient(to top,rgba(255,215,0,0.9),rgba(218,165,32,0.8));border-radius:50% 50% 0 0;"></div>
-          <!-- Eyes (yellow/orange) -->
-          <div style="position:absolute;left:50%;top:28%;transform:translateX(-50%);display:flex;gap:15px;">
-            <div style="width:17px;height:17px;background:rgba(255,140,0,1);border:3px solid black;border-radius:50%;animation:blink 3s infinite;"></div>
-            <div style="width:17px;height:17px;background:rgba(255,140,0,1);border:3px solid black;border-radius:50%;animation:blink 3s infinite;"></div>
+          <!-- Smoke wisps -->
+          <div style="position:absolute;width:8px;height:16px;background:linear-gradient(to top,rgba(52,211,153,0.4),transparent);border-radius:50%;top:-10px;left:40%;filter:blur(2px);animation:egg-float 2s ease-in-out infinite;"></div>
+          <div style="position:absolute;width:6px;height:12px;background:linear-gradient(to top,rgba(16,185,129,0.35),transparent);border-radius:50%;top:-5px;right:35%;filter:blur(2px);animation:egg-float 2.5s ease-in-out infinite 0.4s;"></div>
+          <!-- Sparkles -->
+          <div style="position:absolute;width:6px;height:6px;background:#fde68a;border-radius:50%;top:-8px;left:50%;box-shadow:0 0 6px #fbbf24;animation:sparkle-twinkle 1.5s ease-in-out infinite;"></div>
+          <div style="position:absolute;width:5px;height:5px;background:#a7f3d0;border-radius:50%;top:0;right:25%;box-shadow:0 0 5px #34d399;animation:sparkle-twinkle 2s ease-in-out infinite 0.5s;"></div>
+          <!-- Dragon wings (behind body) -->
+          <div style="position:absolute;left:8px;top:42%;width:28px;height:42px;background:linear-gradient(135deg,rgba(244,114,182,0.9),rgba(219,39,119,0.7));border-radius:50% 10% 50% 10%;animation:bl-arm-wiggle 1.5s ease-in-out infinite;box-shadow:inset 3px 3px 8px rgba(255,255,255,0.5);border:2px solid rgba(190,24,93,0.4);"></div>
+          <div style="position:absolute;right:8px;top:42%;width:28px;height:42px;background:linear-gradient(225deg,rgba(244,114,182,0.9),rgba(219,39,119,0.7));border-radius:10% 50% 10% 50%;animation:bl-arm-wiggle 1.5s ease-in-out infinite;box-shadow:inset -3px 3px 8px rgba(255,255,255,0.5);border:2px solid rgba(190,24,93,0.4);"></div>
+          <!-- Dragon body (pink/magenta) -->
+          <div style="position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);width:96px;height:91px;background:radial-gradient(ellipse at 35% 30%,#f9a8d4 0%,#ec4899 50%,#db2777 100%);border-radius:48%;box-shadow:inset 9px 9px 20px rgba(251,207,232,0.5),inset -6px -6px 14px rgba(157,23,77,0.3);"></div>
+          <!-- Head -->
+          <div style="position:absolute;left:50%;top:28%;transform:translateX(-50%);width:67px;height:62px;background:radial-gradient(circle at 35% 30%,#f472b6,#ec4899);border-radius:50%;box-shadow:inset 6px 6px 14px rgba(251,207,232,0.5);">
+            <div style="position:absolute;width:20px;height:14px;background:rgba(255,255,255,0.35);border-radius:50%;top:10px;left:12px;filter:blur(3px);"></div>
           </div>
-          <!-- Wing nubs (maroon) -->
-          <div style="position:absolute;left:10px;top:48%;width:24px;height:34px;background:radial-gradient(ellipse,rgba(128,0,0,0.85),rgba(100,0,0,0.7));border-radius:50% 0 0 50%;"></div>
-          <div style="position:absolute;right:10px;top:48%;width:24px;height:34px;background:radial-gradient(ellipse,rgba(128,0,0,0.85),rgba(100,0,0,0.7));border-radius:0 50% 50% 0;"></div>
-          <!-- Belly scales (orange) -->
-          <div style="position:absolute;left:50%;bottom:22%;transform:translateX(-50%);width:48px;height:38px;background:radial-gradient(ellipse,rgba(255,140,0,0.6),rgba(255,100,0,0.4));border-radius:50%;"></div>
+          <!-- Cute rounded ears -->
+          <div style="position:absolute;left:30%;top:20%;width:14px;height:14px;background:radial-gradient(circle,#f9a8d4,#f472b6);border-radius:50%;border:2px solid rgba(190,24,93,0.5);"></div>
+          <div style="position:absolute;right:30%;top:20%;width:14px;height:14px;background:radial-gradient(circle,#f9a8d4,#f472b6);border-radius:50%;border:2px solid rgba(190,24,93,0.5);"></div>
+          <!-- Big cute eyes -->
+          <div style="position:absolute;left:50%;top:30%;transform:translateX(-50%);display:flex;gap:18px;">
+            <div class="dr-eye" style="width:18px;height:18px;background:radial-gradient(circle at 30% 30%,#374151,#000);border-radius:50%;animation:blink 4s infinite;"><div style="position:absolute;width:6px;height:6px;background:white;border-radius:50%;top:3px;left:4px;"></div></div>
+            <div class="dr-eye" style="width:18px;height:18px;background:radial-gradient(circle at 30% 30%,#374151,#000);border-radius:50%;animation:blink 4s infinite;"><div style="position:absolute;width:6px;height:6px;background:white;border-radius:50%;top:3px;left:4px;"></div></div>
+          </div>
+          <!-- Cute snout -->
+          <div style="position:absolute;left:50%;top:48%;transform:translateX(-50%);width:14px;height:10px;background:radial-gradient(ellipse,#be185d,#9d174d);border-radius:50%;"></div>
+          <!-- Smile -->
+          <div style="position:absolute;left:50%;top:54%;transform:translateX(-50%);width:20px;height:8px;border-bottom:2px solid #9d174d;border-radius:0 0 50% 50%;"></div>
+          <!-- Belly -->
+          <div style="position:absolute;left:50%;bottom:26%;transform:translateX(-50%);width:50px;height:40px;background:radial-gradient(ellipse,rgba(253,242,248,0.6),rgba(252,231,243,0.4));border-radius:50%;"></div>
         </div>
       `,
       1:`
         <div style="position:relative;width:176px;height:187px;display:inline-block;animation:bounce-slow 1.3s ease-in-out infinite;">
-          <!-- Medium dragon body (purple/violet) -->
-          <div style="position:absolute;left:50%;top:54%;transform:translate(-50%,-50%);width:106px;height:101px;background:radial-gradient(ellipse at 35% 30%,rgba(138,43,226,1),rgba(106,13,173,0.9));border-radius:50%;box-shadow:inset 10px 10px 22px rgba(180,80,255,0.5),inset -7px -7px 16px rgba(80,10,140,0.3);"></div>
-          <!-- Head (dark purple) -->
-          <div style="position:absolute;left:50%;top:26%;transform:translateX(-50%);width:75px;height:70px;background:radial-gradient(circle at 35% 30%,rgba(75,0,130,1),rgba(60,0,100,0.9));border-radius:52%;box-shadow:inset 6px 6px 14px rgba(110,30,170,0.5);"></div>
-          <!-- Horns (silver) -->
-          <div style="position:absolute;left:30%;top:14%;width:13px;height:26px;background:linear-gradient(to top,rgba(192,192,192,0.95),rgba(169,169,169,0.85));border-radius:50% 50% 0 0;"></div>
-          <div style="position:absolute;right:30%;top:14%;width:13px;height:26px;background:linear-gradient(to top,rgba(192,192,192,0.95),rgba(169,169,169,0.85));border-radius:50% 50% 0 0;"></div>
-          <!-- Eyes (glowing green) -->
-          <div style="position:absolute;left:50%;top:26%;transform:translateX(-50%);display:flex;gap:18px;">
-            <div style="width:18px;height:18px;background:rgba(0,255,0,1);border:4px solid rgba(0,100,0,0.8);border-radius:50%;animation:blink 3s infinite;box-shadow:0 0 12px rgba(0,255,0,0.6);"></div>
-            <div style="width:18px;height:18px;background:rgba(0,255,0,1);border:4px solid rgba(0,100,0,0.8);border-radius:50%;animation:blink 3s infinite;box-shadow:0 0 12px rgba(0,255,0,0.6);"></div>
+          <!-- Smoke wisps -->
+          <div style="position:absolute;width:9px;height:18px;background:linear-gradient(to top,rgba(147,197,253,0.4),transparent);border-radius:50%;top:-12px;left:42%;filter:blur(2px);animation:egg-float 2s ease-in-out infinite;"></div>
+          <div style="position:absolute;width:7px;height:14px;background:linear-gradient(to top,rgba(59,130,246,0.35),transparent);border-radius:50%;top:-8px;right:32%;filter:blur(2px);animation:egg-float 2.5s ease-in-out infinite 0.4s;"></div>
+          <!-- Sparkles -->
+          <div style="position:absolute;width:7px;height:7px;background:#fde68a;border-radius:50%;top:-10px;left:48%;box-shadow:0 0 8px #fbbf24;animation:sparkle-twinkle 1.5s ease-in-out infinite;"></div>
+          <div style="position:absolute;width:5px;height:5px;background:#bfdbfe;border-radius:50%;top:-2px;right:22%;box-shadow:0 0 5px #60a5fa;animation:sparkle-twinkle 2s ease-in-out infinite 0.5s;"></div>
+          <div style="position:absolute;width:4px;height:4px;background:#c4b5fd;border-radius:50%;top:5px;left:15%;box-shadow:0 0 4px #a78bfa;animation:sparkle-twinkle 2.5s ease-in-out infinite 0.8s;"></div>
+          <!-- Growing wings (pink gradient) -->
+          <div style="position:absolute;left:4px;top:46%;width:34px;height:50px;background:linear-gradient(135deg,rgba(244,114,182,0.95),rgba(219,39,119,0.8));border-radius:50% 10% 50% 10%;animation:bl-arm-wiggle 1.3s ease-in-out infinite;box-shadow:inset 3px 3px 10px rgba(255,255,255,0.5);border:2px solid rgba(190,24,93,0.4);"></div>
+          <div style="position:absolute;right:4px;top:46%;width:34px;height:50px;background:linear-gradient(225deg,rgba(244,114,182,0.95),rgba(219,39,119,0.8));border-radius:10% 50% 10% 50%;animation:bl-arm-wiggle 1.3s ease-in-out infinite;box-shadow:inset -3px 3px 10px rgba(255,255,255,0.5);border:2px solid rgba(190,24,93,0.4);"></div>
+          <!-- Dragon body (sky blue) -->
+          <div style="position:absolute;left:50%;top:54%;transform:translate(-50%,-50%);width:106px;height:101px;background:radial-gradient(ellipse at 35% 30%,#93c5fd 0%,#60a5fa 50%,#3b82f6 100%);border-radius:50%;box-shadow:inset 10px 10px 22px rgba(191,219,254,0.5),inset -7px -7px 16px rgba(29,78,216,0.3);"></div>
+          <!-- Head -->
+          <div style="position:absolute;left:50%;top:26%;transform:translateX(-50%);width:75px;height:70px;background:radial-gradient(circle at 35% 30%,#60a5fa,#3b82f6);border-radius:52%;box-shadow:inset 6px 6px 14px rgba(191,219,254,0.5);">
+            <div style="position:absolute;width:22px;height:16px;background:rgba(255,255,255,0.35);border-radius:50%;top:12px;left:14px;filter:blur(3px);"></div>
           </div>
-          <!-- Developing wings (indigo) -->
-          <div style="position:absolute;left:4px;top:50%;transform:translateY(-50%);width:31px;height:44px;background:linear-gradient(135deg,rgba(75,0,130,0.9),rgba(50,0,90,0.7));border-radius:50% 0 0 50%;clip-path:polygon(0 0,100% 20%,100% 80%,0 100%);"></div>
-          <div style="position:absolute;right:4px;top:50%;transform:translateY(-50%);width:31px;height:44px;background:linear-gradient(225deg,rgba(75,0,130,0.9),rgba(50,0,90,0.7));border-radius:0 50% 50% 0;clip-path:polygon(0 20%,100% 0,100% 100%,0 80%);"></div>
-          <!-- Belly (magenta) -->
-          <div style="position:absolute;left:50%;bottom:20%;transform:translateX(-50%);width:53px;height:44px;background:radial-gradient(ellipse,rgba(255,0,255,0.5),rgba(200,0,200,0.35));border-radius:50%;"></div>
-          <!-- Tail start (purple gradient) -->
-          <div style="position:absolute;left:50%;bottom:22px;transform:translateX(-50%);width:26px;height:22px;background:linear-gradient(to bottom,rgba(106,13,173,0.8),rgba(80,0,120,0.6));border-radius:50%;"></div>
+          <!-- Cute rounded ears -->
+          <div style="position:absolute;left:28%;top:16%;width:16px;height:16px;background:radial-gradient(circle,#93c5fd,#60a5fa);border-radius:50%;border:2px solid rgba(37,99,235,0.5);"></div>
+          <div style="position:absolute;right:28%;top:16%;width:16px;height:16px;background:radial-gradient(circle,#93c5fd,#60a5fa);border-radius:50%;border:2px solid rgba(37,99,235,0.5);"></div>
+          <!-- Big cute eyes -->
+          <div style="position:absolute;left:50%;top:28%;transform:translateX(-50%);display:flex;gap:20px;">
+            <div class="dr-eye" style="width:20px;height:20px;background:radial-gradient(circle at 30% 30%,#374151,#000);border-radius:50%;animation:blink 4s infinite;"><div style="position:absolute;width:7px;height:7px;background:white;border-radius:50%;top:4px;left:4px;"></div></div>
+            <div class="dr-eye" style="width:20px;height:20px;background:radial-gradient(circle at 30% 30%,#374151,#000);border-radius:50%;animation:blink 4s infinite;"><div style="position:absolute;width:7px;height:7px;background:white;border-radius:50%;top:4px;left:4px;"></div></div>
+          </div>
+          <!-- Snout -->
+          <div style="position:absolute;left:50%;top:46%;transform:translateX(-50%);width:16px;height:12px;background:radial-gradient(ellipse,#2563eb,#1d4ed8);border-radius:50%;"></div>
+          <!-- Smile -->
+          <div style="position:absolute;left:50%;top:53%;transform:translateX(-50%);width:22px;height:8px;border-bottom:2px solid #1d4ed8;border-radius:0 0 50% 50%;"></div>
+          <!-- Belly -->
+          <div style="position:absolute;left:50%;bottom:24%;transform:translateX(-50%);width:55px;height:46px;background:radial-gradient(ellipse,rgba(239,246,255,0.6),rgba(219,234,254,0.4));border-radius:50%;"></div>
         </div>
       `,
       2:`
         <div style="position:relative;width:185px;height:196px;display:inline-block;animation:bounce-slow 1.1s ease-in-out infinite;">
-          <!-- Large dragon body (black/charcoal) -->
-          <div style="position:absolute;left:50%;top:56%;transform:translate(-50%,-50%);width:111px;height:107px;background:radial-gradient(ellipse at 35% 30%,rgba(40,40,45,1),rgba(25,25,30,0.95));border-radius:52%;box-shadow:inset 10px 10px 22px rgba(70,70,75,0.5),inset -7px -7px 16px rgba(15,15,20,0.3);"></div>
-          <!-- Head (dark gray) -->
-          <div style="position:absolute;left:50%;top:24%;transform:translateX(-50%);width:78px;height:74px;background:radial-gradient(circle at 35% 30%,rgba(60,60,65,1),rgba(45,45,50,0.95));border-radius:54%;box-shadow:inset 6px 6px 14px rgba(90,90,95,0.5);"></div>
-          <!-- Large horns (obsidian with red tips) -->
-          <div style="position:absolute;left:28%;top:10%;width:14px;height:33px;background:linear-gradient(to top,rgba(50,50,55,0.95),rgba(139,0,0,0.9));border-radius:50% 50% 0 0;"></div>
-          <div style="position:absolute;right:28%;top:10%;width:14px;height:33px;background:linear-gradient(to top,rgba(50,50,55,0.95),rgba(139,0,0,0.9));border-radius:50% 50% 0 0;"></div>
-          <!-- Eyes (fiery red/orange) -->
-          <div style="position:absolute;left:50%;top:24%;transform:translateX(-50%);display:flex;gap:19px;">
-            <div style="width:19px;height:19px;background:radial-gradient(circle,rgba(255,69,0,1),rgba(255,0,0,0.9));border:4px solid rgba(139,0,0,0.9);border-radius:50%;animation:blink 3s infinite;box-shadow:0 0 16px rgba(255,69,0,0.7);"></div>
-            <div style="width:19px;height:19px;background:radial-gradient(circle,rgba(255,69,0,1),rgba(255,0,0,0.9));border:4px solid rgba(139,0,0,0.9);border-radius:50%;animation:blink 3s infinite;box-shadow:0 0 16px rgba(255,69,0,0.7);"></div>
+          <!-- Smoke wisps -->
+          <div style="position:absolute;width:10px;height:20px;background:linear-gradient(to top,rgba(168,85,247,0.4),transparent);border-radius:50%;top:-15px;left:40%;filter:blur(2px);animation:egg-float 2s ease-in-out infinite;"></div>
+          <div style="position:absolute;width:8px;height:16px;background:linear-gradient(to top,rgba(139,92,246,0.35),transparent);border-radius:50%;top:-10px;right:30%;filter:blur(2px);animation:egg-float 2.5s ease-in-out infinite 0.4s;"></div>
+          <div style="position:absolute;width:6px;height:12px;background:linear-gradient(to top,rgba(236,72,153,0.3),transparent);border-radius:50%;top:-5px;left:55%;filter:blur(1.5px);animation:egg-float 3s ease-in-out infinite 0.8s;"></div>
+          <!-- Sparkles -->
+          <div style="position:absolute;width:8px;height:8px;background:#fde68a;border-radius:50%;top:-12px;left:50%;box-shadow:0 0 8px #fbbf24,0 0 16px rgba(251,191,36,0.5);animation:sparkle-twinkle 1.3s ease-in-out infinite;"></div>
+          <div style="position:absolute;width:6px;height:6px;background:#e9d5ff;border-radius:50%;top:-5px;right:20%;box-shadow:0 0 6px #a855f7;animation:sparkle-twinkle 1.8s ease-in-out infinite 0.3s;"></div>
+          <div style="position:absolute;width:5px;height:5px;background:#f9a8d4;border-radius:50%;top:2px;left:12%;box-shadow:0 0 5px #ec4899;animation:sparkle-twinkle 2.2s ease-in-out infinite 0.7s;"></div>
+          <!-- Majestic wings (pink/magenta) -->
+          <div style="position:absolute;left:0px;top:44%;width:40px;height:60px;background:linear-gradient(135deg,rgba(244,114,182,0.95),rgba(219,39,119,0.8));border-radius:50% 10% 50% 10%;animation:bl-arm-wiggle 1.2s ease-in-out infinite;box-shadow:inset 4px 4px 12px rgba(255,255,255,0.5);border:2px solid rgba(190,24,93,0.4);"></div>
+          <div style="position:absolute;right:0px;top:44%;width:40px;height:60px;background:linear-gradient(225deg,rgba(244,114,182,0.95),rgba(219,39,119,0.8));border-radius:10% 50% 10% 50%;animation:bl-arm-wiggle 1.2s ease-in-out infinite;box-shadow:inset -4px 4px 12px rgba(255,255,255,0.5);border:2px solid rgba(190,24,93,0.4);"></div>
+          <!-- Dragon body (purple/lavender) -->
+          <div style="position:absolute;left:50%;top:56%;transform:translate(-50%,-50%);width:111px;height:107px;background:radial-gradient(ellipse at 35% 30%,#c4b5fd 0%,#a78bfa 50%,#8b5cf6 100%);border-radius:52%;box-shadow:inset 10px 10px 22px rgba(221,214,254,0.5),inset -7px -7px 16px rgba(91,33,182,0.3);"></div>
+          <!-- Head -->
+          <div style="position:absolute;left:50%;top:24%;transform:translateX(-50%);width:78px;height:74px;background:radial-gradient(circle at 35% 30%,#a78bfa,#8b5cf6);border-radius:54%;box-shadow:inset 6px 6px 14px rgba(221,214,254,0.5);">
+            <div style="position:absolute;width:24px;height:18px;background:rgba(255,255,255,0.35);border-radius:50%;top:12px;left:14px;filter:blur(3px);"></div>
           </div>
-          <!-- Developed wings (red-tipped black) -->
-          <div style="position:absolute;left:-4px;top:52%;transform:translateY(-50%);width:37px;height:54px;background:linear-gradient(135deg,rgba(139,0,0,0.95),rgba(40,40,45,0.85));border-radius:50% 0 0 50%;clip-path:polygon(0 0,100% 15%,100% 85%,0 100%);box-shadow:inset 4px 0 8px rgba(0,0,0,0.3);"></div>
-          <div style="position:absolute;right:-4px;top:52%;transform:translateY(-50%);width:37px;height:54px;background:linear-gradient(225deg,rgba(139,0,0,0.95),rgba(40,40,45,0.85));border-radius:0 50% 50% 0;clip-path:polygon(0 15%,100% 0,100% 100%,0 85%);box-shadow:inset -4px 0 8px rgba(0,0,0,0.3);"></div>
-          <!-- Belly scales (crimson) -->
-          <div style="position:absolute;left:50%;bottom:18%;transform:translateX(-50%);width:58px;height:49px;background:radial-gradient(ellipse,rgba(220,20,60,0.7),rgba(178,34,34,0.5));border-radius:50%;"></div>
-          <!-- Tail (black with red spikes) -->
-          <div style="position:absolute;left:50%;bottom:17px;transform:translateX(-50%);width:33px;height:29px;background:linear-gradient(to bottom,rgba(40,40,45,0.9),rgba(139,0,0,0.7));border-radius:50%;"></div>
-          <!-- Spikes on back (red) -->
-          <div style="position:absolute;left:36%;top:38%;width:10px;height:21px;background:rgba(220,20,60,0.8);clip-path:polygon(50% 0,0 100%,100% 100%);"></div>
-          <div style="position:absolute;left:50%;top:36%;transform:translateX(-50%);width:10px;height:25px;background:rgba(220,20,60,0.8);clip-path:polygon(50% 0,0 100%,100% 100%);"></div>
-          <div style="position:absolute;right:36%;top:38%;width:10px;height:21px;background:rgba(220,20,60,0.8);clip-path:polygon(50% 0,0 100%,100% 100%);"></div>
+          <!-- Cute ears -->
+          <div style="position:absolute;left:26%;top:12%;width:18px;height:18px;background:radial-gradient(circle,#c4b5fd,#a78bfa);border-radius:50%;border:2px solid rgba(109,40,217,0.5);"></div>
+          <div style="position:absolute;right:26%;top:12%;width:18px;height:18px;background:radial-gradient(circle,#c4b5fd,#a78bfa);border-radius:50%;border:2px solid rgba(109,40,217,0.5);"></div>
+          <!-- Big cute eyes -->
+          <div style="position:absolute;left:50%;top:26%;transform:translateX(-50%);display:flex;gap:22px;">
+            <div class="dr-eye" style="width:22px;height:22px;background:radial-gradient(circle at 30% 30%,#374151,#000);border-radius:50%;animation:blink 4s infinite;"><div style="position:absolute;width:8px;height:8px;background:white;border-radius:50%;top:4px;left:5px;"></div></div>
+            <div class="dr-eye" style="width:22px;height:22px;background:radial-gradient(circle at 30% 30%,#374151,#000);border-radius:50%;animation:blink 4s infinite;"><div style="position:absolute;width:8px;height:8px;background:white;border-radius:50%;top:4px;left:5px;"></div></div>
+          </div>
+          <!-- Snout -->
+          <div style="position:absolute;left:50%;top:44%;transform:translateX(-50%);width:18px;height:14px;background:radial-gradient(ellipse,#7c3aed,#6d28d9);border-radius:50%;"></div>
+          <!-- Smile -->
+          <div style="position:absolute;left:50%;top:52%;transform:translateX(-50%);width:26px;height:10px;border-bottom:2px solid #6d28d9;border-radius:0 0 50% 50%;"></div>
+          <!-- Belly -->
+          <div style="position:absolute;left:50%;bottom:20%;transform:translateX(-50%);width:60px;height:52px;background:radial-gradient(ellipse,rgba(245,243,255,0.6),rgba(237,233,254,0.4));border-radius:50%;"></div>
+          <!-- Small tail -->
+          <div style="position:absolute;left:50%;bottom:15px;transform:translateX(-50%);width:30px;height:25px;background:linear-gradient(to bottom,#a78bfa,#8b5cf6);border-radius:50%;"></div>
         </div>
       `
     },
@@ -6147,8 +6312,8 @@ function getBuddyColors(category, level = 1) {
       accent: '#fef3c7'   // Light yellow
     },
     dragons: {
-      main: '#fee2e2',    // Light red
-      dark: '#ef4444',    // Red
+      main: '#d1fae5',    // Light teal/mint
+      dark: '#10b981',    // Emerald
       accent: '#fbbf24'   // Gold
     },
     aquatic: {
@@ -7307,26 +7472,7 @@ function feedBuddy(foodItem){
   // Deduct XP cost
   S.xp-=cost;
 
-  // Calculate growth value with food multiplier AND health multiplier
-  // Use growthBase if provided (for pre-bought food), otherwise use cost
-  const growthBase=foodItem.growthBase??cost;
-  const foodMult=foodItem.growthMult||1.0;
-  const healthMult=getHealthGrowthMultiplier();
-  const growthValue=Math.round(growthBase*foodMult*healthMult);
-
-  // Check for milestone confetti (only for non-egg, non-adult stages)
-  if(S.buddyStage!=='egg'&&S.buddyStage!=='adult'){
-    const stageData=STAGES[S.buddyStage];
-    const oldGrowth=S.growthXP||0;
-    const oldPct=oldGrowth/stageData.growthNeeded*100;
-    S.growthXP=oldGrowth+growthValue;
-    const newPct=S.growthXP/stageData.growthNeeded*100;
-    checkMilestone(oldPct,newPct);
-  }else{
-    S.growthXP=(S.growthXP||0)+growthValue;
-  }
-
-  // Apply health and happiness changes (keep between 0-100)
+  // Food only affects happiness and health - growth comes from scripture practice only
   S.health=Math.max(0,Math.min(100,S.health+(foodItem.health||0)));
   S.happiness=Math.max(0,Math.min(100,S.happiness+(foodItem.happiness||0)));
   S.lastFed=new Date().toISOString();
@@ -7486,7 +7632,9 @@ const COLLECTION_STORAGE_KEYS={
   'New Testament':'lib-nt',
   'Book of Mormon':'lib-bom',
   'Doctrine and Covenants':'lib-dc',
-  'Pearl of Great Price':'lib-pogp'
+  'Pearl of Great Price':'lib-pogp',
+  'Quran':'lib-quran',
+  'Torah & Tanakh':'lib-torah'
 };
 
 const COLLECTION_URLS={
@@ -7494,7 +7642,9 @@ const COLLECTION_URLS={
   'New Testament':'https://raw.githubusercontent.com/bcbooks/scriptures-json/master/new-testament.json',
   'Book of Mormon':'https://raw.githubusercontent.com/bcbooks/scriptures-json/master/book-of-mormon.json',
   'Doctrine and Covenants':'https://raw.githubusercontent.com/bcbooks/scriptures-json/master/doctrine-and-covenants.json',
-  'Pearl of Great Price':'https://raw.githubusercontent.com/bcbooks/scriptures-json/master/pearl-of-great-price.json'
+  'Pearl of Great Price':'https://raw.githubusercontent.com/bcbooks/scriptures-json/master/pearl-of-great-price.json',
+  'Quran':'https://api.alquran.cloud/v1/quran/en.yusufali',
+  'Torah & Tanakh':'https://bolls.life/static/translations/YLT.json'
 };
 
 // Map onboarding pack IDs to collection names for full download
@@ -7503,7 +7653,9 @@ const PACK_TO_COLLECTION={
   'new-testament':'New Testament',
   'book-of-mormon':'Book of Mormon',
   'doctrine-covenants':'Doctrine and Covenants',
-  'pearl-great-price':'Pearl of Great Price'
+  'pearl-great-price':'Pearl of Great Price',
+  'quran':'Quran',
+  'torah':'Torah & Tanakh'
 };
 
 // Check which collections are downloaded
@@ -7566,8 +7718,9 @@ const downloadCollection=async(collectionName)=>{
     const data=await response.json();
     const verses=[];
 
-    // Process the JSON structure
+    // Process the JSON structure - handle different formats
     if(data.books){
+      // Standard format: books > chapters > verses (OT, NT, BoM)
       data.books.forEach(book=>{
         if(book.chapters){
           book.chapters.forEach(chapter=>{
@@ -7583,6 +7736,48 @@ const downloadCollection=async(collectionName)=>{
             }
           });
         }
+      });
+    }else if(data.sections){
+      // D&C format: sections > verses (no chapters)
+      data.sections.forEach(section=>{
+        if(section.verses){
+          section.verses.forEach(verse=>{
+            verses.push({
+              b:'D&C',
+              c:section.section,
+              v:verse.verse,
+              t:verse.text
+            });
+          });
+        }
+      });
+    }else if(data.data&&data.data.surahs){
+      // Quran format from AlQuran.cloud API: data.surahs[].ayahs[]
+      data.data.surahs.forEach(surah=>{
+        const surahName=surah.englishName||('Surah '+surah.number);
+        surah.ayahs.forEach(ayah=>{
+          verses.push({
+            b:surahName,
+            c:surah.number,
+            v:ayah.numberInSurah,
+            t:ayah.text
+          });
+        });
+      });
+    }else if(Array.isArray(data)){
+      // Bolls Bible API format: flat array with book_id, chapter, verse, text
+      // Book ID mapping for Torah/Tanakh (first 39 books = Old Testament)
+      const torahBooks={1:'Genesis',2:'Exodus',3:'Leviticus',4:'Numbers',5:'Deuteronomy',6:'Joshua',7:'Judges',8:'Ruth',9:'1 Samuel',10:'2 Samuel',11:'1 Kings',12:'2 Kings',13:'1 Chronicles',14:'2 Chronicles',15:'Ezra',16:'Nehemiah',17:'Esther',18:'Job',19:'Psalms',20:'Proverbs',21:'Ecclesiastes',22:'Song of Solomon',23:'Isaiah',24:'Jeremiah',25:'Lamentations',26:'Ezekiel',27:'Daniel',28:'Hosea',29:'Joel',30:'Amos',31:'Obadiah',32:'Jonah',33:'Micah',34:'Nahum',35:'Habakkuk',36:'Zephaniah',37:'Haggai',38:'Zechariah',39:'Malachi'};
+      data.forEach(v=>{
+        // Only include Torah/Tanakh books (1-39) for Torah collection
+        if(collectionName==='Torah & Tanakh'&&v.book>39)return;
+        const bookName=torahBooks[v.book]||('Book '+v.book);
+        verses.push({
+          b:bookName,
+          c:v.chapter,
+          v:v.verse,
+          t:v.text
+        });
       });
     }
 
@@ -9137,9 +9332,12 @@ function render(){
         }
       });
 
+      // Get practiced counts per collection
+      const practicedCounts=getPracticedCountsByCollection();
+
       // Bible collections (always shown) and downloadable collections
       const bibleCollections=['Old Testament','New Testament'];
-      const downloadableCollections=['Book of Mormon','Doctrine and Covenants','Articles of Faith','LDS Leader Quotes'];
+      const downloadableCollections=Object.keys(COLLECTIONS).filter(name=>COLLECTIONS[name].packId);
 
       // Get which packs are downloaded
       const downloadedPackIds=JSON.parse(localStorage.getItem('downloadedPacks')||'[]');
@@ -9194,85 +9392,119 @@ function render(){
             }).join('');
           })()}
         `:`
-          <!-- Bible Collections -->
-          <p class="text-white/80 text-sm mb-3">Bible:</p>
-          ${bibleCollections.map(collName=>{
-            const collData=COLLECTIONS[collName];
-            const count=collectionStats[collName]||0;
-            const hasDownload=localStorage.getItem(COLLECTION_STORAGE_KEYS[collName]);
-            const needsDownload=!hasDownload&&COLLECTION_URLS[collName];
-            const statusText=hasDownload?' ✓ Full Library':needsDownload?' (curated only)':'';
-            return`<div class="w-full bg-white rounded-2xl p-4 mb-3">
-              <div class="flex justify-between items-center gap-3">
-                <button onclick="libraryView.collection='${collName.replace(/'/g,"\\'")}';render()" class="flex-1 text-left min-w-0">
-                  <p class="font-bold text-purple-800">${collName}</p>
-                  <p class="text-xs ${hasDownload?'text-green-600':'text-purple-600'} mt-1">${count} verses${statusText}</p>
-                </button>
-                ${needsDownload?`<button onclick="downloadCollection('${collName}')" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-xs font-bold px-3 py-2 rounded-xl">⬇️ Full</button>`:''}
-                ${hasDownload?`<button onclick="deleteCollection('${collName}')" class="text-red-400 hover:text-red-600 p-2" title="Delete collection">🗑️</button>`:''}
-                <span class="text-2xl">📖</span>
-              </div>
-            </div>`;
-          }).join('')}
-
-          <!-- Downloaded Scripture Packs -->
-          ${downloadedPackIds.length>0?`
-            <p class="text-white/80 text-sm mb-3 mt-6">Downloaded Packs:</p>
-            ${downloadableCollections.filter(collName=>{
-              const collData=COLLECTIONS[collName];
-              return collData&&collData.packId&&isPackDownloaded(collData.packId);
-            }).map(collName=>{
-              const collData=COLLECTIONS[collName];
-              const pack=SCRIPTURE_PACKS[collData.packId];
-              const count=collectionStats[collName]||0;
-              const hasExternalDownload=localStorage.getItem(COLLECTION_STORAGE_KEYS[collName]);
-              const needsDownload=!hasExternalDownload&&COLLECTION_URLS[collName];
-              const statusText=hasExternalDownload?' ✓ Full Library':needsDownload?' (curated only)':'';
-              return`<div class="w-full bg-white rounded-2xl p-4 mb-3">
-                <div class="flex justify-between items-center gap-3">
-                  <button onclick="libraryView.collection='${collName.replace(/'/g,"\\'")}';render()" class="flex-1 text-left min-w-0">
-                    <p class="font-bold text-purple-800">${collName}</p>
-                    <p class="text-xs ${hasExternalDownload?'text-green-600':'text-purple-600'} mt-1">${count} verses${statusText}</p>
-                  </button>
-                  ${needsDownload?`<button onclick="downloadCollection('${collName}')" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-xs font-bold px-3 py-2 rounded-xl">⬇️ Full</button>`:''}
-                  ${hasExternalDownload?`<button onclick="deleteCollection('${collName}')" class="text-red-400 hover:text-red-600 p-2" title="Delete">🗑️</button>`:''}
-                  <span class="text-2xl">${pack?pack.icon:'📚'}</span>
-                </div>
-              </div>`;
-            }).join('')}
-          `:''}
-
-          <!-- Get More Scripture Packs -->
+          <!-- Your Scripture Library -->
+          <p class="text-white/80 text-sm mb-3">Your Scripture Library:</p>
           ${(()=>{
-            const packCategories={
-              'Latter-day Saints':['book-of-mormon','doctrine-covenants','articles-of-faith','lds-quotes'],
-              'Judaism':['torah','jewish-wisdom'],
-              'Islam':['quran','hadith'],
-              'Buddhism':['buddhist-sutras'],
-              'Hinduism':['bhagavad-gita','hindu-wisdom'],
-              'Sikhism':['guru-granth'],
-              'Christian':['catholic-prayers','christian-classics']
-            };
+            // Build list of all available collections
             let html='';
-            for(const [category,packIds] of Object.entries(packCategories)){
-              const availablePacks=packIds.filter(id=>!isPackDownloaded(id)&&SCRIPTURE_PACKS[id]);
-              if(availablePacks.length>0){
-                html+=`<p class="text-white/80 text-sm mb-2 mt-4">${category}:</p>`;
-                html+=availablePacks.map(id=>{
+
+            // 1. Bible collections (always available - have curated verses)
+            ['Old Testament','New Testament'].forEach(collName=>{
+              const count=collectionStats[collName]||0;
+              const practiced=practicedCounts[collName]||0;
+              const hasFullDownload=localStorage.getItem(COLLECTION_STORAGE_KEYS[collName]);
+              const canDownloadFull=COLLECTION_URLS[collName]&&!hasFullDownload;
+              const status=hasFullDownload?'✓ Full':'curated';
+              html+='<div class="w-full bg-white rounded-2xl p-4 mb-3"><div class="flex justify-between items-center gap-3"><button onclick="libraryView.collection=\''+collName+'\';render()" class="flex-1 text-left min-w-0"><p class="font-bold text-purple-800">📖 '+collName+'</p><p class="text-xs text-purple-600 mt-1"><span class="text-green-600">'+practiced+' practiced</span> / '+count+' verses <span class="'+(hasFullDownload?'text-green-600':'text-orange-500')+'">('+status+')</span></p></button>'+(canDownloadFull?'<button onclick="downloadCollection(\''+collName+'\')" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-xs font-bold px-3 py-2 rounded-xl">⬇️ Full</button>':'')+(hasFullDownload?'<button onclick="deleteCollection(\''+collName+'\')" class="text-red-400 hover:text-red-600 p-2">🗑️</button>':'')+'</div></div>';
+            });
+
+            // 2. LDS Scriptures with full downloads available
+            ['Book of Mormon','Doctrine and Covenants','Pearl of Great Price'].forEach(collName=>{
+              const collData=COLLECTIONS[collName];
+              if(!collData)return;
+              const packId=collData.packId;
+              const hasFullDownload=localStorage.getItem(COLLECTION_STORAGE_KEYS[collName]);
+              const hasPack=packId&&isPackDownloaded(packId);
+              if(!hasFullDownload&&!hasPack)return; // Not downloaded at all
+              const count=collectionStats[collName]||0;
+              const practiced=practicedCounts[collName]||0;
+              const pack=packId?SCRIPTURE_PACKS[packId]:null;
+              const icon=pack?pack.icon:'📘';
+              const status=hasFullDownload?'✓ Full':'curated';
+              const canDownloadFull=COLLECTION_URLS[collName]&&!hasFullDownload;
+              html+='<div class="w-full bg-white rounded-2xl p-4 mb-3"><div class="flex justify-between items-center gap-3"><button onclick="libraryView.collection=\''+collName.replace(/'/g,"\\'")+'\';render()" class="flex-1 text-left min-w-0"><p class="font-bold text-purple-800">'+icon+' '+collName+'</p><p class="text-xs text-purple-600 mt-1"><span class="text-green-600">'+practiced+' practiced</span> / '+count+' verses <span class="'+(hasFullDownload?'text-green-600':'text-orange-500')+'">('+status+')</span></p></button>'+(canDownloadFull?'<button onclick="downloadCollection(\''+collName+'\')" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-xs font-bold px-3 py-2 rounded-xl">⬇️ Full</button>':'')+(hasFullDownload?'<button onclick="deleteCollection(\''+collName+'\')" class="text-red-400 hover:text-red-600 p-2">🗑️</button>':'')+(hasPack&&!hasFullDownload?'<button onclick="removeScripturePack(\''+packId+'\')" class="text-red-400 hover:text-red-600 p-2">🗑️</button>':'')+'</div></div>';
+            });
+
+            // 3. Torah & Tanakh and Quran (can have full downloads)
+            ['Torah & Tanakh','Quran'].forEach(collName=>{
+              const collData=COLLECTIONS[collName];
+              if(!collData)return;
+              const packId=collData.packId;
+              const hasFullDownload=localStorage.getItem(COLLECTION_STORAGE_KEYS[collName]);
+              const hasPack=packId&&isPackDownloaded(packId);
+              if(!hasFullDownload&&!hasPack)return; // Not downloaded at all
+              const count=collectionStats[collName]||0;
+              const practiced=practicedCounts[collName]||0;
+              const pack=packId?SCRIPTURE_PACKS[packId]:null;
+              const icon=pack?pack.icon:'📖';
+              const status=hasFullDownload?'✓ Full':'curated';
+              const canDownloadFull=COLLECTION_URLS[collName]&&!hasFullDownload;
+              html+='<div class="w-full bg-white rounded-2xl p-4 mb-3"><div class="flex justify-between items-center gap-3"><button onclick="libraryView.collection=\''+collName.replace(/'/g,"\\'")+'\';render()" class="flex-1 text-left min-w-0"><p class="font-bold text-purple-800">'+icon+' '+collName+'</p><p class="text-xs text-purple-600 mt-1"><span class="text-green-600">'+practiced+' practiced</span> / '+count+' verses <span class="'+(hasFullDownload?'text-green-600':'text-orange-500')+'">('+status+')</span></p></button>'+(canDownloadFull?'<button onclick="downloadCollection(\''+collName+'\')" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-xs font-bold px-3 py-2 rounded-xl">⬇️ Full</button>':'')+(hasFullDownload?'<button onclick="deleteCollection(\''+collName+'\')" class="text-red-400 hover:text-red-600 p-2">🗑️</button>':'')+(hasPack&&!hasFullDownload?'<button onclick="removeScripturePack(\''+packId+'\')" class="text-red-400 hover:text-red-600 p-2">🗑️</button>':'')+'</div></div>';
+            });
+
+            // 4. Other downloaded scripture packs (no full download available)
+            const otherPacks=['jewish-wisdom','hadith','buddhist-sutras','bhagavad-gita','hindu-wisdom','guru-granth','catholic-prayers','christian-classics','articles-of-faith','lds-quotes'];
+            otherPacks.forEach(packId=>{
+              if(!isPackDownloaded(packId))return;
+              const pack=SCRIPTURE_PACKS[packId];
+              if(!pack)return;
+              // Find collection name for this pack
+              const collName=Object.keys(COLLECTIONS).find(c=>COLLECTIONS[c].packId===packId);
+              if(!collName)return;
+              const count=collectionStats[collName]||0;
+              const practiced=practicedCounts[collName]||0;
+              html+='<div class="w-full bg-white rounded-2xl p-4 mb-3"><div class="flex justify-between items-center gap-3"><button onclick="libraryView.collection=\''+collName.replace(/'/g,"\\'")+'\';render()" class="flex-1 text-left min-w-0"><p class="font-bold text-purple-800">'+pack.icon+' '+collName+'</p><p class="text-xs text-purple-600 mt-1"><span class="text-green-600">'+practiced+' practiced</span> / '+count+' verses</p></button><button onclick="removeScripturePack(\''+packId+'\')" class="text-red-400 hover:text-red-600 p-2">🗑️</button></div></div>';
+            });
+
+            return html||'<p class="text-white/60 text-center py-4">No scriptures downloaded yet</p>';
+          })()}
+
+          <!-- Get More Scriptures -->
+          ${(()=>{
+            let html='';
+            let hasItems=false;
+
+            // Full library downloads (LDS)
+            const fullLibraryLDS=['Book of Mormon','Doctrine and Covenants','Pearl of Great Price'];
+            const availableFullLDS=fullLibraryLDS.filter(c=>!localStorage.getItem(COLLECTION_STORAGE_KEYS[c])&&!isPackDownloaded(COLLECTIONS[c]?.packId));
+            if(availableFullLDS.length>0){
+              hasItems=true;
+              html+='<p class="text-white/80 text-sm mb-3 mt-6">LDS Scriptures (Full Library):</p>';
+              availableFullLDS.forEach(collName=>{
+                const pack=SCRIPTURE_PACKS[COLLECTIONS[collName]?.packId];
+                const icon=pack?pack.icon:'📘';
+                html+='<div class="w-full bg-white/90 rounded-2xl p-4 mb-3 border-2 border-dashed border-purple-300"><div class="flex justify-between items-center gap-3"><div class="flex-1"><p class="font-bold text-purple-800">'+icon+' '+collName+'</p></div><button onclick="downloadCollection(\''+collName+'\')" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-xs font-bold px-3 py-2 rounded-xl">⬇️ Download</button></div></div>';
+              });
+            }
+
+            // Full library downloads (Other religions - Torah, Quran)
+            const fullLibraryOther=[{name:'Torah & Tanakh',icon:'✡️',desc:'Complete Hebrew Bible (23,000+ verses)'},{name:'Quran',icon:'☪️',desc:'Complete Quran (6,236 verses)'}];
+            const availableFullOther=fullLibraryOther.filter(c=>!localStorage.getItem(COLLECTION_STORAGE_KEYS[c.name])&&!isPackDownloaded(COLLECTIONS[c.name]?.packId));
+            if(availableFullOther.length>0){
+              hasItems=true;
+              html+='<p class="text-white/80 text-sm mb-3 mt-6">Full Scripture Libraries:</p>';
+              availableFullOther.forEach(coll=>{
+                html+='<div class="w-full bg-white/90 rounded-2xl p-4 mb-3 border-2 border-dashed border-purple-300"><div class="flex justify-between items-center gap-3"><div class="flex-1"><p class="font-bold text-purple-800">'+coll.icon+' '+coll.name+'</p><p class="text-xs text-purple-500">'+coll.desc+'</p></div><button onclick="downloadCollection(\''+coll.name+'\')" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-xs font-bold px-3 py-2 rounded-xl">⬇️ Download</button></div></div>';
+              });
+            }
+
+            // Other scripture packs by category (curated only - no full download)
+            const categories={'LDS Extras':['articles-of-faith','lds-quotes'],'Judaism':['jewish-wisdom'],'Islam':['hadith'],'Buddhism':['buddhist-sutras'],'Hinduism':['bhagavad-gita','hindu-wisdom'],'Sikhism':['guru-granth'],'Christian':['catholic-prayers','christian-classics']};
+            for(const [cat,ids] of Object.entries(categories)){
+              const available=ids.filter(id=>!isPackDownloaded(id)&&SCRIPTURE_PACKS[id]);
+              if(available.length>0){
+                if(!hasItems)html+='<p class="text-white/80 text-sm mb-3 mt-6">Get More Scriptures:</p>';
+                hasItems=true;
+                html+='<p class="text-white/70 text-xs mb-2 mt-3">'+cat+':</p>';
+                available.forEach(id=>{
                   const pack=SCRIPTURE_PACKS[id];
-                  return`<div class="w-full bg-white/90 rounded-2xl p-3 mb-2 border-2 border-dashed border-purple-300">
-                    <div class="flex justify-between items-center gap-3">
-                      <div class="flex-1 min-w-0">
-                        <p class="font-bold text-purple-800 text-sm">${pack.icon} ${pack.name}</p>
-                        <p class="text-xs text-purple-400">${pack.verses?pack.verses.length:pack.quotes?pack.quotes.length:0} items</p>
-                      </div>
-                      <button onclick="downloadScripturePack('${id}')" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold text-xs px-3 py-2 rounded-xl whitespace-nowrap">+ Add</button>
-                    </div>
-                  </div>`;
-                }).join('');
+                  const verseCount=pack.verses?pack.verses.length:pack.quotes?pack.quotes.length:0;
+                  html+='<div class="w-full bg-white/90 rounded-2xl p-3 mb-2 border-2 border-dashed border-purple-300"><div class="flex justify-between items-center gap-3"><div class="flex-1"><p class="font-bold text-purple-800 text-sm">'+pack.icon+' '+pack.name+'</p><p class="text-xs text-purple-500">'+verseCount+' curated verses</p></div><button onclick="downloadScripturePack(\''+id+'\')" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold text-xs px-3 py-2 rounded-xl">+ Add</button></div></div>';
+                });
               }
             }
-            return html||'<p class="text-white/60 text-sm mt-4">All packs downloaded!</p>';
+
+            return html;
           })()}
 
           <!-- Manage Downloads -->
@@ -10140,11 +10372,10 @@ function render(){
                 return`<button onclick="feedFromInventory(${invIdx})" class="p-3 rounded-xl bg-purple-50 hover:bg-purple-100 text-center">
                   <div class="text-3xl mb-1">${f.emoji}</div>
                   <div class="text-xs text-purple-800 font-semibold mb-1">${f.name}</div>
-                  <div class="text-[10px] flex justify-center gap-1">
+                  <div class="text-[10px] flex justify-center gap-2">
                     <span class="${happyColor}">😊${happyStr}</span>
                     <span class="${healthColor}">❤️${healthStr}</span>
                   </div>
-                  ${f.growthMult>1?`<div class="text-[10px] text-blue-600">×${f.growthMult} growth</div>`:''}
                 </button>`;
               }).join('')}
               ${storedFood.map(acc=>`
@@ -10233,74 +10464,145 @@ function render(){
             if(coll){if(!collectionStats[coll])collectionStats[coll]=0;collectionStats[coll]++;}
           });
 
-          const bibleCollections=['Old Testament','New Testament'];
-          const downloadableCollections=['Book of Mormon','Doctrine and Covenants','Articles of Faith','LDS Leader Quotes'];
+          // Get practiced counts per collection
+          const practicedCounts=getPracticedCountsByCollection();
+
           const downloadedPackIds=JSON.parse(localStorage.getItem('downloadedPacks')||'[]');
 
-          // Bible collections
+          // Stats header
           let content=`<div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-2 mb-4 flex justify-around text-center">
             <div><p class="text-purple-800 font-bold">${inPractice}</p><p class="text-purple-500 text-[10px]">In Practice</p></div>
             <div class="border-l border-purple-200"></div>
             <div><p class="text-purple-800 font-bold">${totalAvailable}</p><p class="text-purple-500 text-[10px]">Available</p></div>
           </div>
-          <p class="text-purple-600 text-xs font-bold mb-2">📖 Bible</p>`;
-          content+=bibleCollections.map(collName=>{
-            const count=collectionStats[collName]||0;
-            const hasDownload=localStorage.getItem(COLLECTION_STORAGE_KEYS[collName]);
-            const needsDownload=!hasDownload&&COLLECTION_URLS[collName];
-            const statusText=hasDownload?' ✓ Full':needsDownload?' (curated)':'';
-            const statusColor=hasDownload?'text-green-600':'text-orange-500';
-            return`<div class="w-full bg-purple-50 rounded-xl p-3 mb-2 flex items-center gap-2">
-              <button onclick="libraryView.collection='${collName.replace(/'/g,"\\'")}';render()" class="flex-1 text-left hover:bg-purple-100 rounded-lg -m-1 p-1">
-                <p class="font-semibold text-purple-800">${collName}</p>
-                <p class="text-xs text-purple-600">${count} verses<span class="${statusColor}">${statusText}</span></p>
-              </button>
-              ${needsDownload?`<button onclick="event.stopPropagation();downloadCollection('${collName}')" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-xs font-bold px-2 py-1 rounded-lg shrink-0">⬇️</button>`:''}
-              ${hasDownload?`<button onclick="event.stopPropagation();deleteCollection('${collName}')" class="text-red-400 hover:text-red-600 shrink-0" title="Delete">🗑️</button>`:''}
-            </div>`;
-          }).join('');
+          <p class="text-purple-600 text-xs font-bold mb-2">📚 Your Scripture Library</p>`;
 
-          // Downloaded packs
-          const installedPacks=downloadableCollections.filter(collName=>{
-            const collData=COLLECTIONS[collName];
-            return collData&&collData.packId&&isPackDownloaded(collData.packId);
+          // Bible collections
+          ['Old Testament','New Testament'].forEach(collName=>{
+            const count=collectionStats[collName]||0;
+            const practiced=practicedCounts[collName]||0;
+            const hasFullDownload=localStorage.getItem(COLLECTION_STORAGE_KEYS[collName]);
+            const canDownloadFull=COLLECTION_URLS[collName]&&!hasFullDownload;
+            content+=`<div class="w-full bg-purple-50 rounded-xl p-3 mb-2 flex items-center gap-2">
+              <button onclick="libraryView.collection='${collName}';render()" class="flex-1 text-left">
+                <p class="font-semibold text-purple-800">📖 ${collName}</p>
+                <p class="text-xs text-purple-600"><span class="text-green-600">${practiced} practiced</span> / ${count} verses</p>
+              </button>
+              ${canDownloadFull?`<button onclick="downloadCollection('${collName}')" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-xs px-2 py-1 rounded-lg">⬇️</button>`:''}
+              ${hasFullDownload?`<button onclick="deleteCollection('${collName}')" class="text-red-400 p-1">🗑️</button>`:''}
+            </div>`;
           });
-          if(installedPacks.length>0){
-            content+=`<p class="text-purple-600 text-xs font-bold mb-2 mt-4">📚 Downloaded Packs</p>`;
-            content+=installedPacks.map(collName=>{
-              const collData=COLLECTIONS[collName];
-              const pack=SCRIPTURE_PACKS[collData.packId];
-              const count=collectionStats[collName]||0;
-              const hasDownload=localStorage.getItem(COLLECTION_STORAGE_KEYS[collName]);
-              const needsDownload=!hasDownload&&COLLECTION_URLS[collName];
-              const statusText=hasDownload?' ✓ Full':needsDownload?' (curated)':'';
-              const statusColor=hasDownload?'text-green-600':'text-orange-500';
-              return`<div class="w-full bg-purple-50 rounded-xl p-3 mb-2 flex items-center gap-2">
-                <button onclick="libraryView.collection='${collName.replace(/'/g,"\\'")}';render()" class="flex-1 text-left hover:bg-purple-100 rounded-lg -m-1 p-1">
-                  <p class="font-semibold text-purple-800">${pack?pack.icon:''} ${collName}</p>
-                  <p class="text-xs text-purple-600">${count} verses<span class="${statusColor}">${statusText}</span></p>
-                </button>
-                ${needsDownload?`<button onclick="event.stopPropagation();downloadCollection('${collName}')" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-xs font-bold px-2 py-1 rounded-lg shrink-0">⬇️</button>`:''}
-                ${hasDownload?`<button onclick="event.stopPropagation();deleteCollection('${collName}')" class="text-red-400 hover:text-red-600 shrink-0" title="Delete">🗑️</button>`:''}
+
+          // Downloaded LDS scriptures
+          ['Book of Mormon','Doctrine and Covenants','Pearl of Great Price'].forEach(collName=>{
+            const collData=COLLECTIONS[collName];
+            if(!collData)return;
+            const packId=collData.packId;
+            const hasFullDownload=localStorage.getItem(COLLECTION_STORAGE_KEYS[collName]);
+            const hasPack=packId&&isPackDownloaded(packId);
+            if(!hasFullDownload&&!hasPack)return;
+            const count=collectionStats[collName]||0;
+            const practiced=practicedCounts[collName]||0;
+            const pack=packId?SCRIPTURE_PACKS[packId]:null;
+            const icon=pack?pack.icon:'📘';
+            const canDownloadFull=COLLECTION_URLS[collName]&&!hasFullDownload;
+            content+=`<div class="w-full bg-purple-50 rounded-xl p-3 mb-2 flex items-center gap-2">
+              <button onclick="libraryView.collection='${collName.replace(/'/g,"\\'")}';render()" class="flex-1 text-left">
+                <p class="font-semibold text-purple-800">${icon} ${collName}</p>
+                <p class="text-xs text-purple-600"><span class="text-green-600">${practiced} practiced</span> / ${count} verses</p>
+              </button>
+              ${canDownloadFull?`<button onclick="downloadCollection('${collName}')" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-xs px-2 py-1 rounded-lg">⬇️</button>`:''}
+              ${hasFullDownload?`<button onclick="deleteCollection('${collName}')" class="text-red-400 p-1">🗑️</button>`:''}
+              ${hasPack&&!hasFullDownload?`<button onclick="removeScripturePack('${packId}')" class="text-red-400 p-1">🗑️</button>`:''}
+            </div>`;
+          });
+
+          // Torah & Tanakh and Quran (can have full downloads)
+          ['Torah & Tanakh','Quran'].forEach(collName=>{
+            const collData=COLLECTIONS[collName];
+            if(!collData)return;
+            const packId=collData.packId;
+            const hasFullDownload=localStorage.getItem(COLLECTION_STORAGE_KEYS[collName]);
+            const hasPack=packId&&isPackDownloaded(packId);
+            if(!hasFullDownload&&!hasPack)return;
+            const count=collectionStats[collName]||0;
+            const practiced=practicedCounts[collName]||0;
+            const pack=packId?SCRIPTURE_PACKS[packId]:null;
+            const icon=pack?pack.icon:'📖';
+            const canDownloadFull=COLLECTION_URLS[collName]&&!hasFullDownload;
+            content+=`<div class="w-full bg-purple-50 rounded-xl p-3 mb-2 flex items-center gap-2">
+              <button onclick="libraryView.collection='${collName.replace(/'/g,"\\'")}';render()" class="flex-1 text-left">
+                <p class="font-semibold text-purple-800">${icon} ${collName}</p>
+                <p class="text-xs text-purple-600"><span class="text-green-600">${practiced} practiced</span> / ${count} verses</p>
+              </button>
+              ${canDownloadFull?`<button onclick="downloadCollection('${collName}')" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-xs px-2 py-1 rounded-lg">⬇️</button>`:''}
+              ${hasFullDownload?`<button onclick="deleteCollection('${collName}')" class="text-red-400 p-1">🗑️</button>`:''}
+              ${hasPack&&!hasFullDownload?`<button onclick="removeScripturePack('${packId}')" class="text-red-400 p-1">🗑️</button>`:''}
+            </div>`;
+          });
+
+          // Other downloaded packs (no full download available)
+          ['jewish-wisdom','hadith','buddhist-sutras','bhagavad-gita','hindu-wisdom','guru-granth','catholic-prayers','christian-classics','articles-of-faith','lds-quotes'].forEach(packId=>{
+            if(!isPackDownloaded(packId))return;
+            const pack=SCRIPTURE_PACKS[packId];
+            if(!pack)return;
+            const collName=Object.keys(COLLECTIONS).find(c=>COLLECTIONS[c].packId===packId);
+            if(!collName)return;
+            const count=collectionStats[collName]||0;
+            const practiced=practicedCounts[collName]||0;
+            content+=`<div class="w-full bg-purple-50 rounded-xl p-3 mb-2 flex items-center gap-2">
+              <button onclick="libraryView.collection='${collName.replace(/'/g,"\\'")}';render()" class="flex-1 text-left">
+                <p class="font-semibold text-purple-800">${pack.icon} ${collName}</p>
+                <p class="text-xs text-purple-600"><span class="text-green-600">${practiced} practiced</span> / ${count} verses</p>
+              </button>
+              <button onclick="removeScripturePack('${packId}')" class="text-red-400 p-1">🗑️</button>
+            </div>`;
+          });
+
+          // Get More section - LDS
+          const fullLibraryLDS=['Book of Mormon','Doctrine and Covenants','Pearl of Great Price'];
+          const availableFullLDS=fullLibraryLDS.filter(c=>!localStorage.getItem(COLLECTION_STORAGE_KEYS[c])&&!isPackDownloaded(COLLECTIONS[c]?.packId));
+          if(availableFullLDS.length>0){
+            content+=`<p class="text-purple-600 text-xs font-bold mb-2 mt-4">✨ LDS Scriptures</p>`;
+            availableFullLDS.forEach(collName=>{
+              const pack=SCRIPTURE_PACKS[COLLECTIONS[collName]?.packId];
+              const icon=pack?pack.icon:'📘';
+              content+=`<div class="w-full bg-purple-50/50 rounded-xl p-3 mb-2 border border-dashed border-purple-300 flex items-center gap-2">
+                <p class="flex-1 font-semibold text-purple-800">${icon} ${collName}</p>
+                <button onclick="downloadCollection('${collName}')" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-xs px-2 py-1 rounded-lg">⬇️</button>
               </div>`;
-            }).join('');
+            });
           }
 
-          // Available packs to download
-          const availablePacks=Object.entries(SCRIPTURE_PACKS).filter(([id])=>!isPackDownloaded(id));
-          if(availablePacks.length>0){
-            content+=`<p class="text-purple-600 text-xs font-bold mb-2 mt-4">✨ Get More Scriptures</p>`;
-            content+=availablePacks.map(([id,pack])=>`
-              <div class="w-full bg-purple-50/50 rounded-xl p-3 mb-2 border border-dashed border-purple-300">
-                <div class="flex justify-between items-center">
-                  <div>
-                    <p class="font-semibold text-purple-800">${pack.icon} ${pack.name}</p>
-                    <p class="text-xs text-purple-500">${pack.verses?pack.verses.length:pack.quotes?pack.quotes.length:0} items</p>
-                  </div>
-                  <button onclick="downloadScripturePack('${id}')" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-xs px-3 py-1 rounded-full">+ Add</button>
-                </div>
-              </div>
-            `).join('');
+          // Full library downloads - Torah & Quran
+          const fullLibraryOther=[{name:'Torah & Tanakh',icon:'✡️',desc:'Complete Hebrew Bible'},{name:'Quran',icon:'☪️',desc:'Complete Quran'}];
+          const availableFullOther=fullLibraryOther.filter(c=>!localStorage.getItem(COLLECTION_STORAGE_KEYS[c.name])&&!isPackDownloaded(COLLECTIONS[c.name]?.packId));
+          if(availableFullOther.length>0){
+            content+=`<p class="text-purple-600 text-xs font-bold mb-2 mt-4">✨ Full Scripture Libraries</p>`;
+            availableFullOther.forEach(coll=>{
+              content+=`<div class="w-full bg-purple-50/50 rounded-xl p-3 mb-2 border border-dashed border-purple-300 flex items-center gap-2">
+                <div class="flex-1"><p class="font-semibold text-purple-800">${coll.icon} ${coll.name}</p><p class="text-purple-400 text-[10px]">${coll.desc}</p></div>
+                <button onclick="downloadCollection('${coll.name}')" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-xs px-2 py-1 rounded-lg">⬇️</button>
+              </div>`;
+            });
+          }
+
+          // Curated packs (no full download)
+          const categories={'LDS':['articles-of-faith','lds-quotes'],'Judaism':['jewish-wisdom'],'Islam':['hadith'],'Buddhism':['buddhist-sutras'],'Hinduism':['bhagavad-gita','hindu-wisdom'],'Sikhism':['guru-granth'],'Christian':['catholic-prayers','christian-classics']};
+          let hasMore=false;
+          for(const [cat,ids] of Object.entries(categories)){
+            const available=ids.filter(id=>!isPackDownloaded(id)&&SCRIPTURE_PACKS[id]);
+            if(available.length>0){
+              if(!hasMore){content+=`<p class="text-purple-600 text-xs font-bold mb-2 mt-4">✨ Curated Verses</p>`;hasMore=true;}
+              content+=`<p class="text-purple-400 text-[10px] mb-1">${cat}:</p>`;
+              available.forEach(id=>{
+                const pack=SCRIPTURE_PACKS[id];
+                content+=`<div class="w-full bg-purple-50/50 rounded-xl p-2 mb-1 border border-dashed border-purple-300 flex items-center gap-2">
+                  <p class="flex-1 text-purple-800 text-sm">${pack.icon} ${pack.name}</p>
+                  <button onclick="downloadScripturePack('${id}')" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-xs px-2 py-1 rounded-lg">+ Add</button>
+                </div>`;
+              });
+            }
           }
 
           modalContent=content;
@@ -10407,7 +10709,6 @@ function render(){
     if(food.happiness<0)effects.push({icon:'😢',text:`${food.happiness} Happiness`,color:'text-red-600',type:'negative'});
     if(food.health>0)effects.push({icon:'❤️',text:`+${food.health} Health`,color:'text-green-600',type:'positive'});
     if(food.health<0)effects.push({icon:'💔',text:`${food.health} Health`,color:'text-red-600',type:'negative'});
-    if(food.growthMult>1)effects.push({icon:'📈',text:`${food.growthMult}x Growth Boost`,color:'text-blue-600',type:'positive'});
     if(food.happinessPenalty)effects.push({icon:'😤',text:`-${food.happinessPenalty} if rejected`,color:'text-orange-600',type:'warning'});
 
     h+=`<div class="fixed inset-0 bg-black/70 z-[90] flex items-center justify-center p-4" onclick="if(event.target===this)closeFoodPopup()">
