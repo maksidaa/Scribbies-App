@@ -813,6 +813,60 @@ let feedingState=null; // {food: foodObj, accepted: bool, growing: bool}
 let feedTab='buy'; // 'buy' or 'myFood'
 let downloadProgress=null; // {current: n, total: n, status: 'downloading'|'processing'|'complete'}
 let tutorialStep=0; // Current tutorial step (0 = not showing)
+let foodPopup=null; // {foodIdx: number, qty: number} - food detail popup state
+
+// Open food detail popup
+function openFoodPopup(foodIdx){
+  foodPopup={foodIdx,qty:1};
+  render();
+}
+
+// Close food detail popup
+function closeFoodPopup(){
+  foodPopup=null;
+  render();
+}
+
+// Update quantity in food popup
+function setFoodQty(qty){
+  if(!foodPopup)return;
+  const food=FOODS[foodPopup.foodIdx];
+  const maxQty=Math.floor(S.xp/food.cost);
+  foodPopup.qty=Math.max(1,Math.min(qty,maxQty));
+  render();
+}
+
+// Buy food with quantity
+function buyFoodQty(){
+  if(!foodPopup)return;
+  const food=FOODS[foodPopup.foodIdx];
+  const totalCost=food.cost*foodPopup.qty;
+  if(S.xp<totalCost)return;
+
+  // Add to inventory
+  for(let i=0;i<foodPopup.qty;i++){
+    S.inventory.push({type:'food',food:food});
+  }
+  S.xp-=totalCost;
+  save();
+  closeFoodPopup();
+}
+
+// Get scribby preference info for a food
+function getScribbyFoodPreference(food){
+  if(food.cat==='yummy'){
+    return{icon:'😋',text:'All Scribbies love this!',color:'text-green-600'};
+  }else if(food.cat==='special'){
+    return{icon:'⭐',text:'Special treat - everyone loves it!',color:'text-yellow-600'};
+  }else if(food.cat==='healthy'){
+    const rate=food.acceptRate||50;
+    if(rate>=70)return{icon:'🙂',text:`Most Scribbies like this (${rate}% accept)`,color:'text-green-600'};
+    if(rate>=40)return{icon:'😐',text:`Some Scribbies are picky (${rate}% accept)`,color:'text-yellow-600'};
+    if(rate>=20)return{icon:'😬',text:`Many Scribbies refuse this (${rate}% accept)`,color:'text-orange-600'};
+    return{icon:'🤢',text:`Most Scribbies hate this! (${rate}% accept)`,color:'text-red-600'};
+  }
+  return{icon:'🍽️',text:'Standard food',color:'text-purple-600'};
+}
 
 // Tutorial steps shown after onboarding
 const TUTORIAL_STEPS=[
@@ -9043,7 +9097,7 @@ function render(){
         <div class="flex flex-wrap gap-1 mt-2">${v.tags.map(t=>`<span class="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-600">${t}</span>`).join('')}</div>
       </div>
       <div class="flex flex-col gap-2">
-        <button onclick="selectedVerse=${v.id};setScreen('practice')" class="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl flex items-center justify-center text-xl" title="Practice this verse">🧠</button>
+        <button onclick="selectedVerse=${v.id};setScreen('practice')" class="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl flex items-center justify-center text-xl" title="Practice this verse">▶️</button>
         <button onclick="if(confirm('Delete this verse?'))deleteVerse(${v.id})" class="flex-shrink-0 w-12 h-10 bg-red-100 text-red-500 rounded-xl flex items-center justify-center text-lg" title="Delete verse">🗑️</button>
       </div>
     </div>`).join('');
@@ -9144,12 +9198,15 @@ function render(){
             const collData=COLLECTIONS[collName];
             const count=collectionStats[collName]||0;
             const hasDownload=localStorage.getItem(COLLECTION_STORAGE_KEYS[collName]);
+            const needsDownload=!hasDownload&&COLLECTION_URLS[collName];
+            const statusText=hasDownload?' ✓ Full Library':needsDownload?' (curated only)':'';
             return`<div class="w-full bg-white rounded-2xl p-4 mb-3">
               <div class="flex justify-between items-center gap-3">
                 <button onclick="libraryView.collection='${collName.replace(/'/g,"\\'")}';render()" class="flex-1 text-left min-w-0">
                   <p class="font-bold text-purple-800">${collName}</p>
-                  <p class="text-xs text-purple-600 mt-1">${count} verses${hasDownload?' ✓ Downloaded':''}</p>
+                  <p class="text-xs ${hasDownload?'text-green-600':'text-purple-600'} mt-1">${count} verses${statusText}</p>
                 </button>
+                ${needsDownload?`<button onclick="downloadCollection('${collName}')" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-xs font-bold px-3 py-2 rounded-xl">⬇️ Full</button>`:''}
                 ${hasDownload?`<button onclick="deleteCollection('${collName}')" class="text-red-400 hover:text-red-600 p-2" title="Delete collection">🗑️</button>`:''}
                 <span class="text-2xl">📖</span>
               </div>
@@ -9167,13 +9224,16 @@ function render(){
               const pack=SCRIPTURE_PACKS[collData.packId];
               const count=collectionStats[collName]||0;
               const hasExternalDownload=localStorage.getItem(COLLECTION_STORAGE_KEYS[collName]);
+              const needsDownload=!hasExternalDownload&&COLLECTION_URLS[collName];
+              const statusText=hasExternalDownload?' ✓ Full Library':needsDownload?' (curated only)':'';
               return`<div class="w-full bg-white rounded-2xl p-4 mb-3">
                 <div class="flex justify-between items-center gap-3">
                   <button onclick="libraryView.collection='${collName.replace(/'/g,"\\'")}';render()" class="flex-1 text-left min-w-0">
                     <p class="font-bold text-purple-800">${collName}</p>
-                    <p class="text-xs text-purple-600 mt-1">${count} verses${hasExternalDownload?' ✓ Full':''}</p>
+                    <p class="text-xs ${hasExternalDownload?'text-green-600':'text-purple-600'} mt-1">${count} verses${statusText}</p>
                   </button>
-                  <button onclick="deleteCollection('${collName}')" class="text-red-400 hover:text-red-600 p-2" title="Delete collection">🗑️</button>
+                  ${needsDownload?`<button onclick="downloadCollection('${collName}')" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-xs font-bold px-3 py-2 rounded-xl">⬇️ Full</button>`:''}
+                  ${hasExternalDownload?`<button onclick="deleteCollection('${collName}')" class="text-red-400 hover:text-red-600 p-2" title="Delete">🗑️</button>`:''}
                   <span class="text-2xl">${pack?pack.icon:'📚'}</span>
                 </div>
               </div>`;
@@ -10008,12 +10068,14 @@ function render(){
                   const canAfford=S.xp>=f.cost;
                   const healthStr=f.health>=0?`+${f.health}`:`${f.health}`;
                   const healthColor=f.health>=0?'text-green-600':'text-red-600';
-                  return`<button onclick="buyFood(${FOODS.indexOf(f)})" class="p-3 rounded-xl ${canAfford?'bg-purple-50 hover:bg-purple-100':'bg-gray-100 opacity-50'} text-center" ${!canAfford?'disabled':''}>
+                  const happyStr=f.happiness>=0?`+${f.happiness}`:`${f.happiness}`;
+                  const happyColor=f.happiness>=0?'text-yellow-600':'text-red-600';
+                  return`<button onclick="openFoodPopup(${FOODS.indexOf(f)})" class="p-3 rounded-xl ${canAfford?'bg-purple-50 hover:bg-purple-100':'bg-gray-100 opacity-50'} text-center" ${!canAfford?'disabled':''}>
                     <div class="text-3xl mb-1">${f.emoji}</div>
                     <div class="text-xs text-purple-800 font-semibold">${f.name}</div>
                     <div class="text-xs ${canAfford?'text-purple-600':'text-gray-500'} mb-1">${f.cost} XP</div>
                     <div class="text-[10px] flex justify-center gap-1">
-                      <span class="text-yellow-600">😊${f.happiness>0?'+':''}${f.happiness}</span>
+                      <span class="${happyColor}">😊${happyStr}</span>
                       <span class="${healthColor}">❤️${healthStr}</span>
                     </div>
                   </button>`;
@@ -10303,6 +10365,84 @@ function render(){
           ${modalContent}
         </div></div>`;
     }
+  }
+
+  // Food detail popup
+  if(foodPopup){
+    const food=FOODS[foodPopup.foodIdx];
+    const maxQty=Math.floor(S.xp/food.cost);
+    const totalCost=food.cost*foodPopup.qty;
+    const canBuy=S.xp>=totalCost&&maxQty>=1;
+    const pref=getScribbyFoodPreference(food);
+
+    // Build effects list
+    const effects=[];
+    if(food.happiness>0)effects.push({icon:'😊',text:`+${food.happiness} Happiness`,color:'text-green-600',type:'positive'});
+    if(food.happiness<0)effects.push({icon:'😢',text:`${food.happiness} Happiness`,color:'text-red-600',type:'negative'});
+    if(food.health>0)effects.push({icon:'❤️',text:`+${food.health} Health`,color:'text-green-600',type:'positive'});
+    if(food.health<0)effects.push({icon:'💔',text:`${food.health} Health`,color:'text-red-600',type:'negative'});
+    if(food.growthMult>1)effects.push({icon:'📈',text:`${food.growthMult}x Growth Boost`,color:'text-blue-600',type:'positive'});
+    if(food.happinessPenalty)effects.push({icon:'😤',text:`-${food.happinessPenalty} if rejected`,color:'text-orange-600',type:'warning'});
+
+    h+=`<div class="fixed inset-0 bg-black/70 z-[90] flex items-center justify-center p-4" onclick="if(event.target===this)closeFoodPopup()">
+      <div class="bg-white rounded-3xl p-5 max-w-sm w-full animate-bounce-in">
+        <div class="flex justify-between items-start mb-3">
+          <div class="flex items-center gap-3">
+            <div class="text-5xl">${food.emoji}</div>
+            <div>
+              <h2 class="text-xl font-bold text-purple-800">${food.name}</h2>
+              <p class="text-purple-600 text-sm">${food.cost} XP each</p>
+            </div>
+          </div>
+          <button onclick="closeFoodPopup()" class="text-2xl text-purple-400">&times;</button>
+        </div>
+
+        <!-- Scribby Preference -->
+        <div class="bg-purple-50 rounded-xl p-3 mb-4">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">${pref.icon}</span>
+            <span class="${pref.color} text-sm font-medium">${pref.text}</span>
+          </div>
+        </div>
+
+        <!-- Effects -->
+        <div class="mb-4">
+          <p class="text-xs text-purple-500 font-semibold mb-2">EFFECTS:</p>
+          <div class="grid grid-cols-2 gap-2">
+            ${effects.map(e=>`
+              <div class="flex items-center gap-2 ${e.type==='negative'||e.type==='warning'?'bg-red-50':'bg-green-50'} rounded-lg p-2">
+                <span class="text-lg">${e.icon}</span>
+                <span class="text-xs ${e.color} font-medium">${e.text}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <!-- Quantity Picker -->
+        <div class="bg-purple-50 rounded-xl p-4 mb-4">
+          <p class="text-xs text-purple-500 font-semibold mb-2">QUANTITY:</p>
+          <div class="flex items-center justify-center gap-4">
+            <button onclick="setFoodQty(${foodPopup.qty-1})" class="w-10 h-10 rounded-full bg-purple-200 text-purple-800 font-bold text-xl" ${foodPopup.qty<=1?'disabled':''}>-</button>
+            <div class="text-center">
+              <p class="text-3xl font-bold text-purple-800">${foodPopup.qty}</p>
+              <p class="text-xs text-purple-500">Max: ${maxQty}</p>
+            </div>
+            <button onclick="setFoodQty(${foodPopup.qty+1})" class="w-10 h-10 rounded-full bg-purple-200 text-purple-800 font-bold text-xl" ${foodPopup.qty>=maxQty?'disabled':''}>+</button>
+          </div>
+          <div class="flex justify-center gap-2 mt-2">
+            <button onclick="setFoodQty(5)" class="px-3 py-1 rounded-full bg-purple-200 text-purple-700 text-xs font-semibold">5</button>
+            <button onclick="setFoodQty(10)" class="px-3 py-1 rounded-full bg-purple-200 text-purple-700 text-xs font-semibold">10</button>
+            <button onclick="setFoodQty(${maxQty})" class="px-3 py-1 rounded-full bg-purple-200 text-purple-700 text-xs font-semibold">Max</button>
+          </div>
+        </div>
+
+        <!-- Buy Button -->
+        <button onclick="buyFoodQty()" class="w-full py-4 rounded-2xl ${canBuy?'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white':'bg-gray-200 text-gray-500'} font-bold text-lg" ${!canBuy?'disabled':''}>
+          Buy ${foodPopup.qty} for ${totalCost} XP
+        </button>
+        <p class="text-center text-purple-400 text-xs mt-2">Your XP: ${S.xp}</p>
+      </div>
+    </div>`;
   }
 
   // Tutorial overlay
