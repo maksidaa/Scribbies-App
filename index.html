@@ -544,20 +544,20 @@
 <body class="bg-gradient-to-br from-violet-500 via-purple-500 to-fuchsia-500 min-h-screen">
 <div id="app"></div>
 <script>
-const TAGS=['Faith','Hope','Charity','Courage','Prayer','Repentance','Gratitude','Family','Service','Obedience','Temple','Jesus Christ','Trials','Peace','Wisdom','Love','Patience'];
+const TAGS=['Faith','Hope','Charity','Courage','Prayer','Repentance','Gratitude','Family','Service','Obedience','Worship','Jesus Christ','Trials','Peace','Wisdom','Love','Patience'];
 const STARTER=[
-  {t:'scripture',r:'Alma 32:21',x:'Faith is not to have a perfect knowledge of things; therefore if ye have faith ye hope for things which are not seen, which are true.',g:['Faith','Hope']},
-  {t:'scripture',r:'Moroni 10:4',x:'And when ye shall receive these things, I would exhort you that ye would ask God, the Eternal Father, in the name of Christ, if these things are not true.',g:['Prayer','Faith']},
-  {t:'scripture',r:'2 Nephi 2:25',x:'Adam fell that men might be; and men are, that they might have joy.',g:['Wisdom']},
-  {t:'scripture',r:'Ether 12:27',x:'If men come unto me I will show unto them their weakness. I give unto men weakness that they may be humble.',g:['Trials','Faith']},
-  {t:'scripture',r:'D&C 58:42',x:'Behold, he who has repented of his sins, the same is forgiven, and I, the Lord, remember them no more.',g:['Repentance']},
-  {t:'scripture',r:'Mosiah 2:17',x:'When ye are in the service of your fellow beings ye are only in the service of your God.',g:['Service','Charity']},
   {t:'scripture',r:'Proverbs 3:5-6',x:'Trust in the Lord with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths.',g:['Faith','Wisdom']},
-  {t:'scripture',r:'Philippians 4:13',x:'I can do all things through Christ which strengtheneth me.',g:['Courage']},
+  {t:'scripture',r:'Philippians 4:13',x:'I can do all things through Christ which strengtheneth me.',g:['Courage','Faith']},
   {t:'scripture',r:'Joshua 1:9',x:'Be strong and of a good courage; be not afraid, neither be thou dismayed: for the Lord thy God is with thee.',g:['Courage','Faith']},
-  {t:'quote',r:'Dieter F. Uchtdorf',x:'Doubt your doubts before you doubt your faith.',g:['Faith','Courage']},
-  {t:'quote',r:'Gordon B. Hinckley',x:'Try a little harder to be a little better.',g:['Obedience','Patience']},
-  {t:'quote',r:'Jeffrey R. Holland',x:'Do not give up. Do not quit. Keep walking. Keep trying.',g:['Courage','Trials']},
+  {t:'scripture',r:'Jeremiah 29:11',x:'For I know the thoughts that I think toward you, saith the Lord, thoughts of peace, and not of evil, to give you an expected end.',g:['Hope','Peace']},
+  {t:'scripture',r:'Romans 8:28',x:'And we know that all things work together for good to them that love God, to them who are the called according to his purpose.',g:['Faith','Trials']},
+  {t:'scripture',r:'Isaiah 41:10',x:'Fear thou not; for I am with thee: be not dismayed; for I am thy God: I will strengthen thee; yea, I will help thee.',g:['Courage','Faith']},
+  {t:'scripture',r:'Psalm 23:1',x:'The Lord is my shepherd; I shall not want.',g:['Peace','Faith']},
+  {t:'scripture',r:'John 3:16',x:'For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.',g:['Love','Jesus Christ']},
+  {t:'scripture',r:'Matthew 11:28',x:'Come unto me, all ye that labour and are heavy laden, and I will give you rest.',g:['Peace','Jesus Christ']},
+  {t:'quote',r:'C.S. Lewis',x:'You can never get a cup of tea large enough or a book long enough to suit me.',g:['Wisdom','Peace']},
+  {t:'quote',r:'Mother Teresa',x:'If you judge people, you have no time to love them.',g:['Love','Charity']},
+  {t:'quote',r:'Billy Graham',x:'God has given us two hands, one to receive with and the other to give with.',g:['Service','Charity']},
 ];
 
 // 10 Creature Categories - Each with unique evolution path
@@ -750,7 +750,7 @@ let feedTab='buy'; // 'buy' or 'myFood'
 let downloadProgress=null; // {current: n, total: n, status: 'downloading'|'processing'|'complete'}
 let libraryView={collection:null,book:null,chapter:null}; // Track library navigation (4 levels: collections -> books -> chapters -> verses)
 let searchQuery=''; // Library search
-let addTab='custom'; // 'custom' or 'library'
+let addTab='library'; // 'library' or 'custom'
 let customizeMode=false; // Accessory positioning mode
 let dragState=null; // {type:'hat', startX, startY, currentX, currentY}
 let graduationCeremony=false; // Track if showing graduation ceremony
@@ -1093,14 +1093,14 @@ const ACCESSORIES=[
   // Held Items
   {emoji:'🎈',name:'Balloon',cost:50,type:'held',cat:'cute'},
   {emoji:'🌸',name:'Flower',cost:75,type:'held',cat:'cute'},
-  {emoji:'📖',name:'Scriptures',cost:100,type:'held',cat:'lds'},
+  {emoji:'📖',name:'Holy Bible',cost:100,type:'held',cat:'faith'},
   {emoji:'⚔️',name:'Tiny Sword',cost:150,type:'held',cat:'fun'},
   {emoji:'🪄',name:'Magic Wand',cost:200,type:'held',cat:'fun'},
   {emoji:'🎸',name:'Guitar',cost:175,type:'held',cat:'cool'},
   {emoji:'🧸',name:'Teddy Bear',cost:100,type:'held',cat:'cute'},
   {emoji:'🏆',name:'Trophy',cost:250,type:'held',cat:'special'},
-  {emoji:'🧭',name:'Liahona',cost:500,type:'held',cat:'lds'},
-  {emoji:'📜',name:'Golden Plates',cost:1000,type:'held',cat:'lds'},
+  {emoji:'✝️',name:'Cross Necklace',cost:150,type:'held',cat:'faith'},
+  {emoji:'📜',name:'Ancient Scroll',cost:500,type:'held',cat:'special'},
   // Special Effects
   {emoji:'🦸',name:'Cape',cost:200,type:'back',cat:'cool'},
   {emoji:'👼',name:'Wings',cost:500,type:'back',cat:'special'},
@@ -1147,95 +1147,311 @@ const ACCESSORIES=[
 // Curated Scripture Library (Popular Verses)
 const LIBRARY={
   curated:[
-    // Book of Mormon - 1 Nephi
-    {book:'1 Nephi',chapter:3,verse:7,ref:'1 Nephi 3:7',text:'And it came to pass that I, Nephi, said unto my father: I will go and do the things which the Lord hath commanded, for I know that the Lord giveth no commandments unto the children of men, save he shall prepare a way for them that they may accomplish the thing which he commandeth them.',tags:['Obedience','Faith','Courage']},
-    {book:'1 Nephi',chapter:19,verse:23,ref:'1 Nephi 19:23',text:'And I did read many things unto them which were written in the books of Moses; but that I might more fully persuade them to believe in the Lord their Redeemer I did read unto them that which was written by the prophet Isaiah.',tags:['Faith','Jesus Christ']},
-    // 2 Nephi
-    {book:'2 Nephi',chapter:2,verse:25,ref:'2 Nephi 2:25',text:'Adam fell that men might be; and men are, that they might have joy.',tags:['Wisdom','Peace']},
-    {book:'2 Nephi',chapter:9,verse:28,ref:'2 Nephi 9:28-29',text:'O that cunning plan of the evil one! O the vainness, and the frailties, and the foolishness of men! When they are learned they think they are wise, and they hearken not unto the counsel of God, for they set it aside, supposing they know of themselves, wherefore, their wisdom is foolishness and it profiteth them not.',tags:['Wisdom','Pride']},
-    {book:'2 Nephi',chapter:25,verse:26,ref:'2 Nephi 25:26',text:'And we talk of Christ, we rejoice in Christ, we preach of Christ, we prophesy of Christ, and we write according to our prophecies, that our children may know to what source they may look for a remission of their sins.',tags:['Jesus Christ','Faith']},
-    {book:'2 Nephi',chapter:31,verse:20,ref:'2 Nephi 31:20',text:'Wherefore, ye must press forward with a steadfastness in Christ, having a perfect brightness of hope, and a love of God and of all men. Wherefore, if ye shall press forward, feasting upon the word of Christ, and endure to the end, behold, thus saith the Father: Ye shall have eternal life.',tags:['Hope','Love','Patience']},
-    // Mosiah
-    {book:'Mosiah',chapter:2,verse:17,ref:'Mosiah 2:17',text:'And behold, I tell you these things that ye may learn wisdom; that ye may learn that when ye are in the service of your fellow beings ye are only in the service of your God.',tags:['Service','Charity','Wisdom']},
-    {book:'Mosiah',chapter:3,verse:19,ref:'Mosiah 3:19',text:'For the natural man is an enemy to God, and has been from the fall of Adam, and will be, forever and ever, unless he yields to the enticings of the Holy Spirit, and putteth off the natural man and becometh a saint through the atonement of Christ the Lord.',tags:['Repentance','Jesus Christ']},
-    {book:'Mosiah',chapter:4,verse:30,ref:'Mosiah 4:30',text:'But this much I can tell you, that if ye do not watch yourselves, and your thoughts, and your words, and your deeds, and observe the commandments of God, and continue in the faith of what ye have heard concerning the coming of our Lord, even unto the end of your lives, ye must perish. And now, O man, remember, and perish not.',tags:['Obedience','Faith','Patience']},
-    // Alma
-    {book:'Alma',chapter:7,verse:11,ref:'Alma 7:11-12',text:'And he shall go forth, suffering pains and afflictions and temptations of every kind; and this that the word might be fulfilled which saith he will take upon him the pains and the sicknesses of his people.',tags:['Jesus Christ','Trials','Charity']},
-    {book:'Alma',chapter:32,verse:21,ref:'Alma 32:21',text:'And now as I said concerning faith—faith is not to have a perfect knowledge of things; therefore if ye have faith ye hope for things which are not seen, which are true.',tags:['Faith','Hope']},
-    {book:'Alma',chapter:34,verse:32,ref:'Alma 34:32',text:'For behold, this life is the time for men to prepare to meet God; yea, behold the day of this life is the day for men to perform their labors.',tags:['Obedience','Wisdom']},
-    {book:'Alma',chapter:37,verse:6,ref:'Alma 37:6',text:'Now ye may suppose that this is foolishness in me; but behold I say unto you, that by small and simple things are great things brought to pass; and small means in many instances doth confound the wise.',tags:['Faith','Wisdom']},
-    {book:'Alma',chapter:37,verse:35,ref:'Alma 37:35',text:'O, remember, my son, and learn wisdom in thy youth; yea, learn in thy youth to keep the commandments of God.',tags:['Wisdom','Obedience']},
-    {book:'Alma',chapter:41,verse:10,ref:'Alma 41:10',text:'Do not suppose, because it has been spoken concerning restoration, that ye shall be restored from sin to happiness. Behold, I say unto you, wickedness never was happiness.',tags:['Peace','Repentance']},
-    // Helaman
-    {book:'Helaman',chapter:5,verse:12,ref:'Helaman 5:12',text:'And now, my sons, remember, remember that it is upon the rock of our Redeemer, who is Christ, the Son of God, that ye must build your foundation.',tags:['Jesus Christ','Faith']},
-    // 3 Nephi
-    {book:'3 Nephi',chapter:11,verse:29,ref:'3 Nephi 11:29',text:'For verily, verily I say unto you, he that hath the spirit of contention is not of me, but is of the devil, who is the father of contention, and he stirreth up the hearts of men to contend with anger, one with another.',tags:['Peace','Love']},
-    {book:'3 Nephi',chapter:27,verse:27,ref:'3 Nephi 27:27',text:'Therefore, what manner of men ought ye to be? Verily I say unto you, even as I am.',tags:['Jesus Christ','Obedience']},
-    // Ether
-    {book:'Ether',chapter:12,verse:6,ref:'Ether 12:6',text:'And now, I, Moroni, would speak somewhat concerning these things; I would show unto the world that faith is things which are hoped for and not seen; wherefore, dispute not because ye see not, for ye receive no witness until after the trial of your faith.',tags:['Faith','Trials','Hope']},
-    {book:'Ether',chapter:12,verse:27,ref:'Ether 12:27',text:'And if men come unto me I will show unto them their weakness. I give unto men weakness that they may be humble; and my grace is sufficient for all men that humble themselves before me.',tags:['Trials','Faith','Humility']},
-    // Moroni
-    {book:'Moroni',chapter:7,verse:45,ref:'Moroni 7:45',text:'And charity suffereth long, and is kind, and envieth not, and is not puffed up, seeketh not her own, is not easily provoked, thinketh no evil, and rejoiceth not in iniquity but rejoiceth in the truth, beareth all things, believeth all things, hopeth all things, endureth all things.',tags:['Charity','Love','Patience']},
-    {book:'Moroni',chapter:7,verse:47,ref:'Moroni 7:47',text:'But charity is the pure love of Christ, and it endureth forever; and whoso is found possessed of it at the last day, it shall be well with him.',tags:['Charity','Love','Jesus Christ']},
-    {book:'Moroni',chapter:10,verse:4,ref:'Moroni 10:4-5',text:'And when ye shall receive these things, I would exhort you that ye would ask God, the Eternal Father, in the name of Christ, if these things are not true; and if ye shall ask with a sincere heart, with real intent, having faith in Christ, he will manifest the truth of it unto you, by the power of the Holy Ghost.',tags:['Prayer','Faith','Hope']},
-    {book:'Moroni',chapter:10,verse:32,ref:'Moroni 10:32',text:'Yea, come unto Christ, and be perfected in him, and deny yourselves of all ungodliness; and if ye shall deny yourselves of all ungodliness, and love God with all your might, mind and strength, then is his grace sufficient for you.',tags:['Jesus Christ','Love','Faith']},
-    // D&C
-    {book:'D&C',chapter:4,verse:2,ref:'D&C 4:2',text:'Therefore, O ye that embark in the service of God, see that ye serve him with all your heart, might, mind and strength, that ye may stand blameless before God at the last day.',tags:['Service','Obedience']},
-    {book:'D&C',chapter:6,verse:36,ref:'D&C 6:36',text:'Look unto me in every thought; doubt not, fear not.',tags:['Faith','Courage','Jesus Christ']},
-    {book:'D&C',chapter:18,verse:10,ref:'D&C 18:10',text:'Remember the worth of souls is great in the sight of God.',tags:['Love','Service']},
-    {book:'D&C',chapter:58,verse:27,ref:'D&C 58:27',text:'Verily I say, men should be anxiously engaged in a good cause, and do many things of their own free will, and bring to pass much righteousness.',tags:['Service','Obedience']},
-    {book:'D&C',chapter:58,verse:42,ref:'D&C 58:42',text:'Behold, he who has repented of his sins, the same is forgiven, and I, the Lord, remember them no more.',tags:['Repentance','Peace']},
-    {book:'D&C',chapter:64,verse:33,ref:'D&C 64:33',text:'Wherefore, be not weary in well-doing, for ye are laying the foundation of a great work. And out of small things proceedeth that which is great.',tags:['Patience','Service','Wisdom']},
-    {book:'D&C',chapter:82,verse:10,ref:'D&C 82:10',text:'I, the Lord, am bound when ye do what I say; but when ye do not what I say, ye have no promise.',tags:['Obedience','Faith']},
-    {book:'D&C',chapter:84,verse:33,ref:'D&C 84:33',text:'For whoso is faithful unto the obtaining these two priesthoods of which I have spoken, and the magnifying their calling, are sanctified by the Spirit unto the renewing of their bodies.',tags:['Priesthood','Obedience']},
-    {book:'D&C',chapter:88,verse:63,ref:'D&C 88:63',text:'Draw near unto me and I will draw near unto you; seek me diligently and ye shall find me; ask, and ye shall receive; knock, and it shall be opened unto you.',tags:['Prayer','Faith','Jesus Christ']},
-    {book:'D&C',chapter:121,verse:45,ref:'D&C 121:45-46',text:'Let thy bowels also be full of charity towards all men, and to the household of faith, and let virtue garnish thy thoughts unceasingly; then shall thy confidence wax strong in the presence of God.',tags:['Charity','Love','Virtue']},
     // Bible - Old Testament
+    {book:'Genesis',chapter:1,verse:1,ref:'Genesis 1:1',text:'In the beginning God created the heaven and the earth.',tags:['Faith','Creation']},
     {book:'Joshua',chapter:1,verse:9,ref:'Joshua 1:9',text:'Have not I commanded thee? Be strong and of a good courage; be not afraid, neither be thou dismayed: for the Lord thy God is with thee whithersoever thou goest.',tags:['Courage','Faith']},
+    {book:'Psalms',chapter:23,verse:1,ref:'Psalm 23:1-4',text:'The Lord is my shepherd; I shall not want. He maketh me to lie down in green pastures: he leadeth me beside the still waters. He restoreth my soul.',tags:['Peace','Faith','Jesus Christ']},
     {book:'Psalms',chapter:46,verse:10,ref:'Psalm 46:10',text:'Be still, and know that I am God.',tags:['Peace','Faith']},
+    {book:'Psalms',chapter:119,verse:105,ref:'Psalm 119:105',text:'Thy word is a lamp unto my feet, and a light unto my path.',tags:['Wisdom','Faith']},
     {book:'Proverbs',chapter:3,verse:5,ref:'Proverbs 3:5-6',text:'Trust in the Lord with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths.',tags:['Faith','Wisdom']},
+    {book:'Proverbs',chapter:22,verse:6,ref:'Proverbs 22:6',text:'Train up a child in the way he should go: and when he is old, he will not depart from it.',tags:['Family','Wisdom']},
     {book:'Isaiah',chapter:40,verse:31,ref:'Isaiah 40:31',text:'But they that wait upon the Lord shall renew their strength; they shall mount up with wings as eagles; they shall run, and not be weary; and they shall walk, and not faint.',tags:['Faith','Patience','Trials']},
     {book:'Isaiah',chapter:41,verse:10,ref:'Isaiah 41:10',text:'Fear thou not; for I am with thee: be not dismayed; for I am thy God: I will strengthen thee; yea, I will help thee; yea, I will uphold thee with the right hand of my righteousness.',tags:['Courage','Faith']},
+    {book:'Jeremiah',chapter:29,verse:11,ref:'Jeremiah 29:11',text:'For I know the thoughts that I think toward you, saith the Lord, thoughts of peace, and not of evil, to give you an expected end.',tags:['Hope','Peace','Faith']},
     // Bible - New Testament
-    {book:'Matthew',chapter:5,verse:16,ref:'Matthew 5:16',text:'Let your light so shine before men, that they may see your good works, and glorify your Father which is in heaven.',tags:['Service','Light']},
+    {book:'Matthew',chapter:5,verse:16,ref:'Matthew 5:16',text:'Let your light so shine before men, that they may see your good works, and glorify your Father which is in heaven.',tags:['Service','Love']},
     {book:'Matthew',chapter:6,verse:33,ref:'Matthew 6:33',text:'But seek ye first the kingdom of God, and his righteousness; and all these things shall be added unto you.',tags:['Faith','Obedience']},
-    {book:'Matthew',chapter:11,verse:28,ref:'Matthew 11:28-30',text:'Come unto me, all ye that labour and are heavy laden, and I will give you rest. Take my yoke upon you, and learn of me; for I am meek and lowly in heart: and ye shall find rest unto your souls.',tags:['Jesus Christ','Peace','Rest']},
+    {book:'Matthew',chapter:7,verse:7,ref:'Matthew 7:7',text:'Ask, and it shall be given you; seek, and ye shall find; knock, and it shall be opened unto you.',tags:['Prayer','Faith']},
+    {book:'Matthew',chapter:11,verse:28,ref:'Matthew 11:28-30',text:'Come unto me, all ye that labour and are heavy laden, and I will give you rest. Take my yoke upon you, and learn of me; for I am meek and lowly in heart: and ye shall find rest unto your souls.',tags:['Jesus Christ','Peace']},
+    {book:'Matthew',chapter:28,verse:19,ref:'Matthew 28:19-20',text:'Go ye therefore, and teach all nations, baptizing them in the name of the Father, and of the Son, and of the Holy Ghost: Teaching them to observe all things whatsoever I have commanded you.',tags:['Service','Faith']},
     {book:'John',chapter:3,verse:16,ref:'John 3:16',text:'For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.',tags:['Love','Jesus Christ','Faith']},
-    {book:'John',chapter:8,verse:32,ref:'John 8:32',text:'And ye shall know the truth, and the truth shall make you free.',tags:['Truth','Wisdom']},
+    {book:'John',chapter:8,verse:32,ref:'John 8:32',text:'And ye shall know the truth, and the truth shall make you free.',tags:['Wisdom','Faith']},
     {book:'John',chapter:13,verse:35,ref:'John 13:35',text:'By this shall all men know that ye are my disciples, if ye have love one to another.',tags:['Love','Charity']},
+    {book:'John',chapter:14,verse:6,ref:'John 14:6',text:'Jesus saith unto him, I am the way, the truth, and the life: no man cometh unto the Father, but by me.',tags:['Jesus Christ','Faith']},
     {book:'John',chapter:14,verse:27,ref:'John 14:27',text:'Peace I leave with you, my peace I give unto you: not as the world giveth, give I unto you. Let not your heart be troubled, neither let it be afraid.',tags:['Peace','Jesus Christ']},
     {book:'Romans',chapter:8,verse:28,ref:'Romans 8:28',text:'And we know that all things work together for good to them that love God.',tags:['Faith','Love','Trials']},
-    {book:'Philippians',chapter:4,verse:13,ref:'Philippians 4:13',text:'I can do all things through Christ which strengtheneth me.',tags:['Courage','Jesus Christ','Strength']},
-    // Articles of Faith
-    {book:'Articles of Faith',chapter:1,verse:1,ref:'Articles of Faith 1:1',text:'We believe in God, the Eternal Father, and in His Son, Jesus Christ, and in the Holy Ghost.',tags:['Godhead','Faith']},
-    {book:'Articles of Faith',chapter:1,verse:2,ref:'Articles of Faith 1:2',text:'We believe that men will be punished for their own sins, and not for Adam\'s transgression.',tags:['Accountability','Sin']},
-    {book:'Articles of Faith',chapter:1,verse:3,ref:'Articles of Faith 1:3',text:'We believe that through the Atonement of Christ, all mankind may be saved, by obedience to the laws and ordinances of the Gospel.',tags:['Atonement','Jesus Christ','Salvation']},
-    {book:'Articles of Faith',chapter:1,verse:4,ref:'Articles of Faith 1:4',text:'We believe that the first principles and ordinances of the Gospel are: first, Faith in the Lord Jesus Christ; second, Repentance; third, Baptism by immersion for the remission of sins; fourth, Laying on of hands for the gift of the Holy Ghost.',tags:['Faith','Repentance','Baptism','Holy Ghost']},
-    {book:'Articles of Faith',chapter:1,verse:5,ref:'Articles of Faith 1:5',text:'We believe that a man must be called of God, by prophecy, and by the laying on of hands by those who are in authority, to preach the Gospel and administer in the ordinances thereof.',tags:['Priesthood','Authority']},
-    {book:'Articles of Faith',chapter:1,verse:6,ref:'Articles of Faith 1:6',text:'We believe in the same organization that existed in the Primitive Church, namely, apostles, prophets, pastors, teachers, evangelists, and so forth.',tags:['Church','Organization']},
-    {book:'Articles of Faith',chapter:1,verse:7,ref:'Articles of Faith 1:7',text:'We believe in the gift of tongues, prophecy, revelation, visions, healing, interpretation of tongues, and so forth.',tags:['Spiritual Gifts','Revelation']},
-    {book:'Articles of Faith',chapter:1,verse:8,ref:'Articles of Faith 1:8',text:'We believe the Bible to be the word of God as far as it is translated correctly; we also believe the Book of Mormon to be the word of God.',tags:['Scripture','Bible','Book of Mormon']},
-    {book:'Articles of Faith',chapter:1,verse:9,ref:'Articles of Faith 1:9',text:'We believe all that God has revealed, all that He does now reveal, and we believe that He will yet reveal many great and important things pertaining to the Kingdom of God.',tags:['Revelation','Prophets']},
-    {book:'Articles of Faith',chapter:1,verse:10,ref:'Articles of Faith 1:10',text:'We believe in the literal gathering of Israel and in the restoration of the Ten Tribes; that Zion (the New Jerusalem) will be built upon the American continent; that Christ will reign personally upon the earth; and, that the earth will be renewed and receive its paradisiacal glory.',tags:['Second Coming','Israel','Zion']},
-    {book:'Articles of Faith',chapter:1,verse:11,ref:'Articles of Faith 1:11',text:'We claim the privilege of worshiping Almighty God according to the dictates of our own conscience, and allow all men the same privilege, let them worship how, where, or what they may.',tags:['Religious Freedom','Worship']},
-    {book:'Articles of Faith',chapter:1,verse:12,ref:'Articles of Faith 1:12',text:'We believe in being subject to kings, presidents, rulers, and magistrates, in obeying, honoring, and sustaining the law.',tags:['Law','Obedience','Government']},
-    {book:'Articles of Faith',chapter:1,verse:13,ref:'Articles of Faith 1:13',text:'We believe in being honest, true, chaste, benevolent, virtuous, and in doing good to all men; indeed, we may say that we follow the admonition of Paul—We believe all things, we hope all things, we have endured many things, and hope to be able to endure all things. If there is anything virtuous, lovely, or of good report or praiseworthy, we seek after these things.',tags:['Virtue','Honesty','Hope']},
-    // General Conference Quotes
-    {book:'Conference Quotes',chapter:2024,verse:1,ref:'President Nelson (2024)',text:'Think celestial! When you are tempted to give up, think celestial. When your faith is being tested, think celestial. When life or loved ones disappoint you, think celestial.',tags:['Eternal Perspective','Faith','Hope'],speaker:'President Russell M. Nelson'},
-    {book:'Conference Quotes',chapter:2023,verse:1,ref:'President Nelson (2023)',text:'The Lord loves effort. The Lord loves consistency. The Lord loves diligence.',tags:['Effort','Diligence','Love'],speaker:'President Russell M. Nelson'},
-    {book:'Conference Quotes',chapter:2022,verse:1,ref:'President Nelson (2022)',text:'You can always trust the Lord. He will always keep His promises to you.',tags:['Trust','Faith','Promises'],speaker:'President Russell M. Nelson'},
-    {book:'Conference Quotes',chapter:2021,verse:1,ref:'President Hinckley',text:'Be believing. Be happy. Don\'t get discouraged. Things will work out.',tags:['Hope','Faith','Optimism'],speaker:'President Gordon B. Hinckley'},
-    {book:'Conference Quotes',chapter:2020,verse:1,ref:'Elder Holland',text:'Don\'t you quit. You keep walking. You keep trying. There is help and happiness ahead.',tags:['Perseverance','Hope','Courage'],speaker:'Elder Jeffrey R. Holland'},
-    {book:'Conference Quotes',chapter:2019,verse:1,ref:'Elder Uchtdorf',text:'The Lord compensates the faithful for every loss. That which is taken away from those who love the Lord will be added unto them in His own way.',tags:['Faith','Compensation','Love'],speaker:'Elder Dieter F. Uchtdorf'},
-    {book:'Conference Quotes',chapter:2018,verse:1,ref:'President Eyring',text:'The Comforter, which is the Holy Ghost, gives us the peace and assurance that our course is right.',tags:['Holy Ghost','Peace','Guidance'],speaker:'President Henry B. Eyring'},
-    {book:'Conference Quotes',chapter:2017,verse:1,ref:'President Oaks',text:'What is most important almost always involves the people around us. Feelings of closeness and love are born in sharing service, joy, and hardship.',tags:['Love','Service','Family'],speaker:'President Dallin H. Oaks'},
-    {book:'Conference Quotes',chapter:2016,verse:1,ref:'Elder Bednar',text:'Faith is to hope for things which are not seen but which are true and then to act on that belief.',tags:['Faith','Action','Truth'],speaker:'Elder David A. Bednar'},
-    {book:'Conference Quotes',chapter:2015,verse:1,ref:'President Monson',text:'May we ever choose the harder right instead of the easier wrong.',tags:['Courage','Integrity','Choice'],speaker:'President Thomas S. Monson'},
-    {book:'Conference Quotes',chapter:2014,verse:1,ref:'Elder Christofferson',text:'When we stand at the judgment bar, we cannot offer the excuse that our testimony was not strong enough or that our conversion was only partial.',tags:['Testimony','Conversion','Accountability'],speaker:'Elder D. Todd Christofferson'},
-    {book:'Conference Quotes',chapter:2013,verse:1,ref:'Elder Ballard',text:'Keep the eyes of your faith focused on the gospel of Jesus Christ and on the gift of the Holy Ghost.',tags:['Faith','Holy Ghost','Focus'],speaker:'Elder M. Russell Ballard'},
-    {book:'Conference Quotes',chapter:2012,verse:1,ref:'President Packer',text:'True doctrine, understood, changes attitudes and behavior.',tags:['Doctrine','Change','Understanding'],speaker:'President Boyd K. Packer'},
+    {book:'Romans',chapter:12,verse:2,ref:'Romans 12:2',text:'And be not conformed to this world: but be ye transformed by the renewing of your mind, that ye may prove what is that good, and acceptable, and perfect, will of God.',tags:['Wisdom','Obedience']},
+    {book:'1 Corinthians',chapter:13,verse:4,ref:'1 Corinthians 13:4-7',text:'Charity suffereth long, and is kind; charity envieth not; charity vaunteth not itself, is not puffed up, Doth not behave itself unseemly, seeketh not her own, is not easily provoked, thinketh no evil.',tags:['Charity','Love','Patience']},
+    {book:'Galatians',chapter:5,verse:22,ref:'Galatians 5:22-23',text:'But the fruit of the Spirit is love, joy, peace, longsuffering, gentleness, goodness, faith, Meekness, temperance: against such there is no law.',tags:['Peace','Love','Faith']},
+    {book:'Ephesians',chapter:6,verse:10,ref:'Ephesians 6:10-11',text:'Finally, my brethren, be strong in the Lord, and in the power of his might. Put on the whole armour of God, that ye may be able to stand against the wiles of the devil.',tags:['Courage','Faith']},
+    {book:'Philippians',chapter:4,verse:6,ref:'Philippians 4:6-7',text:'Be careful for nothing; but in every thing by prayer and supplication with thanksgiving let your requests be made known unto God. And the peace of God, which passeth all understanding, shall keep your hearts and minds through Christ Jesus.',tags:['Prayer','Peace']},
+    {book:'Philippians',chapter:4,verse:13,ref:'Philippians 4:13',text:'I can do all things through Christ which strengtheneth me.',tags:['Courage','Jesus Christ','Faith']},
+    {book:'Hebrews',chapter:11,verse:1,ref:'Hebrews 11:1',text:'Now faith is the substance of things hoped for, the evidence of things not seen.',tags:['Faith','Hope']},
+    {book:'James',chapter:1,verse:5,ref:'James 1:5',text:'If any of you lack wisdom, let him ask of God, that giveth to all men liberally, and upbraideth not; and it shall be given him.',tags:['Prayer','Wisdom']},
+    {book:'1 Peter',chapter:5,verse:7,ref:'1 Peter 5:7',text:'Casting all your care upon him; for he careth for you.',tags:['Faith','Peace','Trials']},
   ],
+  downloadedPacks:[], // Array of pack IDs that have been downloaded
   downloaded:null // Will hold full library when downloaded
+};
+
+// Downloadable Scripture Packs
+const SCRIPTURE_PACKS={
+  'book-of-mormon':{
+    id:'book-of-mormon',
+    name:'Book of Mormon',
+    description:'Scripture from the Book of Mormon',
+    icon:'📘',
+    verses:[
+      {book:'1 Nephi',chapter:3,verse:7,ref:'1 Nephi 3:7',text:'And it came to pass that I, Nephi, said unto my father: I will go and do the things which the Lord hath commanded, for I know that the Lord giveth no commandments unto the children of men, save he shall prepare a way for them that they may accomplish the thing which he commandeth them.',tags:['Obedience','Faith','Courage']},
+      {book:'1 Nephi',chapter:19,verse:23,ref:'1 Nephi 19:23',text:'And I did read many things unto them which were written in the books of Moses; but that I might more fully persuade them to believe in the Lord their Redeemer I did read unto them that which was written by the prophet Isaiah.',tags:['Faith','Jesus Christ']},
+      {book:'2 Nephi',chapter:2,verse:25,ref:'2 Nephi 2:25',text:'Adam fell that men might be; and men are, that they might have joy.',tags:['Wisdom','Peace']},
+      {book:'2 Nephi',chapter:9,verse:28,ref:'2 Nephi 9:28-29',text:'O that cunning plan of the evil one! O the vainness, and the frailties, and the foolishness of men! When they are learned they think they are wise, and they hearken not unto the counsel of God, for they set it aside, supposing they know of themselves, wherefore, their wisdom is foolishness and it profiteth them not.',tags:['Wisdom','Humility']},
+      {book:'2 Nephi',chapter:25,verse:26,ref:'2 Nephi 25:26',text:'And we talk of Christ, we rejoice in Christ, we preach of Christ, we prophesy of Christ, and we write according to our prophecies, that our children may know to what source they may look for a remission of their sins.',tags:['Jesus Christ','Faith']},
+      {book:'2 Nephi',chapter:31,verse:20,ref:'2 Nephi 31:20',text:'Wherefore, ye must press forward with a steadfastness in Christ, having a perfect brightness of hope, and a love of God and of all men. Wherefore, if ye shall press forward, feasting upon the word of Christ, and endure to the end, behold, thus saith the Father: Ye shall have eternal life.',tags:['Hope','Love','Patience']},
+      {book:'Mosiah',chapter:2,verse:17,ref:'Mosiah 2:17',text:'And behold, I tell you these things that ye may learn wisdom; that ye may learn that when ye are in the service of your fellow beings ye are only in the service of your God.',tags:['Service','Charity','Wisdom']},
+      {book:'Mosiah',chapter:3,verse:19,ref:'Mosiah 3:19',text:'For the natural man is an enemy to God, and has been from the fall of Adam, and will be, forever and ever, unless he yields to the enticings of the Holy Spirit, and putteth off the natural man and becometh a saint through the atonement of Christ the Lord.',tags:['Repentance','Jesus Christ']},
+      {book:'Mosiah',chapter:4,verse:30,ref:'Mosiah 4:30',text:'But this much I can tell you, that if ye do not watch yourselves, and your thoughts, and your words, and your deeds, and observe the commandments of God, and continue in the faith of what ye have heard concerning the coming of our Lord, even unto the end of your lives, ye must perish. And now, O man, remember, and perish not.',tags:['Obedience','Faith','Patience']},
+      {book:'Alma',chapter:7,verse:11,ref:'Alma 7:11-12',text:'And he shall go forth, suffering pains and afflictions and temptations of every kind; and this that the word might be fulfilled which saith he will take upon him the pains and the sicknesses of his people.',tags:['Jesus Christ','Trials','Charity']},
+      {book:'Alma',chapter:32,verse:21,ref:'Alma 32:21',text:'And now as I said concerning faith—faith is not to have a perfect knowledge of things; therefore if ye have faith ye hope for things which are not seen, which are true.',tags:['Faith','Hope']},
+      {book:'Alma',chapter:34,verse:32,ref:'Alma 34:32',text:'For behold, this life is the time for men to prepare to meet God; yea, behold the day of this life is the day for men to perform their labors.',tags:['Obedience','Wisdom']},
+      {book:'Alma',chapter:37,verse:6,ref:'Alma 37:6',text:'Now ye may suppose that this is foolishness in me; but behold I say unto you, that by small and simple things are great things brought to pass; and small means in many instances doth confound the wise.',tags:['Faith','Wisdom']},
+      {book:'Alma',chapter:37,verse:35,ref:'Alma 37:35',text:'O, remember, my son, and learn wisdom in thy youth; yea, learn in thy youth to keep the commandments of God.',tags:['Wisdom','Obedience']},
+      {book:'Alma',chapter:41,verse:10,ref:'Alma 41:10',text:'Do not suppose, because it has been spoken concerning restoration, that ye shall be restored from sin to happiness. Behold, I say unto you, wickedness never was happiness.',tags:['Peace','Repentance']},
+      {book:'Helaman',chapter:5,verse:12,ref:'Helaman 5:12',text:'And now, my sons, remember, remember that it is upon the rock of our Redeemer, who is Christ, the Son of God, that ye must build your foundation.',tags:['Jesus Christ','Faith']},
+      {book:'3 Nephi',chapter:11,verse:29,ref:'3 Nephi 11:29',text:'For verily, verily I say unto you, he that hath the spirit of contention is not of me, but is of the devil, who is the father of contention, and he stirreth up the hearts of men to contend with anger, one with another.',tags:['Peace','Love']},
+      {book:'3 Nephi',chapter:27,verse:27,ref:'3 Nephi 27:27',text:'Therefore, what manner of men ought ye to be? Verily I say unto you, even as I am.',tags:['Jesus Christ','Obedience']},
+      {book:'Ether',chapter:12,verse:6,ref:'Ether 12:6',text:'And now, I, Moroni, would speak somewhat concerning these things; I would show unto the world that faith is things which are hoped for and not seen; wherefore, dispute not because ye see not, for ye receive no witness until after the trial of your faith.',tags:['Faith','Trials','Hope']},
+      {book:'Ether',chapter:12,verse:27,ref:'Ether 12:27',text:'And if men come unto me I will show unto them their weakness. I give unto men weakness that they may be humble; and my grace is sufficient for all men that humble themselves before me.',tags:['Trials','Faith','Humility']},
+      {book:'Moroni',chapter:7,verse:45,ref:'Moroni 7:45',text:'And charity suffereth long, and is kind, and envieth not, and is not puffed up, seeketh not her own, is not easily provoked, thinketh no evil, and rejoiceth not in iniquity but rejoiceth in the truth, beareth all things, believeth all things, hopeth all things, endureth all things.',tags:['Charity','Love','Patience']},
+      {book:'Moroni',chapter:7,verse:47,ref:'Moroni 7:47',text:'But charity is the pure love of Christ, and it endureth forever; and whoso is found possessed of it at the last day, it shall be well with him.',tags:['Charity','Love','Jesus Christ']},
+      {book:'Moroni',chapter:10,verse:4,ref:'Moroni 10:4-5',text:'And when ye shall receive these things, I would exhort you that ye would ask God, the Eternal Father, in the name of Christ, if these things are not true; and if ye shall ask with a sincere heart, with real intent, having faith in Christ, he will manifest the truth of it unto you, by the power of the Holy Ghost.',tags:['Prayer','Faith','Hope']},
+      {book:'Moroni',chapter:10,verse:32,ref:'Moroni 10:32',text:'Yea, come unto Christ, and be perfected in him, and deny yourselves of all ungodliness; and if ye shall deny yourselves of all ungodliness, and love God with all your might, mind and strength, then is his grace sufficient for you.',tags:['Jesus Christ','Love','Faith']},
+    ]
+  },
+  'doctrine-covenants':{
+    id:'doctrine-covenants',
+    name:'Doctrine & Covenants',
+    description:'Latter-day revelations',
+    icon:'📙',
+    verses:[
+      {book:'D&C',chapter:4,verse:2,ref:'D&C 4:2',text:'Therefore, O ye that embark in the service of God, see that ye serve him with all your heart, might, mind and strength, that ye may stand blameless before God at the last day.',tags:['Service','Obedience']},
+      {book:'D&C',chapter:6,verse:36,ref:'D&C 6:36',text:'Look unto me in every thought; doubt not, fear not.',tags:['Faith','Courage','Jesus Christ']},
+      {book:'D&C',chapter:18,verse:10,ref:'D&C 18:10',text:'Remember the worth of souls is great in the sight of God.',tags:['Love','Service']},
+      {book:'D&C',chapter:58,verse:27,ref:'D&C 58:27',text:'Verily I say, men should be anxiously engaged in a good cause, and do many things of their own free will, and bring to pass much righteousness.',tags:['Service','Obedience']},
+      {book:'D&C',chapter:58,verse:42,ref:'D&C 58:42',text:'Behold, he who has repented of his sins, the same is forgiven, and I, the Lord, remember them no more.',tags:['Repentance','Peace']},
+      {book:'D&C',chapter:64,verse:33,ref:'D&C 64:33',text:'Wherefore, be not weary in well-doing, for ye are laying the foundation of a great work. And out of small things proceedeth that which is great.',tags:['Patience','Service','Wisdom']},
+      {book:'D&C',chapter:82,verse:10,ref:'D&C 82:10',text:'I, the Lord, am bound when ye do what I say; but when ye do not what I say, ye have no promise.',tags:['Obedience','Faith']},
+      {book:'D&C',chapter:88,verse:63,ref:'D&C 88:63',text:'Draw near unto me and I will draw near unto you; seek me diligently and ye shall find me; ask, and ye shall receive; knock, and it shall be opened unto you.',tags:['Prayer','Faith','Jesus Christ']},
+      {book:'D&C',chapter:121,verse:45,ref:'D&C 121:45-46',text:'Let thy bowels also be full of charity towards all men, and to the household of faith, and let virtue garnish thy thoughts unceasingly; then shall thy confidence wax strong in the presence of God.',tags:['Charity','Love','Virtue']},
+    ]
+  },
+  'articles-of-faith':{
+    id:'articles-of-faith',
+    name:'Articles of Faith',
+    description:'The 13 Articles of Faith',
+    icon:'📜',
+    verses:[
+      {book:'Articles of Faith',chapter:1,verse:1,ref:'Articles of Faith 1:1',text:'We believe in God, the Eternal Father, and in His Son, Jesus Christ, and in the Holy Ghost.',tags:['Faith','Jesus Christ']},
+      {book:'Articles of Faith',chapter:1,verse:2,ref:'Articles of Faith 1:2',text:'We believe that men will be punished for their own sins, and not for Adam\'s transgression.',tags:['Wisdom','Faith']},
+      {book:'Articles of Faith',chapter:1,verse:3,ref:'Articles of Faith 1:3',text:'We believe that through the Atonement of Christ, all mankind may be saved, by obedience to the laws and ordinances of the Gospel.',tags:['Jesus Christ','Faith']},
+      {book:'Articles of Faith',chapter:1,verse:4,ref:'Articles of Faith 1:4',text:'We believe that the first principles and ordinances of the Gospel are: first, Faith in the Lord Jesus Christ; second, Repentance; third, Baptism by immersion for the remission of sins; fourth, Laying on of hands for the gift of the Holy Ghost.',tags:['Faith','Repentance']},
+      {book:'Articles of Faith',chapter:1,verse:5,ref:'Articles of Faith 1:5',text:'We believe that a man must be called of God, by prophecy, and by the laying on of hands by those who are in authority, to preach the Gospel and administer in the ordinances thereof.',tags:['Faith','Service']},
+      {book:'Articles of Faith',chapter:1,verse:6,ref:'Articles of Faith 1:6',text:'We believe in the same organization that existed in the Primitive Church, namely, apostles, prophets, pastors, teachers, evangelists, and so forth.',tags:['Faith','Wisdom']},
+      {book:'Articles of Faith',chapter:1,verse:7,ref:'Articles of Faith 1:7',text:'We believe in the gift of tongues, prophecy, revelation, visions, healing, interpretation of tongues, and so forth.',tags:['Faith','Hope']},
+      {book:'Articles of Faith',chapter:1,verse:8,ref:'Articles of Faith 1:8',text:'We believe the Bible to be the word of God as far as it is translated correctly; we also believe the Book of Mormon to be the word of God.',tags:['Faith','Wisdom']},
+      {book:'Articles of Faith',chapter:1,verse:9,ref:'Articles of Faith 1:9',text:'We believe all that God has revealed, all that He does now reveal, and we believe that He will yet reveal many great and important things pertaining to the Kingdom of God.',tags:['Faith','Hope']},
+      {book:'Articles of Faith',chapter:1,verse:10,ref:'Articles of Faith 1:10',text:'We believe in the literal gathering of Israel and in the restoration of the Ten Tribes; that Zion (the New Jerusalem) will be built upon the American continent; that Christ will reign personally upon the earth; and, that the earth will be renewed and receive its paradisiacal glory.',tags:['Hope','Jesus Christ']},
+      {book:'Articles of Faith',chapter:1,verse:11,ref:'Articles of Faith 1:11',text:'We claim the privilege of worshiping Almighty God according to the dictates of our own conscience, and allow all men the same privilege, let them worship how, where, or what they may.',tags:['Worship','Faith']},
+      {book:'Articles of Faith',chapter:1,verse:12,ref:'Articles of Faith 1:12',text:'We believe in being subject to kings, presidents, rulers, and magistrates, in obeying, honoring, and sustaining the law.',tags:['Obedience','Wisdom']},
+      {book:'Articles of Faith',chapter:1,verse:13,ref:'Articles of Faith 1:13',text:'We believe in being honest, true, chaste, benevolent, virtuous, and in doing good to all men; indeed, we may say that we follow the admonition of Paul—We believe all things, we hope all things, we have endured many things, and hope to be able to endure all things. If there is anything virtuous, lovely, or of good report or praiseworthy, we seek after these things.',tags:['Virtue','Hope','Love']},
+    ]
+  },
+  'lds-quotes':{
+    id:'lds-quotes',
+    name:'LDS Leader Quotes',
+    description:'Quotes from Church leaders',
+    icon:'🎤',
+    quotes:[
+      {ref:'President Nelson (2024)',text:'Think celestial! When you are tempted to give up, think celestial. When your faith is being tested, think celestial. When life or loved ones disappoint you, think celestial.',tags:['Faith','Hope'],speaker:'President Russell M. Nelson'},
+      {ref:'President Nelson (2023)',text:'The Lord loves effort. The Lord loves consistency. The Lord loves diligence.',tags:['Faith','Love'],speaker:'President Russell M. Nelson'},
+      {ref:'President Nelson (2022)',text:'You can always trust the Lord. He will always keep His promises to you.',tags:['Faith','Hope'],speaker:'President Russell M. Nelson'},
+      {ref:'President Hinckley',text:'Be believing. Be happy. Don\'t get discouraged. Things will work out.',tags:['Hope','Faith'],speaker:'President Gordon B. Hinckley'},
+      {ref:'Elder Holland',text:'Don\'t you quit. You keep walking. You keep trying. There is help and happiness ahead.',tags:['Hope','Courage'],speaker:'Elder Jeffrey R. Holland'},
+      {ref:'Elder Uchtdorf',text:'The Lord compensates the faithful for every loss. That which is taken away from those who love the Lord will be added unto them in His own way.',tags:['Faith','Love'],speaker:'Elder Dieter F. Uchtdorf'},
+      {ref:'President Eyring',text:'The Comforter, which is the Holy Ghost, gives us the peace and assurance that our course is right.',tags:['Peace','Faith'],speaker:'President Henry B. Eyring'},
+      {ref:'President Oaks',text:'What is most important almost always involves the people around us. Feelings of closeness and love are born in sharing service, joy, and hardship.',tags:['Love','Service','Family'],speaker:'President Dallin H. Oaks'},
+      {ref:'Elder Bednar',text:'Faith is to hope for things which are not seen but which are true and then to act on that belief.',tags:['Faith','Hope'],speaker:'Elder David A. Bednar'},
+      {ref:'President Monson',text:'May we ever choose the harder right instead of the easier wrong.',tags:['Courage','Wisdom'],speaker:'President Thomas S. Monson'},
+    ]
+  },
+  // ===== JUDAISM =====
+  'torah':{
+    id:'torah',
+    name:'Torah & Tanakh',
+    description:'Sacred texts of Judaism',
+    icon:'✡️',
+    verses:[
+      {book:'Torah',chapter:1,verse:1,ref:'Deuteronomy 6:5',text:'And thou shalt love the Lord thy God with all thine heart, and with all thy soul, and with all thy might.',tags:['Love','Faith']},
+      {book:'Torah',chapter:1,verse:2,ref:'Leviticus 19:18',text:'Thou shalt love thy neighbour as thyself: I am the Lord.',tags:['Love','Charity']},
+      {book:'Torah',chapter:1,verse:3,ref:'Micah 6:8',text:'He hath shewed thee, O man, what is good; and what doth the Lord require of thee, but to do justly, and to love mercy, and to walk humbly with thy God?',tags:['Wisdom','Humility']},
+      {book:'Torah',chapter:1,verse:4,ref:'Proverbs 3:5-6 (Tanakh)',text:'Trust in the Lord with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths.',tags:['Faith','Wisdom']},
+      {book:'Torah',chapter:1,verse:5,ref:'Ecclesiastes 3:1',text:'To every thing there is a season, and a time to every purpose under the heaven.',tags:['Wisdom','Peace']},
+      {book:'Torah',chapter:1,verse:6,ref:'Isaiah 40:31 (Tanakh)',text:'But they that wait upon the Lord shall renew their strength; they shall mount up with wings as eagles.',tags:['Faith','Hope']},
+      {book:'Torah',chapter:1,verse:7,ref:'Psalm 23:1 (Tanakh)',text:'The Lord is my shepherd; I shall not want.',tags:['Peace','Faith']},
+      {book:'Torah',chapter:1,verse:8,ref:'Psalm 27:1',text:'The Lord is my light and my salvation; whom shall I fear? The Lord is the strength of my life; of whom shall I be afraid?',tags:['Courage','Faith']},
+      {book:'Torah',chapter:1,verse:9,ref:'Psalm 46:10 (Tanakh)',text:'Be still, and know that I am God.',tags:['Peace','Faith']},
+      {book:'Torah',chapter:1,verse:10,ref:'Psalm 118:24',text:'This is the day which the Lord hath made; we will rejoice and be glad in it.',tags:['Gratitude','Peace']},
+      {book:'Torah',chapter:1,verse:11,ref:'Proverbs 16:3',text:'Commit thy works unto the Lord, and thy thoughts shall be established.',tags:['Faith','Wisdom']},
+      {book:'Torah',chapter:1,verse:12,ref:'Isaiah 41:10 (Tanakh)',text:'Fear thou not; for I am with thee: be not dismayed; for I am thy God.',tags:['Courage','Faith']},
+    ]
+  },
+  'jewish-wisdom':{
+    id:'jewish-wisdom',
+    name:'Jewish Wisdom',
+    description:'Talmud & Rabbinic teachings',
+    icon:'📜',
+    quotes:[
+      {ref:'Pirkei Avot 1:14',text:'If I am not for myself, who will be for me? But if I am only for myself, what am I? And if not now, when?',tags:['Wisdom','Service'],speaker:'Hillel'},
+      {ref:'Pirkei Avot 2:4',text:'Do not judge your fellow until you have stood in his place.',tags:['Wisdom','Charity'],speaker:'Hillel'},
+      {ref:'Talmud Shabbat 31a',text:'What is hateful to you, do not do to your neighbor. That is the whole Torah; the rest is commentary.',tags:['Love','Wisdom'],speaker:'Hillel'},
+      {ref:'Pirkei Avot 4:1',text:'Who is wise? One who learns from every person. Who is strong? One who controls their inclinations. Who is rich? One who is happy with their lot.',tags:['Wisdom','Gratitude'],speaker:'Ben Zoma'},
+      {ref:'Talmud Sanhedrin 37a',text:'Whoever saves a single life is considered to have saved the whole world.',tags:['Love','Service'],speaker:'Talmud'},
+      {ref:'Pirkei Avot 1:2',text:'The world stands on three things: Torah, service of God, and acts of loving kindness.',tags:['Faith','Charity'],speaker:'Shimon HaTzaddik'},
+      {ref:'Pirkei Avot 2:16',text:'It is not your duty to finish the work, but neither are you free to neglect it.',tags:['Service','Patience'],speaker:'Rabbi Tarfon'},
+      {ref:'Talmud Berachot 17a',text:'The purpose of wisdom is repentance and good deeds.',tags:['Wisdom','Repentance'],speaker:'Talmud'},
+    ]
+  },
+  // ===== ISLAM =====
+  'quran':{
+    id:'quran',
+    name:'Quran',
+    description:'Holy book of Islam',
+    icon:'☪️',
+    verses:[
+      {book:'Quran',chapter:1,verse:1,ref:'Surah Al-Fatiha 1:1-7',text:'In the name of Allah, the Most Gracious, the Most Merciful. Praise be to Allah, Lord of all the worlds.',tags:['Faith','Gratitude']},
+      {book:'Quran',chapter:2,verse:1,ref:'Surah Al-Baqarah 2:286',text:'Allah does not burden a soul beyond that it can bear.',tags:['Trials','Faith']},
+      {book:'Quran',chapter:2,verse:2,ref:'Surah Al-Baqarah 2:152',text:'Remember Me, and I will remember you. Be grateful to Me and do not deny Me.',tags:['Gratitude','Faith']},
+      {book:'Quran',chapter:2,verse:3,ref:'Surah Al-Baqarah 2:155-156',text:'We will certainly test you with fear and hunger and loss of wealth and lives and fruits. But give good tidings to the patient.',tags:['Patience','Trials']},
+      {book:'Quran',chapter:3,verse:1,ref:'Surah Ali Imran 3:139',text:'Do not lose heart or despair— if you are true believers you have the upper hand.',tags:['Courage','Hope']},
+      {book:'Quran',chapter:5,verse:1,ref:'Surah Al-Ma\'idah 5:8',text:'Be just! That is closer to righteousness.',tags:['Wisdom','Charity']},
+      {book:'Quran',chapter:13,verse:1,ref:'Surah Ar-Ra\'d 13:28',text:'Verily, in the remembrance of Allah do hearts find rest.',tags:['Peace','Faith']},
+      {book:'Quran',chapter:39,verse:1,ref:'Surah Az-Zumar 39:53',text:'Say: O My servants who have transgressed against themselves, do not despair of the mercy of Allah. Indeed, Allah forgives all sins.',tags:['Hope','Repentance']},
+      {book:'Quran',chapter:49,verse:1,ref:'Surah Al-Hujurat 49:13',text:'O mankind, We have created you from male and female and made you peoples and tribes that you may know one another.',tags:['Love','Wisdom']},
+      {book:'Quran',chapter:94,verse:1,ref:'Surah Ash-Sharh 94:5-6',text:'For indeed, with hardship comes ease. Indeed, with hardship comes ease.',tags:['Hope','Trials']},
+      {book:'Quran',chapter:103,verse:1,ref:'Surah Al-Asr 103:1-3',text:'By time, indeed mankind is in loss, except for those who believe and do righteous deeds and advise each other to truth and patience.',tags:['Faith','Patience']},
+    ]
+  },
+  'hadith':{
+    id:'hadith',
+    name:'Hadith',
+    description:'Sayings of Prophet Muhammad',
+    icon:'🕌',
+    quotes:[
+      {ref:'Sahih Bukhari',text:'The best among you are those who have the best manners and character.',tags:['Wisdom','Charity'],speaker:'Prophet Muhammad ﷺ'},
+      {ref:'Sahih Muslim',text:'None of you truly believes until he loves for his brother what he loves for himself.',tags:['Love','Charity'],speaker:'Prophet Muhammad ﷺ'},
+      {ref:'Sahih Bukhari',text:'Make things easy and do not make them difficult. Give glad tidings and do not drive people away.',tags:['Kindness','Wisdom'],speaker:'Prophet Muhammad ﷺ'},
+      {ref:'Sunan Ibn Majah',text:'Be kind, for whenever kindness becomes part of something, it beautifies it. Whenever it is taken from something, it leaves it tarnished.',tags:['Kindness','Love'],speaker:'Prophet Muhammad ﷺ'},
+      {ref:'Sahih Muslim',text:'The strong person is not the one who can wrestle someone else down. The strong person is the one who can control himself when he is angry.',tags:['Patience','Wisdom'],speaker:'Prophet Muhammad ﷺ'},
+      {ref:'Jami at-Tirmidhi',text:'Take advantage of five before five: your youth before your old age, your health before your illness, your wealth before your poverty, your free time before your work, and your life before your death.',tags:['Wisdom','Gratitude'],speaker:'Prophet Muhammad ﷺ'},
+      {ref:'Sahih Bukhari',text:'Whoever believes in Allah and the Last Day, let him speak good or remain silent.',tags:['Wisdom','Peace'],speaker:'Prophet Muhammad ﷺ'},
+      {ref:'Sahih Muslim',text:'A servant of Allah will remain standing on the Day of Judgment until he is questioned about his life and how he spent it.',tags:['Wisdom','Faith'],speaker:'Prophet Muhammad ﷺ'},
+    ]
+  },
+  // ===== BUDDHISM =====
+  'buddhist-sutras':{
+    id:'buddhist-sutras',
+    name:'Buddhist Teachings',
+    description:'Wisdom from Buddhist sutras',
+    icon:'☸️',
+    quotes:[
+      {ref:'Dhammapada 1:1-2',text:'All that we are is the result of what we have thought. The mind is everything. What we think, we become.',tags:['Wisdom','Peace'],speaker:'Buddha'},
+      {ref:'Dhammapada 17:223',text:'Conquer anger with non-anger. Conquer badness with goodness. Conquer meanness with generosity. Conquer dishonesty with truth.',tags:['Peace','Wisdom'],speaker:'Buddha'},
+      {ref:'Dhammapada 1:5',text:'Hatred does not cease by hatred, but only by love; this is the eternal rule.',tags:['Love','Peace'],speaker:'Buddha'},
+      {ref:'Dhammapada 24:320',text:'Better than a thousand hollow words is one word that brings peace.',tags:['Peace','Wisdom'],speaker:'Buddha'},
+      {ref:'Metta Sutta',text:'May all beings be happy. May all beings be free from suffering. May all beings find joy. May all beings live in peace.',tags:['Love','Peace'],speaker:'Buddha'},
+      {ref:'Dhammapada 4:50',text:'Do not look at the faults of others, but look at your own deeds, done and undone.',tags:['Wisdom','Humility'],speaker:'Buddha'},
+      {ref:'Dhammapada 14:183',text:'To refrain from evil, to cultivate the good, and to purify one\'s mind—this is the teaching of all the Buddhas.',tags:['Wisdom','Peace'],speaker:'Buddha'},
+      {ref:'Heart Sutra',text:'Form is emptiness, emptiness is form. There is no suffering, no cause of suffering, no end to suffering, no path to follow.',tags:['Wisdom','Peace'],speaker:'Heart Sutra'},
+      {ref:'Dhammapada 20:277',text:'All conditioned things are impermanent. When one sees this with wisdom, one turns away from suffering.',tags:['Wisdom','Peace'],speaker:'Buddha'},
+      {ref:'Lotus Sutra',text:'Just as the soft rain falls equally on all plants, the Buddha\'s compassion falls equally on all beings.',tags:['Love','Charity'],speaker:'Lotus Sutra'},
+    ]
+  },
+  // ===== HINDUISM =====
+  'bhagavad-gita':{
+    id:'bhagavad-gita',
+    name:'Bhagavad Gita',
+    description:'Hindu sacred scripture',
+    icon:'🕉️',
+    verses:[
+      {book:'Gita',chapter:2,verse:47,ref:'Bhagavad Gita 2:47',text:'You have the right to work, but never to the fruit of work. You should never engage in action for the sake of reward.',tags:['Wisdom','Service']},
+      {book:'Gita',chapter:2,verse:48,ref:'Bhagavad Gita 2:48',text:'Perform work in this world, established in yoga, without attachment, and be even-minded in success and failure.',tags:['Peace','Wisdom']},
+      {book:'Gita',chapter:2,verse:62,ref:'Bhagavad Gita 2:62-63',text:'From attachment springs desire, and from desire comes anger. From anger arises delusion, and from delusion, loss of memory.',tags:['Wisdom','Peace']},
+      {book:'Gita',chapter:3,verse:19,ref:'Bhagavad Gita 3:19',text:'Therefore, without attachment, perform always the work that has to be done, for by working without attachment, one attains the Supreme.',tags:['Service','Wisdom']},
+      {book:'Gita',chapter:4,verse:7,ref:'Bhagavad Gita 4:7-8',text:'Whenever righteousness declines and unrighteousness rises, I manifest myself. For the protection of the good and destruction of evil, I am born age after age.',tags:['Faith','Hope']},
+      {book:'Gita',chapter:6,verse:5,ref:'Bhagavad Gita 6:5',text:'Elevate yourself through the power of your mind, and not degrade yourself, for the mind can be the friend and also the enemy of the self.',tags:['Wisdom','Courage']},
+      {book:'Gita',chapter:9,verse:22,ref:'Bhagavad Gita 9:22',text:'To those who are constantly devoted and worship Me with love, I give the understanding by which they can come to Me.',tags:['Faith','Love']},
+      {book:'Gita',chapter:12,verse:13,ref:'Bhagavad Gita 12:13-14',text:'One who is free from hatred toward all beings, friendly and compassionate, free from possessiveness and ego, even-minded in pain and pleasure—such a devotee is dear to Me.',tags:['Love','Peace']},
+      {book:'Gita',chapter:18,verse:66,ref:'Bhagavad Gita 18:66',text:'Abandon all varieties of dharma and simply surrender unto Me. I shall deliver you from all sinful reactions; do not fear.',tags:['Faith','Peace']},
+    ]
+  },
+  'hindu-wisdom':{
+    id:'hindu-wisdom',
+    name:'Hindu Wisdom',
+    description:'Upanishads & Vedic teachings',
+    icon:'🙏',
+    quotes:[
+      {ref:'Isha Upanishad 1',text:'The whole universe is pervaded by the Lord. Enjoy what has been given to you; do not covet what belongs to others.',tags:['Gratitude','Peace'],speaker:'Upanishads'},
+      {ref:'Mundaka Upanishad 3.1.6',text:'Truth alone triumphs, not falsehood. Through truth the divine path is spread out.',tags:['Wisdom','Faith'],speaker:'Upanishads'},
+      {ref:'Katha Upanishad 1.2.23',text:'The Self cannot be known through study, nor through the intellect. It is known to those whom the Self chooses.',tags:['Faith','Wisdom'],speaker:'Upanishads'},
+      {ref:'Brihadaranyaka Upanishad',text:'Lead me from the unreal to the real. Lead me from darkness to light. Lead me from death to immortality.',tags:['Hope','Faith'],speaker:'Upanishads'},
+      {ref:'Chandogya Upanishad 6.2.1',text:'In the beginning, there was only Being, one without a second.',tags:['Faith','Wisdom'],speaker:'Upanishads'},
+      {ref:'Taittiriya Upanishad',text:'Let your mother be a god to you. Let your father be a god to you. Let your teacher be a god to you. Let your guest be a god to you.',tags:['Family','Love'],speaker:'Upanishads'},
+      {ref:'Rig Veda 1.164.46',text:'Truth is one; the wise call it by many names.',tags:['Wisdom','Peace'],speaker:'Rig Veda'},
+      {ref:'Yoga Sutras 1.2',text:'Yoga is the stilling of the fluctuations of the mind.',tags:['Peace','Wisdom'],speaker:'Patanjali'},
+    ]
+  },
+  // ===== SIKHISM =====
+  'guru-granth':{
+    id:'guru-granth',
+    name:'Guru Granth Sahib',
+    description:'Sikh sacred scripture',
+    icon:'🙏',
+    quotes:[
+      {ref:'Japji Sahib (Opening)',text:'There is One God, whose name is Truth, the Creator, without fear, without hate, timeless in form, beyond birth and death, self-existent.',tags:['Faith','Peace'],speaker:'Guru Nanak'},
+      {ref:'Guru Granth Sahib, p.4',text:'Even kings and emperors with heaps of wealth and vast dominion cannot compare with an ant filled with the love of God.',tags:['Love','Faith'],speaker:'Guru Nanak'},
+      {ref:'Guru Granth Sahib, p.26',text:'Through selfless service, eternal peace is obtained.',tags:['Service','Peace'],speaker:'Guru Nanak'},
+      {ref:'Guru Granth Sahib, p.473',text:'Whatever kind of seed is sown in a field, prepared in due season, a plant of that same kind grows from it.',tags:['Wisdom','Faith'],speaker:'Guru Arjan'},
+      {ref:'Guru Granth Sahib, p.1',text:'By His Command, all forms came into being. His Command cannot be described. By His Command, souls come into being. By His Command, honor is obtained.',tags:['Faith','Humility'],speaker:'Guru Nanak'},
+      {ref:'Guru Granth Sahib, p.1384',text:'One who works for what he eats, and gives some of what he has—O Nanak, he knows the Path.',tags:['Service','Charity'],speaker:'Guru Nanak'},
+      {ref:'Guru Granth Sahib, p.913',text:'First, there is oneness. Then there is the awareness of self. Out of that awareness comes understanding.',tags:['Wisdom','Faith'],speaker:'Guru Nanak'},
+      {ref:'Mool Mantar',text:'God is One. His name is Truth. He is the Creator. He is without fear. He is without hate. He is timeless and without form.',tags:['Faith','Peace'],speaker:'Guru Nanak'},
+    ]
+  },
+  // ===== CATHOLIC/ORTHODOX =====
+  'catholic-prayers':{
+    id:'catholic-prayers',
+    name:'Catholic Prayers',
+    description:'Traditional Catholic prayers',
+    icon:'✝️',
+    quotes:[
+      {ref:'Hail Mary',text:'Hail Mary, full of grace, the Lord is with thee. Blessed art thou among women, and blessed is the fruit of thy womb, Jesus.',tags:['Faith','Prayer'],speaker:'Traditional'},
+      {ref:'Prayer of St. Francis',text:'Lord, make me an instrument of your peace. Where there is hatred, let me sow love; where there is injury, pardon; where there is doubt, faith.',tags:['Peace','Love'],speaker:'St. Francis of Assisi'},
+      {ref:'Serenity Prayer',text:'God, grant me the serenity to accept the things I cannot change, courage to change the things I can, and wisdom to know the difference.',tags:['Peace','Wisdom'],speaker:'Reinhold Niebuhr'},
+      {ref:'St. Teresa of Avila',text:'Let nothing disturb you, let nothing frighten you. All things pass away; God never changes. Patience obtains all things.',tags:['Peace','Patience'],speaker:'St. Teresa of Avila'},
+      {ref:'St. Augustine',text:'You have made us for yourself, O Lord, and our hearts are restless until they rest in you.',tags:['Faith','Peace'],speaker:'St. Augustine'},
+      {ref:'St. Ignatius of Loyola',text:'Teach us to give and not to count the cost, to fight and not to heed the wounds, to toil and not to seek for rest, to labor and not to ask for any reward.',tags:['Service','Faith'],speaker:'St. Ignatius of Loyola'},
+      {ref:'St. Thomas Aquinas',text:'To one who has faith, no explanation is necessary. To one without faith, no explanation is possible.',tags:['Faith','Wisdom'],speaker:'St. Thomas Aquinas'},
+      {ref:'The Magnificat',text:'My soul magnifies the Lord, and my spirit rejoices in God my Savior, for he has looked on the humble estate of his servant.',tags:['Gratitude','Faith'],speaker:'Mary, Mother of Jesus'},
+    ]
+  },
+  'christian-classics':{
+    id:'christian-classics',
+    name:'Christian Classics',
+    description:'Historic Christian thinkers',
+    icon:'📚',
+    quotes:[
+      {ref:'C.S. Lewis',text:'I believe in Christianity as I believe that the sun has risen: not only because I see it, but because by it I see everything else.',tags:['Faith','Wisdom'],speaker:'C.S. Lewis'},
+      {ref:'C.S. Lewis, Mere Christianity',text:'Humility is not thinking less of yourself, it\'s thinking of yourself less.',tags:['Humility','Wisdom'],speaker:'C.S. Lewis'},
+      {ref:'Dietrich Bonhoeffer',text:'Cheap grace is grace without discipleship. Costly grace is the gospel which must be sought again and again.',tags:['Faith','Wisdom'],speaker:'Dietrich Bonhoeffer'},
+      {ref:'Martin Luther King Jr.',text:'Darkness cannot drive out darkness; only light can do that. Hate cannot drive out hate; only love can do that.',tags:['Love','Peace'],speaker:'Martin Luther King Jr.'},
+      {ref:'Mother Teresa',text:'If you judge people, you have no time to love them.',tags:['Love','Charity'],speaker:'Mother Teresa'},
+      {ref:'Mother Teresa',text:'Not all of us can do great things. But we can do small things with great love.',tags:['Love','Service'],speaker:'Mother Teresa'},
+      {ref:'Billy Graham',text:'God has given us two hands, one to receive with and the other to give with.',tags:['Service','Charity'],speaker:'Billy Graham'},
+      {ref:'Oswald Chambers',text:'Faith is deliberate confidence in the character of God whose ways you may not understand at the time.',tags:['Faith','Patience'],speaker:'Oswald Chambers'},
+      {ref:'A.W. Tozer',text:'What comes into our minds when we think about God is the most important thing about us.',tags:['Faith','Wisdom'],speaker:'A.W. Tozer'},
+      {ref:'Charles Spurgeon',text:'A Bible that\'s falling apart usually belongs to someone who isn\'t.',tags:['Faith','Wisdom'],speaker:'Charles Spurgeon'},
+    ]
+  }
 };
 
 // Canonical book order for scriptures
@@ -1250,20 +1466,127 @@ const BOOK_ORDER=[
   'D&C',
   // Pearl of Great Price
   'Moses','Abraham','Joseph Smith—Matthew','Joseph Smith—History','Articles of Faith',
-  // General Conference
-  'Conference Quotes'
+  // LDS Leader Quotes
+  'LDS Quotes'
 ];
 
 // Scripture collections with their books
+// downloadable: true means the collection requires a scripture pack to be downloaded first
 const COLLECTIONS={
+  // Bible (included by default in curated)
   'Old Testament':{books:['Genesis','Exodus','Leviticus','Numbers','Deuteronomy','Joshua','Judges','Ruth','1 Samuel','2 Samuel','1 Kings','2 Kings','1 Chronicles','2 Chronicles','Ezra','Nehemiah','Esther','Job','Psalms','Proverbs','Ecclesiastes','Song of Solomon','Isaiah','Jeremiah','Lamentations','Ezekiel','Daniel','Hosea','Joel','Amos','Obadiah','Jonah','Micah','Nahum','Habakkuk','Zephaniah','Haggai','Zechariah','Malachi']},
   'New Testament':{books:['Matthew','Mark','Luke','John','Acts','Romans','1 Corinthians','2 Corinthians','Galatians','Ephesians','Philippians','Colossians','1 Thessalonians','2 Thessalonians','1 Timothy','2 Timothy','Titus','Philemon','Hebrews','James','1 Peter','2 Peter','1 John','2 John','3 John','Jude','Revelation']},
-  'Book of Mormon':{books:['1 Nephi','2 Nephi','Jacob','Enos','Jarom','Omni','Words of Mormon','Mosiah','Alma','Helaman','3 Nephi','4 Nephi','Mormon','Ether','Moroni']},
-  'Doctrine and Covenants':{books:['D&C']},
-  'Pearl of Great Price':{books:['Moses','Abraham','Joseph Smith—Matthew','Joseph Smith—History']},
-  'Articles of Faith':{books:['Articles of Faith'],isSpecial:true},
-  'General Conference':{books:['Conference Quotes'],isSpecial:true}
+  // LDS
+  'Book of Mormon':{books:['1 Nephi','2 Nephi','Jacob','Enos','Jarom','Omni','Words of Mormon','Mosiah','Alma','Helaman','3 Nephi','4 Nephi','Mormon','Ether','Moroni'],downloadable:true,packId:'book-of-mormon'},
+  'Doctrine and Covenants':{books:['D&C'],downloadable:true,packId:'doctrine-covenants'},
+  'Articles of Faith':{books:['Articles of Faith'],isSpecial:true,downloadable:true,packId:'articles-of-faith'},
+  'LDS Leader Quotes':{books:['LDS Quotes'],isSpecial:true,downloadable:true,packId:'lds-quotes'},
+  // Judaism
+  'Torah & Tanakh':{books:['Torah'],isSpecial:true,downloadable:true,packId:'torah'},
+  'Jewish Wisdom':{books:['Jewish Wisdom'],isSpecial:true,downloadable:true,packId:'jewish-wisdom'},
+  // Islam
+  'Quran':{books:['Quran'],isSpecial:true,downloadable:true,packId:'quran'},
+  'Hadith':{books:['Hadith'],isSpecial:true,downloadable:true,packId:'hadith'},
+  // Buddhism
+  'Buddhist Teachings':{books:['Buddhist'],isSpecial:true,downloadable:true,packId:'buddhist-sutras'},
+  // Hinduism
+  'Bhagavad Gita':{books:['Gita'],isSpecial:true,downloadable:true,packId:'bhagavad-gita'},
+  'Hindu Wisdom':{books:['Hindu Wisdom'],isSpecial:true,downloadable:true,packId:'hindu-wisdom'},
+  // Sikhism
+  'Guru Granth Sahib':{books:['Sikh'],isSpecial:true,downloadable:true,packId:'guru-granth'},
+  // Christian
+  'Catholic Prayers':{books:['Catholic'],isSpecial:true,downloadable:true,packId:'catholic-prayers'},
+  'Christian Classics':{books:['Christian Classics'],isSpecial:true,downloadable:true,packId:'christian-classics'}
 };
+
+// Check if a scripture pack is downloaded
+function isPackDownloaded(packId){
+  const downloadedPacks=JSON.parse(localStorage.getItem('downloadedPacks')||'[]');
+  return downloadedPacks.includes(packId);
+}
+
+// Get verse count for a pack
+function getPackVerseCount(packId){
+  const pack=SCRIPTURE_PACKS[packId];
+  if(!pack)return 0;
+  return (pack.verses?pack.verses.length:0)+(pack.quotes?pack.quotes.length:0);
+}
+
+// Download/install a scripture pack
+function downloadScripturePack(packId){
+  const pack=SCRIPTURE_PACKS[packId];
+  if(!pack){
+    alert('Error: Pack not found');
+    return false;
+  }
+
+  try{
+    let downloadedPacks=JSON.parse(localStorage.getItem('downloadedPacks')||'[]');
+    if(!downloadedPacks.includes(packId)){
+      downloadedPacks.push(packId);
+      localStorage.setItem('downloadedPacks',JSON.stringify(downloadedPacks));
+    }
+
+    // Verify the download was saved
+    const verifyPacks=JSON.parse(localStorage.getItem('downloadedPacks')||'[]');
+    if(!verifyPacks.includes(packId)){
+      alert('Error: Download failed to save. Please try again.');
+      return false;
+    }
+
+    const count=getPackVerseCount(packId);
+    alert(`${pack.name} added! (${count} items)`);
+    render();
+    return true;
+  }catch(e){
+    alert('Error downloading pack: '+e.message);
+    return false;
+  }
+}
+
+// Remove a scripture pack
+function removeScripturePack(packId){
+  let downloadedPacks=JSON.parse(localStorage.getItem('downloadedPacks')||'[]');
+  downloadedPacks=downloadedPacks.filter(p=>p!==packId);
+  localStorage.setItem('downloadedPacks',JSON.stringify(downloadedPacks));
+  render();
+}
+
+// Retry/refresh a scripture pack download
+function retryScripturePack(packId){
+  removeScripturePack(packId);
+  setTimeout(()=>downloadScripturePack(packId),100);
+}
+
+// Get all library verses including downloaded packs
+function getAllLibraryVerses(){
+  let verses=[...LIBRARY.curated];
+  const downloadedPacks=JSON.parse(localStorage.getItem('downloadedPacks')||'[]');
+
+  for(const packId of downloadedPacks){
+    const pack=SCRIPTURE_PACKS[packId];
+    if(pack){
+      if(pack.verses){
+        verses=[...verses,...pack.verses];
+      }
+      if(pack.quotes){
+        // Convert quotes to verse format for display
+        for(const q of pack.quotes){
+          verses.push({
+            book:'LDS Quotes',
+            chapter:1,
+            verse:1,
+            ref:q.ref,
+            text:q.text,
+            tags:q.tags,
+            speaker:q.speaker
+          });
+        }
+      }
+    }
+  }
+  return verses;
+}
 
 function getBookOrder(bookName){
   const index=BOOK_ORDER.indexOf(bookName);
@@ -6668,7 +6991,7 @@ function checkLogin(){
 checkLogin();
 
 const setScreen=s=>{screen=s;pMode=null;if(s!=='practice')selectedVerse=null;render()};
-const openModal=(m,v)=>{modal=m;editV=v||null;form=v?{type:v.type,ref:v.ref,text:v.text,tags:v.tags.slice()}:{type:'scripture',ref:'',text:'',tags:[]};if(m==='feed')feedTab='buy';if(m==='add'){addTab='custom';libraryView={collection:null,book:null,chapter:null};searchQuery='';}render()};
+const openModal=(m,v)=>{modal=m;editV=v||null;form=v?{type:v.type,ref:v.ref,text:v.text,tags:v.tags.slice()}:{type:'scripture',ref:'',text:'',tags:[]};if(m==='feed')feedTab='buy';if(m==='add'){addTab='library';libraryView={collection:null,book:null,chapter:null};searchQuery='';}render()};
 const closeModal=()=>{modal=null;editV=null;render()};
 const toggleTag=t=>{const i=form.tags.indexOf(t);if(i>=0)form.tags.splice(i,1);else if(form.tags.length<3)form.tags.push(t);render()};
 const saveVerse=()=>{
@@ -7506,7 +7829,7 @@ function render(){
             <button onclick="setScreen('closet')" class="flex flex-col items-center gap-0.5 p-1 rounded-lg hover:bg-white/50 transition-colors" title="Closet & Shop">${renderWearIcon(26)}<span class="text-[8px] text-purple-600 leading-none font-medium">Wear</span></button>
             <button onclick="setScreen('room')" class="flex flex-col items-center gap-0.5 p-1 rounded-lg hover:bg-white/50 transition-colors" title="Room & Furniture">${renderRoomIcon(26)}<span class="text-[8px] text-purple-600 leading-none font-medium">Room</span></button>
             <button onclick="setScreen('album')" class="flex flex-col items-center gap-0.5 p-1 rounded-lg hover:bg-white/50 transition-colors" title="Scribby Collection">${renderAlbumIcon(26)}<span class="text-[8px] text-purple-600 leading-none font-medium">Album</span></button>
-            ${window.currentUser?.email===OWNER_EMAIL?`<button onclick="setScreen('guide')" class="flex flex-col items-center gap-0.5 p-1 rounded-lg hover:bg-white/50 transition-colors" title="Scribby Guide">${renderGuideIcon(26)}<span class="text-[8px] text-purple-600 leading-none font-medium">Guide</span></button>`:''}
+            ${window.currentUser?.email?.toLowerCase()===OWNER_EMAIL.toLowerCase()?`<button onclick="setScreen('guide')" class="flex flex-col items-center gap-0.5 p-1 rounded-lg hover:bg-white/50 transition-colors" title="Scribby Guide">${renderGuideIcon(26)}<span class="text-[8px] text-purple-600 leading-none font-medium">Guide</span></button>`:''}
             <button onclick="setScreen('settings')" class="flex flex-col items-center gap-0.5 p-1 rounded-lg hover:bg-white/50 transition-colors" title="Settings">${renderMenuIcon(26)}<span class="text-[8px] text-purple-600 leading-none font-medium">Menu</span></button>
           </div>
         </div>
@@ -8242,7 +8565,10 @@ function render(){
         <p class="text-purple-700 text-sm line-clamp-2">${v.text}</p>
         <div class="flex flex-wrap gap-1 mt-2">${v.tags.map(t=>`<span class="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-600">${t}</span>`).join('')}</div>
       </div>
-      <button onclick="selectedVerse=${v.id};setScreen('practice')" class="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl flex items-center justify-center text-xl" title="Practice this verse">🧠</button>
+      <div class="flex flex-col gap-2">
+        <button onclick="selectedVerse=${v.id};setScreen('practice')" class="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl flex items-center justify-center text-xl" title="Practice this verse">🧠</button>
+        <button onclick="if(confirm('Delete this verse?'))deleteVerse(${v.id})" class="flex-shrink-0 w-12 h-10 bg-red-100 text-red-500 rounded-xl flex items-center justify-center text-lg" title="Delete verse">🗑️</button>
+      </div>
     </div>`).join('');
     h=`<div class="p-5 pb-6">
       <div class="flex justify-between items-center mb-4">
@@ -8263,7 +8589,7 @@ function render(){
 
   else if(screen==='library'&&!pMode){
     // Combine curated and downloaded libraries
-    const library=LIBRARY.downloaded?[...LIBRARY.curated,...LIBRARY.downloaded]:LIBRARY.curated;
+    const library=getAllLibraryVerses();
     const userVerseRefs=S.verses.map(v=>v.ref);
 
     // 4-level hierarchical navigation: Collections -> Books -> Chapters -> Verses
@@ -8278,9 +8604,12 @@ function render(){
         }
       });
 
-      const collectionOrder=['Old Testament','New Testament','Book of Mormon','Doctrine and Covenants','Pearl of Great Price','Articles of Faith','General Conference'];
+      // Bible collections (always shown) and downloadable collections
+      const bibleCollections=['Old Testament','New Testament'];
+      const downloadableCollections=['Book of Mormon','Doctrine and Covenants','Articles of Faith','LDS Leader Quotes'];
 
-      const downloadedColls=getDownloadedCollections();
+      // Get which packs are downloaded
+      const downloadedPackIds=JSON.parse(localStorage.getItem('downloadedPacks')||'[]');
 
       h=`<div class="p-5 pb-6">
         <div class="flex justify-between items-center mb-4">
@@ -8325,34 +8654,99 @@ function render(){
             }).join('');
           })()}
         `:`
-          <!-- Collection List -->
-          <p class="text-white/80 text-sm mb-3">Select a collection:</p>
-          ${collectionOrder.map(collName=>{
+          <!-- Bible Collections -->
+          <p class="text-white/80 text-sm mb-3">Bible:</p>
+          ${bibleCollections.map(collName=>{
             const collData=COLLECTIONS[collName];
             const count=collectionStats[collName]||0;
-            const isDownloaded=downloadedColls.includes(collName);
-            const curatedCount=LIBRARY.curated.filter(v=>getBookCollection(v.book)===collName).length;
-            const isSpecial=collData&&collData.isSpecial; // Articles of Faith, General Conference are fully included
             return`<div class="w-full bg-white rounded-2xl p-4 mb-3">
               <div class="flex justify-between items-center gap-3">
                 <button onclick="libraryView.collection='${collName.replace(/'/g,"\\'")}';render()" class="flex-1 text-left min-w-0">
                   <p class="font-bold text-purple-800">${collName}</p>
-                  <p class="text-xs text-purple-600 mt-1">
-                    ${isSpecial?
-                      `✓ ${curatedCount} verses included`:
-                      isDownloaded?
-                      `✓ ${count} verses downloaded`:
-                      curatedCount>0?`${curatedCount} curated verses`:'Not downloaded'
-                    }
-                  </p>
+                  <p class="text-xs text-purple-600 mt-1">${count} verses</p>
                 </button>
-                ${isSpecial||isDownloaded?
-                  `<span class="text-green-600 font-semibold text-xs whitespace-nowrap">✓ ${isSpecial?'Complete':'Full'}</span>`:
-                  `<button onclick="event.stopPropagation();downloadCollection('${collName.replace(/'/g,"\\'")}');return false;" class="bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold text-xs px-3 py-2 rounded-xl whitespace-nowrap flex-shrink-0">Download Full</button>`
-                }
+                <span class="text-2xl">📖</span>
               </div>
             </div>`;
           }).join('')}
+
+          <!-- Downloaded Scripture Packs -->
+          ${downloadedPackIds.length>0?`
+            <p class="text-white/80 text-sm mb-3 mt-6">Downloaded Packs:</p>
+            ${downloadableCollections.filter(collName=>{
+              const collData=COLLECTIONS[collName];
+              return collData&&collData.packId&&isPackDownloaded(collData.packId);
+            }).map(collName=>{
+              const collData=COLLECTIONS[collName];
+              const pack=SCRIPTURE_PACKS[collData.packId];
+              const count=collectionStats[collName]||0;
+              return`<div class="w-full bg-white rounded-2xl p-4 mb-3">
+                <div class="flex justify-between items-center gap-3">
+                  <button onclick="libraryView.collection='${collName.replace(/'/g,"\\'")}';render()" class="flex-1 text-left min-w-0">
+                    <p class="font-bold text-purple-800">${collName}</p>
+                    <p class="text-xs text-purple-600 mt-1">${count} verses</p>
+                  </button>
+                  <span class="text-2xl">${pack?pack.icon:'📚'}</span>
+                </div>
+              </div>`;
+            }).join('')}
+          `:''}
+
+          <!-- Get More Scripture Packs -->
+          ${(()=>{
+            const packCategories={
+              'Latter-day Saints':['book-of-mormon','doctrine-covenants','articles-of-faith','lds-quotes'],
+              'Judaism':['torah','jewish-wisdom'],
+              'Islam':['quran','hadith'],
+              'Buddhism':['buddhist-sutras'],
+              'Hinduism':['bhagavad-gita','hindu-wisdom'],
+              'Sikhism':['guru-granth'],
+              'Christian':['catholic-prayers','christian-classics']
+            };
+            let html='';
+            for(const [category,packIds] of Object.entries(packCategories)){
+              const availablePacks=packIds.filter(id=>!isPackDownloaded(id)&&SCRIPTURE_PACKS[id]);
+              if(availablePacks.length>0){
+                html+=`<p class="text-white/80 text-sm mb-2 mt-4">${category}:</p>`;
+                html+=availablePacks.map(id=>{
+                  const pack=SCRIPTURE_PACKS[id];
+                  return`<div class="w-full bg-white/90 rounded-2xl p-3 mb-2 border-2 border-dashed border-purple-300">
+                    <div class="flex justify-between items-center gap-3">
+                      <div class="flex-1 min-w-0">
+                        <p class="font-bold text-purple-800 text-sm">${pack.icon} ${pack.name}</p>
+                        <p class="text-xs text-purple-400">${pack.verses?pack.verses.length:pack.quotes?pack.quotes.length:0} items</p>
+                      </div>
+                      <button onclick="downloadScripturePack('${id}')" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold text-xs px-3 py-2 rounded-xl whitespace-nowrap">+ Add</button>
+                    </div>
+                  </div>`;
+                }).join('');
+              }
+            }
+            return html||'<p class="text-white/60 text-sm mt-4">All packs downloaded!</p>';
+          })()}
+
+          <!-- Manage Downloads -->
+          ${downloadedPackIds.length>0?`
+            <div class="mt-6 p-4 bg-white/30 rounded-2xl">
+              <p class="text-white text-sm font-bold mb-2">Manage Downloads</p>
+              ${downloadedPackIds.map(id=>{
+                const pack=SCRIPTURE_PACKS[id];
+                const packCount=getPackVerseCount(id);
+                const actualCount=collectionStats[Object.keys(COLLECTIONS).find(c=>COLLECTIONS[c].packId===id)]||0;
+                const hasIssue=actualCount===0&&packCount>0;
+                return pack?`<div class="flex justify-between items-center bg-white/50 rounded-xl p-2 mb-2">
+                  <div>
+                    <span class="text-purple-800 text-sm">${pack.icon} ${pack.name}</span>
+                    <span class="text-purple-500 text-xs ml-1">(${actualCount}/${packCount})</span>
+                  </div>
+                  <div class="flex gap-1">
+                    ${hasIssue?`<button onclick="retryScripturePack('${id}')" class="text-orange-600 text-xs font-bold px-2 py-1">Retry</button>`:''}
+                    <button onclick="if(confirm('Remove ${pack.name}?'))removeScripturePack('${id}')" class="text-red-500 text-xs font-bold px-2 py-1">Remove</button>
+                  </div>
+                </div>`:'';
+              }).join('')}
+            </div>
+          `:''}
         `}
       </div>`;
 
@@ -8362,7 +8756,7 @@ function render(){
       const collectionBooks=collectionData.books;
       const isSpecialCollection=collectionData.isSpecial;
 
-      // For special collections (Articles of Faith, General Conference), show verses directly
+      // For special collections (Articles of Faith, LDS Leader Quotes), show verses directly
       if(isSpecialCollection){
         const collectionVerses=library.filter(v=>collectionBooks.includes(v.book)).sort((a,b)=>a.verse-b.verse);
         const list=collectionVerses.map(v=>{
@@ -8384,7 +8778,7 @@ function render(){
             <h1 class="text-xl font-bold text-white">${libraryView.collection}</h1>
             <div class="text-white/80 text-xs">${collectionVerses.length} verses</div>
           </div>
-          <p class="text-white/80 text-sm mb-3">${libraryView.collection==='Articles of Faith'?'The 13 Articles of Faith':'Inspirational quotes from General Conference'}:</p>
+          <p class="text-white/80 text-sm mb-3">${libraryView.collection==='Articles of Faith'?'The 13 Articles of Faith':'Inspirational quotes from LDS leaders'}:</p>
           ${list}
         </div>`;
       }else{
@@ -8600,7 +8994,7 @@ function render(){
 
   else if(screen==='closet'&&!pMode){
     // Wearable categories only (no food, no furniture, no medicine, no toys)
-    const categories={casual:'👕 Casual',fancy:'🎩 Fancy',fun:'🎪 Fun',cool:'😎 Cool',cute:'💖 Cute',lds:'⛪ LDS',seasonal:'🎄 Seasonal',special:'✨ Special'};
+    const categories={casual:'👕 Casual',fancy:'🎩 Fancy',fun:'🎪 Fun',cool:'😎 Cool',cute:'💖 Cute',faith:'✝️ Faith',seasonal:'🎄 Seasonal',special:'✨ Special'};
     const typeNames={hat:'🎩 Hats',eyes:'👓 Eyewear',held:'🎒 Held Items',back:'🦸 Back Items',effect:'✨ Effects'};
     // Get owned wearable accessories by type
     const byType={hat:[],eyes:[],held:[],back:[],effect:[]};
@@ -8740,7 +9134,7 @@ function render(){
 
   else if(screen==='guide'&&!pMode){
     // Only owner can access guide
-    if(window.currentUser?.email!==OWNER_EMAIL){
+    if(window.currentUser?.email?.toLowerCase()!==OWNER_EMAIL.toLowerCase()){
       setScreen('home');
       return;
     }
@@ -9266,7 +9660,7 @@ function render(){
 
       if(isAdd&&addTab==='library'){
         // Library browser in modal
-        const library=LIBRARY.downloaded?[...LIBRARY.curated,...LIBRARY.downloaded]:LIBRARY.curated;
+        const library=getAllLibraryVerses();
         const userVerseRefs=S.verses.map(v=>v.ref);
 
         // Simplified library view for modal (no search, just browse)
@@ -9276,20 +9670,57 @@ function render(){
             const coll=getBookCollection(v.book);
             if(coll){if(!collectionStats[coll])collectionStats[coll]=0;collectionStats[coll]++;}
           });
-          const collectionOrder=['Old Testament','New Testament','Book of Mormon','Doctrine and Covenants','Pearl of Great Price','Articles of Faith','General Conference'];
-          const downloadedColls=getDownloadedCollections();
-          modalContent=collectionOrder.map(collName=>{
-            const collData=COLLECTIONS[collName];
+
+          const bibleCollections=['Old Testament','New Testament'];
+          const downloadableCollections=['Book of Mormon','Doctrine and Covenants','Articles of Faith','LDS Leader Quotes'];
+          const downloadedPackIds=JSON.parse(localStorage.getItem('downloadedPacks')||'[]');
+
+          // Bible collections
+          let content=`<p class="text-purple-600 text-xs font-bold mb-2">📖 Bible</p>`;
+          content+=bibleCollections.map(collName=>{
             const count=collectionStats[collName]||0;
-            const isDownloaded=downloadedColls.includes(collName);
-            const curatedCount=LIBRARY.curated.filter(v=>getBookCollection(v.book)===collName).length;
-            const isSpecial=collData&&collData.isSpecial;
-            const displayCount=count>0?count:curatedCount;
             return`<button onclick="libraryView.collection='${collName.replace(/'/g,"\\'")}';render()" class="w-full bg-purple-50 rounded-xl p-3 mb-2 text-left hover:bg-purple-100">
               <p class="font-semibold text-purple-800">${collName}</p>
-              <p class="text-xs text-purple-600">${displayCount>0?`${displayCount} verses available${isSpecial?' ✓':''}`:'Download to browse'}</p>
+              <p class="text-xs text-purple-600">${count} verses</p>
             </button>`;
           }).join('');
+
+          // Downloaded packs
+          const installedPacks=downloadableCollections.filter(collName=>{
+            const collData=COLLECTIONS[collName];
+            return collData&&collData.packId&&isPackDownloaded(collData.packId);
+          });
+          if(installedPacks.length>0){
+            content+=`<p class="text-purple-600 text-xs font-bold mb-2 mt-4">📚 Downloaded Packs</p>`;
+            content+=installedPacks.map(collName=>{
+              const collData=COLLECTIONS[collName];
+              const pack=SCRIPTURE_PACKS[collData.packId];
+              const count=collectionStats[collName]||0;
+              return`<button onclick="libraryView.collection='${collName.replace(/'/g,"\\'")}';render()" class="w-full bg-purple-50 rounded-xl p-3 mb-2 text-left hover:bg-purple-100">
+                <p class="font-semibold text-purple-800">${pack?pack.icon:''} ${collName}</p>
+                <p class="text-xs text-purple-600">${count} verses</p>
+              </button>`;
+            }).join('');
+          }
+
+          // Available packs to download
+          const availablePacks=Object.entries(SCRIPTURE_PACKS).filter(([id])=>!isPackDownloaded(id));
+          if(availablePacks.length>0){
+            content+=`<p class="text-purple-600 text-xs font-bold mb-2 mt-4">✨ Get More Scriptures</p>`;
+            content+=availablePacks.map(([id,pack])=>`
+              <div class="w-full bg-purple-50/50 rounded-xl p-3 mb-2 border border-dashed border-purple-300">
+                <div class="flex justify-between items-center">
+                  <div>
+                    <p class="font-semibold text-purple-800">${pack.icon} ${pack.name}</p>
+                    <p class="text-xs text-purple-500">${pack.verses?pack.verses.length:pack.quotes?pack.quotes.length:0} items</p>
+                  </div>
+                  <button onclick="downloadScripturePack('${id}')" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-xs px-3 py-1 rounded-full">+ Add</button>
+                </div>
+              </div>
+            `).join('');
+          }
+
+          modalContent=content;
         }else if(!libraryView.book){
           const collectionData=COLLECTIONS[libraryView.collection];
           const collectionBooks=collectionData.books;
@@ -9299,7 +9730,7 @@ function render(){
             // For special collections, show verses directly in modal
             const collectionVerses=library.filter(v=>collectionBooks.includes(v.book)).sort((a,b)=>a.verse-b.verse);
             modalContent=`<button onclick="libraryView={collection:null,book:null,chapter:null};render()" class="text-purple-600 text-sm mb-3">← Back to collections</button>
-              <p class="text-purple-600 text-xs mb-2">${libraryView.collection==='Articles of Faith'?'The 13 Articles of Faith':'General Conference quotes'}:</p>` +
+              <p class="text-purple-600 text-xs mb-2">${libraryView.collection==='Articles of Faith'?'The 13 Articles of Faith':'LDS Leader quotes'}:</p>` +
               collectionVerses.map(v=>{
                 const alreadyAdded=userVerseRefs.includes(v.ref);
                 return`<div class="bg-purple-50 rounded-xl p-3 mb-2">
@@ -9371,8 +9802,8 @@ function render(){
             <button onclick="closeModal()" class="text-2xl text-purple-400">&times;</button>
           </div>
           ${isAdd?`<div class="flex gap-2 mb-4">
-            <button onclick="addTab='custom';render()" class="flex-1 py-2 rounded-xl text-sm font-semibold ${addTab==='custom'?'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white':'bg-purple-100 text-purple-600'}">Custom</button>
             <button onclick="addTab='library';render()" class="flex-1 py-2 rounded-xl text-sm font-semibold ${addTab==='library'?'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white':'bg-purple-100 text-purple-600'}">Browse Library</button>
+            <button onclick="addTab='custom';render()" class="flex-1 py-2 rounded-xl text-sm font-semibold ${addTab==='custom'?'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white':'bg-purple-100 text-purple-600'}">Custom</button>
           </div>`:''}
           ${modalContent}
         </div></div>`;
