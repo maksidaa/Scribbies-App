@@ -958,12 +958,13 @@ function getRecommendations(){
   return{verses:topVerses,modes:modeRecommendations};
 }
 
-// Buddy growth system
+// Buddy growth system - progressive XP curve (quick early wins, big finale)
+// Total ~450 XP = ~9 days at 50 XP/day
 const STAGES={
-  egg:{emoji:'🥚',name:'Egg',hatchXP:100},
-  blob:{name:'Blob',growthNeeded:100},
-  child:{emoji:'🐥',name:'Chick',growthNeeded:100},
-  teen:{emoji:'🐤',name:'Young Bird',growthNeeded:100},
+  egg:{emoji:'🥚',name:'Egg',hatchXP:50},      // ~1 day - quick hook!
+  blob:{name:'Blob',growthNeeded:75},           // ~1.5 days - building momentum
+  child:{emoji:'🐥',name:'Chick',growthNeeded:125},  // ~2.5 days - invested now
+  teen:{emoji:'🐤',name:'Young Bird',growthNeeded:200}, // ~4 days - big reveal earned!
   adult:{emoji:'🦜',name:'Parrot'}
 };
 
@@ -6880,7 +6881,7 @@ function canEvolve(){
 }
 
 function checkBuddyGrowth(){
-  if(S.buddyStage==='egg'&&S.eggXP>=100){
+  if(S.buddyStage==='egg'&&S.eggXP>=STAGES.egg.hatchXP){
     // Assign random variant when hatching (category already assigned to egg)
     S.creatureVariant=Math.floor(Math.random()*10);
 
@@ -7688,8 +7689,8 @@ const completePractice=()=>{
     S.eggXP=(S.eggXP||0)+xp;
   }else if(S.buddyStage!=='adult'){
     // Blob, child, and teen stages grow from practice too!
-    // Practice gives growth at 75% rate - about 10-11 days to graduate a scribby
-    const practiceGrowth=Math.round(xp*0.75);
+    // Practice gives growth at 100% rate (1:1 with XP) - clear and intuitive
+    const practiceGrowth=Math.round(xp*1.0);
     S.growthXP=(S.growthXP||0)+practiceGrowth;
   }
 
@@ -8135,10 +8136,10 @@ function render(){
                 ${renderEggProgressIcon(18)}
                 <div class="flex-1">
                   <div class="h-2.5 bg-purple-100 rounded-full overflow-hidden">
-                    <div class="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full transition-all duration-500" style="width:${Math.min((S.eggXP||0)/100*100,100)}%"></div>
+                    <div class="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full transition-all duration-500" style="width:${Math.min((S.eggXP||0)/STAGES.egg.hatchXP*100,100)}%"></div>
                   </div>
                 </div>
-                <span class="text-purple-600 text-xs font-bold min-w-[36px] text-right">${S.eggXP||0}%</span>
+                <span class="text-purple-600 text-xs font-bold min-w-[50px] text-right">${Math.min(S.eggXP||0,STAGES.egg.hatchXP)}/${STAGES.egg.hatchXP}</span>
               </div>
             `:stage==='adult'?`
               <div class="flex items-center gap-2">
@@ -8152,7 +8153,8 @@ function render(){
               </div>
             `:(() => {
               const stageData=STAGES[stage];
-              const pct=Math.min((S.growthXP||0)/stageData.growthNeeded*100,100);
+              const currentGrowth=Math.min(S.growthXP||0,stageData.growthNeeded);
+              const pct=Math.min(currentGrowth/stageData.growthNeeded*100,100);
               return`<div class="flex items-center gap-2">
                 ${renderGrowthIcon(18,stage,S.creatureCategory)}
                 <div class="flex-1">
@@ -8160,7 +8162,7 @@ function render(){
                     <div class="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full transition-all duration-500" style="width:${pct}%"></div>
                   </div>
                 </div>
-                <span class="text-purple-600 text-xs font-bold min-w-[36px] text-right">${Math.round(pct)}%</span>
+                <span class="text-purple-600 text-xs font-bold min-w-[50px] text-right">${currentGrowth}/${stageData.growthNeeded}</span>
               </div>`;
             })()}
             <div class="flex items-center gap-2">
@@ -9045,7 +9047,7 @@ function render(){
         <div class="h-1.5 bg-white/20 rounded-full overflow-hidden">
           <div class="h-full bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full transition-all" style="width:${(()=>{
             const stage=S.buddyStage||'egg';
-            if(stage==='egg')return Math.min((S.eggXP||0)/100*100,100);
+            if(stage==='egg')return Math.min((S.eggXP||0)/STAGES.egg.hatchXP*100,100);
             if(stage==='adult')return 100;
             const stageData=STAGES[stage];
             return Math.min((S.growthXP||0)/stageData.growthNeeded*100,100);
