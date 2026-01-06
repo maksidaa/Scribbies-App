@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Big Smile Sloth Buddy</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root {
+    --s-fur: #a68a64; 
+    --s-fur-dark: #582f0e; 
+    --s-fur-light: #e6ccb2; 
+    --s-mask: #7f5539;
+    --s-claw: #f5ebe0;
+}
+
+body { background-color: #fefae0; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+
+.sloth-creature {
+    position: relative;
+    width: 260px;
+    height: 340px;
+    animation: sloth-hang 6s ease-in-out infinite;
+    z-index: 1;
+}
+
+/* --- TUCKED BACK LEGS --- */
+.leg-back {
+    position: absolute; width: 44px; height: 90px; background: #8d734d; border: 4px solid var(--s-fur-dark); border-radius: 22px; z-index: 10; top: 215px; 
+}
+.leg-bl { left: 75px; transform: rotate(-6deg); animation: leg-wiggle-bl 6s ease-in-out infinite; }
+.leg-br { right: 75px; transform: rotate(6deg); animation: leg-wiggle-br 6s ease-in-out infinite; }
+
+/* --- BODY --- */
+.sloth-body {
+    position: absolute; width: 170px; height: 150px; background: var(--s-fur); border: 4px solid var(--s-fur-dark); border-radius: 50% 50% 40% 40%; top: 125px; left: 45px; z-index: 20; overflow: hidden;
+}
+.tummy-patch {
+    position: absolute; width: 110px; height: 90px; background: var(--s-fur-light); border-radius: 50%; bottom: 10px; left: 50%; transform: translateX(-50%); opacity: 0.5;
+}
+
+/* --- FRONT ARMS --- */
+.arm-front {
+    position: absolute; width: 46px; height: 120px; background: var(--s-fur); border: 4px solid var(--s-fur-dark); border-radius: 23px; z-index: 45; top: 110px;
+}
+.arm-fl { left: 25px; transform: rotate(30deg); animation: arm-sway-l 6s ease-in-out infinite; }
+.arm-fr { right: 25px; transform: rotate(-30deg); animation: arm-sway-r 6s ease-in-out infinite; }
+
+.claws { position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); display: flex; gap: 2px; }
+.claw { width: 6px; height: 20px; background: var(--s-claw); border: 2px solid var(--s-fur-dark); border-radius: 0 0 6px 6px; }
+
+/* --- RINGED HEAD & FACE --- */
+.sloth-head-outer {
+    position: absolute; width: 155px; height: 135px; background: var(--s-fur); border: 4px solid var(--s-fur-dark); border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%; top: 25px; left: 53px; z-index: 50; display: flex; justify-content: center; align-items: center;
+}
+
+.sloth-face-inner {
+    width: 125px; height: 105px; background: var(--s-fur-light); border: 3px solid var(--s-fur-dark); border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%; position: relative; overflow: hidden;
+}
+
+.eye-patch {
+    position: absolute; width: 70px; height: 48px; background: var(--s-mask); border-radius: 50% 20% 50% 20%; top: 18px; 
+}
+.patch-l { left: -22px; transform: rotate(-12deg); }
+.patch-r { right: -22px; transform: scaleX(-1) rotate(-12deg); }
+
+.s-eye { 
+    width: 20px; height: 20px; background: #2a1a0a; border-radius: 50%; position: absolute; top: 15px; left: 44px; animation: sloth-blink 8s infinite;
+}
+.s-eye::after { content: ''; position: absolute; width: 7px; height: 7px; background: white; border-radius: 50%; top: 3px; left: 3px; }
+
+.sloth-nose {
+    position: absolute; width: 22px; height: 14px; background: var(--s-fur-dark); border-radius: 40% 40% 50% 50%; top: 68px; left: 50%; transform: translateX(-50%); z-index: 10;
+}
+
+/* BIGGER SMILE: Increased width and height */
+.sloth-mouth {
+    position: absolute; 
+    width: 44px; /* Widened for a bigger smile */
+    height: 18px; /* Increased height for a deeper curve */
+    border-bottom: 3.5px solid var(--s-fur-dark);
+    border-radius: 50%; 
+    top: 72px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    opacity: 0.9;
+}
+
+.blush {
+    position: absolute; width: 24px; height: 12px; background: #ffb3c1; border-radius: 50%; top: 72px; opacity: 0.4; filter: blur(1.5px);
+}
+.blush-l { left: 12px; }
+.blush-r { right: 12px; }
+
+/* --- ANIMATIONS --- */
+@keyframes sloth-hang { 0%, 100% { transform: translateY(0) rotate(-0.5deg); } 50% { transform: translateY(-12px) rotate(0.5deg); } }
+@keyframes sloth-blink { 0%, 95%, 100% { transform: scaleY(1); } 97% { transform: scaleY(0.1); } }
+@keyframes arm-sway-l { 0%, 100% { transform: rotate(30deg); } 50% { transform: rotate(38deg); } }
+@keyframes arm-sway-r { 0%, 100% { transform: rotate(-30deg); } 50% { transform: rotate(-38deg); } }
+@keyframes leg-wiggle-bl { 0%, 100% { transform: rotate(-6deg); } 50% { transform: rotate(-10deg); } }
+@keyframes leg-wiggle-br { 0%, 100% { transform: rotate(6deg); } 50% { transform: rotate(10deg); } }
+
+</style>
+</head>
+<body>
+
+<div class="bg-white p-16 rounded-[80px] shadow-2xl flex flex-col items-center">
+    <div class="sloth-creature">
+        <div class="leg-back leg-bl"><div class="claws"><div class="claw"></div><div class="claw"></div><div class="claw"></div></div></div>
+        <div class="leg-back leg-br"><div class="claws"><div class="claw"></div><div class="claw"></div><div class="claw"></div></div></div>
+        <div class="sloth-body"><div class="tummy-patch"></div></div>
+        <div class="arm-front arm-fl"><div class="claws"><div class="claw"></div><div class="claw"></div><div class="claw"></div></div></div>
+        <div class="arm-front arm-fr"><div class="claws"><div class="claw"></div><div class="claw"></div><div class="claw"></div></div></div>
+
+        <div class="sloth-head-outer">
+            <div class="sloth-face-inner">
+                <div class="eye-patch patch-l"><div class="s-eye"></div></div>
+                <div class="eye-patch patch-r"><div class="s-eye"></div></div>
+                <div class="sloth-nose"></div>
+                <div class="sloth-mouth"></div>
+                <div class="blush blush-l"></div>
+                <div class="blush blush-r"></div>
+            </div>
+        </div>
+    </div>
+    <h3 class="mt-12 text-4xl font-black text-amber-900 tracking-tighter uppercase italic">Sloth Buddy!</h3>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Wriggly Rainbow Snake</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root {
+--s-dark: #4b2006;
+--s-accent: #ff4757;
+--s-blush: #fca5a5;
+}
+
+body { background-color: #f0fdf4; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+
+.snake-creature {
+position: relative;
+width: 400px; /* Slightly wider for the extra wiggle */
+height: 200px;
+animation: snake-happy-bounce 2s ease-in-out infinite;
+}
+
+.slither-container {
+position: absolute;
+inset: 0;
+transform-origin: center;
+/* New wiggle animation applied here */
+animation: body-wiggle 3s ease-in-out infinite;
+}
+
+.snake-body-svg {
+position: absolute;
+inset: 0;
+width: 100%;
+height: 100%;
+overflow: visible;
+}
+
+/* More complex Rainbow Path */
+.main-body-path {
+fill: none;
+stroke: url(#rainbowGradient);
+stroke-width: 34;
+stroke-linecap: round;
+stroke-linejoin: round;
+}
+
+.diamond-pattern {
+fill: none;
+stroke: rgba(255, 255, 255, 0.3);
+stroke-width: 10;
+stroke-dasharray: 8 25;
+}
+
+.snake-head {
+position: absolute;
+width: 64px; height: 58px;
+background: linear-gradient(145deg, #ef4444, #b91c1c);
+border-radius: 50% 50% 48% 48% / 65% 65% 45% 45%;
+/* Positioned at the start of the new path */
+top: 62px; left: 15px; z-index: 20;
+box-shadow: inset 3px 3px 6px rgba(255,255,255,0.4), 0 6px 12px rgba(0,0,0,0.2);
+}
+
+.snake-eye-container { display: flex; gap: 4px; justify-content: center; margin-top: 10px; }
+.snake-eye { width: 22px; height: 24px; background: white; border-radius: 50%; position: relative; animation: snake-blink 4s infinite; }
+
+.pupil { width: 14px; height: 16px; background: #1a1a1a; border-radius: 50%; position: absolute; top: 4px; left: 4px; }
+.sparkle { position: absolute; width: 6px; height: 6px; background: white; border-radius: 50%; top: 2px; left: 2px; }
+.blush-container { position: absolute; top: 34px; width: 100%; display: flex; justify-content: space-around; padding: 0 10px; }
+.blush { width: 12px; height: 7px; background: var(--s-blush); border-radius: 50%; opacity: 0.8; }
+
+.snake-snout {
+position: absolute; width: 34px; height: 20px; background: #991b1b;
+border-radius: 40% 40% 60% 60%; bottom: 4px; left: 50%; transform: translateX(-50%);
+z-index: 21; display: flex; flex-direction: column; align-items: center; padding-top: 4px;
+}
+
+.nostril-area { display: flex; gap: 8px; margin-bottom: 2px; }
+.nostril-slit { width: 4px; height: 2px; background: rgba(0,0,0,0.5); border-radius: 1px; transform: rotate(15deg); }
+.nostril-slit.right { transform: rotate(-15deg); }
+
+.fang { position: absolute; width: 4px; height: 6px; background: #fff; bottom: -3px; clip-path: polygon(50% 100%, 0% 0%, 100% 0%); }
+.fang-l { left: 9px; } .fang-r { right: 9px; }
+
+.snake-tongue {
+position: absolute; width: 3px; height: 10px; background: var(--s-accent);
+bottom: -10px; left: 50%; transform: translateX(-50%) scaleY(0);
+transform-origin: top; animation: tongue-flick 3s infinite; z-index: 21;
+}
+.snake-tongue::before, .snake-tongue::after {
+content: ''; position: absolute; bottom: -6px; width: 3px; height: 8px; background: var(--s-accent); border-radius: 2px; transform-origin: top center;
+}
+.snake-tongue::before { left: 0; transform: rotate(-30deg); }
+.snake-tongue::after { right: 0; transform: rotate(30deg); }
+
+/* NEW ANIMATIONS FOR WRITHE */
+@keyframes body-wiggle {
+  0%, 100% { transform: scaleX(1) skewY(0deg); }
+  25% { transform: scaleX(1.05) skewY(2deg); }
+  75% { transform: scaleX(0.95) skewY(-2deg); }
+}
+
+@keyframes snake-happy-bounce {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(1deg); }
+}
+
+@keyframes tongue-flick {
+  0%, 80%, 100% { transform: translateX(-50%) scaleY(0); }
+  85%, 92%, 98% { transform: translateX(-50%) scaleY(1); }
+}
+@keyframes snake-blink { 0%, 90%, 100% { transform: scaleY(1); } 93%, 97% { transform: scaleY(0.1); } }
+</style>
+</head>
+<body>
+
+<div class="bg-white p-14 rounded-[70px] shadow-2xl flex flex-col items-center">
+<div class="snake-creature">
+
+<div class="slither-container">
+<svg class="snake-body-svg" viewBox="0 0 400 200">
+<defs>
+<linearGradient id="rainbowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+<stop offset="0%" style="stop-color:#ef4444" />
+<stop offset="20%" style="stop-color:#f59e0b" />
+<stop offset="40%" style="stop-color:#facc15" />
+<stop offset="60%" style="stop-color:#22c55e" />
+<stop offset="80%" style="stop-color:#3b82f6" />
+<stop offset="100%" style="stop-color:#a855f7" />
+</linearGradient>
+</defs>
+<path class="main-body-path" d="M 45,95 C 100,20 160,170 230,95 C 280,40 340,120 380,85" />
+<path class="diamond-pattern" d="M 60,95 C 110,30 170,160 230,95 C 270,50 330,110 370,85" />
+</svg>
+
+<div class="snake-head">
+<div class="snake-eye-container">
+<div class="snake-eye"><div class="pupil"><div class="sparkle"></div></div></div>
+<div class="snake-eye"><div class="pupil"><div class="sparkle"></div></div></div>
+</div>
+<div class="blush-container">
+<div class="blush"></div>
+<div class="blush"></div>
+</div>
+<div class="snake-snout">
+<div class="nostril-area">
+<div class="nostril-slit left"></div>
+<div class="nostril-slit right"></div>
+</div>
+<div class="fang fang-l"></div>
+<div class="fang fang-r"></div>
+<div class="snake-tongue"></div>
+</div>
+</div>
+</div>
+
+</div>
+<h3 class="mt-10 text-3xl font-black text-green-600 tracking-widest uppercase">Wriggly Rainbow</h3>
+</div>
+
+</body>
+</html>

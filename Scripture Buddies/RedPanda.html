@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Red Panda Buddy - Orange Tummy</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root {
+--p-fur: #ea580c; /* Rust Orange */
+--p-fur-dark: #2d2323; /* Black/Dark Brown for Paws */
+--p-fur-light: #ffffff; /* White Face Markings */
+--p-tummy: #fb923c; /* Lighter Orange for Tummy */
+--p-nose: #111827; 
+--p-blush: #fecdd3;
+}
+
+body { background-color: #fff7ed; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+
+.panda-creature {
+position: relative;
+width: 240px;
+height: 280px;
+animation: panda-bounce 3s ease-in-out infinite;
+z-index: 1;
+}
+
+/* 1. BUSHY RINGED TAIL */
+.panda-tail {
+position: absolute;
+width: 130px; height: 55px;
+background: repeating-linear-gradient(to right, var(--p-fur), var(--p-fur) 25px, var(--p-tummy) 25px, var(--p-tummy) 50px);
+border: 4px solid var(--p-fur-dark);
+border-radius: 40px;
+bottom: 50px; right: -35px; 
+z-index: 5; 
+transform-origin: left center;
+animation: tail-swish 2s ease-in-out infinite;
+}
+
+/* 2. ORANGE BODY & LIGHTER TUMMY */
+.panda-body {
+position: absolute;
+width: 150px; height: 120px;
+background: var(--p-fur); /* Primary Orange Body */
+border: 4px solid var(--p-fur-dark);
+border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+top: 120px; left: 45px;
+z-index: 20;
+overflow: hidden;
+}
+
+.tummy-circle {
+position: absolute;
+width: 100px; height: 80px;
+background: var(--p-tummy);
+border-radius: 50%;
+bottom: -15px; left: 50%;
+transform: translateX(-50%);
+opacity: 0.8;
+}
+
+/* 3. BLACK PAWS WITH CIRCULAR FINGERS */
+.paw-front {
+position: absolute;
+width: 42px; height: 32px;
+background: var(--p-fur-dark); /* Kept Black/Dark Brown */
+border: 3px solid #1a1414;
+border-radius: 14px;
+top: 145px;
+z-index: 45;
+display: flex;
+justify-content: center;
+gap: 3px;
+padding-top: 2px;
+}
+.finger-round {
+width: 11px; height: 11px;
+background: var(--p-fur-dark);
+border: 2px solid #1a1414;
+border-radius: 50%;
+margin-top: -7px;
+}
+
+.paw-f-l { left: 40px; animation: hand-wave-l 3s ease-in-out infinite; }
+.paw-f-r { right: 40px; animation: hand-wave-r 3s ease-in-out infinite; }
+
+/* 4. BLACK BACK FEET */
+.paw-back {
+position: absolute;
+width: 46px; height: 36px;
+background: var(--p-fur-dark); /* Kept Black/Dark Brown */
+border: 3.5px solid #1a1414;
+border-radius: 18px 18px 14px 14px;
+top: 215px; left: 50%;
+z-index: 21;
+}
+.p-b-l { margin-left: -58px; transform: rotate(-5deg); }
+.p-b-r { margin-left: 12px; transform: rotate(5deg); }
+
+/* 5. HEAD & FACE */
+.panda-head {
+position: absolute;
+width: 150px; height: 120px;
+background: var(--p-fur);
+border: 4px solid var(--p-fur-dark);
+border-radius: 50% 50% 48% 48% / 60% 60% 40% 40%;
+top: 25px; left: 45px;
+z-index: 40;
+}
+
+/* Face Markings */
+.white-patch { position: absolute; background: var(--p-fur-light); border-radius: 50%; z-index: 41; }
+.eyebrow-l { width: 25px; height: 18px; top: 25px; left: 25px; transform: rotate(-15deg); }
+.eyebrow-r { width: 25px; height: 18px; top: 25px; right: 25px; transform: rotate(15deg); }
+.cheek-l { width: 40px; height: 35px; bottom: 15px; left: 5px; opacity: 0.9; }
+.cheek-r { width: 40px; height: 35px; bottom: 15px; right: 5px; opacity: 0.9; }
+
+.snout-white {
+position: absolute;
+width: 55px; height: 45px;
+background: var(--p-fur-light);
+border-radius: 50%;
+bottom: 10px; left: 50%;
+transform: translateX(-50%);
+z-index: 42;
+}
+
+.mouth { position: absolute; top: 22px; left: 50%; transform: translateX(-50%); display: flex; z-index: 55; }
+.mouth-curve { width: 12px; height: 8px; border: 2.5px solid var(--p-fur-dark); border-top: none; border-radius: 0 0 10px 10px; margin: 0 -0.5px; }
+
+.p-eye { width: 22px; height: 24px; background: #000; border-radius: 50%; position: relative; animation: panda-blink 4s infinite; z-index: 45; }
+.p-eye::after { content: ''; position: absolute; width: 8px; height: 8px; background: white; border-radius: 50%; top: 3px; left: 3px; }
+
+.nose { position: absolute; width: 16px; height: 11px; background: var(--p-nose); border-radius: 50%; top: 15px; left: 50%; transform: translateX(-50%); z-index: 60; }
+
+.ear { position: absolute; width: 55px; height: 50px; background: var(--p-fur-light); border: 4px solid var(--p-fur-dark); border-radius: 50% 50% 10% 10%; z-index: 30; }
+.ear-inner { position: absolute; width: 30px; height: 30px; background: var(--p-fur); border-radius: 50% 50% 10% 10%; bottom: 3px; left: 50%; transform: translateX(-50%); }
+.ear-l { top: 10px; left: 35px; transform: rotate(-25deg); }
+.ear-r { top: 10px; right: 35px; transform: rotate(25deg); }
+
+/* ANIMATIONS */
+@keyframes tail-swish { 0%, 100% { transform: rotate(-15deg); } 50% { transform: rotate(-5deg); } }
+@keyframes panda-blink { 0%, 90%, 100% { transform: scaleY(1); } 93%, 97% { transform: scaleY(0.1); } }
+@keyframes panda-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+@keyframes hand-wave-l { 0%, 100% { transform: rotate(-35deg); } 50% { transform: rotate(5deg) translateY(-2px); } }
+@keyframes hand-wave-r { 0%, 100% { transform: rotate(35deg); } 50% { transform: rotate(-5deg) translateY(-2px); } }
+</style>
+</head>
+<body>
+
+<div class="bg-white p-16 rounded-[80px] shadow-2xl flex flex-col items-center">
+    <div class="panda-creature">
+        
+        <div class="ear ear-l"><div class="ear-inner"></div></div>
+        <div class="ear ear-r"><div class="ear-inner"></div></div>
+
+        <div class="panda-tail"></div>
+        <div class="paw-back p-b-l"></div>
+        <div class="paw-back p-b-r"></div>
+
+        <div class="panda-body">
+            <div class="tummy-circle"></div>
+        </div>
+
+        <div class="paw-front paw-f-l">
+            <div class="finger-round"></div><div class="finger-round"></div><div class="finger-round"></div>
+        </div>
+        <div class="paw-front paw-f-r">
+            <div class="finger-round"></div><div class="finger-round"></div><div class="finger-round"></div>
+        </div>
+
+        <div class="panda-head">
+            <div class="white-patch eyebrow-l"></div>
+            <div class="white-patch eyebrow-r"></div>
+            <div class="white-patch cheek-l"></div>
+            <div class="white-patch cheek-r"></div>
+            
+            <div class="absolute top-12 w-full flex justify-center gap-10 z-45">
+                <div class="p-eye"></div>
+                <div class="p-eye"></div>
+            </div>
+            
+            <div class="snout-white">
+                <div class="nose"></div>
+                <div class="mouth">
+                    <div class="mouth-curve"></div>
+                    <div class="mouth-curve"></div>
+                </div>
+            </div>
+            
+            <div class="absolute top-[75px] w-full flex justify-around px-6">
+                <div class="w-4 h-2 bg-rose-200 rounded-full opacity-40"></div>
+                <div class="w-4 h-2 bg-rose-200 rounded-full opacity-40"></div>
+            </div>
+        </div>
+
+    </div>
+    <h3 class="mt-12 text-4xl font-black text-orange-700 tracking-tighter uppercase italic">Red Panda!</h3>
+</div>
+
+</body>
+</html>

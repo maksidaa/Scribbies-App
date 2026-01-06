@@ -1,0 +1,436 @@
+/* ========================================
+   SCRIPTURE BUDDY - CREATURE STYLES
+   ========================================
+
+   CREATURE SOURCE FILES LOCATION:
+   /Users/adamgoodwin/Desktop/scripture-buddy/Scripture Buddies/
+
+   ========================================
+   CRITICAL: CSS NAMING SYSTEM (PREVENT COLLISIONS)
+   ========================================
+
+   **EVERY creature MUST use this naming format:**
+
+   Format: {category}{variantNumber}-classname
+
+   Examples:
+   - Mouse (Mammals variant 4):    mammals4-creature, mammals4-ear, mammals4-tail
+   - Fox (Mammals variant 10):     mammals10-creature, mammals10-sock, mammals10-ear
+   - Duck (Birds variant 0):       birds0-wing, birds0-beak, birds0-body
+
+   **Categories:** mammals, birds, aquatic, reptiles, dragons,
+                   insects, fantasy, prehistoric, alien, mystical
+
+   **WRONG:** .ear, .head, .tail, .mouse-ear, .m4-ear
+   **RIGHT:** .mammals4-ear, .birds0-head, .reptiles5-tail
+
+   ========================================
+   CREATURE DESIGN SPECIFICATIONS
+   ========================================
+
+   **Canvas Size:** 240px width × 280px height
+
+   CRITICAL: ALL elements must stay INSIDE the 240×280 canvas!
+   - No negative top/left values (e.g., top:-45px is BAD)
+   - No elements extending past bottom:0 or right:0
+   - Ears, tails, etc. must start at top:0 or greater
+
+   Every creature HTML must use this structure:
+
+   <div style="position:relative;width:240px;height:280px;animation:...">
+     <!-- creature parts go here with position:absolute -->
+   </div>
+
+   **USE INLINE STYLES** - Do NOT use CSS classes for new creatures.
+   Inline styles are more reliable and don't require CSS file updates.
+
+   **Vertical Positioning Guidelines:**
+   - Ears/top: y position 0-30px from top
+   - Head: y position around 30-100px from top
+   - Body: y position around 100-170px from top
+   - Feet/bottom: should end around y: 240-270px
+   - Visual center of mass should be around y: 140px
+
+   **If source file has larger canvas (e.g., 260×340):**
+   - Scale all dimensions by ~0.85-0.92
+   - Adjust all top/left/right/bottom positions
+   - Ensure nothing extends outside 240×280
+
+   ========================================
+   CREATURE GUIDE DISPLAY (index.html)
+   ========================================
+
+   The creature guide displays adults in a 5-column grid.
+   Each creature is scaled to 35% and centered in a cell.
+
+   **Grid Cell Structure:**
+   - Outer wrapper: flex column, items-center, pt-2
+   - Creature container: 84px × 98px (240×0.35, 280×0.35)
+   - Creature div: transform: scale(0.35)
+   - Name label: mt-2 below creature
+
+   **Why 84×98px container?**
+   Original: 240×280px → Scaled 35% → Visual: 84×98px
+   The container matches the VISUAL size so flexbox centers correctly.
+   overflow:visible allows creature to render fully.
+
+   ========================================
+   HOW TO ADD A NEW CREATURE (STEP BY STEP)
+   ========================================
+
+   When user says "Add [CreatureName].html to [category]":
+
+   **STEP 1: Determine variant number**
+   - Search index.html for: function renderAdult{Category}
+   - Find the highest variant number in the designs object
+   - New variant = highest + 1
+
+   **STEP 2: Read source file**
+   - Path: /Users/adamgoodwin/Desktop/scripture-buddy/Scripture Buddies/[CreatureName].html
+   - Extract the HTML structure (the creature div and its children)
+   - Note the canvas size (width/height of outer container)
+   - Note any animations used
+
+   **STEP 3: Convert to INLINE STYLES (REQUIRED)**
+   - DO NOT use CSS classes - use inline styles only
+   - Convert all class-based styles to style="..." attributes
+   - Convert CSS variables (var(--color)) to hardcoded hex values
+   - This is more reliable and doesn't require CSS file updates
+
+   **STEP 4: Scale to fit 240×280 canvas**
+   - If source canvas is larger (e.g., 260×340), scale everything down
+   - CRITICAL: No negative positions! (top:-45px is BAD)
+   - All elements must stay within 0-240px horizontal, 0-280px vertical
+   - Ears at top:0-30px, head at 30-100px, body at 100-170px
+   - Scale dimensions proportionally (multiply by ~0.85-0.92)
+
+   **STEP 5: Check animations exist**
+   - Search index.html for @keyframes [animation-name]
+   - Common existing animations:
+     * bunny-hop, bunny-blink, bunny-ear-wiggle, tail-wiggle
+     * kitty-bounce, kitty-blink, paw-step
+     * sloth-hang, sloth-blink, arm-sway-l, arm-sway-r
+     * fox-bounce, fox-blink-l, fox-blink-r
+   - If animation doesn't exist, add @keyframes to <style> section
+
+   **STEP 6: Add to render function in index.html**
+   - Find: function renderAdult{Category}(variantIndex, level = 1)
+   - Add new case to the designs object using INLINE STYLES:
+
+     // ===== [CREATURE NAME] - [Category] Variant [N] =====
+     // Source: [filename].html (converted to inline styles)
+     {N}:`
+       <div style="position:relative;width:240px;height:280px;animation:...">
+         <!-- inline styled HTML here -->
+       </div>
+     `,
+
+   **STEP 6b: Update renderBuddyVisual() for buddy card display**
+   - Find: function renderBuddyVisual() (around line 889)
+   - In the adult stage section, ensure category is included:
+
+     }else if(S.creatureCategory==='{category}'){
+       buddyHTML=renderAdult{Category}(S.creatureVariant);
+     }
+
+   **STEP 7: Update category arrays in CREATURE_CATEGORIES**
+   - Find CREATURE_CATEGORIES in index.html
+   - Add creature name to adultNames array at index N
+   - Add emoji to adultVariants array at index N
+
+   **STEP 8: Test**
+   - Open creature guide in browser
+   - Verify creature displays correctly and FITS in the grid cell
+   - Verify it's centered and aligned with other creatures
+   - Verify name appears below
+   - If creature appears too big, check for elements outside canvas
+
+   ========================================
+   TWO DISPLAY CONTEXTS
+   ========================================
+
+   Creatures are displayed in TWO places with DIFFERENT scales:
+
+   **1. BUDDY CARD (main game view)**
+   - Function: renderBuddyVisual() → renderAdult{Category}()
+   - Scale: 45% (set in .buddy-node class)
+   - Shows current buddy with accessories
+   - Must update renderBuddyVisual() to include new categories!
+
+   **2. CREATURE GUIDE (preview all variants)**
+   - Location: creature guide screen, adult variants grid
+   - Scale: 35% (inline style)
+   - Container: 84×98px wrapper
+   - Shows all 10 variants in 5-column grid
+
+   Both use the SAME render function, just different scales.
+
+   ========================================
+   COMMON MISTAKES TO AVOID
+   ========================================
+
+   ✗ Forgetting to prefix animation names (@keyframes)
+   ✗ Missing class prefixes in nested selectors
+   ✗ Using generic class names (.body, .head) without prefix
+   ✗ Not wrapping in 240×280px container
+   ✗ Creature not vertically centered in canvas
+   ✗ Forgetting to update both adultNames AND adultVariants arrays
+   ✗ Forgetting to update renderBuddyVisual() (creature won't show in game!)
+
+   ======================================== */
+
+/* Universal Buddy Protocol */
+.buddy-node {
+    --b-main: var(--dynamic-main);
+    --b-dark: var(--dynamic-dark);
+    --b-accent: var(--dynamic-accent);
+    --b-blush: #ffb3c1;
+    position: relative;
+    width: 240px;
+    height: 280px;
+    transform: scale(0.45);
+    transform-origin: center;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Standardized Animation Library */
+@keyframes universal-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+@keyframes tail-sway { 0%, 100% { transform: rotate(10deg); } 50% { transform: rotate(-15deg); } }
+
+/* ==========================================
+   MOUSE BUDDY - Mammals Variant 4
+   Prefix: mammals4-
+   Source: MouseBuddy.html
+   ========================================== */
+
+/* Mouse Animations */
+@keyframes mammals4-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes mammals4-tail-wag { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(15deg); } }
+@keyframes mammals4-blink { 0%, 90%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
+@keyframes mammals4-sniff { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.1); } }
+
+.mammals4-creature { position: relative; width: 240px; height: 280px; z-index: 1; }
+
+/* BODY */
+.mammals4-body { position: absolute; width: 145px; height: 115px; background: #f4ede4; border: 4px solid #a68f81; border-radius: 50% 50% 42% 42% / 60% 60% 40% 40%; top: 125px; left: 48px; z-index: 20; }
+
+/* ATTACHED FEET */
+.mammals4-foot { position: absolute; background: #f4ede4; border: 3.5px solid #a68f81; border-radius: 50%; }
+.mammals4-paw-front { width: 30px; height: 25px; top: 35px; z-index: 30; }
+.mammals4-paw-fl { left: 25px; transform: rotate(10deg); }
+.mammals4-paw-fr { right: 25px; transform: rotate(-10deg); }
+.mammals4-foot-back { width: 45px; height: 35px; top: 85px; z-index: 19; }
+.mammals4-foot-bl { left: -12px; transform: rotate(-20deg); }
+.mammals4-foot-br { right: -12px; transform: rotate(20deg); }
+
+/* TAIL */
+.mammals4-tail { position: absolute; width: 100px; height: 10px; background: #ffc2d1; border: 3.5px solid #a68f81; border-radius: 20px; bottom: 65px; right: -33px; z-index: 10; transform-origin: left center; animation: mammals4-tail-wag 2s ease-in-out infinite; }
+
+/* HEAD */
+.mammals4-head { position: absolute; width: 140px; height: 125px; background: #f4ede4; border: 4px solid #a68f81; border-radius: 55% 55% 45% 45%; top: 35px; left: 50px; z-index: 40; }
+
+/* WHISKERS */
+.mammals4-whisker-group { position: absolute; top: 75px; width: 50px; height: 30px; }
+.mammals4-w-left { left: -40px; }
+.mammals4-w-right { right: -40px; }
+.mammals4-whisker { position: absolute; width: 45px; height: 2px; background: #a68f81; opacity: 0.6; }
+.mammals4-w-left .mammals4-w1 { top: 0; transform: rotate(15deg); }
+.mammals4-w-left .mammals4-w2 { top: 10px; transform: rotate(0deg); }
+.mammals4-w-left .mammals4-w3 { top: 20px; transform: rotate(-15deg); }
+.mammals4-w-right .mammals4-w1 { top: 0; right: 0; transform: rotate(-15deg); }
+.mammals4-w-right .mammals4-w2 { top: 10px; right: 0; transform: rotate(0deg); }
+.mammals4-w-right .mammals4-w3 { top: 20px; right: 0; transform: rotate(15deg); }
+
+/* EARS */
+.mammals4-ear { position: absolute; width: 95px; height: 95px; background: #f4ede4; border: 4px solid #a68f81; border-radius: 50%; z-index: 30; top: -15px; }
+.mammals4-ear-inner { position: absolute; width: 60px; height: 60px; background: #ffc2d1; border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+.mammals4-ear-l { left: 15px; }
+.mammals4-ear-r { right: 15px; }
+
+/* FACE */
+.mammals4-eye { width: 24px; height: 24px; background: #4a3f3a; border-radius: 50%; position: relative; animation: mammals4-blink 4s infinite; }
+.mammals4-eye::before { content: ''; position: absolute; width: 10px; height: 10px; background: white; border-radius: 50%; top: 3px; left: 4px; }
+.mammals4-nose { position: absolute; top: 68px; left: 50%; transform: translateX(-50%); width: 20px; height: 15px; background: #ff9eb5; border-radius: 50%; z-index: 60; animation: mammals4-sniff 0.6s infinite; }
+.mammals4-tiny-mouth { position: absolute; top: 84px; left: 50%; transform: translateX(-50%); display: flex; }
+.mammals4-mouth-curve { width: 10px; height: 7px; border: 3px solid #a68f81; border-top: none; border-radius: 0 0 10px 10px; margin: 0 -0.5px; }
+.mammals4-blush { position: absolute; top: 72px; width: 28px; height: 14px; background: #ffb3c1; border-radius: 50%; filter: blur(3px); }
+.mammals4-blush-l { left: 10px; }
+.mammals4-blush-r { right: 10px; }
+
+/* ==========================================
+   FOX IN SOX BUDDY - Mammals Variant 10
+   Prefix: mammals10-
+   Source: Fox_In_Sox_Buddy.html
+   ========================================== */
+
+/* Fox Animations */
+@keyframes mammals10-hand-wave-l-horiz { 0%, 100% { transform: rotate(-90deg); } 50% { transform: rotate(-75deg); } }
+@keyframes mammals10-hand-wave-r-horiz { 0%, 100% { transform: rotate(90deg); } 50% { transform: rotate(75deg); } }
+@keyframes mammals10-ear-wiggle-l { 0%, 90%, 100% { transform: rotate(-25deg); } 92% { transform: rotate(-35deg); } 94% { transform: rotate(-20deg); } 96% { transform: rotate(-30deg); } }
+@keyframes mammals10-ear-wiggle-r { 0%, 92%, 100% { transform: rotate(25deg); } 94% { transform: rotate(35deg); } 96% { transform: rotate(15deg); } 98% { transform: rotate(30deg); } }
+@keyframes mammals10-tail-swish { 0%, 100% { transform: rotate(-15deg); } 50% { transform: rotate(0deg); } }
+@keyframes mammals10-blink-l { 0%, 90%, 100% { transform: rotate(-12deg) scaleY(1); } 93%, 97% { transform: rotate(-12deg) scaleY(0.1); } }
+@keyframes mammals10-blink-r { 0%, 90%, 100% { transform: scaleX(-1) rotate(-12deg) scaleY(1); } 93%, 97% { transform: scaleX(-1) rotate(-12deg) scaleY(0.1); } }
+@keyframes mammals10-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+.mammals10-creature { position: relative; width: 240px; height: 280px; z-index: 1; }
+
+/* THE SOCK LOGIC */
+.mammals10-sock { background: #0ea5e9 !important; border-color: #0369a1 !important; position: absolute; overflow: visible; }
+
+/* Ribbed Cuff */
+.mammals10-sock::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: -3.5px;
+    width: calc(100% + 7px);
+    height: 12px;
+    background: repeating-linear-gradient(
+        to right,
+        #0ea5e9,
+        #0ea5e9 4px,
+        #0369a1 4px,
+        #0369a1 5px
+    );
+    border: 3.5px solid #0369a1;
+    border-radius: 6px;
+    z-index: 10;
+}
+
+/* Decorative Dashes */
+.mammals10-sock::after {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70%;
+    height: 3px;
+    background: repeating-linear-gradient(
+        to right,
+        #bae6fd,
+        #bae6fd 3px,
+        transparent 3px,
+        transparent 6px
+    );
+    z-index: 15;
+    border-radius: 2px;
+}
+
+/* Orientation for Front Arms (cuff at wrist/bottom) */
+.mammals10-paw-front.mammals10-sock::before { top: auto; bottom: -10px; }
+.mammals10-paw-front.mammals10-sock::after { bottom: auto; top: 8px; }
+
+/* HORIZONTAL ARM PLACEMENT */
+.mammals10-paw-front { width: 42px; height: 35px; border: 3.5px solid #0369a1; border-radius: 14px; top: 135px; z-index: 45; }
+
+/* LEFT PAW */
+.mammals10-paw-f-l { left: 33px; transform-origin: bottom; transform: rotate(-90deg); animation: mammals10-hand-wave-l-horiz 3s ease-in-out infinite; }
+
+/* RIGHT PAW */
+.mammals10-paw-f-r { right: 33px; transform-origin: bottom; transform: rotate(90deg); animation: mammals10-hand-wave-r-horiz 3s ease-in-out infinite; }
+
+/* BACK PAWS */
+.mammals10-paw-back { width: 48px; height: 38px; border: 3.5px solid #0369a1; border-radius: 18px 18px 14px 14px; top: 230px; left: 50%; z-index: 21; }
+.mammals10-p-b-l { margin-left: -70px; transform: rotate(15deg); }
+.mammals10-p-b-r { margin-left: 22px; transform: rotate(-15deg); }
+
+/* FACE & BODY */
+.mammals10-ear { position: absolute; width: 55px; height: 75px; background: #f97316; border: 4px solid #271b12; border-radius: 50% 50% 10% 10% / 80% 80% 20% 20%; z-index: 30; overflow: hidden; transform-origin: bottom center; }
+.mammals10-ear-tip { position: absolute; width: 100%; height: 25px; background: #271b12; top: 0; }
+.mammals10-ear-inner { position: absolute; width: 28px; height: 40px; background: #ffffff; border-radius: 40%; bottom: 5px; left: 50%; transform: translateX(-50%); opacity: 0.6; }
+.mammals10-ear-l { top: -10px; left: 40px; transform: rotate(-25deg); animation: mammals10-ear-wiggle-l 5s ease-in-out infinite; }
+.mammals10-ear-r { top: -10px; right: 40px; transform: rotate(25deg); animation: mammals10-ear-wiggle-r 7s ease-in-out infinite; }
+
+.mammals10-head { position: absolute; width: 155px; height: 115px; background: #f97316; border: 4px solid #271b12; border-radius: 50% 50% 48% 48% / 60% 60% 40% 40%; top: 28px; left: 43px; z-index: 40; overflow: hidden; }
+.mammals10-face-mask { position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 41; }
+.mammals10-snout-bridge { position: absolute; width: 34px; height: 55px; background: #ffffff; top: 55px; left: 50%; transform: translateX(-50%); border-radius: 50% 50% 40% 40% / 60% 60% 40% 40%; opacity: 0.95; }
+.mammals10-cheek-white { position: absolute; background: #ffffff; border-radius: 50%; width: 60px; height: 55px; bottom: 10px; opacity: 0.95; }
+.mammals10-cheek-l { left: 10px; transform: rotate(-20deg); }
+.mammals10-cheek-r { right: 10px; transform: rotate(20deg); }
+
+.mammals10-eye-group { position: absolute; top: 45px; width: 100%; display: flex; justify-content: center; gap: 40px; z-index: 50; }
+.mammals10-eye { width: 22px; height: 25px; background: #000; position: relative; border-radius: 70% 30% 70% 30% / 60% 40% 60% 40%; }
+.mammals10-eye::after { content: ''; position: absolute; width: 7px; height: 7px; background: white; border-radius: 50%; top: 4px; left: 5px; }
+.mammals10-eye-l { transform: rotate(-12deg); animation: mammals10-blink-l 4s infinite; }
+.mammals10-eye-r { transform: scaleX(-1) rotate(-12deg) scaleY(1); animation: mammals10-blink-r 4s infinite;}
+
+.mammals10-snout-container { position: absolute; width: 60px; height: 40px; bottom: -8px; left: 50%; transform: translateX(-50%); z-index: 60; }
+.mammals10-nose { position: absolute; width: 18px; height: 12px; background: #111827; border-radius: 50%; top: 0; left: 50%; transform: translateX(-50%); }
+.mammals10-mouth { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); display: flex; }
+.mammals10-mouth-curve { width: 12px; height: 8px; border: 2.5px solid #271b12; border-top: none; border-radius: 0 0 10px 10px; margin: 0 -0.5px; }
+
+.mammals10-body { position: absolute; width: 150px; height: 125px; background: #f97316; border: 4px solid #271b12; border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%; top: 120px; left: 45px; z-index: 20; overflow: hidden; }
+.mammals10-chest-patch { position: absolute; width: 100px; height: 90px; background: #ffffff; border-radius: 50%; top: -10px; left: 50%; transform: translateX(-50%); opacity: 0.9; }
+.mammals10-tail { position: absolute; width: 130px; height: 60px; background: #f97316; border: 4px solid #271b12; border-radius: 40px; bottom: 50px; right: -40px; z-index: 5; transform-origin: left center; animation: mammals10-tail-swish 2s ease-in-out infinite; overflow: hidden; }
+.mammals10-tail-tip { position: absolute; width: 50px; height: 100%; background: #ffffff; right: 0; top: 0; border-radius: 0 40px 40px 0; clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%, 40% 50%); }
+
+/* ==========================================
+   SLOTH BUDDY - Mammals Variant 7
+   Prefix: mammals7-
+   Source: Sloth_Buddy.html
+   ========================================== */
+
+/* Sloth Animations */
+@keyframes mammals7-hang { 0%, 100% { transform: translateY(0) rotate(-0.5deg); } 50% { transform: translateY(-12px) rotate(0.5deg); } }
+@keyframes mammals7-blink { 0%, 95%, 100% { transform: scaleY(1); } 97% { transform: scaleY(0.1); } }
+@keyframes mammals7-arm-sway-l { 0%, 100% { transform: rotate(30deg); } 50% { transform: rotate(38deg); } }
+@keyframes mammals7-arm-sway-r { 0%, 100% { transform: rotate(-30deg); } 50% { transform: rotate(-38deg); } }
+@keyframes mammals7-leg-wiggle-bl { 0%, 100% { transform: rotate(-6deg); } 50% { transform: rotate(-10deg); } }
+@keyframes mammals7-leg-wiggle-br { 0%, 100% { transform: rotate(6deg); } 50% { transform: rotate(10deg); } }
+
+/* Main creature container - using original 260x340 size */
+.mammals7-creature { position: relative; width: 260px; height: 340px; animation: mammals7-hang 6s ease-in-out infinite; z-index: 1; }
+
+/* Back Legs */
+.mammals7-leg-back { position: absolute; width: 44px; height: 90px; background: #8d734d; border: 4px solid #582f0e; border-radius: 22px; z-index: 10; top: 215px; }
+.mammals7-leg-bl { left: 75px; transform: rotate(-6deg); animation: mammals7-leg-wiggle-bl 6s ease-in-out infinite; }
+.mammals7-leg-br { right: 75px; transform: rotate(6deg); animation: mammals7-leg-wiggle-br 6s ease-in-out infinite; }
+
+/* Body */
+.mammals7-body { position: absolute; width: 170px; height: 150px; background: #a68a64; border: 4px solid #582f0e; border-radius: 50% 50% 40% 40%; top: 125px; left: 45px; z-index: 20; overflow: hidden; }
+.mammals7-tummy-patch { position: absolute; width: 110px; height: 90px; background: #e6ccb2; border-radius: 50%; bottom: 10px; left: 50%; transform: translateX(-50%); opacity: 0.5; }
+
+/* Front Arms */
+.mammals7-arm-front { position: absolute; width: 46px; height: 120px; background: #a68a64; border: 4px solid #582f0e; border-radius: 23px; z-index: 45; top: 110px; }
+.mammals7-arm-fl { left: 25px; transform: rotate(30deg); animation: mammals7-arm-sway-l 6s ease-in-out infinite; }
+.mammals7-arm-fr { right: 25px; transform: rotate(-30deg); animation: mammals7-arm-sway-r 6s ease-in-out infinite; }
+
+/* Claws */
+.mammals7-claws { position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); display: flex; gap: 2px; }
+.mammals7-claw { width: 6px; height: 20px; background: #f5ebe0; border: 2px solid #582f0e; border-radius: 0 0 6px 6px; }
+
+/* Head */
+.mammals7-head-outer { position: absolute; width: 155px; height: 135px; background: #a68a64; border: 4px solid #582f0e; border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%; top: 25px; left: 53px; z-index: 50; display: flex; justify-content: center; align-items: center; }
+.mammals7-face-inner { width: 125px; height: 105px; background: #e6ccb2; border: 3px solid #582f0e; border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%; position: relative; overflow: hidden; }
+
+/* Eye Patches */
+.mammals7-eye-patch { position: absolute; width: 70px; height: 48px; background: #7f5539; border-radius: 50% 20% 50% 20%; top: 18px; }
+.mammals7-patch-l { left: -22px; transform: rotate(-12deg); }
+.mammals7-patch-r { right: -22px; transform: scaleX(-1) rotate(-12deg); }
+
+/* Eyes */
+.mammals7-eye { width: 20px; height: 20px; background: #2a1a0a; border-radius: 50%; position: absolute; top: 15px; left: 44px; animation: mammals7-blink 8s infinite; }
+.mammals7-eye::after { content: ''; position: absolute; width: 7px; height: 7px; background: white; border-radius: 50%; top: 3px; left: 3px; }
+
+/* Nose & Mouth */
+.mammals7-nose { position: absolute; width: 22px; height: 14px; background: #582f0e; border-radius: 40% 40% 50% 50%; top: 68px; left: 50%; transform: translateX(-50%); z-index: 10; }
+.mammals7-mouth { position: absolute; width: 44px; height: 18px; border-bottom: 3.5px solid #582f0e; border-radius: 50%; top: 72px; left: 50%; transform: translateX(-50%); opacity: 0.9; }
+
+/* Blush */
+.mammals7-blush { position: absolute; width: 24px; height: 12px; background: #ffb3c1; border-radius: 50%; top: 72px; opacity: 0.4; filter: blur(1.5px); }
+.mammals7-blush-l { left: 12px; }
+.mammals7-blush-r { right: 12px; }
+
+/* ==========================================
+   ADD NEW CREATURES BELOW THIS LINE
+   ==========================================
+
+   REMEMBER THE NAMING SYSTEM:
+   Format: {fullcategoryname}{variant}-classname
+
+   ========================================== */

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Wavy Jellyfish Buddy</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root {
+    --j-bell-top: rgba(244, 114, 182, 0.8); 
+    --j-bell-bottom: rgba(192, 132, 252, 0.7); 
+    --j-tentacle-pink: #fbcfe8;
+    --j-tentacle-purple: #e9d5ff;
+    --j-outline: #c084fc;
+}
+
+body { 
+    background-color: #e0f2fe; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    min-height: 100vh; 
+    margin: 0; 
+}
+
+.jellyfish-creature {
+    position: relative;
+    width: 240px;
+    height: 380px;
+    animation: jelly-pulse 5s ease-in-out infinite;
+    z-index: 1;
+}
+
+/* --- JELLY BELL --- */
+.jelly-bell {
+    position: absolute;
+    width: 200px; height: 160px;
+    left: 20px; top: 0;
+    background: linear-gradient(to bottom, var(--j-bell-top), var(--j-bell-bottom));
+    border: 4px solid var(--j-outline);
+    border-radius: 50% 50% 40% 40% / 60% 60% 35% 35%;
+    z-index: 30;
+}
+
+/* --- FACE --- */
+.face-container {
+    position: absolute; top: 70px; width: 100%;
+    display: flex; flex-direction: column; align-items: center; z-index: 40;
+}
+.eye-group { display: flex; gap: 35px; }
+.j-eye {
+    width: 18px; height: 18px; background: #4c1d95; border-radius: 50%;
+    position: relative; animation: j-blink 6s infinite;
+}
+.j-eye::after { content: ''; position: absolute; width: 6px; height: 6px; background: white; border-radius: 50%; top: 3px; left: 3px; }
+.j-mouth { width: 24px; height: 10px; border-bottom: 3px solid #4c1d95; border-radius: 50%; margin-top: 5px; opacity: 0.7; }
+
+/* --- WAVY SVG TENTACLES --- */
+.tentacles-svg {
+    position: absolute;
+    top: 130px; /* Anchored to bottom of bell */
+    left: 0;
+    width: 100%;
+    height: 250px;
+    z-index: 20;
+    overflow: visible;
+}
+
+/* Styling the paths like the Rainbow Snake body */
+.tentacle-path {
+    fill: none;
+    stroke-width: 12;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    /* Apply the wavy wiggle from the snake reference */
+    animation: tentacle-wiggle 3s ease-in-out infinite;
+    transform-origin: top center;
+}
+
+.oral-arm-path {
+    stroke-width: 20;
+    stroke: var(--j-tentacle-pink);
+    opacity: 0.9;
+}
+
+/* Staggering the wiggle for a natural look */
+.t-pink { stroke: var(--j-tentacle-pink); animation-delay: 0.2s; }
+.t-purple { stroke: var(--j-tentacle-purple); animation-delay: 0.5s; }
+
+/* --- ANIMATIONS --- */
+@keyframes jelly-pulse {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-15px) scale(1.02, 0.98); }
+}
+
+/* Wiggle logic adapted from Rainbow Snake's body-wiggle */
+@keyframes tentacle-wiggle {
+    0%, 100% { transform: scaleX(1) skewX(0deg); }
+    25% { transform: scaleX(1.1) skewX(4deg); }
+    75% { transform: scaleX(0.9) skewX(-4deg); }
+}
+
+@keyframes j-blink { 0%, 90%, 100% { transform: scaleY(1); } 93%, 97% { transform: scaleY(0.1); } }
+
+</style>
+</head>
+<body>
+
+<div class="bg-white/60 backdrop-blur-sm p-16 rounded-[80px] shadow-2xl flex flex-col items-center border-4 border-white">
+    <div class="jellyfish-creature">
+        
+        <svg class="tentacles-svg" viewBox="0 0 240 250">
+            <defs>
+                <filter id="glow">
+                    <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                    <feMerge>
+                        <feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                </filter>
+            </defs>
+
+            <path class="tentacle-path t-purple" d="M 60,10 Q 30,80 60,150 T 60,240" />
+            <path class="tentacle-path t-purple" d="M 180,10 Q 210,80 180,150 T 180,240" />
+
+            <path class="tentacle-path t-pink" d="M 90,10 Q 70,100 90,180 T 90,230" />
+            <path class="tentacle-path t-pink" d="M 150,10 Q 170,100 150,180 T 150,230" />
+
+            <path class="tentacle-path oral-arm-path" d="M 120,5 Q 100,100 120,200" />
+        </svg>
+
+        <div class="jelly-bell">
+            <div class="face-container">
+                <div class="eye-group">
+                    <div class="j-eye"></div>
+                    <div class="j-eye"></div>
+                </div>
+                <div class="j-mouth"></div>
+                <div class="absolute top-[20px] w-full flex justify-center gap-[65px]">
+                    <div class="w-5 h-2 bg-rose-200 rounded-full opacity-50 blur-[1.5px]"></div>
+                    <div class="w-5 h-2 bg-rose-200 rounded-full opacity-50 blur-[1.5px]"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+    <h3 class="mt-12 text-4xl font-black text-purple-600 tracking-tighter uppercase italic">Lil' Jellyfish Buddy!</h3>
+</div>
+
+</body>
+</html>

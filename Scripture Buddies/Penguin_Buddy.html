@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Penguin Buddy - Grounded Waddle</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root {
+    --p-fur: #1e293b; 
+    --p-belly: #ffffff;
+    --p-beak: #f97316; 
+    --p-eye: #0f172a;
+    --p-blush: #fecdd3;
+}
+
+body { 
+    background-color: #e0f2fe; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    min-height: 100vh; 
+    margin: 0; 
+}
+
+.penguin-creature {
+    position: relative;
+    width: 240px;
+    height: 280px;
+    z-index: 1;
+    /* Container is now stationary */
+}
+
+/* BODY - Added a subtle weight-shift sway */
+.penguin-body {
+    position: absolute;
+    width: 160px;
+    height: 180px;
+    background: var(--p-fur);
+    border: 4px solid #0f172a;
+    border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+    top: 60px;
+    left: 40px;
+    z-index: 20;
+    overflow: hidden;
+    animation: body-sway 0.8s ease-in-out infinite;
+}
+
+.tummy-white {
+    position: absolute;
+    width: 120px;
+    height: 140px;
+    background: var(--p-belly);
+    border-radius: 50% 50% 45% 45%;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* FLIPPERS */
+.flipper {
+    position: absolute;
+    width: 38px;
+    height: 85px;
+    background: var(--p-fur);
+    border: 3.5px solid #0f172a;
+    border-radius: 20% 20% 60% 60%;
+    z-index: 15;
+    top: 111px;
+}
+
+.flipper-l { 
+    left: 50px; 
+    transform-origin: top center;
+    animation: flipper-wave-l 3s ease-in-out infinite; 
+}
+
+.flipper-r { 
+    right: 50px; 
+    transform-origin: top center;
+    animation: flipper-wave-r 3s ease-in-out infinite; 
+}
+
+/* FEET - Independent Waddle Logic */
+.foot {
+    position: absolute;
+    width: 52px;
+    height: 32px;
+    background: var(--p-beak);
+    border: 3.5px solid #c2410c;
+    border-radius: 50% 50% 40% 40%;
+    bottom: 35px;
+    z-index: 10;
+}
+
+.foot-l { 
+    left: 55px; 
+    transform: rotate(15deg); 
+    animation: foot-lift-l 0.8s ease-in-out infinite;
+}
+
+.foot-r { 
+    right: 55px; 
+    transform: rotate(-15deg); 
+    animation: foot-lift-r 0.8s ease-in-out infinite;
+    animation-delay: 0.4s; /* Offset for alternating waddle */
+}
+
+/* FACE */
+.face-container {
+    position: absolute;
+    width: 100%;
+    top: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 45;
+}
+
+.eye-group {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 6px;
+}
+
+.p-eye {
+    width: 18px;
+    height: 18px;
+    background: var(--p-eye);
+    border-radius: 50%;
+    position: relative;
+    animation: penguin-blink 4s infinite;
+}
+
+.p-eye::after {
+    content: '';
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    background: white;
+    border-radius: 50%;
+    top: 3px;
+    left: 3px;
+}
+
+.beak {
+    width: 22px;
+    height: 22px;
+    background: var(--p-beak);
+    border: 3px solid #c2410c;
+    /* Rotate 45deg to create a diamond/point */
+    transform: rotate(-135deg);
+    /* Slight rounding on the corners so it's not too sharp */
+    border-radius: 2px 8px 30px 8px; 
+    margin-top: -5px;
+}
+
+.blush {
+    position: absolute;
+    width: 22px;
+    height: 11px;
+    background: var(--p-blush);
+    border-radius: 50%;
+    top: 38px;
+    opacity: 0.5;
+    filter: blur(1.5px);
+}
+.blush-l { left: 35px; }
+.blush-r { right: 35px; }
+
+/* ANIMATIONS */
+
+/* Subtle weight shift side-to-side */
+@keyframes body-sway {
+    0%, 100% { transform: rotate(-1.5deg); }
+    50% { transform: rotate(1.5deg); }
+}
+
+@keyframes foot-lift-l {
+    0%, 100% { transform: rotate(15deg) translateY(0); }
+    50% { transform: rotate(10deg) translateY(-8px); }
+}
+
+@keyframes foot-lift-r {
+    0%, 100% { transform: rotate(-15deg) translateY(0); }
+    50% { transform: rotate(-10deg) translateY(-8px); }
+}
+
+@keyframes penguin-blink {
+    0%, 90%, 100% { transform: scaleY(1); }
+    93%, 97% { transform: scaleY(0.1); }
+}
+
+@keyframes flipper-wave-l {
+    0%, 100% { transform: rotate(15deg); }
+    50% { transform: rotate(40deg); }
+}
+
+@keyframes flipper-wave-r {
+    0%, 100% { transform: rotate(-15deg); }
+    50% { transform: rotate(-40deg); }
+}
+
+</style>
+</head>
+<body>
+
+<div class="bg-white p-16 rounded-[80px] shadow-2xl flex flex-col items-center">
+    <div class="penguin-creature">
+        
+        <div class="foot foot-l"></div>
+        <div class="foot foot-r"></div>
+
+        <div class="flipper flipper-l"></div>
+        <div class="flipper flipper-r"></div>
+
+        <div class="penguin-body">
+            <div class="tummy-white"></div>
+            
+            <div class="face-container">
+                <div class="eye-group">
+                    <div class="p-eye"></div>
+                    <div class="p-eye"></div>
+                </div>
+                <div class="beak"></div>
+                <div class="blush blush-l"></div>
+                <div class="blush blush-r"></div>
+            </div>
+        </div>
+
+    </div>
+    
+    <h3 class="mt-12 text-4xl font-black text-slate-800 tracking-tighter uppercase italic">Penguin Buddy!</h3>
+</div>
+
+</body>
+</html>

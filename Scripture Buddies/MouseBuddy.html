@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Kawaii Whisker Mouse</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root {
+    --m-fur: #f4ede4; 
+    --m-fur-dark: #a68f81; 
+    --m-nose: #ff9eb5; 
+    --m-pink: #ffc2d1; 
+    --m-blush: #ffb3c1;
+    --m-eye: #4a3f3a; 
+}
+
+body { 
+    background-color: #fff0f3; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    min-height: 100vh; 
+    margin: 0; 
+}
+
+.mouse-container {
+    position: relative;
+    cursor: pointer;
+}
+
+.mouse-creature {
+    position: relative;
+    width: 240px;
+    height: 280px;
+    animation: joyful-bounce 2s ease-in-out infinite;
+    z-index: 1;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.mouse-container:hover .hover-heart { opacity: 1; transform: translateY(-45px) scale(1.2); }
+.mouse-container:hover .mouse-creature { transform: scale(1.05); }
+
+/* BODY */
+.mouse-body {
+    position: absolute;
+    width: 145px;
+    height: 115px;
+    background: var(--m-fur);
+    border: 4px solid var(--m-fur-dark);
+    border-radius: 50% 50% 42% 42% / 60% 60% 40% 40%;
+    top: 125px;
+    left: 48px;
+    z-index: 20;
+}
+
+/* ATTACHED FEET */
+.foot {
+    position: absolute;
+    background: var(--m-fur);
+    border: 3.5px solid var(--m-fur-dark);
+    border-radius: 50%;
+}
+
+.paw-front { width: 30px; height: 25px; top: 35px; z-index: 30; }
+.paw-fl { left: 25px; transform: rotate(10deg); } 
+.paw-fr { right: 25px; transform: rotate(-10deg); }
+
+.foot-back { width: 45px; height: 35px; top: 85px; z-index: 19; }
+.foot-bl { left: -12px; transform: rotate(-20deg); }
+.foot-br { right: -12px; transform: rotate(20deg); }
+
+/* TAIL */
+.mouse-tail {
+    position: absolute;
+    width: 100px;
+    height: 10px;
+    background: var(--m-pink);
+    border: 3.5px solid var(--m-fur-dark);
+    border-radius: 20px;
+    bottom: 65px;
+    right: -33px;
+    z-index: 10;
+    transform-origin: left center;
+    animation: tail-wag 2s ease-in-out infinite;
+}
+
+/* HEAD */
+.mouse-head {
+    position: absolute;
+    width: 140px;
+    height: 125px;
+    background: var(--m-fur);
+    border: 4px solid var(--m-fur-dark);
+    border-radius: 55% 55% 45% 45%;
+    top: 35px;
+    left: 50px;
+    z-index: 40;
+}
+
+/* WHISKERS - Correctly Mirrored */
+.whisker-group { position: absolute; top: 75px; width: 50px; height: 30px; }
+.w-left { left: -40px; }
+.w-right { right: -40px; }
+
+.whisker {
+    position: absolute;
+    width: 45px;
+    height: 2px;
+    background: var(--m-fur-dark);
+    opacity: 0.6;
+}
+
+/* Left side fan out */
+.w-left .w1 { top: 0; transform: rotate(15deg); }
+.w-left .w2 { top: 10px; transform: rotate(0deg); }
+.w-left .w3 { top: 20px; transform: rotate(-15deg); }
+
+/* Right side fan out (Flipped) */
+.w-right .w1 { top: 0; right: 0; transform: rotate(-15deg); }
+.w-right .w2 { top: 10px; right: 0; transform: rotate(0deg); }
+.w-right .w3 { top: 20px; right: 0; transform: rotate(15deg); }
+
+/* EARS */
+.ear {
+    position: absolute;
+    width: 95px;
+    height: 95px;
+    background: var(--m-fur);
+    border: 4px solid var(--m-fur-dark);
+    border-radius: 50%;
+    z-index: 30; 
+    top: -15px;
+}
+.ear-inner {
+    position: absolute;
+    width: 60px; height: 60px;
+    background: var(--m-pink);
+    border-radius: 50%;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+}
+.ear-l { left: 15px; }
+.ear-r { right: 15px; }
+
+/* FACE */
+.m-eye { 
+    width: 24px; height: 24px; 
+    background: var(--m-eye);
+    border-radius: 50%; 
+    position: relative; 
+    animation: mouse-blink 4s infinite;
+}
+.m-eye::before { content: ''; position: absolute; width: 10px; height: 10px; background: white; border-radius: 50%; top: 3px; left: 4px; }
+
+.mouse-nose {
+    position: absolute;
+    top: 68px; left: 50%;
+    transform: translateX(-50%);
+    width: 20px; height: 15px;
+    background: var(--m-nose);
+    border-radius: 50%;
+    z-index: 60;
+    animation: sniff 0.6s infinite;
+}
+
+.tiny-mouth {
+    position: absolute;
+    top: 84px; left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+}
+.mouth-curve {
+    width: 10px; height: 7px;
+    border: 3px solid var(--m-fur-dark);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    margin: 0 -0.5px;
+}
+
+.blush {
+    position: absolute;
+    top: 72px; width: 28px; height: 14px;
+    background: var(--m-blush);
+    border-radius: 50%;
+    filter: blur(3px);
+}
+.blush-l { left: 10px; }
+.blush-r { right: 10px; }
+
+.hover-heart {
+    position: absolute;
+    top: -10px; right: 20px;
+    font-size: 45px; color: #ff8fa3;
+    opacity: 0;
+    transition: all 0.4s ease;
+}
+
+/* ANIMATIONS */
+@keyframes joyful-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes tail-wag { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(15deg); } }
+@keyframes mouse-blink { 0%, 90%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
+@keyframes sniff { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.1); } }
+
+</style>
+</head>
+<body>
+
+<div class="bg-white p-12 rounded-[60px] shadow-[0_20px_60px_rgba(0,0,0,0.05)] flex flex-col items-center">
+    
+    <div class="mouse-container">
+        <div class="hover-heart">♥</div>
+
+        <div class="mouse-creature">
+            <div class="ear ear-l"><div class="ear-inner"></div></div>
+            <div class="ear ear-r"><div class="ear-inner"></div></div>
+
+            <div class="mouse-head">
+                <div class="whisker-group w-left">
+                    <div class="whisker w1"></div>
+                    <div class="whisker w2"></div>
+                    <div class="whisker w3"></div>
+                </div>
+                <div class="whisker-group w-right">
+                    <div class="whisker w1"></div>
+                    <div class="whisker w2"></div>
+                    <div class="whisker w3"></div>
+                </div>
+                
+                <div class="absolute top-11 w-full flex justify-center gap-9">
+                    <div class="m-eye"></div>
+                    <div class="m-eye"></div>
+                </div>
+                
+                <div class="mouse-nose"></div>
+                <div class="tiny-mouth">
+                    <div class="mouth-curve"></div>
+                    <div class="mouth-curve"></div>
+                </div>
+                <div class="blush blush-l"></div>
+                <div class="blush blush-r"></div>
+            </div>
+
+            <div class="mouse-body">
+                <div class="foot paw-front paw-fl"></div>
+                <div class="foot paw-front paw-fr"></div>
+                <div class="foot foot-back foot-bl"></div>
+                <div class="foot foot-back foot-br"></div>
+            </div>
+
+            <div class="mouse-tail"></div>
+        </div>
+    </div>
+    
+    <h3 class="mt-12 text-3xl font-bold text-stone-400 tracking-tight">Mouse Buddy!</h3>
+    <p class="text-stone-300 text-sm mt-1"></p>
+</div>
+
+</body>
+</html>

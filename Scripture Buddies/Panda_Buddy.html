@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Waving Panda Buddy - Fixed</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root {
+    --p-white: #ffffff;
+    --p-black: #1a1a1a;
+    --p-black-soft: #2d2d2d;
+    --p-pink: #ffcad4; 
+}
+
+body { 
+    background-color: #f0fdf4; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    min-height: 100vh; 
+    margin: 0; 
+}
+
+.panda-creature {
+    position: relative;
+    width: 300px;
+    height: 280px;
+    animation: panda-bounce 3s ease-in-out infinite;
+    z-index: 1;
+}
+
+/* EARS - Repositioned to connect to the head */
+.ear {
+    position: absolute;
+    width: 55px; height: 50px;
+    background: var(--p-black);
+    border: 4px solid var(--p-black-soft);
+    border-radius: 50% 50% 20% 20%;
+    z-index: 35; /* Behind the face but in front of the back of head */
+    top: 18px;
+    transform-origin: bottom center;
+    overflow: hidden;
+}
+
+.ear-inner {
+    position: absolute;
+    width: 35px; height: 35px;
+    background: var(--p-pink);
+    border-radius: 50%;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.9; 
+}
+
+/* Positioned specifically to overlap the head boundary */
+.ear-l { left: 82px; transform: rotate(-30deg); }
+.ear-r { right: 82px; transform: rotate(30deg); }
+
+/* HEAD & FACE */
+.panda-head {
+    position: absolute;
+    width: 155px; height: 125px;
+    background: var(--p-white);
+    border: 4px solid var(--p-black);
+    border-radius: 50% 50% 48% 48% / 60% 60% 40% 40%;
+    top: 30px; left: 73px;
+    z-index: 40;
+}
+
+.eye-patch {
+    position: absolute;
+    width: 45px; height: 55px;
+    background: var(--p-black);
+    border-radius: 50% 50% 45% 45%;
+    top: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.patch-l { left: 22px; transform: rotate(15deg); }
+.patch-r { right: 22px; transform: rotate(-15deg); }
+
+.eye-outer {
+    width: 24px; height: 24px;
+    background: var(--p-white);
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: panda-blink 4s infinite;
+}
+
+.p-pupil {
+    width: 16px; height: 16px;
+    background: var(--p-black-soft);
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+}
+
+.p-pupil::before {
+    content: ''; position: absolute;
+    width: 7px; height: 7px;
+    background: white; border-radius: 50%;
+    top: 2px; left: 2px;
+}
+
+.panda-nose {
+    position: absolute;
+    width: 20px; height: 14px;
+    background: var(--p-black);
+    border-radius: 50% 50% 40% 40%;
+    top: 85px; left: 50%;
+    transform: translateX(-50%);
+}
+
+.mouth {
+    position: absolute;
+    top: 98px; left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+}
+.mouth-curve {
+    width: 12px; height: 8px;
+    border: 2.5px solid var(--p-black);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+}
+
+/* BODY */
+.panda-body {
+    position: absolute;
+    width: 160px; height: 140px;
+    background: var(--p-black); 
+    border: 4px solid var(--p-black-soft);
+    border-radius: 50%; 
+    top: 120px; left: 70px;
+    z-index: 20; overflow: hidden;
+}
+.tummy-inner {
+    position: absolute;
+    width: 110px; height: 100px;
+    background: var(--p-white);
+    border-radius: 50%;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -45%);
+}
+
+/* ARMS */
+.arm {
+    position: absolute;
+    width: 38px; height: 65px;
+    background: var(--p-black);
+    border: 3.5px solid var(--p-black-soft);
+    border-radius: 20px;
+    z-index: 19;
+    top: 130px;
+}
+
+/* Static Left Arm */
+.arm-l { 
+    left: 53px; 
+    transform: rotate(-30deg);
+}
+
+/* Waving Right Arm - Pivot Fixed to Top Center */
+.arm-r { 
+    right: 66px; 
+    transform-origin: bottom;
+    animation: arm-wave 2s ease-in-out infinite; 
+}
+
+/* LEGS - Still */
+.leg {
+    position: absolute;
+    width: 45px; height: 50px;
+    background: var(--p-black);
+    border: 3.5px solid var(--p-black-soft);
+    border-radius: 20px;
+    top: 233px;
+    z-index: 21;
+}
+.leg-l { left: 80px; transform: rotate(10deg); }
+.leg-r { right: 80px; transform: rotate(-10deg); }
+
+/* ANIMATIONS */
+@keyframes panda-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes panda-blink { 0%, 90%, 100% { transform: scaleY(1); } 93%, 97% { transform: scaleY(0.1); } }
+
+/* Improved Wave: Pivots from the shoulder naturally */
+@keyframes arm-wave { 
+    0%, 100% { transform: rotate(80deg); } 
+    50% { transform: rotate(20deg); } 
+}
+
+</style>
+</head>
+<body>
+
+<div class="bg-white p-16 rounded-[80px] shadow-2xl flex flex-col items-center">
+    <div class="panda-creature">
+        <div class="ear ear-l"><div class="ear-inner"></div></div>
+        <div class="ear ear-r"><div class="ear-inner"></div></div>
+
+        <div class="panda-body">
+            <div class="tummy-inner"></div>
+        </div>
+
+        <div class="arm arm-l"></div>
+        <div class="arm arm-r"></div>
+        <div class="leg leg-l"></div>
+        <div class="leg leg-r"></div>
+
+        <div class="panda-head">
+            <div class="eye-patch patch-l">
+                <div class="eye-outer">
+                    <div class="p-pupil"></div>
+                </div>
+            </div>
+            <div class="eye-patch patch-r">
+                <div class="eye-outer">
+                    <div class="p-pupil"></div>
+                </div>
+            </div>
+            
+            <div class="panda-nose"></div>
+            <div class="mouth">
+                <div class="mouth-curve"></div>
+                <div class="mouth-curve"></div>
+            </div>
+
+            <div class="absolute top-[88px] w-full flex justify-around px-4">
+                <div class="w-6 h-3 bg-rose-200 rounded-full opacity-60 filter blur-[2px]"></div>
+                <div class="w-6 h-3 bg-rose-200 rounded-full opacity-60 filter blur-[2px]"></div>
+            </div>
+        </div>
+    </div>
+    
+    <h3 class="mt-16 text-4xl font-black text-slate-800 tracking-tighter uppercase italic">Panda Buddy!</h3>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Gecko Buddy - Snake Blink</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root {
+--g-skin: #8cc63f;
+--g-skin-shadow: #7ab332;
+--g-outline: #3f6212;
+--g-belly: #fbfde3;
+--g-eye-orange: #ea580c;
+--g-spot: #65a30d;
+}
+
+body { background-color: #f3f4f6; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+
+.gecko-container {
+position: relative;
+width: 350px;
+height: 250px;
+display: flex; justify-content: center; align-items: center;
+}
+
+/* SHARED STYLES */
+.part {
+position: absolute;
+background: var(--g-skin);
+border: 4px solid var(--g-outline);
+}
+
+/* 1. TAIL */
+.tail-layer {
+position: absolute;
+width: 160px;
+height: 130px;
+right: -10px;
+bottom: 35px;
+z-index: 5;
+transform-origin: bottom left;
+animation: tail-sway 3s ease-in-out infinite;
+}
+.tail-path {
+fill: var(--g-skin);
+stroke: var(--g-outline);
+stroke-width: 4;
+stroke-linejoin: round;
+}
+
+/* 2. BODY */
+.body-shape {
+width: 140px;
+height: 85px;
+border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+top: 110px;
+left: 100px;
+z-index: 20;
+}
+
+.belly-patch {
+position: absolute;
+bottom: 4px; left: 20px; width: 100px; height: 35px;
+background: var(--g-belly); border-radius: 50%; opacity: 0.9;
+}
+
+/* 3. HEAD */
+.head-shape {
+width: 160px;
+height: 115px;
+border-radius: 45% 55% 45% 45% / 55% 55% 45% 45%;
+top: 30px;
+left: 35px;
+z-index: 30;
+transform: rotate(-10deg);
+}
+
+.chin-patch {
+position: absolute;
+bottom: 4px; left: 20px; width: 120px; height: 40px;
+background: var(--g-belly); border-radius: 50%;
+}
+
+/* 4. LIMBS & WIGGLES */
+.leg { width: 30px; height: 45px; border-radius: 15px; z-index: 25; transform-origin: top center; }
+.leg-back { z-index: 10; background: var(--g-skin-shadow); filter: brightness(0.9); }
+
+.l-fl { top: 165px; left: 110px; transform: rotate(15deg); animation: wiggle-fl 0.8s ease-in-out infinite alternate; }
+@keyframes wiggle-fl { from { transform: rotate(15deg); } to { transform: rotate(25deg); } }
+
+.l-fr { top: 155px; left: 150px; transform: rotate(-10deg); z-index: 10; opacity: 0; }
+
+.l-bl { top: 170px; left: 190px; transform: rotate(-10deg); animation: wiggle-bl 0.8s ease-in-out infinite alternate-reverse; }
+@keyframes wiggle-bl { from { transform: rotate(-10deg); } to { transform: rotate(0deg); } }
+
+.l-br { top: 150px; left: 220px; transform: rotate(10deg); animation: wiggle-br 0.8s ease-in-out infinite alternate; }
+@keyframes wiggle-br { from { transform: rotate(10deg); } to { transform: rotate(20deg); } }
+
+.foot { position: absolute; bottom: -6px; left: -4px; width: 38px; height: 12px; display: flex; gap: 2px; }
+.toe { width: 10px; height: 10px; background: inherit; border: 3px solid var(--g-outline); border-radius: 50%; }
+
+/* 5. FACE - SNAKE STYLE BLINK */
+
+/* Wrapper handles Position & Rotation */
+.eye-wrapper {
+position: absolute;
+width: 58px; height: 58px;
+z-index: 35;
+}
+.pos-right { top: 10px; right: -5px; transform: rotate(8deg); }
+.pos-left { top: 10px; left: -5px; transform: rotate(-8deg); }
+
+/* Inner Shape handles Color, Border, & BLINK Animation */
+.eye-shape {
+width: 100%; height: 100%;
+background: var(--g-eye-orange);
+border: 4px solid #3f2e18;
+border-radius: 50%;
+overflow: hidden;
+display: flex; align-items: center;
+/* The Snake Blink: ScaleY */
+animation: snake-blink 4s infinite;
+}
+
+.pupil {
+position: absolute;
+width: 35px; height: 35px;
+background: #2a1a10;
+border-radius: 50%;
+left: 10px;
+}
+
+.sparkle { position: absolute; width: 10px; height: 10px; background: white; border-radius: 50%; top: 6px; left: 6px; }
+
+.mouth-line {
+position: absolute;
+bottom: 25px;
+left: 50%; transform: translateX(-50%) rotate(-2deg);
+width: 70px; height: 25px;
+border-bottom: 4px solid var(--g-outline); border-radius: 50%;
+}
+
+.nostril {
+position: absolute; top: 65px; width: 4px; height: 3px;
+background: var(--g-outline); border-radius: 50%;
+}
+.n-l { left: 55px; }
+.n-r { left: 100px; }
+
+/* 6. SPOTS & ANIMATIONS */
+.spot { position: absolute; background: var(--g-spot); border-radius: 50%; opacity: 0.7; }
+@keyframes tail-sway { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(5deg); } }
+@keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+
+/* Snappy Snake Blink using ScaleY */
+@keyframes snake-blink {
+0%, 90%, 100% { transform: scaleY(1); }
+93%, 97% { transform: scaleY(0.1); }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-white p-10 rounded-[50px] shadow-xl">
+<div class="gecko-container">
+
+<div class="tail-layer">
+<svg viewBox="0 0 160 130" style="width:100%; height:100%; overflow:visible;">
+<path class="tail-path" d="M 0,100 Q 70,100 130,30 Q 140,15 130,5 Q 100,30 0,60 Z" />
+</svg>
+<div class="spot" style="top:60px; left:40px; width:10px; height:8px;"></div>
+<div class="spot" style="top:40px; left:80px; width:8px; height:6px;"></div>
+</div>
+
+<div class="part leg leg-back l-br">
+<div class="foot"><div class="toe"></div><div class="toe"></div><div class="toe"></div></div>
+</div>
+
+<div class="part body-shape" style="animation: breathe 3s infinite;">
+<div class="belly-patch"></div>
+<div class="spot" style="top:15px; left:30px; width:12px; height:10px;"></div>
+<div class="spot" style="top:25px; left:60px; width:10px; height:8px;"></div>
+<div class="spot" style="top:10px; left:90px; width:8px; height:6px;"></div>
+</div>
+
+<div class="part head-shape" style="animation: breathe 3s infinite;">
+<div class="chin-patch"></div>
+
+<div class="eye-wrapper pos-right">
+<div class="eye-shape">
+<div class="pupil"><div class="sparkle"></div></div>
+</div>
+</div>
+
+<div class="eye-wrapper pos-left">
+<div class="eye-shape">
+<div class="pupil"><div class="sparkle"></div></div>
+</div>
+</div>
+
+<div class="nostril n-l"></div>
+<div class="nostril n-r"></div>
+<div class="mouth-line"></div>
+<div class="spot" style="top:10px; left:75px; width:8px; height:6px;"></div>
+</div>
+
+<div class="part leg l-fl">
+<div class="foot"><div class="toe"></div><div class="toe"></div><div class="toe"></div></div>
+</div>
+<div class="part leg l-bl">
+<div class="foot"><div class="toe"></div><div class="toe"></div><div class="toe"></div></div>
+</div>
+
+</div>
+<h3 class="mt-8 text-3xl font-black text-lime-900 tracking-wider uppercase text-center italic">Gecko!</h3>
+</div>
+
+</body>
+</html>

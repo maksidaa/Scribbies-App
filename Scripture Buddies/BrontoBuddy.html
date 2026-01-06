@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Refined Bronto Buddy</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root {
+    --d-skin: #2dd4bf; 
+    --d-skin-dark: #0d9488; 
+    --d-belly: #f0fdfa; 
+    --d-spot: #14b8a6;
+    --d-outline: #134e4a; 
+    --d-claw: #f1f5f9;
+    --d-eye-sparkle: #ffffff;
+}
+
+body { 
+    background-color: #f0fdf4; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    min-height: 100vh; 
+    margin: 0; 
+}
+
+.bronto-creature {
+    position: relative;
+    width: 400px;
+    height: 450px;
+    animation: bronto-float 3s ease-in-out infinite;
+}
+
+/* 1. CURVED NECK (SVG for organic feel) */
+.neck-container {
+    position: absolute;
+    bottom: 222px;
+    left: 266px;
+    width: 135px;
+    height: 218px;
+    z-index: 15;
+    transform-origin: bottom left;
+    animation: neck-peering 6s ease-in-out infinite;
+}
+.neck-svg {
+    fill: var(--d-skin);
+    stroke: var(--d-outline);
+    stroke-width: 5;
+}
+
+/* 2. REFINED HEAD - More "Dino" Shape */
+.head-shape {
+    position: absolute;
+    width: 150px;
+    height: 110px;
+    background: var(--d-skin);
+    border: 5px solid var(--d-outline);
+    /* Tapered snout and rounded back-head */
+    border-radius: 50% 70% 40% 50% / 60% 60% 40% 40%;
+    top: -22px;
+    left: 20px;
+    z-index: 40;
+    box-shadow: inset 4px 4px 0 rgba(255,255,255,0.3);
+}
+
+/* FACE DETAILS */
+.eye-container {
+    display: flex; gap: 18px; 
+    justify-content: center; 
+    margin-top: 25px;
+    margin-left: 20px;
+}
+.s-eye {
+    width: 32px; height: 36px; background: #1a1a1a;
+    border-radius: 50%; position: relative;
+    animation: dino-blink 4s infinite;
+}
+.sparkle {
+    position: absolute; width: 10px; height: 10px; background: white;
+    border-radius: 50%; top: 6px; left: 6px;
+}
+
+.nostrils {
+    position: absolute;
+    bottom: 30px; right: 25px;
+    display: flex; gap: 8px;
+    opacity: 0.4;
+}
+.dot { width: 5px; height: 7px; background: var(--d-outline); border-radius: 50%; }
+
+.mouth {
+    position: absolute;
+    bottom: 15px; right: 30px;
+    width: 50px; height: 20px;
+    border-bottom: 4px solid var(--d-outline);
+    border-radius: 0 0 50% 20%;
+}
+
+/* 3. BODY & TAIL */
+.body-main {
+    position: absolute;
+    width: 315px; height: 200px;
+    background: linear-gradient(145deg, var(--d-skin), var(--d-skin-dark));
+    border: 5px solid var(--d-outline);
+    border-radius: 100px 120px 88px 85px;
+    bottom: 80px; left: 60px; z-index: 20;
+}
+.belly-patch {
+    position: absolute; bottom: 0; left: 40px;
+    width: 222px; height: 80px;
+    background: var(--d-belly); border-radius: 100px 100px 40px 40px;
+    opacity: 0.5;
+}
+
+.tail-whip {
+    position: absolute;
+    width: 220px; height: 70px;
+    background: var(--d-skin-dark);
+    border: 5px solid var(--d-outline);
+    border-radius: 120px 0 0 120px;
+    bottom: 140px; left: -100px;
+    z-index: 10;
+    transform-origin: right center;
+    animation: tail-sway 4s ease-in-out infinite;
+}
+
+/* 4. LEGS */
+.leg {
+    position: absolute;
+    width: 60px; height: 90px;
+    background: var(--d-skin-dark);
+    border: 5px solid var(--d-outline);
+    border-radius: 15px;
+    bottom: 20px; z-index: 10;
+}
+.leg-f { left: 110px; }
+.leg-b { left: 240px; }
+.leg-shadow { filter: brightness(0.8); z-index: 5; }
+.ls-f { left: 150px; }
+.ls-b { left: 280px; }
+
+.toes { position: absolute; bottom: 3px; left: 8px; display: flex; gap: 4px; }
+.toe { width: 12px; height: 10px; background: var(--d-claw); border-radius: 50% 50% 0 0; border: 2px solid var(--d-outline); }
+
+/* ANIMATIONS */
+@keyframes bronto-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
+@keyframes neck-peering {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(8deg); }
+}
+@keyframes tail-sway {
+    0%, 100% { transform: rotate(10deg); }
+    50% { transform: rotate(-15deg); }
+}
+@keyframes dino-blink {
+    0%, 90%, 100% { transform: scaleY(1); }
+    93%, 97% { transform: scaleY(0.1); }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-white p-20 rounded-[100px] shadow-2xl flex flex-col items-center">
+    <div class="bronto-creature">
+        
+        <div class="tail-whip"></div>
+
+        <div class="leg leg-shadow ls-f"></div>
+        <div class="leg leg-shadow ls-b"></div>
+
+        <div class="body-main">
+            <div class="belly-patch"></div>
+            <div class="absolute top-10 left-10 w-8 h-6 bg-teal-500 rounded-full opacity-20"></div>
+            <div class="absolute top-16 left-40 w-10 h-8 bg-teal-500 rounded-full opacity-20"></div>
+        </div>
+
+        <div class="leg leg-f"><div class="toes"><div class="toe"></div><div class="toe"></div><div class="toe"></div></div></div>
+        <div class="leg leg-b"><div class="toes"><div class="toe"></div><div class="toe"></div><div class="toe"></div></div></div>
+
+        <div class="neck-container">
+            <svg class="neck-svg" viewBox="0 0 100 200">
+                <path d="M 80,200 Q 120,100 60,20 L 20,40 Q 60,110 30,200 Z" />
+            </svg>
+            
+            <div class="head-shape">
+                <div class="eye-container">
+                    <div class="s-eye"><div class="sparkle"></div></div>
+                    <div class="s-eye"><div class="sparkle"></div></div>
+                </div>
+                <div class="nostrils">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="mouth"></div>
+                <div class="absolute top-14 left-10 w-6 h-3 bg-teal-200 rounded-full opacity-60"></div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <h3 class="mt-12 text-5xl font-black text-teal-900 tracking-tighter uppercase italic">Bronto Buddy!</h3>
+</div>
+
+</body>
+</html>

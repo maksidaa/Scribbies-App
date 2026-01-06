@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Emerald Python</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root {
+/* EMERALD PALETTE */
+--p-base-dark: #047857; /* Deep Emerald Green */
+--p-base-mid: #10b981; /* Vibrant Green */
+--p-blotch-light: #6ee7b7;/* Light Mint Green for patterns */
+--p-outline: #064e3b; /* Very Dark Green (border) */
+--p-belly: #fef9c3; /* Pale Cream/Yellow belly */
+--p-pit-dark: #022c22; /* Almost black for heat pits */
+
+/* ACCENTS */
+--c-accent: #db2777; /* Pink tongue */
+
+--c-eye-bg: #facc15; /* Yellow eyes */
+--c-eye-pupil: #022c22; /* Dark green pupil */
+--c-blush: #86efac; /* Soft green blush */
+}
+
+body {
+background-color: #f0fdf4; /* Very light green background */
+
+display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; margin: 0;
+}
+
+.snake-wrapper { display: flex; flex-direction: column; align-items: center; }
+
+.snake-container {
+position: relative;
+width: 400px;
+height: 600px;
+display: flex; justify-content: center; align-items: center;
+animation: snake-sway 3s ease-in-out infinite alternate;
+filter: drop-shadow(0 10px 15px rgba(6, 78, 59, 0.4));
+}
+
+/* SHARED PYTHON SKIN STYLES */
+
+.part, .head-shape, .snout-base {
+position: absolute;
+background-color: var(--p-base-dark);
+/* Layered radial gradients for irregular scales/blotches */
+background-image:
+/* Large light blotch */
+
+radial-gradient(circle at 30% 50%, var(--p-blotch-light) 0%, var(--p-blotch-light) 15%, transparent 25%),
+/* Another blotch offset */
+radial-gradient(circle at 70% 20%, var(--p-blotch-light) 0%, var(--p-blotch-light) 12%, transparent 22%),
+/* Smaller blotch near bottom */
+radial-gradient(circle at 60% 80%, var(--p-blotch-light) 0%, var(--p-blotch-light) 10%, transparent 18%),
+/* 3D shading */
+
+linear-gradient(145deg, transparent 0%, rgba(0,0,0,0.4) 100%);
+
+border: 3px solid var(--p-outline);
+box-shadow: inset 2px 2px 8px rgba(255,255,255,0.2);
+}
+
+/* --- BODY PARTS --- */
+
+.coil-base { width: 220px; height: 90px; border-radius: 45px; bottom: 50px; left: 90px; z-index: 10; background-position: 0% 0%; }
+.coil-middle { width: 170px; height: 80px; border-radius: 40px; bottom: 105px; left: 115px; z-index: 12; background-position: 50% 50%; }
+.tail-tip { width: 60px; height: 40px; bottom: 65px; left: 55px; border-radius: 50% 0 0 50%; z-index: 5; transform-origin: right center; animation: tail-wag-hard 0.6s ease-in-out infinite alternate; background-position: 20% 80%; }
+
+/* NECK */
+.neck-stalk {
+width: 84px; height: 160px;
+top: 310px; left: 158px; z-index: 25;
+border-radius: 20px; border-bottom: none; border-top: none;
+background-size: 150% 150%;
+}
+
+/* BELLY SCUTES */
+.belly-stripe {
+position: absolute; top: 0; left: 15px; width: 54px; height: 100%;
+background: repeating-linear-gradient(
+to bottom,
+var(--p-belly) 0px,
+var(--p-belly) 12px,
+var(--p-outline) 12px,
+var(--p-outline) 14px
+);
+opacity: 1;
+border-left: 2px solid var(--p-outline);
+border-right: 2px solid var(--p-outline);
+}
+
+/* HEAD */
+.head-shape {
+width: 160px;
+height: 110px;
+border-radius: 40% 40% 50% 50% / 50% 50% 30% 30%;
+top: 235px; left: 120px; z-index: 30;
+background-position: 10% 10%;
+}
+
+/* FACE DETAILS */
+.eye-container { display: flex; gap: 14px; justify-content: center; margin-top: 20px; }
+.s-eye { width: 38px; height: 38px; background: var(--c-eye-bg); border: 2px solid var(--p-outline); border-radius: 50%; position: relative; animation: snake-squash-blink 4s infinite; }
+
+.pupil { position: absolute; width: 8px; height: 26px; background: var(--c-eye-pupil); border-radius: 50%; top: 4px; left: 13px; }
+.sparkle-main { position: absolute; width: 8px; height: 8px; background: white; border-radius: 50%; top: 5px; left: 8px; }
+
+.blush-container { position: absolute; top: 65px; width: 100%; display: flex; justify-content: space-around; padding: 0 25px; }
+.blush { width: 25px; height: 10px; background: var(--c-blush); border-radius: 50%; opacity: 0.5; }
+
+/* SNOUT & HEAT PITS */
+.snout-wrapper {
+position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%);
+z-index: 10; display: flex; flex-direction: column; align-items: center;
+}
+.snout-base {
+width: 94px; height: 34px;
+border-radius: 20% 20% 30% 30% / 50% 50% 40% 40%;
+display: flex; flex-direction: column;
+padding: 0;
+position: relative; z-index: 10;
+background-size: 200% 200%;
+}
+
+.heat-pits-row {
+display: flex; justify-content: space-evenly; width: 100%; padding-top: 4px;
+}
+.pit {
+width: 8px; height: 8px; background: var(--p-pit-dark); border-radius: 50%;
+box-shadow: inset 1px 1px 2px rgba(0,0,0,0.6);
+}
+
+.nostrils { position: absolute; bottom: 6px; display: flex; width: 100%; justify-content: space-between; padding: 0 15px;}
+.slit { width: 5px; height: 3px; background: var(--p-pit-dark); border-radius: 50%; transform: rotate(20deg); opacity: 0.9;}
+.slit.r { transform: rotate(-20deg); }
+
+.fang { position: absolute; top: 32px; width: 8px; height: 14px; background: #fefce8; clip-path: polygon(0 0, 100% 0, 50% 100%); z-index: 5; border-top: 2px solid var(--p-outline);}
+
+.f-l { left: 20px; } .f-r { right: 20px; }
+
+.tongue { position: absolute; top: 24px; left: 50%; margin-left: -3px; width: 6px; height: 30px; background: var(--c-accent); transform-origin: top; animation: tongue-wiggle-flick 3s infinite; z-index: 1; }
+.tongue::before, .tongue::after { content: ''; position: absolute; bottom: -8px; width: 6px; height: 9px; background: var(--c-accent); clip-path: polygon(0 0, 100% 0, 50% 100%); transform-origin: top center; }
+
+.tongue::before { left: -1px; transform: rotate(-35deg); } .tongue::after { right: -1px; transform: rotate(35deg); }
+
+/* ANIMATIONS */
+@keyframes snake-sway { 0% { transform: rotate(-2deg) translateY(0); } 100% { transform: rotate(2deg) translateY(-5px); } }
+@keyframes snake-squash-blink { 0%, 90%, 100% { transform: scaleY(1); } 93%, 97% { transform: scaleY(0.1); } }
+@keyframes tail-wag-hard { 0% { transform: rotate(-10deg); } 100% { transform: rotate(-35deg); } }
+@keyframes tongue-wiggle-flick { 0%, 70% { transform: scaleY(0); } 75% { transform: scaleY(1.2) rotate(5deg); } 80% { transform: scaleY(1.1) rotate(-5deg); } 85% { transform: scaleY(1) rotate(0deg); } 90%, 100% { transform: scaleY(0); } }
+</style>
+</head>
+<body>
+
+<div class="snake-wrapper">
+
+<div class="snake-container">
+
+<div class="part tail-tip"></div>
+
+<div class="part neck-stalk"><div class="belly-stripe"></div></div>
+
+<div class="part coil-middle"></div>
+<div class="part coil-base"></div>
+
+
+<div class="head-shape">
+<div class="eye-container">
+<div class="s-eye"><div class="pupil"><div class="sparkle-main"></div></div></div>
+<div class="s-eye"><div class="pupil"><div class="sparkle-main"></div></div></div>
+
+</div>
+<div class="blush-container"><div class="blush"></div><div class="blush"></div></div>
+
+<div class="snout-wrapper">
+<div class="snout-base">
+<div class="heat-pits-row">
+<div class="pit"></div><div class="pit"></div><div class="pit"></div><div class="pit"></div><div class="pit"></div>
+</div>
+
+<div class="nostrils"><div class="slit"></div><div class="slit r"></div></div>
+</div>
+<div class="fang f-l"></div><div class="fang f-r"></div>
+<div class="tongue"></div>
+</div>
+</div>
+
+</div>
+<h3 class="mt-12 text-3xl font-black text-emerald-800 tracking-wider uppercase text-center italic" style="position: relative; z-index: 50;">Emerald Python</h3>
+</div>
+
+</body>
+</html>

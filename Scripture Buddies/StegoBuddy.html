@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Stego Buddy - Centered Spikes</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root {
+    --d-skin: #a855f7; 
+    --d-skin-dark: #7e22ce; 
+    --d-belly: #f5f3ff; 
+    --d-plate: #fbbf24; 
+    --d-plate-dark: #d97706;
+    --d-outline: #4c1d95; 
+    --d-claw: #f1f5f9;
+}
+
+body { 
+    background-color: #f5f3ff; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    min-height: 100vh; 
+    margin: 0; 
+}
+
+.stego-creature {
+    position: relative;
+    width: 480px;
+    height: 380px;
+    animation: stego-stomp 2.5s ease-in-out infinite;
+}
+
+/* 1. CURVED BACK PLATES */
+.plate {
+    position: absolute;
+    width: 45px; height: 55px;
+    background: linear-gradient(to bottom, var(--d-plate), var(--d-plate-dark));
+    border: 4px solid var(--d-outline);
+    clip-path: polygon(50% 0%, 100% 40%, 80% 100%, 20% 100%, 0% 40%);
+    transform-origin: bottom center;
+    z-index: 15;
+}
+.p1 { top: 105px; left: 105px; transform: rotate(-45deg); width: 35px; height: 45px; }
+.p2 { top: 75px; left: 145px; transform: rotate(-25deg); }
+.p3 { top: 60px; left: 195px; transform: rotate(0deg); width: 55px; height: 65px; }
+.p4 { top: 75px; left: 255px; transform: rotate(25deg); }
+.p5 { top: 105px; left: 305px; transform: rotate(45deg); width: 40px; height: 50px; }
+
+/* 2. TAIL (Left Side) - Organic SVG curve */
+.tail-layer {
+    position: absolute;
+    width: 180px;
+    height: 130px;
+    left: -69px;
+    bottom: 70px;
+    z-index: 5;
+    transform-origin: right center;
+    animation: tail-sway-organic 3s ease-in-out infinite;
+}
+.tail-path {
+    fill: var(--d-skin-dark);
+    stroke: var(--d-outline);
+    stroke-width: 5;
+    stroke-linejoin: round;
+}
+
+/* Spikes moved to the right within the tail container */
+.spike {
+    position: absolute;
+    width: 12px; height: 40px;
+    background: linear-gradient(to bottom, var(--d-plate), var(--d-plate-dark));
+    border: 3px solid var(--d-outline);
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    z-index: 6;
+}
+
+/* 3. BODY & LEGS */
+.body-main {
+    position: absolute;
+    width: 310px; height: 190px;
+    background: linear-gradient(145deg, var(--d-skin), var(--d-skin-dark));
+    border: 5px solid var(--d-outline);
+    border-radius: 120px 150px 80px 80px;
+    bottom: 80px; left: 80px; z-index: 20;
+    overflow: hidden;
+}
+.belly-patch {
+    position: absolute; bottom: -20px; left: 30px;
+    width: 250px; height: 110px;
+    background: var(--d-belly); border-radius: 50%;
+    opacity: 0.3;
+}
+.leg {
+    position: absolute;
+    width: 75px; height: 90px;
+    background: var(--d-skin-dark);
+    border: 5px solid var(--d-outline);
+    border-radius: 15px;
+    bottom: 20px; z-index: 10;
+}
+.leg-f { left: 120px; } .leg-b { left: 270px; }
+.leg-shadow { filter: brightness(0.7); z-index: 5; }
+.ls-f { left: 155px; bottom: 35px; } .ls-b { left: 305px; bottom: 35px; }
+
+.toes { position: absolute; bottom: 0px; left: 5px; display: flex; gap: 4px; }
+.toe { width: 16px; height: 12px; background: var(--d-claw); border-radius: 50% 50% 2px 2px; border: 2px solid var(--d-outline); }
+
+/* 4. HEAD & NECK (Right Side) */
+.head-assembly {
+    position: absolute;
+    bottom: 110px; 
+    left: 350px; 
+    width: 140px; height: 110px;
+    z-index: 35;
+}
+.stubby-neck {
+    position: absolute;
+    width: 60px; height: 50px;
+    background: var(--d-skin);
+    border: 5px solid var(--d-outline);
+    left: 20px; top: 50px;
+    border-radius: 15px;
+}
+.head-shape {
+    position: absolute;
+    width: 130px; height: 100px;
+    background: linear-gradient(145deg, var(--d-skin), var(--d-skin-dark));
+    border: 5px solid var(--d-outline);
+    border-radius: 50% 70% 45% 50% / 60% 60% 40% 45%;
+    left: 40px; top: 10px;
+    box-shadow: inset 4px 4px 0 rgba(255,255,255,0.2);
+}
+
+/* FACE */
+.eye-container { display: flex; gap: 18px; padding-left: 35px; margin-top: 28px; }
+.s-eye { width: 30px; height: 34px; background: #1a1a1a; border-radius: 50%; position: relative; animation: dino-blink 4s infinite; }
+.s-eye::before { content: ''; position: absolute; width: 11px; height: 11px; background: white; border-radius: 50%; top: 4px; left: 6px; }
+.s-eye::after { content: ''; position: absolute; width: 5px; height: 5px; background: white; border-radius: 50%; bottom: 6px; right: 6px; opacity: 0.6; }
+.mouth { position: absolute; bottom: 11px; left: 45px; width: 50px; height: 15px; border-bottom: 5px solid var(--d-outline); border-radius: 0 0 50% 50%; }
+
+/* ANIMATIONS */
+@keyframes stego-stomp { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes tail-sway-organic { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(12deg); } }
+@keyframes dino-blink { 0%, 90%, 100% { transform: scaleY(1); } 93%, 97% { transform: scaleY(0.1); } }
+</style>
+</head>
+<body>
+
+<div class="bg-white p-16 rounded-[100px] shadow-2xl flex flex-col items-center">
+    <div class="stego-creature">
+        
+        <div class="plate p1"></div>
+        <div class="plate p2"></div>
+        <div class="plate p3"></div>
+        <div class="plate p4"></div>
+        <div class="plate p5"></div>
+
+        <div class="tail-layer">
+            <svg viewBox="0 0 160 130" style="width:100%; height:100%; overflow:visible;">
+                <path class="tail-path" d="M 160,100 Q 90,100 30,30 Q 20,15 30,5 Q 60,30 160,60 Z" />
+            </svg>
+             <div class="spike" style="top: -18px; left: 19px; transform: rotate(-38deg);"></div>
+            <div class="spike" style="top: -27px; left: 37px; transform: rotate(deg);"></div>
+            <div class="spike" style="top: -16px; left: 56px; transform: rotate(45deg);"></div>
+        </div>
+
+        <div class="leg leg-shadow ls-f"></div>
+        <div class="leg leg-shadow ls-b"></div>
+
+        <div class="body-main">
+            <div class="belly-patch"></div>
+            <div class="absolute top-10 left-20 w-8 h-6 bg-purple-400 rounded-full opacity-40"></div>
+            <div class="absolute top-25 left-50 w-12 h-10 bg-purple-400 rounded-full opacity-40"></div>
+        </div>
+
+        <div class="leg leg-f"><div class="toes"><div class="toe"></div><div class="toe"></div><div class="toe"></div></div></div>
+        <div class="leg leg-b"><div class="toes"><div class="toe"></div><div class="toe"></div><div class="toe"></div></div></div>
+
+       <div class="head-assembly">
+            <div class="stubby-neck"></div>
+            <div class="head-shape">
+                <div class="eye-container">
+                    <div class="s-eye"></div>
+                    <div class="s-eye"></div>
+                </div>
+                <div class="absolute top-[60px] left-[85px] w-6 h-2 bg-purple-200 rounded-full opacity-60"></div>
+                <div class="absolute top-[60px] left-[45px] w-6 h-2 bg-purple-200 rounded-full opacity-60"></div>
+                <div class="mouth"></div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <h3 class="mt-12 text-5xl font-black text-purple-900 tracking-tighter uppercase italic">Stego Buddy!</h3>
+</div>
+
+</body>
+</html>

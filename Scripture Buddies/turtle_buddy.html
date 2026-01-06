@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Turtle Buddy - Refined Blush</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root {
+--t-skin: #86efac;
+--t-skin-dark: #16a34a;
+--t-shell-top: #b45309;
+--t-shell-dark: #78350f;
+--t-shell-light: #fcd34d;
+--t-underside: #fef08a;
+--t-blush: #fda4af;
+}
+
+body { background-color: #f0fdf4; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+
+.turtle-creature {
+position: relative;
+width: 240px;
+height: 220px;
+animation: turtle-bounce-slight 2.5s ease-in-out infinite;
+}
+
+.shell-underside {
+position: absolute;
+width: 154px;
+height: 65px;
+background: linear-gradient(to bottom, var(--t-underside), #fde047);
+border: 4px solid var(--t-shell-dark);
+border-radius: 40% 40% 50% 50% / 30% 30% 70% 70%;
+top: 120px;
+left: 43px;
+z-index: 10;
+box-shadow: inset 0 -8px 10px rgba(0,0,0,0.05);
+}
+
+.turtle-neck {
+position: absolute;
+width: 36px;
+height: 70px;
+background: linear-gradient(to bottom, var(--t-skin), var(--t-skin-dark));
+border: 4px solid var(--t-skin-dark);
+border-bottom: none;
+left: 102px;
+top: 35px;
+z-index: 30;
+border-radius: 25px 25px 10px 10px;
+animation: neck-tuck-slight 2.5s ease-in-out infinite;
+}
+
+.turtle-tail {
+position: absolute;
+width: 14px;
+height: 25px;
+background: var(--t-skin);
+border: 3px solid var(--t-skin-dark);
+border-radius: 50% 50% 50% 50% / 20% 20% 80% 80%;
+bottom: 30px;
+left: 113px;
+z-index: 5;
+transform-origin: top center;
+animation: tail-wiggle 0.8s ease-in-out infinite;
+}
+
+.turtle-shell {
+position: absolute;
+width: 160px;
+height: 90px;
+background: linear-gradient(145deg, var(--t-shell-top), var(--t-shell-dark));
+border-radius: 50% 50% 20% 20% / 100% 100% 0% 0%;
+top: 65px;
+left: 40px;
+z-index: 20;
+border: 4px solid var(--t-shell-dark);
+overflow: hidden;
+}
+
+.shell-pattern {
+position: absolute;
+inset: 0;
+opacity: 0.15;
+background-image: repeating-conic-gradient(var(--t-shell-light) 0% 25%, transparent 0% 50%);
+background-size: 30px 30px;
+}
+
+.turtle-head {
+position: absolute;
+width: 75px;
+height: 72px;
+background: linear-gradient(145deg, var(--t-skin), var(--t-skin-dark));
+
+border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+top: 5px;
+left: 82px;
+z-index: 40;
+border: 4px solid var(--t-skin-dark);
+box-shadow: inset 3px 3px 6px rgba(255,255,255,0.4);
+animation: head-tuck-slight 2.5s ease-in-out infinite;
+}
+
+/* FACE DETAILS */
+.eye-socket { position: absolute; top: 12px; width: 100%; display: flex; justify-content: center; gap: 8px; }
+.t-eye { width: 24px; height: 26px; background: white; border-radius: 50%; position: relative; border: 3px solid var(--t-skin-dark); animation: turtle-blink 4s infinite; }
+.pupil { width: 14px; height: 16px; background: #1a1a1a; border-radius: 50%; position: absolute; top: 4px; left: 4px; }
+.sparkle { position: absolute; width: 6px; height: 6px; background: white; border-radius: 50%; top: 2px; left: 2px; }
+
+/* BLUSH - Moved down from 34px to 38px to sit just under eyes */
+.blush-container { position: absolute; top: 38px; width: 100%; display: flex; justify-content: space-around; padding: 0 10px; }
+.blush { width: 12px; height: 7px; background: var(--t-blush); border-radius: 50%; opacity: 0.8; }
+
+/* NOSTRILS & MOUTH - Nudged down slightly to match new blush */
+.nostrils { position: absolute; top: 49px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; }
+.slit { width: 3px; height: 2px; background: rgba(0,0,0,0.3); border-radius: 1px; transform: rotate(15deg); }
+.slit.right { transform: rotate(-15deg); }
+.turtle-mouth { position: absolute; width: 22px; height: 6px; border-bottom: 3px solid var(--t-skin-dark); border-radius: 0 0 15px 15px; top: 53px; left: 50%; transform: translateX(-50%); }
+
+.turtle-flipper {
+position: absolute;
+width: 48px;
+height: 32px;
+background: var(--t-skin);
+border: 4px solid var(--t-skin-dark);
+border-radius: 50% 50% 40% 40%;
+}
+
+.f-l { top: 145px; left: 35px; z-index: 50; transform-origin: top center; animation: walk-cycle-left 0.8s ease-in-out infinite; }
+.f-r { top: 145px; right: 35px; z-index: 50; transform-origin: top center; animation: walk-cycle-right 0.8s ease-in-out infinite; }
+.b-l { top: 155px; left: 55px; z-index: 5; transform-origin: top center; animation: walk-cycle-right 0.8s ease-in-out infinite; }
+.b-r { top: 155px; right: 55px; z-index: 5; transform-origin: top center; animation: walk-cycle-left 0.8s ease-in-out infinite; }
+
+@keyframes tail-wiggle { 0%, 100% { transform: rotate(-20deg); } 50% { transform: rotate(20deg); } }
+@keyframes walk-cycle-left { 0%, 100% { transform: rotate(-15deg); } 50% { transform: rotate(10deg); } }
+@keyframes walk-cycle-right { 0%, 100% { transform: rotate(15deg); } 50% { transform: rotate(-10deg); } }
+@keyframes head-tuck-slight { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+@keyframes neck-tuck-slight { 0%, 100% { height: 70px; transform: translateY(0); } 50% { height: 55px; transform: translateY(5px); } }
+@keyframes turtle-blink { 0%, 90%, 100% { transform: scaleY(1); } 93%, 97% { transform: scaleY(0.1); } }
+@keyframes turtle-bounce-slight { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+</style>
+</head>
+<body>
+
+<div class="bg-white p-16 rounded-[80px] shadow-2xl flex flex-col items-center">
+<div class="turtle-creature">
+<div class="turtle-tail"></div>
+<div class="turtle-flipper b-l"></div>
+<div class="turtle-flipper b-r"></div>
+<div class="shell-underside"></div>
+<div class="turtle-shell">
+<div class="shell-pattern"></div>
+</div>
+<div class="turtle-neck"></div>
+<div class="turtle-head">
+<div class="eye-socket">
+<div class="t-eye"><div class="pupil"><div class="sparkle"></div></div></div>
+<div class="t-eye"><div class="pupil"><div class="sparkle"></div></div></div>
+</div>
+<div class="blush-container">
+<div class="blush"></div><div class="blush"></div>
+</div>
+<div class="nostrils">
+<div class="slit"></div><div class="slit right"></div>
+</div>
+<div class="turtle-mouth"></div>
+</div>
+<div class="turtle-flipper f-l"></div>
+<div class="turtle-flipper f-r"></div>
+</div>
+<h3 class="mt-12 text-4xl font-black text-amber-900 tracking-tighter uppercase italic">Turtle!</h3>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Raccoon Buddy - Circular Paws</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root {
+--r-fur: #9ca3af; 
+--r-fur-dark: #374151; 
+--r-fur-light: #f3f4f6; 
+--r-nose: #111827; 
+--r-blush: #fecdd3;
+}
+
+body { background-color: #f3f4f6; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+
+.raccoon-creature {
+position: relative;
+width: 240px;
+height: 280px;
+animation: raccoon-bounce 3s ease-in-out infinite;
+z-index: 1;
+}
+
+/* 1. TAIL */
+.raccoon-tail {
+position: absolute;
+width: 120px; height: 45px;
+background: repeating-linear-gradient(to right, var(--r-fur-dark), var(--r-fur-dark) 25px, var(--r-fur) 25px, var(--r-fur) 50px);
+border: 4px solid var(--r-fur-dark);
+border-radius: 30px;
+bottom: 55px; right: -25px; 
+z-index: 5; 
+transform-origin: left center;
+animation: tail-swish 2s ease-in-out infinite;
+}
+
+/* 2. BODY & TUMMY */
+.raccoon-body {
+position: absolute;
+width: 150px; height: 120px;
+background: var(--r-fur);
+border: 4px solid var(--r-fur-dark);
+border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+top: 120px; left: 45px;
+z-index: 20;
+overflow: hidden;
+}
+.tummy-circle {
+position: absolute;
+width: 90px; height: 70px;
+background: var(--r-fur-light);
+border-radius: 50%;
+bottom: -10px; left: 50%;
+transform: translateX(-50%);
+opacity: 0.7;
+}
+
+/* 3. PROPORTIONAL CIRCULAR FINGERS */
+.paw-front {
+position: absolute;
+width: 40px;
+height: 30px;
+background: var(--r-fur-dark);
+border: 3px solid #111827;
+border-radius: 12px;
+top: 145px;
+z-index: 45;
+display: flex;
+justify-content: center;
+align-items: flex-start;
+gap: 2px;
+padding-top: 2px;
+}
+
+/* Circular fingers proportional to the palm */
+.finger-round {
+width: 10px;
+height: 10px;
+background: var(--r-fur-dark);
+border: 2px solid #111827;
+border-radius: 50%;
+margin-top: -6px; /* Positions them just above the palm edge */
+}
+
+.paw-f-l { left: 40px; animation: hand-wave-l 3s ease-in-out infinite; }
+.paw-f-r { right: 40px; animation: hand-wave-r 3s ease-in-out infinite; }
+
+/* 4. BACK FEET */
+.paw-back {
+position: absolute;
+width: 44px; height: 34px;
+background: var(--r-fur-dark);
+border: 3.5px solid #111827;
+border-radius: 18px 18px 14px 14px;
+top: 215px; left: 50%;
+z-index: 21;
+}
+.p-b-l { margin-left: -55px; transform: rotate(-5deg); }
+.p-b-r { margin-left: 11px; transform: rotate(5deg); }
+
+/* 5. HEAD & FACE */
+.raccoon-head {
+position: absolute;
+width: 140px; height: 115px;
+background: var(--r-fur);
+border: 4px solid var(--r-fur-dark);
+border-radius: 50% 50% 48% 48% / 60% 60% 40% 40%;
+top: 30px; left: 50px;
+z-index: 40;
+}
+.mask-patch { position: absolute; width: 55px; height: 42px; background: var(--r-fur-dark); top: 35px; border-radius: 50%; }
+.m-p-l { left: 10px; transform: rotate(-10deg); }
+.m-p-r { right: 10px; transform: rotate(10deg); }
+
+.mouth { position: absolute; top: 82px; left: 50%; transform: translateX(-50%); display: flex; }
+.mouth-curve { width: 12px; height: 8px; border: 2.5px solid var(--r-fur-dark); border-top: none; border-radius: 0 0 10px 10px; margin: 0 -0.5px; }
+
+.r-eye { width: 22px; height: 24px; background: #000; border-radius: 50%; position: relative; animation: raccoon-blink 4s infinite; }
+.r-eye::after { content: ''; position: absolute; width: 8px; height: 8px; background: white; border-radius: 50%; top: 3px; left: 3px; }
+
+.nose { position: absolute; width: 18px; height: 12px; background: var(--r-nose); border-radius: 50%; top: 75px; left: 50%; transform: translateX(-50%); z-index: 50; }
+
+.ear { position: absolute; width: 48px; height: 48px; background: var(--r-fur); border: 4px solid var(--r-fur-dark); border-radius: 50% 50% 10% 10%; z-index: 30; }
+.ear-inner { position: absolute; width: 24px; height: 24px; background: var(--r-fur-light); border-radius: 50% 50% 10% 10%; bottom: 3px; left: 50%; transform: translateX(-50%); opacity: 0.8; }
+.ear-l { top: 15px; left: 45px; transform: rotate(-20deg); }
+.ear-r { top: 15px; right: 45px; transform: rotate(20deg); }
+
+/* ANIMATIONS */
+@keyframes tail-swish { 0%, 100% { transform: rotate(-15deg); } 50% { transform: rotate(-5deg); } }
+@keyframes raccoon-blink { 0%, 90%, 100% { transform: scaleY(1); } 93%, 97% { transform: scaleY(0.1); } }
+@keyframes raccoon-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+/* Hand wiggles synced with bounce */
+@keyframes hand-wave-l { 0%, 100% { transform: rotate(-35deg); } 50% { transform: rotate(2deg) translateY(-2px); } }
+@keyframes hand-wave-r { 0%, 100% { transform: rotate(35deg); } 50% { transform: rotate(-2deg) translateY(-2px); } }
+</style>
+</head>
+<body>
+
+<div class="bg-white p-16 rounded-[80px] shadow-2xl flex flex-col items-center">
+    <div class="raccoon-creature">
+        
+        <div class="ear ear-l"><div class="ear-inner"></div></div>
+        <div class="ear ear-r"><div class="ear-inner"></div></div>
+
+        <div class="raccoon-tail"></div>
+        <div class="paw-back p-b-l"></div>
+        <div class="paw-back p-b-r"></div>
+
+        <div class="raccoon-body">
+            <div class="tummy-circle"></div>
+        </div>
+
+        <div class="paw-front paw-f-l">
+            <div class="finger-round"></div><div class="finger-round"></div><div class="finger-round"></div>
+        </div>
+        <div class="paw-front paw-f-r">
+            <div class="finger-round"></div><div class="finger-round"></div><div class="finger-round"></div>
+        </div>
+
+        <div class="raccoon-head">
+            <div class="mask-patch m-p-l"></div>
+            <div class="mask-patch m-p-r"></div>
+            <div class="absolute top-10 w-full flex justify-center gap-8 z-45">
+                <div class="r-eye"></div>
+                <div class="r-eye"></div>
+            </div>
+            
+            <div class="nose"></div>
+            <div class="mouth">
+                <div class="mouth-curve"></div>
+                <div class="mouth-curve"></div>
+            </div>
+            
+            <div class="absolute top-[68px] w-full flex justify-around px-4">
+                <div class="w-4 h-2 bg-rose-200 rounded-full opacity-40"></div>
+                <div class="w-4 h-2 bg-rose-200 rounded-full opacity-40"></div>
+            </div>
+        </div>
+
+    </div>
+    <h3 class="mt-12 text-4xl font-black text-gray-700 tracking-tighter uppercase italic">Trash Panda Buddy!</h3>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Fox Buddy - Wiggling Ears</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root {
+    --f-fur: #f97316;
+    --f-fur-dark: #271b12;
+    --f-white: #ffffff; 
+    --f-nose: #111827; 
+    --f-blush: #fecdd3;
+}
+
+body { background-color: #fff7ed; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+
+.fox-creature {
+    position: relative;
+    width: 240px; height: 280px;
+    animation: fox-bounce 3s ease-in-out infinite;
+    z-index: 1;
+}
+
+/* --- EARS WITH WIGGLE --- */
+.ear { 
+    position: absolute; 
+    width: 55px; height: 75px; 
+    background: var(--f-fur); 
+    border: 4px solid var(--f-fur-dark); 
+    border-radius: 50% 50% 10% 10% / 80% 80% 20% 20%; 
+    z-index: 30; 
+    overflow: hidden; 
+    transform-origin: bottom center; /* Pivot from the base */
+}
+.ear-tip { position: absolute; width: 100%; height: 25px; background: var(--f-fur-dark); top: 0; }
+.ear-inner { position: absolute; width: 28px; height: 40px; background: var(--f-white); border-radius: 40%; bottom: 5px; left: 50%; transform: translateX(-50%); opacity: 0.6; }
+
+/* Staggered wiggle animations for a natural look */
+.ear-l { 
+    top: -10px; left: 40px; 
+    transform: rotate(-25deg); 
+    animation: ear-wiggle-l 5s ease-in-out infinite;
+}
+.ear-r { 
+    top: -10px; right: 40px; 
+    transform: rotate(25deg); 
+    animation: ear-wiggle-r 7s ease-in-out infinite;
+}
+
+/* --- HEAD & FACE MASK --- */
+.fox-head {
+    position: absolute; width: 155px; height: 115px; background: var(--f-fur); border: 4px solid var(--f-fur-dark); border-radius: 50% 50% 48% 48% / 60% 60% 40% 40%; top: 28px; left: 43px; z-index: 40; overflow: hidden;
+}
+.face-mask { position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 41; }
+.snout-bridge { position: absolute; width: 34px; height: 55px; background: var(--f-white); top: 55px; left: 50%; transform: translateX(-50%); border-radius: 50% 50% 40% 40% / 60% 60% 40% 40%; opacity: 0.95; }
+.cheek-white { position: absolute; background: var(--f-white); border-radius: 50%; width: 60px; height: 55px; bottom: 10px; opacity: 0.95; }
+.cheek-l { left: 10px; transform: rotate(-20deg); }
+.cheek-r { right: 10px; transform: rotate(20deg); }
+
+.eye-group { position: absolute; top: 45px; width: 100%; display: flex; justify-content: center; gap: 40px; z-index: 50; }
+.f-eye { width: 22px; height: 25px; background: #000; position: relative; border-radius: 70% 30% 70% 30% / 60% 40% 60% 40%; }
+.f-eye::after { content: ''; position: absolute; width: 7px; height: 7px; background: white; border-radius: 50%; top: 4px; left: 5px; }
+.eye-l { transform: rotate(-12deg); animation: fox-blink-l 4s infinite; }
+.eye-r { transform: scaleX(-1) rotate(-12deg); animation: fox-blink-r 4s infinite;}
+
+.snout-container { position: absolute; width: 60px; height: 40px; bottom: -8px; left: 50%; transform: translateX(-50%); z-index: 60; }
+.nose { position: absolute; width: 18px; height: 12px; background: var(--f-nose); border-radius: 50%; top: 0; left: 50%; transform: translateX(-50%); }
+.mouth { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); display: flex; }
+.mouth-curve { width: 12px; height: 8px; border: 2.5px solid var(--f-fur-dark); border-top: none; border-radius: 0 0 10px 10px; margin: 0 -0.5px; }
+
+/* --- BODY, TAIL, PAWS (Unchanged) --- */
+.fox-tail { position: absolute; width: 130px; height: 60px; background: var(--f-fur); border: 4px solid var(--f-fur-dark); border-radius: 40px; bottom: 50px; right: -40px; z-index: 5; transform-origin: left center; animation: tail-swish 2s ease-in-out infinite; overflow: hidden; }
+.tail-tip { position: absolute; width: 50px; height: 100%; background: var(--f-white); right: 0; top: 0; border-radius: 0 40px 40px 0; clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%, 40% 50%); }
+.fox-body { position: absolute; width: 150px; height: 125px; background: var(--f-fur); border: 4px solid var(--f-fur-dark); border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%; top: 120px; left: 45px; z-index: 20; overflow: hidden; }
+.chest-patch { position: absolute; width: 100px; height: 90px; background: var(--f-white); border-radius: 50%; top: -10px; left: 50%; transform: translateX(-50%); opacity: 0.9; }
+.paw-front { position: absolute; width: 42px; height: 32px; background: var(--f-fur-dark); border: 3px solid #1a1414; border-radius: 14px; top: 145px; z-index: 45; display: flex; justify-content: center; gap: 3px; padding-top: 2px; }
+.finger-round { width: 11px; height: 11px; background: var(--f-fur-dark); border: 2px solid #1a1414; border-radius: 50%; margin-top: -7px; }
+.paw-f-l { left: 40px; animation: hand-wave-l 3s ease-in-out infinite; }
+.paw-f-r { right: 40px; animation: hand-wave-r 3s ease-in-out infinite; }
+.paw-back { position: absolute; width: 48px; height: 38px; background: var(--f-fur-dark); border: 3.5px solid #1a1414; border-radius: 18px 18px 14px 14px; top: 215px; left: 50%; z-index: 21; }
+.p-b-l { margin-left: -60px; transform: rotate(-5deg); }
+.p-b-r { margin-left: 12px; transform: rotate(5deg); }
+
+/* --- ANIMATIONS --- */
+@keyframes ear-wiggle-l {
+    0%, 90%, 100% { transform: rotate(-25deg); }
+    92% { transform: rotate(-35deg); }
+    94% { transform: rotate(-20deg); }
+    96% { transform: rotate(-30deg); }
+}
+@keyframes ear-wiggle-r {
+    0%, 92%, 100% { transform: rotate(25deg); }
+    94% { transform: rotate(35deg); }
+    96% { transform: rotate(15deg); }
+    98% { transform: rotate(30deg); }
+}
+@keyframes tail-swish { 0%, 100% { transform: rotate(-15deg); } 50% { transform: rotate(0deg); } }
+@keyframes fox-blink-l { 0%, 90%, 100% { transform: rotate(-12deg) scaleY(1); } 93%, 97% { transform: rotate(-12deg) scaleY(0.1); } }
+@keyframes fox-blink-r { 0%, 90%, 100% { transform: scaleX(-1) rotate(-12deg) scaleY(1); } 93%, 97% { transform: scaleX(-1) rotate(-12deg) scaleY(0.1); } }
+@keyframes fox-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes hand-wave-l { 0%, 100% { transform: rotate(-35deg); } 50% { transform: rotate(5deg) translateY(-2px); } }
+@keyframes hand-wave-r { 0%, 100% { transform: rotate(35deg); } 50% { transform: rotate(-5deg) translateY(-2px); } }
+</style>
+</head>
+<body>
+
+<div class="bg-white p-16 rounded-[80px] shadow-2xl flex flex-col items-center">
+    <div class="fox-creature">
+        
+        <div class="ear ear-l"><div class="ear-tip"></div><div class="ear-inner"></div></div>
+        <div class="ear ear-r"><div class="ear-tip"></div><div class="ear-inner"></div></div>
+
+        <div class="fox-tail"><div class="tail-tip"></div></div>
+        <div class="paw-back p-b-l"></div>
+        <div class="paw-back p-b-r"></div>
+
+        <div class="fox-body">
+            <div class="chest-patch"></div>
+        </div>
+
+        <div class="paw-front paw-f-l">
+            <div class="finger-round"></div><div class="finger-round"></div><div class="finger-round"></div>
+        </div>
+        <div class="paw-front paw-f-r">
+            <div class="finger-round"></div><div class="finger-round"></div><div class="finger-round"></div>
+        </div>
+
+        <div class="fox-head">
+            <div class="face-mask">
+                <div class="snout-bridge"></div>
+                <div class="cheek-white cheek-l"></div>
+                <div class="cheek-white cheek-r"></div>
+            </div>
+            <div class="eye-group">
+                <div class="f-eye eye-l"></div>
+                <div class="f-eye eye-r"></div>
+            </div>
+            <div class="snout-container">
+                <div class="nose"></div>
+                <div class="mouth">
+                    <div class="mouth-curve"></div>
+                    <div class="mouth-curve"></div>
+                </div>
+            </div>
+            <div class="absolute top-[75px] w-full flex justify-around px-8 z-50">
+                <div class="w-4 h-2 bg-rose-300 rounded-full opacity-50"></div>
+                <div class="w-4 h-2 bg-rose-300 rounded-full opacity-50"></div>
+            </div>
+        </div>
+
+    </div>
+    <h3 class="mt-12 text-4xl font-black text-orange-600 tracking-tighter uppercase italic">Fox Buddy!</h3>
+</div>
+
+</body>
+</html>

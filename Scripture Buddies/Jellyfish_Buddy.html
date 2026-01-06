@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Spaced Jellyfish Buddy</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root {
+    --j-bell-top: #f472b6;    
+    --j-bell-bottom: #a855f7; 
+    --j-tentacle-pink: #fbcfe8;
+    --j-tentacle-purple: #e9d5ff;
+    --j-outline: #c084fc;
+    --j-outline-dark: #9333ea;
+    --j-dot-light: #ffebf8;
+    --j-dot-med: #f3e8ff;
+}
+
+body { background-color: #e0f2fe; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+
+.jellyfish-creature {
+    position: relative;
+    width: 260px;
+    height: 440px;
+    animation: jelly-pulse 5s ease-in-out infinite;
+    z-index: 1;
+}
+
+/* --- JELLY BELL (HEAD) --- */
+.jelly-bell {
+    position: absolute;
+    width: 200px; height: 160px;
+    left: 30px; top: 0;
+    background: linear-gradient(to bottom, var(--j-bell-top), var(--j-bell-bottom));
+    border: 4px solid var(--j-outline);
+    border-radius: 50% 50% 15% 15% / 60% 60% 15% 15%;
+    z-index: 30; 
+    overflow: hidden;
+}
+
+/* --- SEAMLESS EXTRA WAVY FRILL --- */
+.frill-container {
+    position: absolute;
+    width: 177px;
+    height: 66px;
+    top: 134px; 
+    left: 41px;
+    z-index: 35;
+    overflow: visible;
+}
+
+.frill-move {
+    animation: frill-ripple-heavy 3s ease-in-out infinite;
+    transform-origin: top center;
+}
+
+.frill-fill {
+    fill: var(--j-bell-bottom);
+    stroke: none;
+}
+
+.frill-stroke {
+    fill: none;
+    stroke: var(--j-outline);
+    stroke-width: 3.5;
+    stroke-linecap: round;
+}
+
+/* --- ORGANIC DOTS --- */
+.jelly-pattern {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 31;
+    background-image: 
+        radial-gradient(circle at 20% 35%, var(--j-dot-light) 0%, transparent 15%),
+        radial-gradient(circle at 80% 25%, var(--j-dot-light) 0%, transparent 12%),
+        radial-gradient(circle at 50% 55%, var(--j-dot-med) 0%, transparent 18%);
+}
+
+/* --- CENTERED FACE --- */
+.face-container {
+    position: absolute; top: 70px; width: 100%; left: 0;
+    display: flex; flex-direction: column; align-items: center; z-index: 40;
+}
+.eye-group { display: flex; justify-content: center; gap: 35px; }
+.j-eye {
+    width: 18px; height: 18px; background: #4c1d95; border-radius: 50%;
+    position: relative; animation: j-blink 6s infinite;
+}
+.j-eye::after { content: ''; position: absolute; width: 6px; height: 6px; background: white; border-radius: 50%; top: 3px; left: 3px; }
+.j-mouth { width: 30px; height: 14px; border-bottom: 4px solid #4c1d95; border-radius: 50%; margin-top: 4px; opacity: 0.9; }
+
+/* --- 6 SLIGHTLY SPACED TENTACLES --- */
+.tentacles-svg {
+    position: absolute; 
+    top: 120px; 
+    left: 0; width: 100%; height: 300px; 
+    z-index: 20; 
+    overflow: visible;
+}
+.tentacle-path {
+    fill: none; stroke-linecap: round; stroke-linejoin: round;
+    animation: tentacle-wiggle 3s ease-in-out infinite; transform-origin: top center;
+}
+.tentacle-outline { stroke: var(--j-outline-dark); stroke-width: 18px; }
+.t-foreground { stroke-width: 12px; }
+.t-pink { stroke: var(--j-tentacle-pink); }
+.t-purple { stroke: var(--j-tentacle-purple); }
+
+/* --- ANIMATIONS --- */
+@keyframes jelly-pulse { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-15px) scale(1.02, 0.98); } }
+@keyframes frill-ripple-heavy { 0%, 100% { transform: scaleX(1) skewX(0deg); } 50% { transform: scaleX(1.08) skewX(6deg); } }
+@keyframes tentacle-wiggle { 
+    0%, 100% { transform: scaleX(1) skewX(0deg) translateY(0); } 
+    50% { transform: scaleX(1.1) skewX(5deg) translateY(10px); } 
+}
+@keyframes j-blink { 0%, 90%, 100% { transform: scaleY(1); } 93%, 97% { transform: scaleY(0.1); } }
+
+</style>
+</head>
+<body>
+
+<div class="bg-white/60 backdrop-blur-sm p-16 rounded-[80px] shadow-2xl flex flex-col items-center border-4 border-white">
+    <div class="jellyfish-creature">
+        
+        <svg class="tentacles-svg" viewBox="0 0 260 300">
+            <path class="tentacle-path tentacle-outline" style="animation-delay: 0.1s" d="M 75,10 Q 50,80 75,150 T 75,260" />
+            <path class="tentacle-path tentacle-outline" style="animation-delay: 0.3s" d="M 95,10 Q 75,100 95,180 T 95,250" />
+            <path class="tentacle-path tentacle-outline" style="animation-delay: 0.5s" d="M 115,10 Q 105,100 115,220" />
+            <path class="tentacle-path tentacle-outline" style="animation-delay: 0.2s" d="M 145,10 Q 155,100 145,220" />
+            <path class="tentacle-path tentacle-outline" style="animation-delay: 0.4s" d="M 165,10 Q 185,80 165,150 T 165,260" />
+            <path class="tentacle-path tentacle-outline" style="animation-delay: 0.6s" d="M 185,10 Q 210,90 185,160 T 185,270" />
+
+            <path class="tentacle-path t-foreground t-purple" style="animation-delay: 0.1s" d="M 75,10 Q 50,80 75,150 T 75,260" />
+            <path class="tentacle-path t-foreground t-pink"   style="animation-delay: 0.3s" d="M 95,10 Q 75,100 95,180 T 95,250" />
+            <path class="tentacle-path t-foreground t-purple" style="animation-delay: 0.5s" d="M 115,10 Q 105,100 115,220" />
+            <path class="tentacle-path t-foreground t-pink"   style="animation-delay: 0.2s" d="M 145,10 Q 155,100 145,220" />
+            <path class="tentacle-path t-foreground t-purple" style="animation-delay: 0.4s" d="M 165,10 Q 185,80 165,150 T 165,260" />
+            <path class="tentacle-path t-foreground t-pink"   style="animation-delay: 0.6s" d="M 185,10 Q 210,90 185,160 T 185,270" />
+        </svg>
+
+        <div class="jelly-bell">
+            <div class="jelly-pattern"></div>
+            <div class="face-container">
+                <div class="eye-group">
+                    <div class="j-eye"></div>
+                    <div class="j-eye"></div>
+                </div>
+                <div class="j-mouth"></div>
+                <div class="absolute top-[15px] w-full flex justify-center gap-[75px]">
+                    <div class="w-5 h-2 bg-rose-200 rounded-full opacity-40 blur-[1.5px]"></div>
+                    <div class="w-5 h-2 bg-rose-200 rounded-full opacity-40 blur-[1.5px]"></div>
+                </div>
+            </div>
+        </div>
+
+        <svg class="frill-container" viewBox="0 0 220 60">
+            <g class="frill-move">
+                <path class="frill-fill" d="M 0,0 C 15,35 30,35 45,0 C 60,35 75,35 90,0 C 105,35 120,35 135,0 C 150,35 165,35 180,0 C 195,35 210,35 220,0 L 220,10 L 0,10 Z" />
+                <path class="frill-stroke" d="M 0,0 C 15,35 30,35 45,0 C 60,35 75,35 90,0 C 105,35 120,35 135,0 C 150,35 165,35 180,0 C 195,35 210,35 220,0" />
+            </g>
+        </svg>
+    </div>
+    
+    <h3 class="mt-12 text-4xl font-black text-purple-600 tracking-tighter uppercase italic">Jellyfish Buddy!</h3>
+</div>
+
+</body>
+</html>
