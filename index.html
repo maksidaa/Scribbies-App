@@ -286,6 +286,10 @@
     .sleeping{animation:sleep-breathe 3s ease-in-out infinite !important}
     .sleeping-zs{position:absolute;top:-10px;right:-20px;font-size:24px;pointer-events:none;z-index:100}
     .sleeping-z{position:absolute;font-weight:bold;color:#a78bfa;text-shadow:0 0 4px rgba(167,139,250,0.5)}
+
+    /* Tutorial popup animation */
+    @keyframes bounce-in{0%{transform:scale(0.3);opacity:0}50%{transform:scale(1.05)}70%{transform:scale(0.95)}100%{transform:scale(1);opacity:1}}
+    .animate-bounce-in{animation:bounce-in 0.4s ease-out forwards}
     .sleeping-z:nth-child(1){animation:float-z 2s ease-out infinite;font-size:16px}
     .sleeping-z:nth-child(2){animation:float-z-delayed 2s ease-out infinite 0.6s;font-size:20px;left:8px}
     .sleeping-z:nth-child(3){animation:float-z 2s ease-out infinite 1.2s;font-size:14px;left:16px}
@@ -765,6 +769,36 @@ let onboardingSelections={}; // Track selected packs during onboarding
 let feedingState=null; // {food: foodObj, accepted: bool, growing: bool}
 let feedTab='buy'; // 'buy' or 'myFood'
 let downloadProgress=null; // {current: n, total: n, status: 'downloading'|'processing'|'complete'}
+let tutorialStep=0; // Current tutorial step (0 = not showing)
+
+// Tutorial steps shown after onboarding
+const TUTORIAL_STEPS=[
+  {title:'Meet Your Scribby! 🥚',text:'This is your new friend! They start as an egg and grow as you learn scriptures together.',icon:'🥚',highlight:'buddy'},
+  {title:'Practice Scriptures 📖',text:'Tap "Practice" to start learning! Your Scribby earns XP when you practice, which helps them grow.',icon:'📖',highlight:'practice'},
+  {title:'Feed & Play 🍎',text:'Keep your Scribby happy by feeding them treats and playing games. Happy Scribbies grow faster!',icon:'🍎',highlight:'happiness'},
+  {title:'Manage Your Verses ✏️',text:'Your starter verses are ready to go! You can add more from the Library, or remove ones you\'ve mastered.',icon:'✏️',highlight:'verses'},
+  {title:'Watch Them Evolve! ✨',text:'As your Scribby grows, they\'ll transform into unique creatures. Collect different variants in your Album!',icon:'✨',highlight:'album'}
+];
+
+function showTutorial(){
+  tutorialStep=1;
+  render();
+}
+
+function nextTutorial(){
+  tutorialStep++;
+  if(tutorialStep>TUTORIAL_STEPS.length){
+    tutorialStep=0;
+    localStorage.setItem('tutorialComplete','true');
+  }
+  render();
+}
+
+function skipTutorial(){
+  tutorialStep=0;
+  localStorage.setItem('tutorialComplete','true');
+  render();
+}
 let libraryView={collection:null,book:null,chapter:null}; // Track library navigation (4 levels: collections -> books -> chapters -> verses)
 let searchQuery=''; // Library search
 let addTab='library'; // 'library' or 'custom'
@@ -1648,15 +1682,8 @@ function completeOnboarding(){
   // Reset selections
   onboardingSelections={};
 
-  // Show clear summary message
-  if(selectedPacks.length>0){
-    const moreAvailable=totalLibraryItems-starterVersesAdded;
-    alert(`Welcome to Scribbies!\n\n✅ Added ${starterVersesAdded} starter verses to practice\n📚 ${moreAvailable} more verses available in Library\n\nTip: Visit the Library anytime to add more verses from your selected scriptures!`);
-  }else{
-    alert('Welcome to Scribbies! You can add scriptures anytime from the Library.');
-  }
-
-  render();
+  // Start the tutorial
+  showTutorial();
 }
 
 // Skip onboarding
@@ -7917,12 +7944,14 @@ function render(){
     h=`<div class="p-5 min-h-screen flex items-center justify-center">
       <div class="bg-white/95 rounded-3xl p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
         <div class="text-center mb-6">
-          <div class="text-6xl mb-3">📚✨</div>
-          <h2 class="text-2xl font-bold text-purple-800 mb-2">Welcome to Scribbies!</h2>
-          <p class="text-purple-600 text-sm mb-2">Choose the scriptures you'd like to learn:</p>
-          <div class="bg-purple-50 rounded-xl p-2 text-xs text-purple-700">
-            <p>✅ Get <b>starter verses</b> to practice right away</p>
-            <p>📚 Full library unlocked to add more anytime!</p>
+          <div class="text-5xl mb-2">🥚📖✨</div>
+          <h2 class="text-2xl font-bold text-purple-800 mb-1">Welcome to Scribbies!</h2>
+          <p class="text-purple-600 text-sm mb-3">Raise adorable creatures by learning scriptures!</p>
+          <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-3 text-xs text-left space-y-1">
+            <p class="text-purple-700"><span class="font-bold">📖 Select your scriptures</span> below</p>
+            <p class="text-purple-600">✅ Get <b>starter verses</b> to begin practicing</p>
+            <p class="text-purple-600">📚 Full library unlocked to add or remove verses</p>
+            <p class="text-purple-500 italic text-[11px]">You can customize your verse list anytime!</p>
           </div>
         </div>
 
@@ -8842,11 +8871,18 @@ function render(){
       // Get which packs are downloaded
       const downloadedPackIds=JSON.parse(localStorage.getItem('downloadedPacks')||'[]');
 
+      const addedCount=userVerseRefs.length;
+      const availableCount=library.length;
       h=`<div class="p-5 pb-6">
-        <div class="flex justify-between items-center mb-4">
+        <div class="flex justify-between items-center mb-3">
           <button onclick="setScreen('home');libraryView={collection:null,book:null,chapter:null}" class="bg-white/20 text-white font-bold w-10 h-10 rounded-xl flex items-center justify-center text-xl">←</button>
           <h1 class="text-2xl font-bold text-white">Scripture Library</h1>
-          <div class="text-white text-xs">${library.length} verses</div>
+          <div class="w-10"></div>
+        </div>
+        <div class="bg-white/20 rounded-xl p-2 mb-4 flex justify-around text-center">
+          <div><p class="text-white text-lg font-bold">${addedCount}</p><p class="text-white/70 text-xs">In Practice</p></div>
+          <div class="border-l border-white/30"></div>
+          <div><p class="text-white text-lg font-bold">${availableCount}</p><p class="text-white/70 text-xs">Available</p></div>
         </div>
         ${downloadProgress?`<div class="bg-white/95 rounded-2xl p-4 mb-4">
           <p class="text-purple-800 font-bold mb-2">${downloadProgress.status==='downloading'?`Downloading ${downloadProgress.currentBook}...`:downloadProgress.status==='processing'?'Processing verses...':'Download complete!'}</p>
@@ -9893,6 +9929,8 @@ function render(){
         // Library browser in modal
         const library=getAllLibraryVerses();
         const userVerseRefs=S.verses.map(v=>v.ref);
+        const inPractice=userVerseRefs.length;
+        const totalAvailable=library.length;
 
         // Simplified library view for modal (no search, just browse)
         if(!libraryView.collection){
@@ -9907,7 +9945,12 @@ function render(){
           const downloadedPackIds=JSON.parse(localStorage.getItem('downloadedPacks')||'[]');
 
           // Bible collections
-          let content=`<p class="text-purple-600 text-xs font-bold mb-2">📖 Bible</p>`;
+          let content=`<div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-2 mb-4 flex justify-around text-center">
+            <div><p class="text-purple-800 font-bold">${inPractice}</p><p class="text-purple-500 text-[10px]">In Practice</p></div>
+            <div class="border-l border-purple-200"></div>
+            <div><p class="text-purple-800 font-bold">${totalAvailable}</p><p class="text-purple-500 text-[10px]">Available</p></div>
+          </div>
+          <p class="text-purple-600 text-xs font-bold mb-2">📖 Bible</p>`;
           content+=bibleCollections.map(collName=>{
             const count=collectionStats[collName]||0;
             return`<button onclick="libraryView.collection='${collName.replace(/'/g,"\\'")}';render()" class="w-full bg-purple-50 rounded-xl p-3 mb-2 text-left hover:bg-purple-100">
@@ -10039,6 +10082,26 @@ function render(){
           ${modalContent}
         </div></div>`;
     }
+  }
+
+  // Tutorial overlay
+  if(tutorialStep>0&&tutorialStep<=TUTORIAL_STEPS.length){
+    const step=TUTORIAL_STEPS[tutorialStep-1];
+    const isLast=tutorialStep===TUTORIAL_STEPS.length;
+    h+=`<div class="fixed inset-0 bg-black/70 z-[100] flex items-center justify-center p-4">
+      <div class="bg-white rounded-3xl p-6 max-w-sm w-full text-center animate-bounce-in">
+        <div class="text-5xl mb-3">${step.icon}</div>
+        <h2 class="text-xl font-bold text-purple-800 mb-2">${step.title}</h2>
+        <p class="text-purple-600 text-sm mb-6">${step.text}</p>
+        <div class="flex gap-3">
+          ${!isLast?`<button onclick="skipTutorial()" class="flex-1 py-3 rounded-xl bg-purple-100 text-purple-600 font-semibold">Skip</button>`:''}
+          <button onclick="nextTutorial()" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-semibold">${isLast?'Start Playing!':'Next →'}</button>
+        </div>
+        <div class="flex justify-center gap-1 mt-4">
+          ${TUTORIAL_STEPS.map((s,i)=>`<div class="w-2 h-2 rounded-full ${i<tutorialStep?'bg-purple-500':'bg-purple-200'}"></div>`).join('')}
+        </div>
+      </div>
+    </div>`;
   }
 
   $.innerHTML=h;
