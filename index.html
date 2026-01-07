@@ -752,9 +752,9 @@ const CREATURE_CATEGORIES={
     blobEmoji:'blob',  // Uses renderBlob() - cute creature with eyes
     babyEmoji:'baby',   // Uses renderBaby() - cute baby lizard 🦎
     teenEmoji:'teen',   // Uses renderTeen() - 3 progressive designs
-    teenVariants:['🦎','🦎','🐢','🐍','🐢','🐍','🐸','🐸','🦎','🐢'],  // Young reptiles (for reference)
-    teenNames:['Scaleling I','Scaleling II','Scaleling III','Scaleling IV','Scaleling V','Scaleling VI','Scaleling VII','Scaleling VIII','Scaleling IX','Scaleling X'],
-    adultVariants:['🦎','🐸','🐢','🐍','🦕','🦖','🐉','🦕','🦎','🐢'],  // Adult reptiles - full body
+    teenVariants:['🦎','🦎','🐢','🐍','🐢','🐍','🐸','🐸','🦎','🐢','🐍','🐍'],  // Young reptiles (for reference)
+    teenNames:['Scaleling I','Scaleling II','Scaleling III','Scaleling IV','Scaleling V','Scaleling VI','Scaleling VII','Scaleling VIII','Scaleling IX','Scaleling X','Scaleling XI','Scaleling XII'],
+    adultVariants:['🦎','🐸','🐢','🐍','🐍','🐍','🐍','🐍','🐍','🐍','🐍','🐍'],  // Adult reptiles - full body (12 variants)
     adultNames:['Gecko','Frog','Turtle','Cobra','Emerald Python','Purple Snake','Rattlesnake','Rattlesnake Coiled','Rainbow Snake','Purple Cobra','Flaming Cobra','Ice Cobra']
   },
   dragons:{
@@ -7058,9 +7058,9 @@ function renderAdultReptile(variantIndex){
     10:` <!-- Flaming Cobra -->
       <div style="position:relative;width:240px;height:280px;display:flex;justify-content:center;align-items:center;animation:fcobra-sway 3s ease-in-out infinite alternate;filter:drop-shadow(0 0 12px rgba(234,88,12,0.7)) drop-shadow(0 0 36px rgba(255,165,0,0.6));">
         <!-- Flame layers -->
-        <div style="position:absolute;left:50%;top:78px;transform:translateX(-50%) rotate(45deg);width:300px;height:300px;border-radius:0 50% 50% 50%;background:radial-gradient(circle at 75% 75%, #fde047 5%, #fb923c 30%, #c2410c 70%, transparent 90%);box-shadow:0 0 50px #fb923c,inset 0 0 36px #fde047;pointer-events:none;mix-blend-mode:screen;z-index:1;opacity:0.6;animation:fcobra-flicker 2.5s infinite alternate ease-in-out;"></div>
-        <div style="position:absolute;left:50%;top:108px;transform:translateX(-50%) rotate(45deg);width:270px;height:270px;border-radius:0 50% 50% 50%;background:radial-gradient(circle at 75% 75%, #fde047 5%, #fb923c 30%, #c2410c 70%, transparent 90%);box-shadow:0 0 48px #fb923c,inset 0 0 36px #fde047;pointer-events:none;mix-blend-mode:screen;z-index:2;opacity:0.8;animation:fcobra-flicker 2s infinite alternate-reverse ease-in-out 0.3s;"></div>
-        <div style="position:absolute;left:50%;top:138px;transform:translateX(-50%) rotate(45deg);width:240px;height:240px;border-radius:0 50% 50% 50%;background:radial-gradient(circle at 75% 75%, #fff 0%, #fde047 30%, #fb923c 60%, transparent 90%);pointer-events:none;mix-blend-mode:screen;z-index:3;opacity:0.9;animation:fcobra-flicker 1.5s infinite alternate ease-in-out 0.7s;"></div>
+        <div style="position:absolute;left:50%;top:20px;transform:translateX(-50%) rotate(45deg);width:300px;height:300px;border-radius:0 50% 50% 50%;background:radial-gradient(circle at 75% 75%, #fde047 5%, #fb923c 30%, #c2410c 70%, transparent 90%);box-shadow:0 0 50px #fb923c,inset 0 0 36px #fde047;pointer-events:none;mix-blend-mode:screen;z-index:1;opacity:0.6;animation:fcobra-flicker 2.5s infinite alternate ease-in-out;"></div>
+        <div style="position:absolute;left:50%;top:50px;transform:translateX(-50%) rotate(45deg);width:270px;height:270px;border-radius:0 50% 50% 50%;background:radial-gradient(circle at 75% 75%, #fde047 5%, #fb923c 30%, #c2410c 70%, transparent 90%);box-shadow:0 0 48px #fb923c,inset 0 0 36px #fde047;pointer-events:none;mix-blend-mode:screen;z-index:2;opacity:0.8;animation:fcobra-flicker 2s infinite alternate-reverse ease-in-out 0.3s;"></div>
+        <div style="position:absolute;left:50%;top:80px;transform:translateX(-50%) rotate(45deg);width:240px;height:240px;border-radius:0 50% 50% 50%;background:radial-gradient(circle at 75% 75%, #fff 0%, #fde047 30%, #fb923c 60%, transparent 90%);pointer-events:none;mix-blend-mode:screen;z-index:3;opacity:0.9;animation:fcobra-flicker 1.5s infinite alternate ease-in-out 0.7s;"></div>
         <!-- Tail tip -->
         <div style="position:absolute;width:36px;height:24px;bottom:22px;left:35px;background:radial-gradient(circle at 35% 30%,#fb923c,#c2410c);border:2px solid #7c2d12;border-radius:50% 0 0 50%;z-index:5;transform-origin:right center;animation:fcobra-tail 0.6s ease-in-out infinite alternate;box-shadow:inset 1px 1px 3px rgba(255,255,0,0.5),0 0 6px rgba(234,88,12,0.7);"></div>
         <!-- Cobra Hood -->
