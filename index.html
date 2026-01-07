@@ -6817,69 +6817,73 @@ function renderAdultReptile(variantIndex){
     // Source: rattlesnake_buddy.html (scaled to 240x280, 3D effects added)
     6:`
       <div style="position:relative;width:240px;height:280px;animation:rattle-bounce 2s ease-in-out infinite;">
-        <!-- Slither container -->
-        <div style="position:absolute;top:60px;left:0;width:240px;height:110px;transform-origin:30px 30px;animation:rattle-slither 2.5s ease-in-out infinite;">
+        <!-- Slither container - centered vertically -->
+        <div style="position:absolute;top:90px;left:10px;width:220px;height:100px;transform-origin:35px 35px;animation:rattle-slither 2.5s ease-in-out infinite;">
           <!-- SVG Body with diamond pattern -->
-          <svg viewBox="0 0 240 110" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible;">
+          <svg viewBox="0 0 220 100" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible;">
             <defs>
-              <linearGradient id="rattleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
-                <stop offset="50%" style="stop-color:#d97706;stop-opacity:1" />
-                <stop offset="100%" style="stop-color:#78350f;stop-opacity:1" />
+              <linearGradient id="rattleGrad6" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#fbbf24" />
+                <stop offset="50%" style="stop-color:#d97706" />
+                <stop offset="100%" style="stop-color:#b45309" />
               </linearGradient>
             </defs>
-            <path d="M 30,30 Q 65,5 100,30 Q 135,58 195,52" fill="none" stroke="url(#rattleGrad)" stroke-width="23" stroke-linecap="round"/>
-            <path d="M 40,28 Q 70,8 100,30 Q 130,55 185,50" fill="none" stroke="rgba(120,53,15,0.35)" stroke-width="12" stroke-linecap="butt" stroke-dasharray="10 17"/>
+            <!-- Main body - smooth S-curve -->
+            <path d="M 35,35 C 70,10 90,10 120,35 C 150,60 170,65 195,55" fill="none" stroke="url(#rattleGrad6)" stroke-width="28" stroke-linecap="round"/>
+            <!-- Diamond pattern overlay -->
+            <path d="M 50,33 C 75,12 95,12 120,35 C 145,58 165,62 188,54" fill="none" stroke="rgba(120,53,15,0.4)" stroke-width="14" stroke-linecap="butt" stroke-dasharray="12 20"/>
+            <!-- Body highlight -->
+            <path d="M 50,30 C 75,8 95,8 118,30 C 142,52 162,58 185,50" fill="none" stroke="rgba(254,243,199,0.25)" stroke-width="8" stroke-linecap="round"/>
           </svg>
 
-          <!-- Rattle assembly -->
-          <div style="position:absolute;top:48px;left:192px;display:flex;align-items:center;z-index:15;">
+          <!-- Rattle assembly - positioned at tail end -->
+          <div style="position:absolute;top:42px;left:190px;display:flex;align-items:center;z-index:15;transform:rotate(-15deg);">
             <div style="display:flex;transform-origin:left center;animation:rattle-buzz 0.08s linear infinite;">
-              <div style="width:10px;height:16px;background:radial-gradient(ellipse at 35% 30%, #fbbf24 0%, #c27803 70%, #92400e 100%);border:2px solid #78350f;border-radius:4px;margin-left:-3px;box-shadow:inset 1px 1px 3px rgba(255,255,255,0.4);"></div>
-              <div style="width:9px;height:14px;background:radial-gradient(ellipse at 35% 30%, #fbbf24 0%, #c27803 70%, #92400e 100%);border:2px solid #78350f;border-radius:4px;margin-left:-3px;box-shadow:inset 1px 1px 3px rgba(255,255,255,0.4);"></div>
-              <div style="width:8px;height:11px;background:radial-gradient(ellipse at 35% 30%, #fbbf24 0%, #c27803 70%, #92400e 100%);border:2px solid #78350f;border-radius:4px;margin-left:-3px;box-shadow:inset 1px 1px 3px rgba(255,255,255,0.4);"></div>
+              <div style="width:12px;height:18px;background:radial-gradient(ellipse at 35% 30%, #fbbf24 0%, #c27803 70%, #92400e 100%);border:2px solid #78350f;border-radius:5px;box-shadow:inset 1px 1px 3px rgba(255,255,255,0.4);"></div>
+              <div style="width:10px;height:15px;background:radial-gradient(ellipse at 35% 30%, #fbbf24 0%, #c27803 70%, #92400e 100%);border:2px solid #78350f;border-radius:4px;margin-left:-4px;box-shadow:inset 1px 1px 3px rgba(255,255,255,0.4);"></div>
+              <div style="width:8px;height:12px;background:radial-gradient(ellipse at 35% 30%, #fbbf24 0%, #c27803 70%, #92400e 100%);border:2px solid #78350f;border-radius:4px;margin-left:-3px;box-shadow:inset 1px 1px 3px rgba(255,255,255,0.4);"></div>
             </div>
           </div>
 
           <!-- Head -->
-          <div style="position:absolute;width:44px;height:40px;background:radial-gradient(ellipse at 35% 30%, #fbbf24 0%, #d97706 50%, #78350f 100%);border-radius:50% 50% 48% 48% / 65% 65% 45% 45%;top:5px;left:7px;z-index:20;box-shadow:inset 3px 3px 8px rgba(255,255,255,0.4), 0 4px 10px rgba(0,0,0,0.2);">
+          <div style="position:absolute;width:50px;height:45px;background:radial-gradient(ellipse at 35% 30%, #fbbf24 0%, #d97706 50%, #78350f 100%);border-radius:50% 50% 48% 48% / 60% 60% 45% 45%;top:8px;left:8px;z-index:20;box-shadow:inset 3px 3px 8px rgba(255,255,255,0.4), 0 4px 10px rgba(0,0,0,0.2);">
             <!-- Head highlight -->
-            <div style="position:absolute;width:14px;height:10px;background:rgba(254,243,199,0.4);border-radius:50%;top:5px;left:8px;filter:blur(2px);"></div>
+            <div style="position:absolute;width:16px;height:12px;background:rgba(254,243,199,0.4);border-radius:50%;top:6px;left:10px;filter:blur(2px);"></div>
 
             <!-- Eyes -->
-            <div style="position:absolute;top:7px;width:100%;display:flex;justify-content:center;gap:3px;">
-              <div class="s-eye" style="width:15px;height:16px;background:radial-gradient(ellipse at 35% 30%, #ffffff 0%, #f5f5f5 70%, #e8e8e8 100%);border-radius:50%;position:relative;animation:rattle-blink 4s infinite;box-shadow:inset 2px 2px 4px rgba(255,255,255,0.8);">
-                <div style="position:absolute;width:10px;height:11px;background:radial-gradient(circle at 30% 30%, #333, #1a1a1a);border-radius:50%;top:3px;left:3px;">
-                  <div style="position:absolute;width:4px;height:4px;background:white;border-radius:50%;top:2px;left:2px;"></div>
+            <div style="position:absolute;top:8px;width:100%;display:flex;justify-content:center;gap:4px;">
+              <div class="s-eye" style="width:17px;height:18px;background:radial-gradient(ellipse at 35% 30%, #ffffff 0%, #f5f5f5 70%, #e8e8e8 100%);border-radius:50%;position:relative;animation:rattle-blink 4s infinite;box-shadow:inset 2px 2px 4px rgba(255,255,255,0.8);">
+                <div style="position:absolute;width:11px;height:12px;background:radial-gradient(circle at 30% 30%, #333, #1a1a1a);border-radius:50%;top:3px;left:3px;">
+                  <div style="position:absolute;width:5px;height:5px;background:white;border-radius:50%;top:2px;left:2px;"></div>
                 </div>
               </div>
-              <div class="s-eye" style="width:15px;height:16px;background:radial-gradient(ellipse at 35% 30%, #ffffff 0%, #f5f5f5 70%, #e8e8e8 100%);border-radius:50%;position:relative;animation:rattle-blink 4s infinite;box-shadow:inset 2px 2px 4px rgba(255,255,255,0.8);">
-                <div style="position:absolute;width:10px;height:11px;background:radial-gradient(circle at 30% 30%, #333, #1a1a1a);border-radius:50%;top:3px;left:3px;">
-                  <div style="position:absolute;width:4px;height:4px;background:white;border-radius:50%;top:2px;left:2px;"></div>
+              <div class="s-eye" style="width:17px;height:18px;background:radial-gradient(ellipse at 35% 30%, #ffffff 0%, #f5f5f5 70%, #e8e8e8 100%);border-radius:50%;position:relative;animation:rattle-blink 4s infinite;box-shadow:inset 2px 2px 4px rgba(255,255,255,0.8);">
+                <div style="position:absolute;width:11px;height:12px;background:radial-gradient(circle at 30% 30%, #333, #1a1a1a);border-radius:50%;top:3px;left:3px;">
+                  <div style="position:absolute;width:5px;height:5px;background:white;border-radius:50%;top:2px;left:2px;"></div>
                 </div>
               </div>
             </div>
 
             <!-- Blush -->
-            <div style="position:absolute;top:23px;width:100%;display:flex;justify-content:space-around;padding:0 6px;">
-              <div style="width:8px;height:5px;background:#fca5a5;border-radius:50%;opacity:0.7;filter:blur(1px);"></div>
-              <div style="width:8px;height:5px;background:#fca5a5;border-radius:50%;opacity:0.7;filter:blur(1px);"></div>
+            <div style="position:absolute;top:26px;width:100%;display:flex;justify-content:space-around;padding:0 8px;">
+              <div style="width:10px;height:6px;background:#fca5a5;border-radius:50%;opacity:0.7;filter:blur(1px);"></div>
+              <div style="width:10px;height:6px;background:#fca5a5;border-radius:50%;opacity:0.7;filter:blur(1px);"></div>
             </div>
 
             <!-- Snout -->
-            <div style="position:absolute;width:23px;height:14px;background:radial-gradient(ellipse at 50% 30%, #92400e 0%, #78350f 100%);border-radius:40% 40% 60% 60%;bottom:3px;left:50%;transform:translateX(-50%);z-index:21;display:flex;flex-direction:column;align-items:center;padding-top:2px;">
+            <div style="position:absolute;width:26px;height:15px;background:radial-gradient(ellipse at 50% 30%, #92400e 0%, #78350f 100%);border-radius:40% 40% 55% 55%;bottom:2px;left:50%;transform:translateX(-50%);z-index:21;display:flex;flex-direction:column;align-items:center;padding-top:3px;">
               <!-- Nostrils -->
-              <div style="display:flex;gap:5px;margin-bottom:1px;">
-                <div style="width:3px;height:1px;background:rgba(0,0,0,0.5);border-radius:1px;transform:rotate(15deg);"></div>
-                <div style="width:3px;height:1px;background:rgba(0,0,0,0.5);border-radius:1px;transform:rotate(-15deg);"></div>
+              <div style="display:flex;gap:6px;">
+                <div style="width:3px;height:2px;background:rgba(0,0,0,0.5);border-radius:1px;transform:rotate(15deg);"></div>
+                <div style="width:3px;height:2px;background:rgba(0,0,0,0.5);border-radius:1px;transform:rotate(-15deg);"></div>
               </div>
               <!-- Fangs -->
-              <div style="position:absolute;width:3px;height:4px;background:#fff;bottom:-2px;left:6px;clip-path:polygon(50% 100%, 0% 0%, 100% 0%);"></div>
-              <div style="position:absolute;width:3px;height:4px;background:#fff;bottom:-2px;right:6px;clip-path:polygon(50% 100%, 0% 0%, 100% 0%);"></div>
+              <div style="position:absolute;width:4px;height:5px;background:#fff;bottom:-3px;left:6px;clip-path:polygon(50% 100%, 0% 0%, 100% 0%);"></div>
+              <div style="position:absolute;width:4px;height:5px;background:#fff;bottom:-3px;right:6px;clip-path:polygon(50% 100%, 0% 0%, 100% 0%);"></div>
               <!-- Tongue -->
-              <div style="position:absolute;width:2px;height:11px;background:#ef4444;bottom:-11px;left:50%;transform:translateX(-50%) scaleY(0);transform-origin:top;animation:rattle-tongue 3s infinite;z-index:21;">
-                <div style="position:absolute;bottom:-2px;left:-1px;width:2px;height:5px;background:#ef4444;border-radius:1px;transform:rotate(-35deg);"></div>
-                <div style="position:absolute;bottom:-2px;right:-1px;width:2px;height:5px;background:#ef4444;border-radius:1px;transform:rotate(35deg);"></div>
+              <div style="position:absolute;width:3px;height:14px;background:#ef4444;bottom:-14px;left:50%;transform:translateX(-50%) scaleY(0);transform-origin:top;animation:rattle-tongue 3s infinite;z-index:21;">
+                <div style="position:absolute;bottom:-3px;left:-2px;width:3px;height:6px;background:#ef4444;border-radius:1px;transform:rotate(-35deg);"></div>
+                <div style="position:absolute;bottom:-3px;right:-2px;width:3px;height:6px;background:#ef4444;border-radius:1px;transform:rotate(35deg);"></div>
               </div>
             </div>
           </div>
