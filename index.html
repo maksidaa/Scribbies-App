@@ -10800,8 +10800,44 @@ function render(){
         const inPractice=userVerseRefs.length;
         const totalAvailable=library.length;
 
-        // Simplified library view for modal (no search, just browse)
-        if(!libraryView.collection){
+        // Library view for modal with search
+        if(searchQuery){
+          // Show search results
+          const results=library.filter(v=>
+            v.text.toLowerCase().includes(searchQuery.toLowerCase())||
+            v.ref.toLowerCase().includes(searchQuery.toLowerCase())||
+            (v.tags&&v.tags.some(t=>t.toLowerCase().includes(searchQuery.toLowerCase())))||
+            (v.speaker&&v.speaker.toLowerCase().includes(searchQuery.toLowerCase()))
+          ).slice(0,30);
+
+          let content=`<form onsubmit="triggerLibrarySearch(event)" class="mb-3">
+            <div class="flex gap-2">
+              <input type="text" id="library-search" placeholder="Search verses, quotes, tags..." value="${searchQuery}"
+                oninput="debouncedSearchRender(this.value)"
+                class="flex-1 px-3 py-2 rounded-xl bg-purple-50 text-purple-800 placeholder-purple-400 outline-none focus:ring-2 focus:ring-purple-300 text-sm">
+              <button type="submit" class="bg-purple-100 text-purple-600 font-bold px-3 py-2 rounded-xl">🔍</button>
+            </div>
+          </form>
+          <button onclick="searchQuery='';render()" class="text-purple-600 text-xs mb-2">← Back to library</button>
+          <p class="text-purple-500 text-xs mb-2">${results.length} result${results.length!==1?'s':''} for "${searchQuery}"</p>`;
+
+          if(results.length===0){
+            content+=`<p class="text-purple-400 text-center py-4">No matches found</p>`;
+          }else{
+            results.forEach(v=>{
+              const alreadyAdded=userVerseRefs.includes(v.ref);
+              content+=`<div class="bg-purple-50 rounded-xl p-3 mb-2">
+                <div class="flex justify-between items-start mb-1">
+                  <p class="font-semibold text-purple-800 text-sm">${v.ref}</p>
+                  ${alreadyAdded?`<span class="text-xs text-green-600">✓ Added</span>`:`<button onclick="addLibraryVerseByRef('${v.ref.replace(/'/g,"\\'")}',${JSON.stringify(v).replace(/"/g,'&quot;')});closeModal()" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-xs px-2 py-1 rounded-full">+ Add</button>`}
+                </div>
+                <p class="text-purple-700 text-xs">${v.text.length>200?v.text.substring(0,200)+'...':v.text}</p>
+                ${v.speaker?`<p class="text-purple-400 text-xs mt-1 italic">— ${v.speaker}</p>`:''}
+              </div>`;
+            });
+          }
+          modalContent=content;
+        }else if(!libraryView.collection){
           const collectionStats={};
           library.forEach(v=>{
             const coll=getBookCollection(v.book);
@@ -10813,8 +10849,16 @@ function render(){
 
           const downloadedPackIds=JSON.parse(localStorage.getItem('downloadedPacks')||'[]');
 
-          // Stats header
-          let content=`<div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-2 mb-4 flex justify-around text-center">
+          // Search bar + Stats header
+          let content=`<form onsubmit="triggerLibrarySearch(event)" class="mb-3">
+            <div class="flex gap-2">
+              <input type="text" id="library-search" placeholder="Search verses, quotes, tags..." value="${searchQuery}"
+                oninput="debouncedSearchRender(this.value)"
+                class="flex-1 px-3 py-2 rounded-xl bg-purple-50 text-purple-800 placeholder-purple-400 outline-none focus:ring-2 focus:ring-purple-300 text-sm">
+              <button type="submit" class="bg-purple-100 text-purple-600 font-bold px-3 py-2 rounded-xl">🔍</button>
+            </div>
+          </form>
+          <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-2 mb-4 flex justify-around text-center">
             <div><p class="text-purple-800 font-bold">${inPractice}</p><p class="text-purple-500 text-[10px]">In Practice</p></div>
             <div class="border-l border-purple-200"></div>
             <div><p class="text-purple-800 font-bold">${totalAvailable}</p><p class="text-purple-500 text-[10px]">Available</p></div>
