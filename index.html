@@ -10618,9 +10618,7 @@ function render(){
 
         ${phase==='burst'?`
           <!-- Phase 2: EXPLOSION! Auto-advance after animation -->
-          <div class="relative" style="min-height:400px;">
-            <script>setTimeout(()=>{pState.evolvePhase='reveal';render()},1500)</script>
-          </div>
+          <div class="relative" style="min-height:400px;"></div>
         `:''}
 
         ${phase==='reveal'?`
@@ -11423,6 +11421,12 @@ function render(){
   }
 
   $.innerHTML=h;
+
+  // Auto-advance burst phase after animation
+  if(pState.evolving&&pState.evolvePhase==='burst'){
+    setTimeout(()=>{pState.evolvePhase='reveal';render()},1500);
+  }
+
   setTimeout(()=>{
     const i=document.getElementById('inp');
     if(i)i.focus();
