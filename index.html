@@ -1091,8 +1091,22 @@ function debouncedSearchRender(value){
   clearTimeout(searchDebounceTimer);
   searchDebounceTimer=setTimeout(()=>{
     activeInputId='library-search';
+    const input=document.getElementById('library-search');
+    if(input)cursorPos=input.selectionStart;
     render();
-  },300);
+  },500);
+}
+// Manual search trigger (for button/Enter key)
+function triggerLibrarySearch(e){
+  if(e)e.preventDefault();
+  const input=document.getElementById('library-search');
+  if(input){
+    searchQuery=input.value;
+    cursorPos=input.selectionStart;
+    activeInputId='library-search';
+  }
+  clearTimeout(searchDebounceTimer);
+  render();
 }
 
 // XP multiplier based on mode usage
@@ -9571,11 +9585,14 @@ function render(){
         </div>`:''}
 
         <!-- Search Bar -->
-        <div class="mb-4">
-          <input type="text" id="library-search" placeholder="Search verses..." value="${searchQuery}"
-            oninput="debouncedSearchRender(this.value)"
-            class="w-full px-4 py-3 rounded-2xl bg-white/95 text-purple-800 placeholder-purple-400 outline-none focus:ring-2 focus:ring-white">
-        </div>
+        <form onsubmit="triggerLibrarySearch(event)" class="mb-4">
+          <div class="flex gap-2">
+            <input type="text" id="library-search" placeholder="Search verses, quotes, tags..." value="${searchQuery}"
+              oninput="debouncedSearchRender(this.value)"
+              class="flex-1 px-4 py-3 rounded-2xl bg-white/95 text-purple-800 placeholder-purple-400 outline-none focus:ring-2 focus:ring-white">
+            <button type="submit" class="bg-white/95 text-purple-600 font-bold px-4 py-3 rounded-2xl hover:bg-white">🔍</button>
+          </div>
+        </form>
 
         ${searchQuery?`
           <!-- Search Results -->
