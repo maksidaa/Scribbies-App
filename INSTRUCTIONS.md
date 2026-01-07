@@ -1030,6 +1030,112 @@ Examples:
 2. If yes, create a NEW animation with your creature's name prefix
 3. Never reuse another creature's animation unless the motion is truly identical
 
+### Critical: 3D Effects (REQUIRED FOR ALL SCRIBBIES)
+
+**Every adult Scribby MUST have 3D shading effects to match the visual style of blobs, babies, teens, and mammals.**
+
+**The 4 Essential 3D Techniques:**
+
+**1. Radial Gradients for Body Shapes (Most Important!)**
+Replace flat colors with gradients that simulate a light source at upper-left (35% 30%):
+
+```css
+/* BAD - Flat color looks 2D */
+background: #8cc63f;
+
+/* GOOD - Gradient adds depth and dimension */
+background: radial-gradient(ellipse at 35% 30%,
+  #b8e06d 0%,      /* Light - at light source */
+  #8cc63f 50%,     /* Medium - main color */
+  #65a30d 100%     /* Dark - shadow edge */
+);
+```
+
+**Color progression rule:** Light version → Main color → Darker version
+
+**2. Inner Box Shadows for Depth**
+Add two inset shadows - light reflection top-left, shadow bottom-right:
+
+```css
+/* Template */
+box-shadow:
+  inset 4px 4px 12px rgba(LIGHT_COLOR, 0.5),    /* Light reflection */
+  inset -3px -3px 8px rgba(DARK_COLOR, 0.3);    /* Shadow */
+
+/* Example for green body */
+box-shadow:
+  inset 4px 4px 12px rgba(200,240,120,0.5),
+  inset -3px -3px 8px rgba(80,130,40,0.3);
+```
+
+**3. Highlight Spots (Light Reflections)**
+Add blurred white/light ellipses where light hits the surface:
+
+```css
+<!-- Template -->
+<div style="position:absolute;width:28px;height:20px;
+  background:rgba(255,255,255,0.4);
+  border-radius:50%;
+  top:10%;left:18%;
+  filter:blur(3px);"></div>
+
+<!-- Place in: Head (upper-left), Body (upper-left) -->
+```
+
+**4. Eye Sparkles (Multiple Highlights)**
+Give eyes depth with multiple white dots:
+
+```css
+<!-- Primary highlight - larger, top-left -->
+<div style="position:absolute;width:7px;height:7px;background:white;border-radius:50%;top:3px;left:3px;"></div>
+
+<!-- Secondary highlight - smaller, bottom-right, semi-transparent -->
+<div style="position:absolute;width:3px;height:3px;background:white;border-radius:50%;bottom:5px;right:5px;opacity:0.5;"></div>
+```
+
+**Complete Example - Body with Full 3D:**
+```html
+<div style="position:absolute;top:107px;left:70px;width:98px;height:60px;
+  background:radial-gradient(ellipse at 35% 30%, #b8e06d 0%, #8cc63f 50%, #65a30d 100%);
+  border:3px solid #3f6212;
+  border-radius:50% 50% 45% 45% / 60% 60% 40% 40%;
+  box-shadow:inset 4px 4px 12px rgba(200,240,120,0.5), inset -3px -3px 8px rgba(80,130,40,0.3);">
+
+  <!-- Highlight spot -->
+  <div style="position:absolute;width:25px;height:18px;background:rgba(255,255,255,0.35);border-radius:50%;top:8px;left:15px;filter:blur(3px);"></div>
+
+  <!-- Rest of body content... -->
+</div>
+```
+
+**For SVG Elements (tails, etc.):**
+Use `<linearGradient>` or `<radialGradient>` in `<defs>`:
+
+```html
+<svg viewBox="0 0 160 130">
+  <defs>
+    <linearGradient id="tailGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#b8e06d" />
+      <stop offset="50%" style="stop-color:#8cc63f" />
+      <stop offset="100%" style="stop-color:#65a30d" />
+    </linearGradient>
+  </defs>
+  <path d="..." fill="url(#tailGrad)" stroke="#3f6212" stroke-width="4"/>
+</svg>
+```
+
+**3D Checklist for New Creatures:**
+- [ ] Body uses `radial-gradient(ellipse at 35% 30%, light, medium, dark)`
+- [ ] Body has `box-shadow: inset ... inset ...` for depth
+- [ ] Body has highlight spot div with blur
+- [ ] Head uses same gradient pattern as body
+- [ ] Head has highlight spot div with blur
+- [ ] Eyes use gradient for iris/sclera
+- [ ] Eyes have multiple sparkle highlights
+- [ ] Limbs use gradients (can be simpler than body)
+- [ ] SVG elements (tails) use gradient fills
+- [ ] Belly/underside uses lighter gradient
+
 ### Critical: Canvas Size (ENSURES PROPER DISPLAY)
 
 **Every creature must fit INSIDE a 240px × 280px container:**

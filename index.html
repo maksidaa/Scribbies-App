@@ -394,10 +394,67 @@
     /* Reptile animations (gecko, etc) */
     @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
     @keyframes snake-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes gecko-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
+    @keyframes gecko-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes gecko-tail-sway{0%,100%{transform:rotate(0deg) translateX(0)}50%{transform:rotate(-8deg) translateX(-2px)}}
     @keyframes gecko-eye-look{0%,45%,100%{transform:translateX(0)}50%,95%{transform:translateX(5px)}}
     @keyframes gecko-tongue-extend{0%,88%,100%{clip-path:inset(100% 0 0 0)}90%,96%{clip-path:inset(0 0 0 0)}}
     @keyframes gecko-tongue-lick{0%,88%,100%{transform:rotate(0deg)}91%{transform:rotate(-8deg)}93%{transform:rotate(8deg)}95%{transform:rotate(-5deg)}97%{transform:rotate(0deg)}}
+    @keyframes gecko-mouth-open{0%,86%,100%{transform:translateX(-50%) rotate(-2deg) scaleY(1)}88%,99%{transform:translateX(-50%) rotate(-2deg) scaleY(2.5)}}
+    @keyframes gecko-mouth-inside{0%,86%,100%{opacity:0;transform:translateX(-50%) scaleY(0)}88%,99%{opacity:1;transform:translateX(-50%) scaleY(1)}}
     @keyframes gecko-leg-burst{0%,70%,100%{transform:rotate(var(--leg-rest))}72%,74%,76%,78%{transform:rotate(var(--leg-run1))}73%,75%,77%,79%{transform:rotate(var(--leg-run2))}}
+    /* Frog animations */
+    @keyframes frog-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+    @keyframes frog-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes frog-paw-wiggle{0%,40%,60%,100%{transform:scale(1)}50%{transform:scale(1.1) rotate(15deg)}}
+    @keyframes frog-croak{0%,80%,100%{transform:translateX(-50%) scale(1)}90%{transform:translateX(-50%) scale(1.3)}}
+    /* Turtle animations */
+    @keyframes turtle-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+    @keyframes turtle-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes turtle-tail-wiggle{0%,100%{transform:rotate(-20deg)}50%{transform:rotate(20deg)}}
+    @keyframes turtle-walk-left{0%,100%{transform:rotate(-15deg)}50%{transform:rotate(10deg)}}
+    @keyframes turtle-walk-right{0%,100%{transform:rotate(15deg)}50%{transform:rotate(-10deg)}}
+    @keyframes turtle-head-tuck{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+    @keyframes cobra-sway{0%{transform:rotate(-2deg) translateY(0)}100%{transform:rotate(2deg) translateY(-5px)}}
+    @keyframes cobra-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes cobra-tail-wag{0%{transform:rotate(-10deg)}100%{transform:rotate(-35deg)}}
+    @keyframes cobra-tongue{0%,70%{transform:scaleY(0)}75%{transform:scaleY(1.2) rotate(5deg)}80%{transform:scaleY(1.1) rotate(-5deg)}85%{transform:scaleY(1) rotate(0deg)}90%,100%{transform:scaleY(0)}}
+    @keyframes emerald-sway{0%{transform:rotate(-2deg) translateY(0)}100%{transform:rotate(2deg) translateY(-5px)}}
+    @keyframes emerald-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes emerald-tail-wag{0%{transform:rotate(-10deg)}100%{transform:rotate(-35deg)}}
+    @keyframes emerald-tongue{0%,70%{transform:scaleY(0)}75%{transform:scaleY(1.2) rotate(5deg)}80%{transform:scaleY(1.1) rotate(-5deg)}85%{transform:scaleY(1) rotate(0deg)}90%,100%{transform:scaleY(0)}}
+    @keyframes purple-sway{0%{transform:rotate(-2deg) translateY(0)}100%{transform:rotate(2deg) translateY(-5px)}}
+    @keyframes purple-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes purple-tail-wag{0%{transform:rotate(-10deg)}100%{transform:rotate(-35deg)}}
+    @keyframes purple-tongue{0%,70%{transform:scaleY(0)}75%{transform:scaleY(1.2) rotate(5deg)}80%{transform:scaleY(1.1) rotate(-5deg)}85%{transform:scaleY(1) rotate(0deg)}90%,100%{transform:scaleY(0)}}
+    @keyframes rattle-buzz{0%,100%{transform:rotate(0deg)}50%{transform:rotate(25deg)}}
+    @keyframes rattle-slither{0%,100%{transform:rotate(0deg) skewX(0deg)}50%{transform:rotate(-2deg) skewX(2deg)}}
+    @keyframes rattle-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    @keyframes rattle-tongue{0%,80%,100%{transform:translateX(-50%) scaleY(0)}85%,92%,98%{transform:translateX(-50%) scaleY(1)}}
+    @keyframes rattle-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes coiled-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+    @keyframes coiled-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes coiled-tongue{0%,70%{transform:scaleY(0)}75%{transform:scaleY(1.2)}85%{transform:scaleY(1)}90%{transform:scaleY(0)}}
+    @keyframes coiled-rattle{0%{transform:rotate(0deg)}100%{transform:rotate(15deg)}}
+    @keyframes rainbow-bounce{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-15px) rotate(1deg)}}
+    @keyframes rainbow-wiggle{0%,100%{transform:scaleX(1) skewY(0deg)}25%{transform:scaleX(1.05) skewY(2deg)}75%{transform:scaleX(0.95) skewY(-2deg)}}
+    @keyframes rainbow-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes rainbow-tongue{0%,80%,100%{transform:translateX(-50%) scaleY(0)}85%,92%,98%{transform:translateX(-50%) scaleY(1)}}
+    @keyframes pcobra-sway{0%{transform:rotate(-2deg) translateY(0)}100%{transform:rotate(2deg) translateY(-5px)}}
+    @keyframes pcobra-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes pcobra-tail{0%{transform:rotate(-10deg)}100%{transform:rotate(-35deg)}}
+    @keyframes pcobra-tongue{0%,70%{transform:scaleY(0)}75%{transform:scaleY(1.2) rotate(5deg)}80%{transform:scaleY(1.1) rotate(-5deg)}85%{transform:scaleY(1) rotate(0deg)}90%,100%{transform:scaleY(0)}}
+    @keyframes fcobra-sway{0%{transform:rotate(-2deg) translateY(0)}100%{transform:rotate(2deg) translateY(-5px)}}
+    @keyframes fcobra-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes fcobra-tail{0%{transform:rotate(-10deg)}100%{transform:rotate(-35deg)}}
+    @keyframes fcobra-tongue{0%,70%{transform:scaleY(0)}75%{transform:scaleY(1.2) rotate(5deg)}80%{transform:scaleY(1.1) rotate(-5deg)}85%{transform:scaleY(1) rotate(0deg)}90%,100%{transform:scaleY(0)}}
+    @keyframes fcobra-flicker{0%{transform:translateX(-50%) rotate(45deg) scale(1);filter:brightness(1)}50%{transform:translateX(-50%) rotate(45deg) scale(0.95,1.05)}100%{transform:translateX(-50%) rotate(45deg) scale(1.02);filter:brightness(1.2)}}
+    @keyframes icobra-sway{0%{transform:rotate(-2deg) translateY(0)}100%{transform:rotate(2deg) translateY(-5px)}}
+    @keyframes icobra-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes icobra-tail{0%{transform:rotate(-10deg)}100%{transform:rotate(-35deg)}}
+    @keyframes icobra-tongue{0%,70%{transform:scaleY(0)}75%{transform:scaleY(1.2) rotate(5deg)}80%{transform:scaleY(1.1) rotate(-5deg)}85%{transform:scaleY(1) rotate(0deg)}90%,100%{transform:scaleY(0)}}
+    @keyframes icobra-snow{0%,100%{transform:translateY(0) rotate(0deg);opacity:0.6}50%{transform:translateY(-8px) rotate(30deg);opacity:1}}
+    @keyframes icobra-mist{0%,100%{opacity:0.4;transform:translateX(-50%) scale(1)}50%{opacity:0.7;transform:translateX(-50%) scale(1.1)}}
 
     /* Egg animations */
     @keyframes egg-hatch-wiggle{0%,100%{transform:rotate(0deg) translateX(0)}10%{transform:rotate(-8deg) translateX(-2px)}30%{transform:rotate(8deg) translateX(2px)}50%{transform:rotate(-6deg) translateX(-1px)}70%{transform:rotate(6deg) translateX(1px)}90%{transform:rotate(-3deg) translateX(-0.5px)}}
@@ -697,8 +754,8 @@ const CREATURE_CATEGORIES={
     teenEmoji:'teen',   // Uses renderTeen() - 3 progressive designs
     teenVariants:['🦎','🦎','🐢','🐍','🐢','🐍','🐸','🐸','🦎','🐢'],  // Young reptiles (for reference)
     teenNames:['Scaleling I','Scaleling II','Scaleling III','Scaleling IV','Scaleling V','Scaleling VI','Scaleling VII','Scaleling VIII','Scaleling IX','Scaleling X'],
-    adultVariants:['🦎','🐊','🐢','🐍','🦕','🦖','🐉','🦕','🦎','🐢'],  // Adult reptiles - full body
-    adultNames:['Gecko','Solar Skink','Abyssal Adder','Glacial Gator','Prism Python','Rainbow Serpent','Celestial Cobra','Void Viper','Luminous Lizard','Aether Anole']
+    adultVariants:['🦎','🐸','🐢','🐍','🦕','🦖','🐉','🦕','🦎','🐢'],  // Adult reptiles - full body
+    adultNames:['Gecko','Frog','Turtle','Cobra','Emerald Python','Purple Snake','Rattlesnake','Rattlesnake Coiled','Rainbow Snake','Purple Cobra','Flaming Cobra','Ice Cobra']
   },
   dragons:{
     eggType:'speckled',
@@ -6235,596 +6292,900 @@ function renderAdultReptile(variantIndex){
 
   const reptileDesigns={
     // ===== GECKO - Reptiles Variant 0 =====
-    // Source: gecko_buddy.html (scaled 0.7x to fit 240x280 canvas)
+    // Source: gecko_buddy.html (scaled 0.7x to fit 240x280 canvas, 3D effects added)
     0:`
       <div style="position:relative;width:240px;height:280px;">
         <!-- Tail (SVG curved) - right side, behind body -->
-        <div style="position:absolute;right:5px;top:75px;width:112px;height:91px;z-index:5;transform-origin:left center;animation:tail-sway 3s ease-in-out infinite;">
+        <div style="position:absolute;right:5px;top:75px;width:112px;height:91px;z-index:5;transform-origin:left center;animation:gecko-tail-sway 3s ease-in-out infinite;">
           <svg viewBox="0 0 160 130" style="width:100%;height:100%;overflow:visible;">
-            <path d="M 0,100 Q 70,100 130,30 Q 140,15 130,5 Q 100,30 0,60 Z" fill="#8cc63f" stroke="#3f6212" stroke-width="4" stroke-linejoin="round"/>
+            <defs>
+              <linearGradient id="geckoTailGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#b8e06d;stop-opacity:1" />
+                <stop offset="50%" style="stop-color:#8cc63f;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#65a30d;stop-opacity:1" />
+              </linearGradient>
+            </defs>
+            <path d="M 0,100 Q 70,100 130,30 Q 140,15 130,5 Q 100,30 0,60 Z" fill="url(#geckoTailGrad)" stroke="#3f6212" stroke-width="4" stroke-linejoin="round"/>
           </svg>
           <div style="position:absolute;top:42px;left:28px;width:7px;height:5px;background:#65a30d;border-radius:50%;opacity:0.7;"></div>
           <div style="position:absolute;top:28px;left:56px;width:5px;height:4px;background:#65a30d;border-radius:50%;opacity:0.7;"></div>
         </div>
 
         <!-- Back right leg (behind body, darker) -->
-        <div style="position:absolute;top:135px;left:154px;width:21px;height:32px;background:#7ab332;border:3px solid #3f6212;border-radius:10px;z-index:10;transform-origin:top center;--leg-rest:10deg;--leg-run1:-25deg;--leg-run2:40deg;animation:gecko-leg-burst 5s ease-in-out infinite;">
-          <div style="position:absolute;bottom:-4px;left:-2px;width:26px;height:9px;display:flex;gap:1px;">
-            <div style="width:7px;height:7px;background:#7ab332;border:2px solid #3f6212;border-radius:50%;"></div>
-            <div style="width:7px;height:7px;background:#7ab332;border:2px solid #3f6212;border-radius:50%;"></div>
-            <div style="width:7px;height:7px;background:#7ab332;border:2px solid #3f6212;border-radius:50%;"></div>
+        <div style="position:absolute;top:135px;left:152px;width:25px;height:40px;background:transparent;z-index:10;transform-origin:top center;--leg-rest:10deg;--leg-run1:-25deg;--leg-run2:40deg;animation:gecko-leg-burst 5s ease-in-out infinite;">
+          <div style="position:absolute;top:0;left:2px;width:21px;height:32px;background:radial-gradient(ellipse at 35% 30%, #9dd64a 0%, #7ab332 50%, #5c8a24 100%);border:3px solid #3f6212;border-radius:10px;box-shadow:inset 2px 2px 6px rgba(180,220,100,0.4), inset -2px -2px 4px rgba(60,100,30,0.3);"></div>
+          <div style="position:absolute;bottom:0;left:0;width:26px;height:9px;display:flex;gap:1px;">
+            <div style="width:7px;height:7px;background:radial-gradient(circle at 30% 30%, #9dd64a, #7ab332);border:2px solid #3f6212;border-radius:50%;"></div>
+            <div style="width:7px;height:7px;background:radial-gradient(circle at 30% 30%, #9dd64a, #7ab332);border:2px solid #3f6212;border-radius:50%;"></div>
+            <div style="width:7px;height:7px;background:radial-gradient(circle at 30% 30%, #9dd64a, #7ab332);border:2px solid #3f6212;border-radius:50%;"></div>
           </div>
         </div>
 
         <!-- Body -->
-        <div style="position:absolute;top:107px;left:70px;width:98px;height:60px;background:#8cc63f;border:3px solid #3f6212;border-radius:50% 50% 45% 45% / 60% 60% 40% 40%;z-index:20;animation:breathe 3s infinite;">
-          <div style="position:absolute;bottom:3px;left:14px;width:70px;height:24px;background:#fbfde3;border-radius:50%;opacity:0.9;"></div>
+        <div style="position:absolute;top:107px;left:70px;width:98px;height:60px;background:radial-gradient(ellipse at 35% 30%, #b8e06d 0%, #8cc63f 50%, #65a30d 100%);border:3px solid #3f6212;border-radius:50% 50% 45% 45% / 60% 60% 40% 40%;z-index:20;animation:gecko-breathe 3s infinite;box-shadow:inset 4px 4px 12px rgba(200,240,120,0.5), inset -3px -3px 8px rgba(80,130,40,0.3);">
+          <!-- Body highlight spot -->
+          <div style="position:absolute;width:25px;height:18px;background:rgba(255,255,255,0.35);border-radius:50%;top:8px;left:15px;filter:blur(3px);"></div>
+          <!-- Belly with gradient -->
+          <div style="position:absolute;bottom:3px;left:14px;width:70px;height:24px;background:radial-gradient(ellipse at 50% 40%, #fffff5 0%, #fbfde3 60%, #f0f5d0 100%);border-radius:50%;opacity:0.95;"></div>
+          <!-- Scale spots -->
           <div style="position:absolute;top:10px;left:21px;width:8px;height:7px;background:#65a30d;border-radius:50%;opacity:0.7;"></div>
           <div style="position:absolute;top:18px;left:42px;width:7px;height:5px;background:#65a30d;border-radius:50%;opacity:0.7;"></div>
           <div style="position:absolute;top:7px;left:63px;width:5px;height:4px;background:#65a30d;border-radius:50%;opacity:0.7;"></div>
         </div>
 
-        <!-- Head (connected to body - overlaps at bottom) -->
-        <div style="position:absolute;top:55px;left:24px;width:112px;height:80px;background:#8cc63f;border:3px solid #3f6212;border-radius:45% 55% 45% 45% / 55% 55% 45% 45%;z-index:30;transform:rotate(-10deg);animation:breathe 3s infinite;">
-          <div style="position:absolute;bottom:3px;left:14px;width:84px;height:28px;background:#fbfde3;border-radius:50%;"></div>
+        <!-- Head wrapper (expanded to contain eyes and tongue without negative positions) -->
+        <div style="position:absolute;top:55px;left:12px;width:132px;height:80px;z-index:30;transform:rotate(-10deg);animation:gecko-breathe 3s infinite;">
+          <!-- Head shape with 3D gradient -->
+          <div style="position:absolute;top:0;left:12px;width:112px;height:80px;background:radial-gradient(ellipse at 35% 30%, #b8e06d 0%, #8cc63f 50%, #65a30d 100%);border:3px solid #3f6212;border-radius:45% 55% 45% 45% / 55% 55% 45% 45%;box-shadow:inset 4px 4px 12px rgba(200,240,120,0.5), inset -3px -3px 8px rgba(80,130,40,0.3);">
+            <!-- Head highlight spot -->
+            <div style="position:absolute;width:28px;height:20px;background:rgba(255,255,255,0.4);border-radius:50%;top:8px;left:18px;filter:blur(3px);"></div>
+            <!-- Belly/chin with gradient -->
+            <div style="position:absolute;bottom:3px;left:14px;width:84px;height:28px;background:radial-gradient(ellipse at 50% 40%, #fffff5 0%, #fbfde3 60%, #f0f5d0 100%);border-radius:50%;"></div>
+            <!-- Nostrils -->
+            <div style="position:absolute;top:45px;left:38px;width:3px;height:2px;background:#3f6212;border-radius:50%;"></div>
+            <div style="position:absolute;top:45px;left:70px;width:3px;height:2px;background:#3f6212;border-radius:50%;"></div>
+            <!-- Mouth interior (dark, visible when open) -->
+            <div style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%) scaleY(0);width:30px;height:12px;background:radial-gradient(ellipse at 50% 30%, #5c3d2e, #3d2820);border-radius:50%;opacity:0;animation:gecko-mouth-inside 10s ease-in-out infinite;"></div>
+            <!-- Mouth line (animates open) -->
+            <div style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%) rotate(-2deg);width:49px;height:17px;border-bottom:3px solid #3f6212;border-radius:50%;transform-origin:top center;animation:gecko-mouth-open 10s ease-in-out infinite;"></div>
+            <!-- Head spot -->
+            <div style="position:absolute;top:7px;left:52px;width:5px;height:4px;background:#65a30d;border-radius:50%;opacity:0.7;"></div>
+          </div>
 
-          <!-- Right eye -->
-          <div style="position:absolute;top:7px;right:-4px;width:40px;height:40px;transform:rotate(8deg);z-index:35;">
-            <div style="width:100%;height:100%;background:#ea580c;border:3px solid #3f2e18;border-radius:50%;overflow:hidden;position:relative;animation:snake-blink 4s infinite;">
-              <div style="position:absolute;width:24px;height:24px;background:#2a1a10;border-radius:50%;top:8px;left:7px;animation:gecko-eye-look 6s ease-in-out infinite;">
+          <!-- Right eye with 3D effect -->
+          <div style="position:absolute;top:7px;right:0;width:40px;height:40px;transform:rotate(8deg);z-index:35;">
+            <div style="width:100%;height:100%;background:radial-gradient(ellipse at 35% 30%, #f97316 0%, #ea580c 50%, #c2410c 100%);border:3px solid #3f2e18;border-radius:50%;overflow:hidden;position:relative;animation:gecko-blink 4s infinite;box-shadow:inset 3px 3px 8px rgba(255,180,100,0.5), inset -2px -2px 6px rgba(150,50,10,0.3);">
+              <!-- Eye highlight -->
+              <div style="position:absolute;width:10px;height:8px;background:rgba(255,255,255,0.3);border-radius:50%;top:4px;left:6px;filter:blur(2px);"></div>
+              <div style="position:absolute;width:24px;height:24px;background:radial-gradient(circle at 30% 30%, #3d2814, #2a1a10);border-radius:50%;top:8px;left:7px;animation:gecko-eye-look 6s ease-in-out infinite;">
                 <div style="position:absolute;width:7px;height:7px;background:white;border-radius:50%;top:3px;left:3px;"></div>
+                <div style="position:absolute;width:3px;height:3px;background:white;border-radius:50%;bottom:5px;right:5px;opacity:0.5;"></div>
               </div>
             </div>
           </div>
 
-          <!-- Left eye -->
-          <div style="position:absolute;top:7px;left:-4px;width:40px;height:40px;transform:rotate(-8deg);z-index:35;">
-            <div style="width:100%;height:100%;background:#ea580c;border:3px solid #3f2e18;border-radius:50%;overflow:hidden;position:relative;animation:snake-blink 4s infinite 0.1s;">
-              <div style="position:absolute;width:24px;height:24px;background:#2a1a10;border-radius:50%;top:8px;left:7px;animation:gecko-eye-look 6s ease-in-out infinite;">
+          <!-- Left eye with 3D effect -->
+          <div style="position:absolute;top:7px;left:8px;width:40px;height:40px;transform:rotate(-8deg);z-index:35;">
+            <div style="width:100%;height:100%;background:radial-gradient(ellipse at 35% 30%, #f97316 0%, #ea580c 50%, #c2410c 100%);border:3px solid #3f2e18;border-radius:50%;overflow:hidden;position:relative;animation:gecko-blink 4s infinite 0.1s;box-shadow:inset 3px 3px 8px rgba(255,180,100,0.5), inset -2px -2px 6px rgba(150,50,10,0.3);">
+              <!-- Eye highlight -->
+              <div style="position:absolute;width:10px;height:8px;background:rgba(255,255,255,0.3);border-radius:50%;top:4px;left:6px;filter:blur(2px);"></div>
+              <div style="position:absolute;width:24px;height:24px;background:radial-gradient(circle at 30% 30%, #3d2814, #2a1a10);border-radius:50%;top:8px;left:7px;animation:gecko-eye-look 6s ease-in-out infinite;">
                 <div style="position:absolute;width:7px;height:7px;background:white;border-radius:50%;top:3px;left:3px;"></div>
+                <div style="position:absolute;width:3px;height:3px;background:white;border-radius:50%;bottom:5px;right:5px;opacity:0.5;"></div>
               </div>
             </div>
           </div>
 
-          <!-- Tongue (curved SVG from mouth to left eye) -->
-          <div style="position:absolute;bottom:16px;left:-12px;width:70px;height:55px;z-index:36;transform-origin:bottom right;animation:gecko-tongue-lick 10s ease-in-out infinite;">
+          <!-- Tongue (curved SVG with gradient) - originates from inside mouth -->
+          <div style="position:absolute;bottom:18px;left:20px;width:70px;height:55px;z-index:40;transform-origin:72% 100%;animation:gecko-tongue-lick 10s ease-in-out infinite;">
             <svg viewBox="0 0 70 55" style="width:100%;height:100%;overflow:visible;animation:gecko-tongue-extend 10s ease-in-out infinite;">
-              <path d="M 45,55 C 35,55 30,50 22,40 C 14,30 8,22 8,14 C 8,6 16,2 26,6 C 36,10 38,22 30,32 C 40,42 55,55 55,55 Z" fill="#ff6b81" stroke="#e84057" stroke-width="1"/>
-              <ellipse cx="17" cy="10" rx="18" ry="12" fill="#ff6b81"/>
+              <defs>
+                <radialGradient id="geckoTongueGrad" cx="30%" cy="30%">
+                  <stop offset="0%" style="stop-color:#ff8a9b;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#ff6b81;stop-opacity:1" />
+                </radialGradient>
+              </defs>
+              <path d="M 45,55 C 35,55 30,50 22,40 C 14,30 8,22 8,14 C 8,6 16,2 26,6 C 36,10 38,22 30,32 C 40,42 55,55 55,55 Z" fill="url(#geckoTongueGrad)" stroke="#e84057" stroke-width="1"/>
+              <ellipse cx="17" cy="10" rx="18" ry="12" fill="url(#geckoTongueGrad)"/>
             </svg>
+          </div>
+        </div>
+
+        <!-- Front left leg with 3D -->
+        <div style="position:absolute;top:145px;left:75px;width:25px;height:40px;background:transparent;z-index:25;transform-origin:top center;--leg-rest:15deg;--leg-run1:-25deg;--leg-run2:45deg;animation:gecko-leg-burst 5s ease-in-out infinite;">
+          <div style="position:absolute;top:0;left:2px;width:21px;height:32px;background:radial-gradient(ellipse at 35% 30%, #b8e06d 0%, #8cc63f 50%, #65a30d 100%);border:3px solid #3f6212;border-radius:10px;box-shadow:inset 2px 2px 6px rgba(200,240,120,0.4), inset -2px -2px 4px rgba(80,130,40,0.3);"></div>
+          <div style="position:absolute;bottom:0;left:0;width:26px;height:9px;display:flex;gap:1px;">
+            <div style="width:7px;height:7px;background:radial-gradient(circle at 30% 30%, #b8e06d, #8cc63f);border:2px solid #3f6212;border-radius:50%;"></div>
+            <div style="width:7px;height:7px;background:radial-gradient(circle at 30% 30%, #b8e06d, #8cc63f);border:2px solid #3f6212;border-radius:50%;"></div>
+            <div style="width:7px;height:7px;background:radial-gradient(circle at 30% 30%, #b8e06d, #8cc63f);border:2px solid #3f6212;border-radius:50%;"></div>
+          </div>
+        </div>
+
+        <!-- Back left leg with 3D -->
+        <div style="position:absolute;top:145px;left:131px;width:25px;height:40px;background:transparent;z-index:25;transform-origin:top center;--leg-rest:-10deg;--leg-run1:35deg;--leg-run2:-35deg;animation:gecko-leg-burst 5s ease-in-out infinite;">
+          <div style="position:absolute;top:0;left:2px;width:21px;height:32px;background:radial-gradient(ellipse at 35% 30%, #b8e06d 0%, #8cc63f 50%, #65a30d 100%);border:3px solid #3f6212;border-radius:10px;box-shadow:inset 2px 2px 6px rgba(200,240,120,0.4), inset -2px -2px 4px rgba(80,130,40,0.3);"></div>
+          <div style="position:absolute;bottom:0;left:0;width:26px;height:9px;display:flex;gap:1px;">
+            <div style="width:7px;height:7px;background:radial-gradient(circle at 30% 30%, #b8e06d, #8cc63f);border:2px solid #3f6212;border-radius:50%;"></div>
+            <div style="width:7px;height:7px;background:radial-gradient(circle at 30% 30%, #b8e06d, #8cc63f);border:2px solid #3f6212;border-radius:50%;"></div>
+            <div style="width:7px;height:7px;background:radial-gradient(circle at 30% 30%, #b8e06d, #8cc63f);border:2px solid #3f6212;border-radius:50%;"></div>
+          </div>
+        </div>
+      </div>
+    `,
+    // ===== FROG - Reptiles Variant 1 =====
+    // Source: frog_buddy.html (scaled to 240x280, 3D effects added)
+    1:`
+      <div style="position:relative;width:240px;height:280px;animation:frog-bounce 2s ease-in-out infinite;">
+        <!-- Back feet (behind body) -->
+        <div style="position:absolute;top:175px;left:25px;width:42px;height:30px;background:radial-gradient(ellipse at 35% 30%, #6ee7a0 0%, #4ade80 50%, #22c55e 100%);border:3px solid #16a34a;border-radius:50%;z-index:15;transform:rotate(-20deg);box-shadow:inset 2px 2px 6px rgba(200,255,220,0.4), inset -2px -2px 4px rgba(20,120,60,0.3);animation:frog-paw-wiggle 2s ease-in-out infinite;"></div>
+        <div style="position:absolute;top:175px;right:25px;width:42px;height:30px;background:radial-gradient(ellipse at 35% 30%, #6ee7a0 0%, #4ade80 50%, #22c55e 100%);border:3px solid #16a34a;border-radius:50%;z-index:15;transform:rotate(20deg);box-shadow:inset 2px 2px 6px rgba(200,255,220,0.4), inset -2px -2px 4px rgba(20,120,60,0.3);animation:frog-paw-wiggle 2s ease-in-out infinite;"></div>
+
+        <!-- Body (pear-shaped) -->
+        <div style="position:absolute;top:80px;left:45px;width:150px;height:130px;background:radial-gradient(ellipse at 35% 30%, #6ee7a0 0%, #4ade80 50%, #16a34a 100%);border-radius:50% 50% 42% 42% / 65% 65% 38% 38%;z-index:20;box-shadow:inset 5px 5px 15px rgba(200,255,220,0.5), inset -4px -4px 10px rgba(20,120,60,0.3);">
+          <!-- Body highlight -->
+          <div style="position:absolute;width:40px;height:30px;background:rgba(255,255,255,0.35);border-radius:50%;top:15px;left:25px;filter:blur(4px);"></div>
+
+          <!-- Eyes (positioned on top of body) -->
+          <div style="position:absolute;top:-25px;width:100%;display:flex;justify-content:center;gap:10px;">
+            <div style="width:46px;height:48px;background:radial-gradient(ellipse at 35% 30%, #ffffff 0%, #f0f0f0 70%, #e0e0e0 100%);border-radius:50%;border:4px solid #16a34a;position:relative;animation:frog-blink 4s infinite;box-shadow:inset 2px 2px 8px rgba(255,255,255,0.8), inset -2px -2px 6px rgba(180,180,180,0.3);">
+              <div style="position:absolute;width:24px;height:28px;background:radial-gradient(circle at 30% 30%, #333, #1a1a1a);border-radius:50%;top:10px;left:11px;">
+                <div style="position:absolute;width:10px;height:10px;background:white;border-radius:50%;top:4px;left:4px;"></div>
+                <div style="position:absolute;width:4px;height:4px;background:white;border-radius:50%;bottom:6px;right:5px;opacity:0.5;"></div>
+              </div>
+            </div>
+            <div style="width:46px;height:48px;background:radial-gradient(ellipse at 35% 30%, #ffffff 0%, #f0f0f0 70%, #e0e0e0 100%);border-radius:50%;border:4px solid #16a34a;position:relative;animation:frog-blink 4s infinite;box-shadow:inset 2px 2px 8px rgba(255,255,255,0.8), inset -2px -2px 6px rgba(180,180,180,0.3);">
+              <div style="position:absolute;width:24px;height:28px;background:radial-gradient(circle at 30% 30%, #333, #1a1a1a);border-radius:50%;top:10px;left:11px;">
+                <div style="position:absolute;width:10px;height:10px;background:white;border-radius:50%;top:4px;left:4px;"></div>
+                <div style="position:absolute;width:4px;height:4px;background:white;border-radius:50%;bottom:6px;right:5px;opacity:0.5;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Blush -->
+          <div style="position:absolute;top:32px;width:100%;display:flex;justify-content:space-around;padding:0 15px;">
+            <div style="width:18px;height:10px;background:#fda4af;border-radius:50%;opacity:0.7;filter:blur(1px);"></div>
+            <div style="width:18px;height:10px;background:#fda4af;border-radius:50%;opacity:0.7;filter:blur(1px);"></div>
           </div>
 
           <!-- Nostrils -->
-          <div style="position:absolute;top:45px;left:38px;width:3px;height:2px;background:#3f6212;border-radius:50%;"></div>
-          <div style="position:absolute;top:45px;left:70px;width:3px;height:2px;background:#3f6212;border-radius:50%;"></div>
+          <div style="position:absolute;top:44px;left:50%;transform:translateX(-50%);display:flex;gap:12px;z-index:25;">
+            <div style="width:4px;height:2px;background:rgba(0,0,0,0.3);border-radius:2px;transform:rotate(15deg);"></div>
+            <div style="width:4px;height:2px;background:rgba(0,0,0,0.3);border-radius:2px;transform:rotate(-15deg);"></div>
+          </div>
 
-          <!-- Mouth line -->
-          <div style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%) rotate(-2deg);width:49px;height:17px;border-bottom:3px solid #3f6212;border-radius:50%;"></div>
+          <!-- Mouth -->
+          <div style="position:absolute;width:50px;height:14px;border-bottom:3.5px solid #16a34a;border-radius:0 0 25px 25px;top:55px;left:50%;transform:translateX(-50%);z-index:23;opacity:0.8;"></div>
 
-          <!-- Head spot -->
-          <div style="position:absolute;top:7px;left:52px;width:5px;height:4px;background:#65a30d;border-radius:50%;opacity:0.7;"></div>
+          <!-- Vocal sac -->
+          <div style="position:absolute;width:65px;height:40px;background:radial-gradient(ellipse at 50% 30%, #d1fae5 0%, #bbf7d0 50%, #a7f3d0 100%);border-radius:50%;bottom:10px;left:50%;transform:translateX(-50%);z-index:22;animation:frog-croak 3s ease-in-out infinite;border:2px solid rgba(0,0,0,0.05);box-shadow:inset 2px 2px 8px rgba(255,255,255,0.5);"></div>
         </div>
 
-        <!-- Front left leg -->
-        <div style="position:absolute;top:145px;left:77px;width:21px;height:32px;background:#8cc63f;border:3px solid #3f6212;border-radius:10px;z-index:25;transform-origin:top center;--leg-rest:15deg;--leg-run1:-25deg;--leg-run2:45deg;animation:gecko-leg-burst 5s ease-in-out infinite;">
-          <div style="position:absolute;bottom:-4px;left:-2px;width:26px;height:9px;display:flex;gap:1px;">
-            <div style="width:7px;height:7px;background:#8cc63f;border:2px solid #3f6212;border-radius:50%;"></div>
-            <div style="width:7px;height:7px;background:#8cc63f;border:2px solid #3f6212;border-radius:50%;"></div>
-            <div style="width:7px;height:7px;background:#8cc63f;border:2px solid #3f6212;border-radius:50%;"></div>
+        <!-- Front feet -->
+        <div style="position:absolute;top:175px;left:72px;width:38px;height:28px;background:radial-gradient(ellipse at 35% 30%, #6ee7a0 0%, #4ade80 50%, #22c55e 100%);border:3px solid #16a34a;border-radius:50%;z-index:25;transform:rotate(8deg);box-shadow:inset 2px 2px 6px rgba(200,255,220,0.4), inset -2px -2px 4px rgba(20,120,60,0.3);animation:frog-paw-wiggle 2s ease-in-out infinite;"></div>
+        <div style="position:absolute;top:175px;right:72px;width:38px;height:28px;background:radial-gradient(ellipse at 35% 30%, #6ee7a0 0%, #4ade80 50%, #22c55e 100%);border:3px solid #16a34a;border-radius:50%;z-index:25;transform:rotate(-8deg);box-shadow:inset 2px 2px 6px rgba(200,255,220,0.4), inset -2px -2px 4px rgba(20,120,60,0.3);animation:frog-paw-wiggle 2s ease-in-out infinite;"></div>
+      </div>
+    `,
+    // ===== TURTLE - Reptiles Variant 2 =====
+    // Source: turtle_buddy.html (scaled to 240x280, 3D effects added)
+    2:`
+      <div style="position:relative;width:240px;height:280px;animation:turtle-bounce 2.5s ease-in-out infinite;">
+        <!-- Tail -->
+        <div style="position:absolute;width:14px;height:25px;background:radial-gradient(ellipse at 35% 30%, #a7f3d0 0%, #86efac 50%, #16a34a 100%);border:3px solid #16a34a;border-radius:50% 50% 50% 50% / 20% 20% 80% 80%;bottom:60px;left:113px;z-index:5;transform-origin:top center;animation:turtle-tail-wiggle 0.8s ease-in-out infinite;box-shadow:inset 2px 2px 4px rgba(200,255,220,0.4);"></div>
+
+        <!-- Back flippers (behind shell) -->
+        <div style="position:absolute;top:185px;left:65px;width:48px;height:32px;background:radial-gradient(ellipse at 35% 30%, #a7f3d0 0%, #86efac 50%, #16a34a 100%);border:4px solid #16a34a;border-radius:50% 50% 40% 40%;z-index:5;transform-origin:top center;animation:turtle-walk-right 0.8s ease-in-out infinite;box-shadow:inset 2px 2px 6px rgba(200,255,220,0.4);"></div>
+        <div style="position:absolute;top:185px;right:65px;width:48px;height:32px;background:radial-gradient(ellipse at 35% 30%, #a7f3d0 0%, #86efac 50%, #16a34a 100%);border:4px solid #16a34a;border-radius:50% 50% 40% 40%;z-index:5;transform-origin:top center;animation:turtle-walk-left 0.8s ease-in-out infinite;box-shadow:inset 2px 2px 6px rgba(200,255,220,0.4);"></div>
+
+        <!-- Shell underside -->
+        <div style="position:absolute;width:154px;height:65px;background:radial-gradient(ellipse at 50% 30%, #fef9c3 0%, #fef08a 50%, #fde047 100%);border:4px solid #78350f;border-radius:40% 40% 50% 50% / 30% 30% 70% 70%;top:150px;left:43px;z-index:10;box-shadow:inset 0 -8px 10px rgba(0,0,0,0.05), inset 3px 3px 8px rgba(255,255,230,0.5);"></div>
+
+        <!-- Shell (dome) -->
+        <div style="position:absolute;width:160px;height:90px;background:radial-gradient(ellipse at 35% 30%, #d97706 0%, #b45309 50%, #78350f 100%);border-radius:50% 50% 20% 20% / 100% 100% 0% 0%;top:95px;left:40px;z-index:20;border:4px solid #78350f;overflow:hidden;box-shadow:inset 5px 5px 15px rgba(255,200,100,0.4), inset -4px -4px 10px rgba(100,50,10,0.3);">
+          <!-- Shell highlight -->
+          <div style="position:absolute;width:40px;height:25px;background:rgba(255,255,255,0.25);border-radius:50%;top:10px;left:20px;filter:blur(4px);"></div>
+          <!-- Shell pattern overlay -->
+          <div style="position:absolute;inset:0;opacity:0.12;background-image:repeating-conic-gradient(#fcd34d 0% 25%, transparent 0% 50%);background-size:30px 30px;"></div>
+        </div>
+
+        <!-- Neck -->
+        <div style="position:absolute;width:36px;height:70px;background:radial-gradient(ellipse at 35% 30%, #a7f3d0 0%, #86efac 50%, #16a34a 100%);border:4px solid #16a34a;border-bottom:none;left:102px;top:65px;z-index:30;border-radius:25px 25px 10px 10px;box-shadow:inset 2px 2px 6px rgba(200,255,220,0.4);"></div>
+
+        <!-- Head -->
+        <div style="position:absolute;width:75px;height:72px;background:radial-gradient(ellipse at 35% 30%, #a7f3d0 0%, #86efac 50%, #16a34a 100%);border-radius:50% 50% 45% 45% / 60% 60% 40% 40%;top:35px;left:82px;z-index:40;border:4px solid #16a34a;box-shadow:inset 3px 3px 10px rgba(200,255,220,0.5), inset -2px -2px 6px rgba(20,120,60,0.2);animation:turtle-head-tuck 2.5s ease-in-out infinite;">
+          <!-- Head highlight -->
+          <div style="position:absolute;width:20px;height:15px;background:rgba(255,255,255,0.35);border-radius:50%;top:8px;left:12px;filter:blur(3px);"></div>
+
+          <!-- Eyes -->
+          <div style="position:absolute;top:12px;width:100%;display:flex;justify-content:center;gap:8px;">
+            <div style="width:24px;height:26px;background:radial-gradient(ellipse at 35% 30%, #ffffff 0%, #f5f5f5 70%, #e8e8e8 100%);border-radius:50%;border:3px solid #16a34a;position:relative;animation:turtle-blink 4s infinite;box-shadow:inset 2px 2px 6px rgba(255,255,255,0.8);">
+              <div style="position:absolute;width:14px;height:16px;background:radial-gradient(circle at 30% 30%, #333, #1a1a1a);border-radius:50%;top:4px;left:4px;">
+                <div style="position:absolute;width:6px;height:6px;background:white;border-radius:50%;top:2px;left:2px;"></div>
+                <div style="position:absolute;width:3px;height:3px;background:white;border-radius:50%;bottom:3px;right:3px;opacity:0.5;"></div>
+              </div>
+            </div>
+            <div style="width:24px;height:26px;background:radial-gradient(ellipse at 35% 30%, #ffffff 0%, #f5f5f5 70%, #e8e8e8 100%);border-radius:50%;border:3px solid #16a34a;position:relative;animation:turtle-blink 4s infinite;box-shadow:inset 2px 2px 6px rgba(255,255,255,0.8);">
+              <div style="position:absolute;width:14px;height:16px;background:radial-gradient(circle at 30% 30%, #333, #1a1a1a);border-radius:50%;top:4px;left:4px;">
+                <div style="position:absolute;width:6px;height:6px;background:white;border-radius:50%;top:2px;left:2px;"></div>
+                <div style="position:absolute;width:3px;height:3px;background:white;border-radius:50%;bottom:3px;right:3px;opacity:0.5;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Blush -->
+          <div style="position:absolute;top:38px;width:100%;display:flex;justify-content:space-around;padding:0 10px;">
+            <div style="width:12px;height:7px;background:#fda4af;border-radius:50%;opacity:0.7;filter:blur(1px);"></div>
+            <div style="width:12px;height:7px;background:#fda4af;border-radius:50%;opacity:0.7;filter:blur(1px);"></div>
+          </div>
+
+          <!-- Nostrils -->
+          <div style="position:absolute;top:49px;left:50%;transform:translateX(-50%);display:flex;gap:8px;">
+            <div style="width:3px;height:2px;background:rgba(0,0,0,0.3);border-radius:1px;transform:rotate(15deg);"></div>
+            <div style="width:3px;height:2px;background:rgba(0,0,0,0.3);border-radius:1px;transform:rotate(-15deg);"></div>
+          </div>
+
+          <!-- Mouth -->
+          <div style="position:absolute;width:22px;height:6px;border-bottom:3px solid #16a34a;border-radius:0 0 15px 15px;top:53px;left:50%;transform:translateX(-50%);"></div>
+        </div>
+
+        <!-- Front flippers -->
+        <div style="position:absolute;top:175px;left:45px;width:48px;height:32px;background:radial-gradient(ellipse at 35% 30%, #a7f3d0 0%, #86efac 50%, #16a34a 100%);border:4px solid #16a34a;border-radius:50% 50% 40% 40%;z-index:50;transform-origin:top center;animation:turtle-walk-left 0.8s ease-in-out infinite;box-shadow:inset 2px 2px 6px rgba(200,255,220,0.4);"></div>
+        <div style="position:absolute;top:175px;right:45px;width:48px;height:32px;background:radial-gradient(ellipse at 35% 30%, #a7f3d0 0%, #86efac 50%, #16a34a 100%);border:4px solid #16a34a;border-radius:50% 50% 40% 40%;z-index:50;transform-origin:top center;animation:turtle-walk-right 0.8s ease-in-out infinite;box-shadow:inset 2px 2px 6px rgba(200,255,220,0.4);"></div>
+      </div>
+    `,
+    // ===== COBRA - Reptiles Variant 3 =====
+    // Source: cobra_buddy.html (scaled to 240x280, 3D effects added)
+    3:`
+      <div style="position:relative;width:240px;height:280px;animation:cobra-sway 3s ease-in-out infinite alternate;">
+        <!-- Tail tip (behind coils) -->
+        <div style="position:absolute;width:40px;height:27px;bottom:80px;left:25px;background:radial-gradient(ellipse at 35% 30%, #c9a281 0%, #b08968 50%, #5c4033 100%);border:3px solid #5c4033;border-radius:50% 0 0 50%;z-index:5;transform-origin:right center;animation:cobra-tail-wag 0.6s ease-in-out infinite alternate;box-shadow:inset 2px 2px 6px rgba(220,180,140,0.4);"></div>
+
+        <!-- Coil base -->
+        <div style="position:absolute;width:150px;height:60px;background:radial-gradient(ellipse at 35% 30%, #c9a281 0%, #b08968 50%, #5c4033 100%);border:3px solid #5c4033;border-radius:30px;bottom:45px;left:45px;z-index:10;box-shadow:inset 3px 3px 10px rgba(220,180,140,0.4), inset -2px -2px 6px rgba(60,40,30,0.3);">
+          <div style="position:absolute;width:30px;height:18px;background:rgba(255,255,255,0.2);border-radius:50%;top:8px;left:20px;filter:blur(3px);"></div>
+        </div>
+
+        <!-- Coil middle -->
+        <div style="position:absolute;width:116px;height:54px;background:radial-gradient(ellipse at 35% 30%, #c9a281 0%, #b08968 50%, #5c4033 100%);border:3px solid #5c4033;border-radius:27px;bottom:85px;left:62px;z-index:12;box-shadow:inset 3px 3px 10px rgba(220,180,140,0.4), inset -2px -2px 6px rgba(60,40,30,0.3);">
+          <div style="position:absolute;width:25px;height:15px;background:rgba(255,255,255,0.2);border-radius:50%;top:6px;left:15px;filter:blur(3px);"></div>
+        </div>
+
+        <!-- Neck stalk -->
+        <div style="position:absolute;width:55px;height:95px;background:radial-gradient(ellipse at 35% 30%, #c9a281 0%, #b08968 50%, #5c4033 100%);border:3px solid #5c4033;border-bottom:none;border-top:none;bottom:105px;left:92px;z-index:25;border-radius:7px;box-shadow:inset 2px 2px 8px rgba(220,180,140,0.4);">
+          <!-- Belly stripe -->
+          <div style="position:absolute;top:0;left:14px;width:27px;height:100%;background:radial-gradient(ellipse at 50% 30%, #f5ebe0 0%, #ede0d4 60%, #ddd0c4 100%);opacity:0.85;"></div>
+        </div>
+
+        <!-- Cobra hood -->
+        <div style="position:absolute;width:164px;height:136px;top:40px;left:38px;border-radius:50% 50% 50% 50% / 30% 30% 80% 80%;background:repeating-linear-gradient(to bottom, transparent, transparent 13px, #2d1a0f 13px, #2d1a0f 16px), radial-gradient(ellipse at 35% 30%, #d4b896 0%, #c9a281 40%, #b08968 100%);border:3px solid #5c4033;z-index:18;box-shadow:inset 0 0 15px rgba(0,0,0,0.2), inset 4px 4px 12px rgba(220,180,140,0.3);overflow:hidden;">
+          <!-- Hood highlight -->
+          <div style="position:absolute;width:40px;height:30px;background:rgba(255,255,255,0.2);border-radius:50%;top:15px;left:25px;filter:blur(5px);"></div>
+          <!-- Hood markings -->
+          <div style="position:absolute;top:20px;left:50%;transform:translateX(-50%);width:88px;height:48px;opacity:0.9;">
+            <div style="position:absolute;width:30px;height:30px;background:radial-gradient(circle at 35% 30%, #c9a281, #b08968);border:3px solid #ede0d4;border-radius:50%;top:0;left:4px;"></div>
+            <div style="position:absolute;width:30px;height:30px;background:radial-gradient(circle at 35% 30%, #c9a281, #b08968);border:3px solid #ede0d4;border-radius:50%;top:0;right:4px;"></div>
+            <div style="position:absolute;top:15px;left:20px;width:40px;height:27px;border:3px solid #ede0d4;border-top:none;border-radius:0 0 50% 50%;"></div>
           </div>
         </div>
 
-        <!-- Back left leg -->
-        <div style="position:absolute;top:145px;left:133px;width:21px;height:32px;background:#8cc63f;border:3px solid #3f6212;border-radius:10px;z-index:25;transform-origin:top center;--leg-rest:-10deg;--leg-run1:35deg;--leg-run2:-35deg;animation:gecko-leg-burst 5s ease-in-out infinite;">
-          <div style="position:absolute;bottom:-4px;left:-2px;width:26px;height:9px;display:flex;gap:1px;">
-            <div style="width:7px;height:7px;background:#8cc63f;border:2px solid #3f6212;border-radius:50%;"></div>
-            <div style="width:7px;height:7px;background:#8cc63f;border:2px solid #3f6212;border-radius:50%;"></div>
-            <div style="width:7px;height:7px;background:#8cc63f;border:2px solid #3f6212;border-radius:50%;"></div>
+        <!-- Head -->
+        <div style="position:absolute;width:102px;height:82px;border-radius:45% 55% 45% 45% / 55% 55% 45% 45%;top:28px;left:68px;z-index:30;background:radial-gradient(ellipse at 35% 30%, #c9a281 0%, #b08968 50%, #5c4033 100%);border:3px solid #5c4033;box-shadow:inset 3px 3px 10px rgba(220,180,140,0.5), inset -2px -2px 6px rgba(60,40,30,0.2);">
+          <!-- Head highlight -->
+          <div style="position:absolute;width:25px;height:18px;background:rgba(255,255,255,0.3);border-radius:50%;top:10px;left:15px;filter:blur(3px);"></div>
+
+          <!-- Eyes -->
+          <div style="position:absolute;top:15px;width:100%;display:flex;justify-content:center;gap:6px;">
+            <div class="s-eye" style="width:30px;height:32px;background:radial-gradient(ellipse at 35% 30%, #ffffff 0%, #f5f5f5 70%, #e8e8e8 100%);border-radius:55% 55% 45% 45%;border:3px solid #5c4033;position:relative;animation:cobra-blink 4s infinite;box-shadow:inset 2px 2px 6px rgba(255,255,255,0.8);">
+              <div style="position:absolute;width:20px;height:22px;background:radial-gradient(circle at 30% 30%, #333, #1a1a1a);border-radius:50%;top:5px;left:5px;">
+                <div style="position:absolute;width:8px;height:8px;background:white;border-radius:50%;top:3px;left:3px;"></div>
+                <div style="position:absolute;width:4px;height:4px;background:white;border-radius:50%;bottom:4px;right:5px;opacity:0.6;"></div>
+              </div>
+            </div>
+            <div class="s-eye" style="width:30px;height:32px;background:radial-gradient(ellipse at 35% 30%, #ffffff 0%, #f5f5f5 70%, #e8e8e8 100%);border-radius:55% 55% 45% 45%;border:3px solid #5c4033;position:relative;animation:cobra-blink 4s infinite;box-shadow:inset 2px 2px 6px rgba(255,255,255,0.8);">
+              <div style="position:absolute;width:20px;height:22px;background:radial-gradient(circle at 30% 30%, #333, #1a1a1a);border-radius:50%;top:5px;left:5px;">
+                <div style="position:absolute;width:8px;height:8px;background:white;border-radius:50%;top:3px;left:3px;"></div>
+                <div style="position:absolute;width:4px;height:4px;background:white;border-radius:50%;bottom:4px;right:5px;opacity:0.6;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Blush -->
+          <div style="position:absolute;top:48px;width:100%;display:flex;justify-content:space-around;padding:0 12px;">
+            <div style="width:14px;height:8px;background:#fca5a5;border-radius:50%;opacity:0.7;filter:blur(1px);"></div>
+            <div style="width:14px;height:8px;background:#fca5a5;border-radius:50%;opacity:0.7;filter:blur(1px);"></div>
+          </div>
+
+          <!-- Snout -->
+          <div style="position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);z-index:35;">
+            <div style="width:40px;height:23px;background:radial-gradient(ellipse at 50% 30%, #6b4423 0%, #5c4033 100%);border-radius:40% 40% 60% 60%;display:flex;justify-content:center;padding-top:5px;position:relative;">
+              <!-- Nostrils -->
+              <div style="display:flex;gap:10px;">
+                <div style="width:4px;height:2px;background:rgba(0,0,0,0.5);border-radius:1px;transform:rotate(15deg);"></div>
+                <div style="width:4px;height:2px;background:rgba(0,0,0,0.5);border-radius:1px;transform:rotate(-15deg);"></div>
+              </div>
+              <!-- Fangs -->
+              <div style="position:absolute;top:17px;left:7px;width:7px;height:10px;background:white;clip-path:polygon(0 0, 100% 0, 50% 100%);"></div>
+              <div style="position:absolute;top:17px;right:7px;width:7px;height:10px;background:white;clip-path:polygon(0 0, 100% 0, 50% 100%);"></div>
+              <!-- Tongue -->
+              <div style="position:absolute;top:10px;left:50%;margin-left:-3px;width:4px;height:23px;background:#ef4444;transform-origin:top;animation:cobra-tongue 3s infinite;z-index:1;">
+                <div style="position:absolute;bottom:-6px;left:-1px;width:4px;height:7px;background:#ef4444;clip-path:polygon(0 0, 100% 0, 50% 100%);transform:rotate(-35deg);transform-origin:top center;"></div>
+                <div style="position:absolute;bottom:-6px;right:-1px;width:4px;height:7px;background:#ef4444;clip-path:polygon(0 0, 100% 0, 50% 100%);transform:rotate(35deg);transform-origin:top center;"></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     `,
-    1:` <!-- Solar Skink (side view) -->
-      <div style="position:relative;width:110px;height:95px;display:inline-block;">
-        <!-- Solar aura -->
-        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:105px;height:90px;background:radial-gradient(circle,rgba(255,140,0,0.18),rgba(255,100,0,0.12),transparent 65%);border-radius:50%;animation:pulse-grow 2.2s ease-in-out infinite;"></div>
-        <!-- Body (elongated sleek skink body, side view) -->
-        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:58px;height:18px;background:linear-gradient(90deg,rgba(255,140,0,1),rgba(255,120,0,0.98));border-radius:50%;box-shadow:0 3px 10px rgba(255,100,0,0.3),inset -2px -2px 6px rgba(255,180,100,0.4);"></div>
-        <!-- SOLAR FLARE horizontal light bar (signature feature) -->
-        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:62px;height:6px;background:linear-gradient(90deg,transparent,rgba(255,255,200,0.9) 30%,rgba(255,255,255,1) 50%,rgba(255,255,200,0.9) 70%,transparent);box-shadow:0 0 12px rgba(255,200,100,0.8);animation:pulse-grow 1.5s ease-in-out infinite;"></div>
-        <!-- Head (triangular skink head, side view) -->
-        <div style="position:absolute;right:20%;top:46%;width:16px;height:14px;background:radial-gradient(circle,rgba(255,140,0,1),rgba(255,110,0,0.98));border-radius:60% 40% 50% 50%;transform:rotate(-5deg);animation:head-bob 2.2s ease-in-out infinite;box-shadow:inset -1px -1px 3px rgba(255,180,100,0.3);"></div>
-        <!-- Single eye (side view) -->
-        <div style="position:absolute;right:22%;top:47%;width:7px;height:8px;background:radial-gradient(circle,rgba(255,200,0,1),rgba(200,150,0,0.9));border-radius:50%;border:1.5px solid rgba(100,80,0,0.7);position:relative;animation:blink 4.5s infinite;box-shadow:0 0 4px rgba(255,180,0,0.4);">
-          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:2px;height:5px;background:black;border-radius:50%;"></div>
-          <div style="position:absolute;top:2px;left:3px;width:1.5px;height:2px;background:white;border-radius:50%;"></div>
+    // ===== EMERALD PYTHON - Reptiles Variant 4 =====
+    // Source: emerald_python.html (scaled to 240x280, 3D effects added)
+    4:`
+      <div style="position:relative;width:240px;height:280px;animation:emerald-sway 3s ease-in-out infinite alternate;">
+        <!-- Tail tip -->
+        <div style="position:absolute;width:36px;height:24px;bottom:82px;left:35px;background:radial-gradient(ellipse at 35% 30%, #34d399 0%, #10b981 50%, #047857 100%);border:3px solid #064e3b;border-radius:50% 0 0 50%;z-index:5;transform-origin:right center;animation:emerald-tail-wag 0.6s ease-in-out infinite alternate;box-shadow:inset 2px 2px 6px rgba(110,231,183,0.4);">
+          <div style="position:absolute;width:10px;height:8px;background:rgba(110,231,183,0.5);border-radius:50%;top:4px;left:6px;"></div>
         </div>
-        <!-- Snout -->
-        <div style="position:absolute;right:17%;top:49%;width:6px;height:5px;background:rgba(255,120,0,0.95);border-radius:50% 70% 50% 40%;"></div>
-        <!-- Mouth line -->
-        <div style="position:absolute;right:18%;top:52%;width:10px;height:1px;background:rgba(200,80,0,0.7);"></div>
-        <!-- Long tapering tail (skink characteristic) -->
-        <div style="position:absolute;left:20%;top:51%;width:28px;height:12px;background:linear-gradient(to left,rgba(255,120,0,0.95),rgba(255,100,0,0.9));border-radius:50%;transform:rotate(6deg);"></div>
-        <div style="position:absolute;left:18%;top:56%;width:18px;height:8px;background:linear-gradient(to left,rgba(255,100,0,0.9),rgba(255,80,0,0.85));border-radius:50%;transform:rotate(-10deg);"></div>
-        <!-- Legs (short, positioned for side view) -->
-        <div style="position:absolute;left:42%;top:58%;width:8px;height:5px;background:rgba(255,120,0,0.95);border-radius:50%;transform:rotate(40deg);"></div>
-        <div style="position:absolute;left:56%;top:60%;width:8px;height:5px;background:rgba(255,120,0,0.95);border-radius:50%;transform:rotate(-40deg);"></div>
-        <div style="position:absolute;right:30%;top:58%;width:7px;height:4px;background:rgba(255,120,0,0.95);border-radius:50%;transform:rotate(35deg);"></div>
-        <div style="position:absolute;right:24%;top:54%;width:7px;height:4px;background:rgba(255,120,0,0.95);border-radius:50%;transform:rotate(-25deg);"></div>
-        <!-- Solar sparkles -->
-        <div style="position:absolute;left:18%;top:35%;width:4px;height:4px;background:rgba(255,255,200,1);border-radius:50%;box-shadow:0 0 10px rgba(255,200,100,0.95);animation:twinkle 1.8s ease-in-out infinite;"></div>
-        <div style="position:absolute;right:20%;top:40%;width:3px;height:3px;background:rgba(255,240,180,0.95);border-radius:50%;box-shadow:0 0 8px rgba(255,180,80,0.9);animation:twinkle 2.1s ease-in-out infinite 0.4s;"></div>
+
+        <!-- Coil base -->
+        <div style="position:absolute;width:132px;height:54px;background:radial-gradient(ellipse at 35% 30%, #34d399 0%, #10b981 50%, #047857 100%);border:3px solid #064e3b;border-radius:27px;bottom:50px;left:55px;z-index:10;box-shadow:inset 3px 3px 10px rgba(110,231,183,0.4), inset -2px -2px 6px rgba(4,78,59,0.3);">
+          <div style="position:absolute;width:25px;height:15px;background:rgba(110,231,183,0.35);border-radius:50%;top:8px;left:20px;filter:blur(2px);"></div>
+          <div style="position:absolute;width:15px;height:10px;background:rgba(110,231,183,0.4);border-radius:50%;top:12px;left:70px;"></div>
+        </div>
+
+        <!-- Coil middle -->
+        <div style="position:absolute;width:102px;height:48px;background:radial-gradient(ellipse at 35% 30%, #34d399 0%, #10b981 50%, #047857 100%);border:3px solid #064e3b;border-radius:24px;bottom:85px;left:70px;z-index:12;box-shadow:inset 3px 3px 10px rgba(110,231,183,0.4), inset -2px -2px 6px rgba(4,78,59,0.3);">
+          <div style="position:absolute;width:20px;height:12px;background:rgba(110,231,183,0.35);border-radius:50%;top:6px;left:15px;filter:blur(2px);"></div>
+          <div style="position:absolute;width:12px;height:8px;background:rgba(110,231,183,0.4);border-radius:50%;top:15px;left:55px;"></div>
+        </div>
+
+        <!-- Neck stalk -->
+        <div style="position:absolute;width:50px;height:96px;background:radial-gradient(ellipse at 35% 30%, #34d399 0%, #10b981 50%, #047857 100%);border:3px solid #064e3b;border-bottom:none;border-top:none;top:95px;left:95px;z-index:25;border-radius:12px;box-shadow:inset 2px 2px 8px rgba(110,231,183,0.4);">
+          <!-- Belly scutes -->
+          <div style="position:absolute;top:0;left:9px;width:32px;height:100%;background:repeating-linear-gradient(to bottom, #fef9c3 0px, #fef9c3 7px, #064e3b 7px, #064e3b 8px);opacity:0.95;border-left:2px solid #064e3b;border-right:2px solid #064e3b;"></div>
+        </div>
+
+        <!-- Head -->
+        <div style="position:absolute;width:96px;height:66px;border-radius:40% 40% 50% 50% / 50% 50% 30% 30%;top:60px;left:72px;z-index:30;background:radial-gradient(ellipse at 35% 30%, #34d399 0%, #10b981 50%, #047857 100%);border:3px solid #064e3b;box-shadow:inset 3px 3px 10px rgba(110,231,183,0.5), inset -2px -2px 6px rgba(4,78,59,0.2);">
+          <!-- Head highlight -->
+          <div style="position:absolute;width:22px;height:16px;background:rgba(110,231,183,0.4);border-radius:50%;top:8px;left:15px;filter:blur(3px);"></div>
+          <!-- Blotch pattern -->
+          <div style="position:absolute;width:18px;height:14px;background:rgba(110,231,183,0.5);border-radius:50%;top:12px;right:20px;"></div>
+
+          <!-- Eyes (yellow with vertical pupils) -->
+          <div style="position:absolute;top:12px;width:100%;display:flex;justify-content:center;gap:10px;">
+            <div class="s-eye" style="width:24px;height:24px;background:radial-gradient(ellipse at 35% 30%, #fef08a 0%, #facc15 70%, #eab308 100%);border:2px solid #064e3b;border-radius:50%;position:relative;animation:emerald-blink 4s infinite;box-shadow:inset 2px 2px 5px rgba(255,255,200,0.6);">
+              <div style="position:absolute;width:5px;height:16px;background:radial-gradient(ellipse at 50% 30%, #064e3b 0%, #022c22 100%);border-radius:50%;top:3px;left:9px;">
+                <div style="position:absolute;width:5px;height:5px;background:white;border-radius:50%;top:2px;left:0;"></div>
+              </div>
+            </div>
+            <div class="s-eye" style="width:24px;height:24px;background:radial-gradient(ellipse at 35% 30%, #fef08a 0%, #facc15 70%, #eab308 100%);border:2px solid #064e3b;border-radius:50%;position:relative;animation:emerald-blink 4s infinite;box-shadow:inset 2px 2px 5px rgba(255,255,200,0.6);">
+              <div style="position:absolute;width:5px;height:16px;background:radial-gradient(ellipse at 50% 30%, #064e3b 0%, #022c22 100%);border-radius:50%;top:3px;left:9px;">
+                <div style="position:absolute;width:5px;height:5px;background:white;border-radius:50%;top:2px;left:0;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Blush -->
+          <div style="position:absolute;top:38px;width:100%;display:flex;justify-content:space-around;padding:0 15px;">
+            <div style="width:15px;height:6px;background:#86efac;border-radius:50%;opacity:0.5;filter:blur(1px);"></div>
+            <div style="width:15px;height:6px;background:#86efac;border-radius:50%;opacity:0.5;filter:blur(1px);"></div>
+          </div>
+
+          <!-- Snout with heat pits -->
+          <div style="position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);z-index:35;">
+            <div style="width:56px;height:20px;background:radial-gradient(ellipse at 50% 30%, #10b981 0%, #047857 100%);border:2px solid #064e3b;border-radius:20% 20% 30% 30% / 50% 50% 40% 40%;position:relative;">
+              <!-- Heat pits row -->
+              <div style="display:flex;justify-content:space-evenly;width:100%;padding-top:2px;">
+                <div style="width:5px;height:5px;background:#022c22;border-radius:50%;box-shadow:inset 1px 1px 2px rgba(0,0,0,0.6);"></div>
+                <div style="width:5px;height:5px;background:#022c22;border-radius:50%;box-shadow:inset 1px 1px 2px rgba(0,0,0,0.6);"></div>
+                <div style="width:5px;height:5px;background:#022c22;border-radius:50%;box-shadow:inset 1px 1px 2px rgba(0,0,0,0.6);"></div>
+                <div style="width:5px;height:5px;background:#022c22;border-radius:50%;box-shadow:inset 1px 1px 2px rgba(0,0,0,0.6);"></div>
+                <div style="width:5px;height:5px;background:#022c22;border-radius:50%;box-shadow:inset 1px 1px 2px rgba(0,0,0,0.6);"></div>
+              </div>
+              <!-- Nostrils -->
+              <div style="position:absolute;bottom:3px;left:10px;width:4px;height:2px;background:#022c22;border-radius:50%;transform:rotate(20deg);"></div>
+              <div style="position:absolute;bottom:3px;right:10px;width:4px;height:2px;background:#022c22;border-radius:50%;transform:rotate(-20deg);"></div>
+              <!-- Fangs -->
+              <div style="position:absolute;top:18px;left:12px;width:5px;height:9px;background:#fefce8;clip-path:polygon(0 0, 100% 0, 50% 100%);border-top:1px solid #064e3b;"></div>
+              <div style="position:absolute;top:18px;right:12px;width:5px;height:9px;background:#fefce8;clip-path:polygon(0 0, 100% 0, 50% 100%);border-top:1px solid #064e3b;"></div>
+              <!-- Tongue -->
+              <div style="position:absolute;top:14px;left:50%;margin-left:-2px;width:4px;height:18px;background:#db2777;transform-origin:top;animation:emerald-tongue 3s infinite;z-index:1;">
+                <div style="position:absolute;bottom:-5px;left:-1px;width:4px;height:6px;background:#db2777;clip-path:polygon(0 0, 100% 0, 50% 100%);transform:rotate(-35deg);transform-origin:top center;"></div>
+                <div style="position:absolute;bottom:-5px;right:-1px;width:4px;height:6px;background:#db2777;clip-path:polygon(0 0, 100% 0, 50% 100%);transform:rotate(35deg);transform-origin:top center;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     `,
-    2:` <!-- Abyssal Adder (body rises toward front-facing head) -->
-      <div style="position:relative;width:110px;height:100px;display:inline-block;">
-        <!-- Deep ocean aura -->
-        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:105px;height:95px;background:radial-gradient(circle,rgba(20,80,140,0.18),rgba(10,60,120,0.12),transparent 65%);border-radius:50%;animation:pulse-grow 2.6s ease-in-out infinite;"></div>
+    // ===== PURPLE SNAKE - Reptiles Variant 5 =====
+    // Source: purple_snake_buddy.html (scaled to 240x280, 3D effects added)
+    5:`
+      <div style="position:relative;width:240px;height:280px;animation:purple-sway 3s ease-in-out infinite alternate;">
+        <!-- Tail tip -->
+        <div style="position:absolute;width:36px;height:24px;bottom:82px;left:35px;background:radial-gradient(ellipse at 35% 30%, #a78bfa 0%, #8b5cf6 50%, #6d28d9 100%);border:3px solid #4c1d95;border-radius:50% 0 0 50%;z-index:5;transform-origin:right center;animation:purple-tail-wag 0.6s ease-in-out infinite alternate;box-shadow:inset 2px 2px 6px rgba(200,180,255,0.4);"></div>
 
-        <!-- Body segments - horizontal at tail, rising toward head -->
-        <!-- Tail end (low, horizontal) -->
-        <div style="position:absolute;left:2%;top:58%;width:9px;height:9px;background:radial-gradient(circle,rgba(30,90,150,0.98),rgba(20,75,130,0.95));border-radius:50%;box-shadow:0 2px 5px rgba(15,60,110,0.3),0 0 4px rgba(60,140,200,0.2);animation:snake-wave 2.2s ease-in-out infinite;"></div>
-        <div style="position:absolute;left:8%;top:58%;width:11px;height:11px;background:radial-gradient(circle,rgba(35,100,160,1),rgba(25,85,140,0.98));border-radius:50%;box-shadow:0 2px 5px rgba(20,70,120,0.3),0 0 5px rgba(70,150,210,0.22);animation:snake-wave 2.2s ease-in-out infinite 0.1s;"></div>
-        <div style="position:absolute;left:16%;top:57%;width:13px;height:13px;background:radial-gradient(circle,rgba(40,110,170,1),rgba(30,95,150,0.98));border-radius:50%;box-shadow:0 2px 6px rgba(25,80,130,0.32),0 0 6px rgba(80,160,220,0.24);animation:snake-wave 2.2s ease-in-out infinite 0.2s;"></div>
-
-        <!-- Mid section - starting to rise -->
-        <div style="position:absolute;left:26%;top:55%;width:15px;height:15px;background:radial-gradient(circle,rgba(45,115,175,1),rgba(35,100,160,0.98));border-radius:50%;box-shadow:0 2px 6px rgba(30,85,140,0.34),0 0 6px rgba(85,165,225,0.25);animation:snake-wave 2.2s ease-in-out infinite 0.3s;"></div>
-        <div style="position:absolute;left:38%;top:52%;width:16px;height:16px;background:radial-gradient(circle,rgba(50,120,180,1),rgba(40,105,165,0.98));border-radius:50%;box-shadow:0 2px 7px rgba(35,90,145,0.35),0 0 7px rgba(90,170,230,0.26);animation:snake-wave 2.2s ease-in-out infinite 0.4s;"></div>
-        <div style="position:absolute;left:51%;top:48%;width:15px;height:15px;background:radial-gradient(circle,rgba(45,115,175,1),rgba(35,100,160,0.98));border-radius:50%;box-shadow:0 2px 6px rgba(30,85,140,0.34),0 0 6px rgba(85,165,225,0.25);animation:snake-wave 2.2s ease-in-out infinite 0.5s;"></div>
-
-        <!-- Rising toward head -->
-        <div style="position:absolute;right:30%;top:44%;width:14px;height:14px;background:radial-gradient(circle,rgba(40,110,170,1),rgba(30,95,150,0.98));border-radius:50%;box-shadow:0 2px 6px rgba(25,80,130,0.32),0 0 6px rgba(80,160,220,0.24);animation:snake-wave 2.2s ease-in-out infinite 0.6s;"></div>
-        <div style="position:absolute;right:20%;top:38%;width:13px;height:13px;background:radial-gradient(circle,rgba(35,100,160,1),rgba(25,85,140,0.98));border-radius:50%;box-shadow:0 2px 5px rgba(20,70,120,0.3),0 0 5px rgba(70,150,210,0.22);animation:snake-wave 2.2s ease-in-out infinite 0.7s;"></div>
-        <div style="position:absolute;right:12%;top:32%;width:12px;height:12px;background:radial-gradient(circle,rgba(30,90,150,0.98),rgba(20,75,130,0.95));border-radius:50%;box-shadow:0 2px 5px rgba(15,60,110,0.28),0 0 4px rgba(60,140,200,0.2);animation:snake-wave 2.2s ease-in-out infinite 0.8s;"></div>
-
-        <!-- Head (flat top, tapers to rounded snout point, matches body color) -->
-        <div style="position:absolute;right:10%;top:26%;width:20px;height:22px;background:radial-gradient(ellipse at 50% 35%,rgba(45,115,175,1),rgba(35,100,160,0.98));border-radius:15% 15% 50% 50% / 18% 18% 55% 55%;box-shadow:0 2px 5px rgba(25,80,130,0.3),0 0 5px rgba(80,160,220,0.24);animation:snake-wave 2.2s ease-in-out infinite 0.9s;">
-          <!-- Two eyes (same color) -->
-          <div style="position:absolute;left:22%;top:30%;width:5px;height:5px;background:radial-gradient(circle,rgba(255,255,255,1),rgba(240,240,240,0.98));border-radius:50%;border:1px solid rgba(80,80,80,0.8);">
-            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:2px;height:3px;background:rgba(20,20,30,0.95);border-radius:50%;"></div>
-            <div style="position:absolute;top:1px;left:1.5px;width:1.5px;height:1.5px;background:rgba(255,255,255,1);border-radius:50%;"></div>
-          </div>
-          <div style="position:absolute;right:22%;top:30%;width:5px;height:5px;background:radial-gradient(circle,rgba(255,255,255,1),rgba(240,240,240,0.98));border-radius:50%;border:1px solid rgba(80,80,80,0.8);">
-            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:2px;height:3px;background:rgba(20,20,30,0.95);border-radius:50%;"></div>
-            <div style="position:absolute;top:1px;left:1.5px;width:1.5px;height:1.5px;background:rgba(255,255,255,1);border-radius:50%;"></div>
-          </div>
-
-          <!-- Nostrils (near bottom of head) -->
-          <div style="position:absolute;left:42%;bottom:12%;width:1.5px;height:1.5px;background:rgba(10,40,70,0.85);border-radius:50%;"></div>
-          <div style="position:absolute;right:42%;bottom:12%;width:1.5px;height:1.5px;background:rgba(10,40,70,0.85);border-radius:50%;"></div>
-
-          <!-- Tongue (comes from bottom of head, ANIMATED) -->
-          <div style="position:absolute;left:50%;bottom:0%;transform:translateX(-50%);width:2px;height:8px;background:linear-gradient(to bottom,rgba(100,200,255,0.9),rgba(80,180,240,0.85));transform-origin:top center;animation:tongue-flick 2.8s ease-in-out infinite;">
-            <div style="position:absolute;bottom:-1px;left:-1.5px;width:3px;height:2px;background:rgba(90,190,245,0.85);transform:rotate(-30deg);"></div>
-            <div style="position:absolute;bottom:-1px;right:-1.5px;width:3px;height:2px;background:rgba(90,190,245,0.85);transform:rotate(30deg);"></div>
-          </div>
+        <!-- Coil base -->
+        <div style="position:absolute;width:132px;height:54px;background:radial-gradient(ellipse at 35% 30%, #a78bfa 0%, #8b5cf6 50%, #6d28d9 100%);border:3px solid #4c1d95;border-radius:27px;bottom:50px;left:55px;z-index:10;box-shadow:inset 3px 3px 10px rgba(200,180,255,0.4), inset -2px -2px 6px rgba(76,29,149,0.3);">
+          <div style="position:absolute;width:25px;height:15px;background:rgba(221,214,254,0.3);border-radius:50%;top:8px;left:20px;filter:blur(2px);"></div>
         </div>
 
-        <!-- Deep ocean shimmer effects -->
-        <div style="position:absolute;left:20%;top:48%;width:3px;height:3px;background:rgba(100,200,255,0.8);border-radius:50%;box-shadow:0 0 6px rgba(80,180,240,0.7);animation:twinkle 2.8s ease-in-out infinite;"></div>
-        <div style="position:absolute;right:32%;top:52%;width:2px;height:2px;background:rgba(80,180,240,0.75);border-radius:50%;box-shadow:0 0 5px rgba(60,160,220,0.65);animation:twinkle 3.2s ease-in-out infinite 0.7s;"></div>
+        <!-- Coil middle -->
+        <div style="position:absolute;width:102px;height:48px;background:radial-gradient(ellipse at 35% 30%, #a78bfa 0%, #8b5cf6 50%, #6d28d9 100%);border:3px solid #4c1d95;border-radius:24px;bottom:85px;left:70px;z-index:12;box-shadow:inset 3px 3px 10px rgba(200,180,255,0.4), inset -2px -2px 6px rgba(76,29,149,0.3);">
+          <div style="position:absolute;width:20px;height:12px;background:rgba(221,214,254,0.3);border-radius:50%;top:6px;left:15px;filter:blur(2px);"></div>
+        </div>
+
+        <!-- Neck stalk -->
+        <div style="position:absolute;width:50px;height:96px;background:radial-gradient(ellipse at 35% 30%, #a78bfa 0%, #8b5cf6 50%, #6d28d9 100%);border:3px solid #4c1d95;border-bottom:none;border-top:none;top:95px;left:95px;z-index:25;border-radius:12px;box-shadow:inset 2px 2px 8px rgba(200,180,255,0.4);">
+          <!-- Belly stripe -->
+          <div style="position:absolute;top:0;left:13px;width:24px;height:100%;background:linear-gradient(to right, #ddd6fe, #8b5cf6);opacity:0.85;"></div>
+        </div>
+
+        <!-- Head -->
+        <div style="position:absolute;width:90px;height:72px;border-radius:45% 55% 45% 45% / 55% 55% 45% 45%;top:55px;left:75px;z-index:30;background:radial-gradient(ellipse at 35% 30%, #a78bfa 0%, #8b5cf6 50%, #4c1d95 100%);border:3px solid #4c1d95;box-shadow:inset 3px 3px 10px rgba(200,180,255,0.4), inset -2px -2px 6px rgba(76,29,149,0.2);">
+          <!-- Head highlight -->
+          <div style="position:absolute;width:22px;height:16px;background:rgba(221,214,254,0.35);border-radius:50%;top:8px;left:15px;filter:blur(3px);"></div>
+
+          <!-- Eyes (yellow with dark pupils) -->
+          <div style="position:absolute;top:13px;width:100%;display:flex;justify-content:center;gap:6px;">
+            <div class="s-eye" style="width:26px;height:29px;background:radial-gradient(ellipse at 35% 30%, #fef08a 0%, #facc15 70%, #eab308 100%);border-radius:55% 55% 45% 45%;border:2px solid #4c1d95;position:relative;animation:purple-blink 4s infinite;box-shadow:0 0 4px #facc15, inset 2px 2px 5px rgba(255,255,200,0.6);">
+              <div style="position:absolute;width:18px;height:20px;background:radial-gradient(circle at 30% 30%, #4c1d95 0%, #312e81 100%);border-radius:50%;top:5px;left:4px;">
+                <div style="position:absolute;width:7px;height:7px;background:white;border-radius:50%;top:3px;left:3px;"></div>
+                <div style="position:absolute;width:4px;height:4px;background:white;border-radius:50%;bottom:4px;right:4px;opacity:0.7;"></div>
+              </div>
+            </div>
+            <div class="s-eye" style="width:26px;height:29px;background:radial-gradient(ellipse at 35% 30%, #fef08a 0%, #facc15 70%, #eab308 100%);border-radius:55% 55% 45% 45%;border:2px solid #4c1d95;position:relative;animation:purple-blink 4s infinite;box-shadow:0 0 4px #facc15, inset 2px 2px 5px rgba(255,255,200,0.6);">
+              <div style="position:absolute;width:18px;height:20px;background:radial-gradient(circle at 30% 30%, #4c1d95 0%, #312e81 100%);border-radius:50%;top:5px;left:4px;">
+                <div style="position:absolute;width:7px;height:7px;background:white;border-radius:50%;top:3px;left:3px;"></div>
+                <div style="position:absolute;width:4px;height:4px;background:white;border-radius:50%;bottom:4px;right:4px;opacity:0.7;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Blush -->
+          <div style="position:absolute;top:42px;width:100%;display:flex;justify-content:space-around;padding:0 10px;">
+            <div style="width:12px;height:7px;background:#c084fc;border-radius:50%;opacity:0.5;filter:blur(1px);"></div>
+            <div style="width:12px;height:7px;background:#c084fc;border-radius:50%;opacity:0.5;filter:blur(1px);"></div>
+          </div>
+
+          <!-- Snout -->
+          <div style="position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);z-index:35;">
+            <div style="width:52px;height:18px;background:radial-gradient(ellipse at 50% 30%, #8b5cf6 0%, #4c1d95 100%);border:3px solid #4c1d95;border-radius:20% 20% 40% 40% / 50% 50% 50% 50%;position:relative;box-shadow:inset 1px 1px 3px rgba(221,214,254,0.3);">
+              <!-- Nostrils -->
+              <div style="display:flex;width:100%;justify-content:space-between;padding:3px 10px;">
+                <div style="width:4px;height:2px;background:#4c1d95;border-radius:50%;transform:rotate(25deg);opacity:0.8;"></div>
+                <div style="width:4px;height:2px;background:#4c1d95;border-radius:50%;transform:rotate(-25deg);opacity:0.8;"></div>
+              </div>
+              <!-- Fangs -->
+              <div style="position:absolute;top:16px;left:9px;width:6px;height:10px;background:#f3f4f6;clip-path:polygon(0 0, 100% 0, 50% 100%);border-top:1px solid #4c1d95;"></div>
+              <div style="position:absolute;top:16px;right:9px;width:6px;height:10px;background:#f3f4f6;clip-path:polygon(0 0, 100% 0, 50% 100%);border-top:1px solid #4c1d95;"></div>
+              <!-- Tongue -->
+              <div style="position:absolute;top:12px;left:50%;margin-left:-2px;width:4px;height:20px;background:#db2777;transform-origin:top;animation:purple-tongue 3s infinite;z-index:1;">
+                <div style="position:absolute;bottom:-5px;left:-1px;width:4px;height:6px;background:#db2777;clip-path:polygon(0 0, 100% 0, 50% 100%);transform:rotate(-35deg);transform-origin:top center;"></div>
+                <div style="position:absolute;bottom:-5px;right:-1px;width:4px;height:6px;background:#db2777;clip-path:polygon(0 0, 100% 0, 50% 100%);transform:rotate(35deg);transform-origin:top center;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     `,
-    3:` <!-- Glacial Gator (side view) -->
-      <div style="position:relative;width:115px;height:100px;display:inline-block;">
-        <!-- Ice aura -->
-        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:110px;height:95px;background:radial-gradient(circle,rgba(200,230,255,0.2),rgba(150,200,255,0.15),transparent 65%);border-radius:50%;animation:pulse-grow 3s ease-in-out infinite;"></div>
+    // ===== RATTLESNAKE - Reptiles Variant 6 =====
+    // Source: rattlesnake_buddy.html (scaled to 240x280, 3D effects added)
+    6:`
+      <div style="position:relative;width:240px;height:280px;animation:rattle-bounce 2s ease-in-out infinite;">
+        <!-- Slither container -->
+        <div style="position:absolute;top:60px;left:0;width:240px;height:110px;transform-origin:30px 30px;animation:rattle-slither 2.5s ease-in-out infinite;">
+          <!-- SVG Body with diamond pattern -->
+          <svg viewBox="0 0 240 110" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible;">
+            <defs>
+              <linearGradient id="rattleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+                <stop offset="50%" style="stop-color:#d97706;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#78350f;stop-opacity:1" />
+              </linearGradient>
+            </defs>
+            <path d="M 30,30 Q 65,5 100,30 Q 135,58 195,52" fill="none" stroke="url(#rattleGrad)" stroke-width="23" stroke-linecap="round"/>
+            <path d="M 40,28 Q 70,8 100,30 Q 130,55 185,50" fill="none" stroke="rgba(120,53,15,0.35)" stroke-width="12" stroke-linecap="butt" stroke-dasharray="10 17"/>
+          </svg>
 
-        <!-- Tail (thick and powerful, extends left) -->
-        <div style="position:absolute;left:2%;top:54%;width:30px;height:16px;background:linear-gradient(to right,rgba(90,140,200,0.92),rgba(120,180,240,0.96));border-radius:50%;transform:rotate(-3deg);box-shadow:0 2px 6px rgba(120,160,200,0.25);"></div>
-        <div style="position:absolute;left:22%;top:53%;width:24px;height:18px;background:linear-gradient(to right,rgba(120,180,240,0.96),rgba(140,190,245,0.98));border-radius:50%;"></div>
+          <!-- Rattle assembly -->
+          <div style="position:absolute;top:48px;left:192px;display:flex;align-items:center;z-index:15;">
+            <div style="display:flex;transform-origin:left center;animation:rattle-buzz 0.08s linear infinite;">
+              <div style="width:10px;height:16px;background:radial-gradient(ellipse at 35% 30%, #fbbf24 0%, #c27803 70%, #92400e 100%);border:2px solid #78350f;border-radius:4px;margin-left:-3px;box-shadow:inset 1px 1px 3px rgba(255,255,255,0.4);"></div>
+              <div style="width:9px;height:14px;background:radial-gradient(ellipse at 35% 30%, #fbbf24 0%, #c27803 70%, #92400e 100%);border:2px solid #78350f;border-radius:4px;margin-left:-3px;box-shadow:inset 1px 1px 3px rgba(255,255,255,0.4);"></div>
+              <div style="width:8px;height:11px;background:radial-gradient(ellipse at 35% 30%, #fbbf24 0%, #c27803 70%, #92400e 100%);border:2px solid #78350f;border-radius:4px;margin-left:-3px;box-shadow:inset 1px 1px 3px rgba(255,255,255,0.4);"></div>
+            </div>
+          </div>
 
-        <!-- Body (long horizontal crocodilian torso) -->
-        <div style="position:absolute;left:38%;top:52%;width:42px;height:20px;background:radial-gradient(ellipse,rgba(150,200,255,1),rgba(130,185,245,0.98));border-radius:45%;box-shadow:0 3px 12px rgba(150,200,255,0.35),inset -1px -2px 6px rgba(200,230,255,0.4);"></div>
+          <!-- Head -->
+          <div style="position:absolute;width:44px;height:40px;background:radial-gradient(ellipse at 35% 30%, #fbbf24 0%, #d97706 50%, #78350f 100%);border-radius:50% 50% 48% 48% / 65% 65% 45% 45%;top:5px;left:7px;z-index:20;box-shadow:inset 3px 3px 8px rgba(255,255,255,0.4), 0 4px 10px rgba(0,0,0,0.2);">
+            <!-- Head highlight -->
+            <div style="position:absolute;width:14px;height:10px;background:rgba(254,243,199,0.4);border-radius:50%;top:5px;left:8px;filter:blur(2px);"></div>
 
-        <!-- Crocodilian back ridge (dorsal scutes) -->
-        <div style="position:absolute;left:42%;top:48%;width:4px;height:5px;background:rgba(100,160,220,0.8);clip-path:polygon(50% 0%, 100% 100%, 0% 100%);"></div>
-        <div style="position:absolute;left:50%;top:47%;width:4px;height:6px;background:rgba(100,160,220,0.85);clip-path:polygon(50% 0%, 100% 100%, 0% 100%);"></div>
-        <div style="position:absolute;left:58%;top:47%;width:4px;height:6px;background:rgba(100,160,220,0.85);clip-path:polygon(50% 0%, 100% 100%, 0% 100%);"></div>
-        <div style="position:absolute;left:66%;top:48%;width:4px;height:5px;background:rgba(100,160,220,0.8);clip-path:polygon(50% 0%, 100% 100%, 0% 100%);"></div>
+            <!-- Eyes -->
+            <div style="position:absolute;top:7px;width:100%;display:flex;justify-content:center;gap:3px;">
+              <div class="s-eye" style="width:15px;height:16px;background:radial-gradient(ellipse at 35% 30%, #ffffff 0%, #f5f5f5 70%, #e8e8e8 100%);border-radius:50%;position:relative;animation:rattle-blink 4s infinite;box-shadow:inset 2px 2px 4px rgba(255,255,255,0.8);">
+                <div style="position:absolute;width:10px;height:11px;background:radial-gradient(circle at 30% 30%, #333, #1a1a1a);border-radius:50%;top:3px;left:3px;">
+                  <div style="position:absolute;width:4px;height:4px;background:white;border-radius:50%;top:2px;left:2px;"></div>
+                </div>
+              </div>
+              <div class="s-eye" style="width:15px;height:16px;background:radial-gradient(ellipse at 35% 30%, #ffffff 0%, #f5f5f5 70%, #e8e8e8 100%);border-radius:50%;position:relative;animation:rattle-blink 4s infinite;box-shadow:inset 2px 2px 4px rgba(255,255,255,0.8);">
+                <div style="position:absolute;width:10px;height:11px;background:radial-gradient(circle at 30% 30%, #333, #1a1a1a);border-radius:50%;top:3px;left:3px;">
+                  <div style="position:absolute;width:4px;height:4px;background:white;border-radius:50%;top:2px;left:2px;"></div>
+                </div>
+              </div>
+            </div>
 
-        <!-- Diamond crystal scales on body -->
-        <div style="position:absolute;left:45%;top:54%;width:6px;height:6px;background:rgba(255,255,255,0.85);transform:rotate(45deg);box-shadow:0 0 5px rgba(200,230,255,0.7);"></div>
-        <div style="position:absolute;left:62%;top:56%;width:7px;height:7px;background:rgba(255,255,255,0.9);transform:rotate(45deg);box-shadow:0 0 6px rgba(200,230,255,0.8);"></div>
+            <!-- Blush -->
+            <div style="position:absolute;top:23px;width:100%;display:flex;justify-content:space-around;padding:0 6px;">
+              <div style="width:8px;height:5px;background:#fca5a5;border-radius:50%;opacity:0.7;filter:blur(1px);"></div>
+              <div style="width:8px;height:5px;background:#fca5a5;border-radius:50%;opacity:0.7;filter:blur(1px);"></div>
+            </div>
 
-        <!-- Head and snout (distinctive long crocodilian snout) -->
-        <div style="position:absolute;right:8%;top:49%;width:32px;height:13px;background:linear-gradient(to right,rgba(140,190,245,0.98),rgba(155,205,255,1));border-radius:45% 65% 50% 55%;box-shadow:0 2px 7px rgba(150,200,255,0.3),inset -1px -1px 3px rgba(200,230,255,0.35);"></div>
-
-        <!-- Snout detail ridge -->
-        <div style="position:absolute;right:10%;top:51%;width:28px;height:3px;background:linear-gradient(to right,rgba(180,220,255,0.6),transparent);border-radius:50%;"></div>
-
-        <!-- Nostril (on top of snout - visible in side view) -->
-        <div style="position:absolute;right:14%;top:51%;width:3px;height:2px;background:rgba(80,120,160,0.75);border-radius:50%;"></div>
-
-        <!-- Eye (positioned on head, side view) -->
-        <div style="position:absolute;right:34%;top:50%;width:8px;height:9px;background:radial-gradient(circle,rgba(100,200,255,1),rgba(80,180,240,0.95));border-radius:50%;border:2px solid rgba(50,100,150,0.85);position:relative;animation:blink 5s infinite;box-shadow:0 0 5px rgba(100,200,255,0.45);">
-          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:2px;height:5px;background:black;border-radius:50%;"></div>
-          <div style="position:absolute;top:2px;left:3px;width:2px;height:2px;background:white;border-radius:50%;"></div>
+            <!-- Snout -->
+            <div style="position:absolute;width:23px;height:14px;background:radial-gradient(ellipse at 50% 30%, #92400e 0%, #78350f 100%);border-radius:40% 40% 60% 60%;bottom:3px;left:50%;transform:translateX(-50%);z-index:21;display:flex;flex-direction:column;align-items:center;padding-top:2px;">
+              <!-- Nostrils -->
+              <div style="display:flex;gap:5px;margin-bottom:1px;">
+                <div style="width:3px;height:1px;background:rgba(0,0,0,0.5);border-radius:1px;transform:rotate(15deg);"></div>
+                <div style="width:3px;height:1px;background:rgba(0,0,0,0.5);border-radius:1px;transform:rotate(-15deg);"></div>
+              </div>
+              <!-- Fangs -->
+              <div style="position:absolute;width:3px;height:4px;background:#fff;bottom:-2px;left:6px;clip-path:polygon(50% 100%, 0% 0%, 100% 0%);"></div>
+              <div style="position:absolute;width:3px;height:4px;background:#fff;bottom:-2px;right:6px;clip-path:polygon(50% 100%, 0% 0%, 100% 0%);"></div>
+              <!-- Tongue -->
+              <div style="position:absolute;width:2px;height:11px;background:#ef4444;bottom:-11px;left:50%;transform:translateX(-50%) scaleY(0);transform-origin:top;animation:rattle-tongue 3s infinite;z-index:21;">
+                <div style="position:absolute;bottom:-2px;left:-1px;width:2px;height:5px;background:#ef4444;border-radius:1px;transform:rotate(-35deg);"></div>
+                <div style="position:absolute;bottom:-2px;right:-1px;width:2px;height:5px;background:#ef4444;border-radius:1px;transform:rotate(35deg);"></div>
+              </div>
+            </div>
+          </div>
         </div>
-
-        <!-- Jaw line -->
-        <div style="position:absolute;right:10%;top:58%;width:28px;height:2px;background:linear-gradient(to right,rgba(80,120,160,0.85),rgba(100,140,180,0.7));border-radius:50%;"></div>
-
-        <!-- Front leg (proper side-view crocodilian leg) -->
-        <div style="position:absolute;right:30%;top:64%;width:6px;height:12px;background:linear-gradient(to bottom,rgba(140,190,245,0.96),rgba(120,170,230,0.94));border-radius:3px 3px 2px 2px;transform:rotate(20deg);box-shadow:1px 2px 4px rgba(100,140,180,0.3);"></div>
-        <div style="position:absolute;right:28%;top:72%;width:8px;height:3px;background:rgba(130,180,240,0.95);border-radius:50%;"></div>
-
-        <!-- Back leg (shorter, behind) -->
-        <div style="position:absolute;left:48%;top:65%;width:6px;height:11px;background:linear-gradient(to bottom,rgba(140,190,245,0.96),rgba(120,170,230,0.94));border-radius:3px 3px 2px 2px;transform:rotate(-25deg);box-shadow:1px 2px 4px rgba(100,140,180,0.3);"></div>
-        <div style="position:absolute;left:46%;top:73%;width:8px;height:3px;background:rgba(130,180,240,0.95);border-radius:50%;"></div>
-
-        <!-- Ice sparkles -->
-        <div style="position:absolute;left:15%;top:35%;width:4px;height:4px;background:rgba(255,255,255,1);border-radius:50%;box-shadow:0 0 10px rgba(200,230,255,0.95);animation:twinkle 2.2s ease-in-out infinite;"></div>
-        <div style="position:absolute;right:20%;top:32%;width:3px;height:3px;background:rgba(240,250,255,0.95);border-radius:50%;box-shadow:0 0 8px rgba(180,210,240,0.9);animation:twinkle 2.5s ease-in-out infinite 0.6s;"></div>
       </div>
     `,
-    4:` <!-- Prism Python (body rises toward front-facing head) -->
-      <div style="position:relative;width:110px;height:95px;display:inline-block;">
-        <!-- Prismatic aura -->
-        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:105px;height:90px;background:radial-gradient(circle,rgba(180,120,200,0.15),rgba(150,100,180,0.1),transparent 65%);border-radius:50%;animation:pulse-grow 2.8s ease-in-out infinite;"></div>
-
-        <!-- Body segments - horizontal at tail, rising toward head (pythons are muscular) -->
-        <!-- Tail end (low) -->
-        <div style="position:absolute;left:2%;top:60%;width:10px;height:10px;background:radial-gradient(circle,rgba(120,85,140,0.96),rgba(100,70,120,0.93));border-radius:50%;box-shadow:0 2px 5px rgba(90,60,110,0.3);animation:snake-wave 2.4s ease-in-out infinite;">
-          <div style="position:absolute;left:28%;top:30%;width:3px;height:3px;background:rgba(190,150,210,0.5);border-radius:50%;"></div>
-        </div>
-        <div style="position:absolute;left:9%;top:59%;width:13px;height:13px;background:radial-gradient(circle,rgba(130,90,150,0.98),rgba(110,75,130,0.96));border-radius:50%;box-shadow:0 2px 6px rgba(95,65,115,0.32);animation:snake-wave 2.4s ease-in-out infinite 0.1s;">
-          <div style="position:absolute;left:30%;top:32%;width:4px;height:4px;background:rgba(200,160,220,0.55);border-radius:50%;"></div>
-        </div>
-        <div style="position:absolute;left:18%;top:57%;width:16px;height:16px;background:radial-gradient(circle,rgba(140,95,160,1),rgba(120,80,140,0.98));border-radius:50%;box-shadow:0 2px 7px rgba(100,70,120,0.34);animation:snake-wave 2.4s ease-in-out infinite 0.2s;">
-          <div style="position:absolute;left:32%;top:28%;width:4px;height:4px;background:rgba(210,170,230,0.6);border-radius:50%;"></div>
+    // ===== RATTLESNAKE COILED - Reptiles Variant 7 =====
+    // Source: rattlesnake_coiled_buddy.html (scaled to 240x280, 3D effects added)
+    7:`
+      <div style="position:relative;width:240px;height:280px;animation:coiled-bounce 3s ease-in-out infinite;">
+        <!-- Rattle assembly (left side) -->
+        <div style="position:absolute;bottom:100px;left:15px;z-index:5;display:flex;align-items:center;transform-origin:right center;animation:coiled-rattle 0.08s linear infinite alternate;">
+          <div style="width:11px;height:14px;background:radial-gradient(ellipse at 35% 30%, #fbbf24 0%, #c27803 70%, #92400e 100%);border:2px solid #78350f;border-radius:4px;margin-right:-3px;box-shadow:inset 1px 1px 3px rgba(255,255,255,0.3);z-index:1;"></div>
+          <div style="width:13px;height:18px;background:radial-gradient(ellipse at 35% 30%, #fbbf24 0%, #c27803 70%, #92400e 100%);border:2px solid #78350f;border-radius:4px;margin-right:-3px;box-shadow:inset 1px 1px 3px rgba(255,255,255,0.3);z-index:2;"></div>
+          <div style="width:14px;height:20px;background:radial-gradient(ellipse at 35% 30%, #fbbf24 0%, #c27803 70%, #92400e 100%);border:2px solid #78350f;border-radius:4px;margin-right:-3px;box-shadow:inset 1px 1px 3px rgba(255,255,255,0.3);z-index:3;"></div>
+          <div style="width:15px;height:22px;background:radial-gradient(ellipse at 35% 30%, #fbbf24 0%, #c27803 70%, #92400e 100%);border:2px solid #78350f;border-radius:4px;box-shadow:inset 1px 1px 3px rgba(255,255,255,0.3);z-index:4;"></div>
         </div>
 
-        <!-- Mid section (thickest - pythons are muscular, starting to rise) -->
-        <div style="position:absolute;left:29%;top:54%;width:19px;height:19px;background:radial-gradient(circle,rgba(145,100,165,1),rgba(125,85,145,0.98));border-radius:50%;box-shadow:0 3px 8px rgba(105,75,125,0.36);animation:snake-wave 2.4s ease-in-out infinite 0.3s;">
-          <div style="position:absolute;left:35%;top:30%;width:5px;height:5px;background:rgba(215,175,235,0.62);border-radius:50%;"></div>
-        </div>
-        <div style="position:absolute;left:42%;top:50%;width:21px;height:21px;background:radial-gradient(circle,rgba(150,105,170,1),rgba(130,90,150,0.98));border-radius:50%;box-shadow:0 3px 9px rgba(110,80,130,0.38),inset -1px -2px 4px rgba(180,140,200,0.32);animation:snake-wave 2.4s ease-in-out infinite 0.4s;">
-          <div style="position:absolute;left:36%;top:26%;width:6px;height:6px;background:rgba(220,180,240,0.68);border-radius:50%;"></div>
-          <div style="position:absolute;right:32%;top:46%;width:5px;height:5px;background:rgba(205,165,225,0.58);border-radius:50%;"></div>
-        </div>
-        <div style="position:absolute;left:57%;top:46%;width:18px;height:18px;background:radial-gradient(circle,rgba(145,100,165,1),rgba(125,85,145,0.98));border-radius:50%;box-shadow:0 2px 7px rgba(105,75,125,0.34);animation:snake-wave 2.4s ease-in-out infinite 0.5s;">
-          <div style="position:absolute;left:32%;top:34%;width:5px;height:5px;background:rgba(210,170,230,0.6);border-radius:50%;"></div>
+        <!-- Coil base -->
+        <div style="position:absolute;width:148px;height:60px;background:radial-gradient(ellipse at 35% 30%, #fbbf24 0%, #d97706 50%, #78350f 100%);border:3px solid #78350f;border-radius:30px;bottom:65px;left:45px;z-index:10;box-shadow:inset 3px 3px 10px rgba(254,243,199,0.4), inset -2px -2px 6px rgba(120,53,15,0.3);">
+          <!-- Diamond spots -->
+          <div style="position:absolute;top:24px;left:27px;width:11px;height:11px;background:#92400e;transform:rotate(45deg);opacity:0.8;"></div>
+          <div style="position:absolute;top:28px;left:67px;width:12px;height:12px;background:#92400e;transform:rotate(45deg);opacity:0.8;"></div>
+          <div style="position:absolute;top:24px;left:107px;width:11px;height:11px;background:#92400e;transform:rotate(45deg);opacity:0.8;"></div>
         </div>
 
-        <!-- Rising toward head -->
-        <div style="position:absolute;right:28%;top:40%;width:16px;height:16px;background:radial-gradient(circle,rgba(140,95,160,1),rgba(120,80,140,0.98));border-radius:50%;box-shadow:0 2px 6px rgba(100,70,120,0.32);animation:snake-wave 2.4s ease-in-out infinite 0.6s;">
-          <div style="position:absolute;left:34%;top:32%;width:4px;height:4px;background:rgba(200,160,220,0.55);border-radius:50%;"></div>
+        <!-- Coil middle -->
+        <div style="position:absolute;width:114px;height:54px;background:radial-gradient(ellipse at 35% 30%, #fbbf24 0%, #d97706 50%, #78350f 100%);border:3px solid #78350f;border-radius:27px;bottom:105px;left:63px;z-index:12;box-shadow:inset 3px 3px 10px rgba(254,243,199,0.4), inset -2px -2px 6px rgba(120,53,15,0.3);">
+          <!-- Diamond spots -->
+          <div style="position:absolute;top:20px;left:20px;width:9px;height:9px;background:#92400e;transform:rotate(45deg);opacity:0.8;"></div>
+          <div style="position:absolute;top:23px;left:54px;width:11px;height:11px;background:#92400e;transform:rotate(45deg);opacity:0.8;"></div>
+          <div style="position:absolute;top:20px;left:88px;width:9px;height:9px;background:#92400e;transform:rotate(45deg);opacity:0.8;"></div>
         </div>
-        <div style="position:absolute;right:18%;top:33%;width:14px;height:14px;background:radial-gradient(circle,rgba(135,92,155,0.99),rgba(115,77,135,0.97));border-radius:50%;box-shadow:0 2px 5px rgba(95,65,115,0.3);animation:snake-wave 2.4s ease-in-out infinite 0.7s;"></div>
-        <div style="position:absolute;right:10%;top:27%;width:13px;height:13px;background:radial-gradient(circle,rgba(130,90,150,0.98),rgba(110,75,130,0.96));border-radius:50%;box-shadow:0 2px 5px rgba(90,60,110,0.28);animation:snake-wave 2.4s ease-in-out infinite 0.8s;"></div>
 
-        <!-- Head (flat top, tapers to rounded snout point, matches body color, python - broader) -->
-        <div style="position:absolute;right:8%;top:24%;width:22px;height:24px;background:radial-gradient(ellipse at 50% 35%,rgba(150,105,170,1),rgba(135,95,155,0.98));border-radius:15% 15% 50% 50% / 18% 18% 55% 55%;box-shadow:0 2px 5px rgba(100,70,120,0.3),0 0 5px rgba(180,140,200,0.24);animation:snake-wave 2.4s ease-in-out infinite 0.9s;">
-          <!-- Two eyes (same color) -->
-          <div style="position:absolute;left:22%;top:30%;width:5px;height:5px;background:radial-gradient(circle,rgba(255,255,255,1),rgba(240,240,240,0.98));border-radius:50%;border:1px solid rgba(80,80,80,0.8);">
-            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:2px;height:3px;background:rgba(20,20,30,0.95);border-radius:50%;"></div>
-            <div style="position:absolute;top:1px;left:1.5px;width:1.5px;height:1.5px;background:rgba(255,255,255,1);border-radius:50%;"></div>
+        <!-- Neck stalk -->
+        <div style="position:absolute;width:47px;height:60px;background:radial-gradient(ellipse at 35% 30%, #fbbf24 0%, #d97706 50%, #78350f 100%);border:3px solid #78350f;border-bottom:none;border-top:none;bottom:140px;left:97px;z-index:15;border-radius:7px;box-shadow:inset 2px 2px 8px rgba(254,243,199,0.4);">
+          <!-- Belly stripe -->
+          <div style="position:absolute;top:0;left:10px;width:27px;height:100%;background:#fef3c7;opacity:0.85;"></div>
+          <!-- Diamond spots on neck -->
+          <div style="position:absolute;top:13px;right:7px;width:8px;height:8px;background:#92400e;transform:rotate(45deg);opacity:0.8;"></div>
+          <div style="position:absolute;top:33px;right:8px;width:9px;height:9px;background:#92400e;transform:rotate(45deg);opacity:0.8;"></div>
+        </div>
+
+        <!-- Head -->
+        <div style="position:absolute;width:100px;height:80px;border-radius:45% 55% 45% 45% / 55% 55% 45% 45%;top:50px;left:70px;z-index:30;background:radial-gradient(ellipse at 35% 30%, #fbbf24 0%, #d97706 50%, #78350f 100%);border:3px solid #78350f;box-shadow:inset 3px 3px 10px rgba(254,243,199,0.5), inset -2px -2px 6px rgba(120,53,15,0.2);">
+          <!-- Head highlight -->
+          <div style="position:absolute;width:25px;height:18px;background:rgba(254,243,199,0.4);border-radius:50%;top:8px;left:15px;filter:blur(3px);"></div>
+          <!-- Diamond spots on head -->
+          <div style="position:absolute;top:7px;left:10px;width:7px;height:7px;background:#92400e;transform:rotate(45deg);opacity:0.8;"></div>
+          <div style="position:absolute;top:4px;left:47px;width:8px;height:8px;background:#92400e;transform:rotate(45deg);opacity:0.8;"></div>
+          <div style="position:absolute;top:10px;right:10px;width:7px;height:7px;background:#92400e;transform:rotate(45deg);opacity:0.8;"></div>
+
+          <!-- Eyes -->
+          <div style="position:absolute;top:15px;width:100%;display:flex;justify-content:center;gap:5px;">
+            <div class="s-eye" style="width:29px;height:32px;background:radial-gradient(ellipse at 35% 30%, #ffffff 0%, #f5f5f5 70%, #e8e8e8 100%);border-radius:55% 55% 45% 45%;position:relative;animation:coiled-blink 4s infinite;box-shadow:inset 2px 2px 6px rgba(255,255,255,0.8);">
+              <div style="position:absolute;width:20px;height:22px;background:radial-gradient(circle at 30% 30%, #333, #1a1a1a);border-radius:50%;top:5px;left:5px;">
+                <div style="position:absolute;width:8px;height:8px;background:white;border-radius:50%;top:3px;left:3px;"></div>
+                <div style="position:absolute;width:4px;height:4px;background:white;border-radius:50%;bottom:4px;right:5px;opacity:0.7;"></div>
+              </div>
+            </div>
+            <div class="s-eye" style="width:29px;height:32px;background:radial-gradient(ellipse at 35% 30%, #ffffff 0%, #f5f5f5 70%, #e8e8e8 100%);border-radius:55% 55% 45% 45%;position:relative;animation:coiled-blink 4s infinite;box-shadow:inset 2px 2px 6px rgba(255,255,255,0.8);">
+              <div style="position:absolute;width:20px;height:22px;background:radial-gradient(circle at 30% 30%, #333, #1a1a1a);border-radius:50%;top:5px;left:5px;">
+                <div style="position:absolute;width:8px;height:8px;background:white;border-radius:50%;top:3px;left:3px;"></div>
+                <div style="position:absolute;width:4px;height:4px;background:white;border-radius:50%;bottom:4px;right:5px;opacity:0.7;"></div>
+              </div>
+            </div>
           </div>
-          <div style="position:absolute;right:22%;top:30%;width:5px;height:5px;background:radial-gradient(circle,rgba(255,255,255,1),rgba(240,240,240,0.98));border-radius:50%;border:1px solid rgba(80,80,80,0.8);">
-            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:2px;height:3px;background:rgba(20,20,30,0.95);border-radius:50%;"></div>
-            <div style="position:absolute;top:1px;left:1.5px;width:1.5px;height:1.5px;background:rgba(255,255,255,1);border-radius:50%;"></div>
+
+          <!-- Blush -->
+          <div style="position:absolute;top:47px;width:100%;display:flex;justify-content:space-around;padding:0 10px;">
+            <div style="width:14px;height:8px;background:#fca5a5;border-radius:50%;opacity:0.7;filter:blur(1px);"></div>
+            <div style="width:14px;height:8px;background:#fca5a5;border-radius:50%;opacity:0.7;filter:blur(1px);"></div>
           </div>
 
-          <!-- Heat-sensing pits (python feature, between eyes and nostrils) -->
-          <div style="position:absolute;left:26%;top:50%;width:1.5px;height:1.5px;background:rgba(60,40,80,0.85);border-radius:50%;box-shadow:inset 0 0 1px rgba(0,0,0,0.5);"></div>
-          <div style="position:absolute;right:26%;top:50%;width:1.5px;height:1.5px;background:rgba(60,40,80,0.85);border-radius:50%;box-shadow:inset 0 0 1px rgba(0,0,0,0.5);"></div>
-
-          <!-- Nostrils (near bottom of head) -->
-          <div style="position:absolute;left:42%;bottom:12%;width:1.5px;height:1.5px;background:rgba(70,45,90,0.85);border-radius:50%;"></div>
-          <div style="position:absolute;right:42%;bottom:12%;width:1.5px;height:1.5px;background:rgba(70,45,90,0.85);border-radius:50%;"></div>
-
-          <!-- Tongue (comes from bottom of head, ANIMATED) -->
-          <div style="position:absolute;left:50%;bottom:0%;transform:translateX(-50%);width:2px;height:9px;background:linear-gradient(to bottom,rgba(190,110,150,0.9),rgba(170,100,140,0.85));transform-origin:top center;animation:tongue-flick 2.8s ease-in-out infinite;">
-            <div style="position:absolute;bottom:-1px;left:-1.5px;width:3px;height:2px;background:rgba(180,105,145,0.85);transform:rotate(-30deg);"></div>
-            <div style="position:absolute;bottom:-1px;right:-1.5px;width:3px;height:2px;background:rgba(180,105,145,0.85);transform:rotate(30deg);"></div>
+          <!-- Snout -->
+          <div style="position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);z-index:35;">
+            <div style="width:39px;height:23px;background:radial-gradient(ellipse at 50% 30%, #92400e 0%, #78350f 100%);border-radius:40% 40% 60% 60%;display:flex;justify-content:center;padding-top:5px;position:relative;">
+              <!-- Nostrils -->
+              <div style="display:flex;gap:11px;">
+                <div style="width:4px;height:2px;background:rgba(0,0,0,0.5);border-radius:1px;transform:rotate(15deg);"></div>
+                <div style="width:4px;height:2px;background:rgba(0,0,0,0.5);border-radius:1px;transform:rotate(-15deg);"></div>
+              </div>
+              <!-- Fangs -->
+              <div style="position:absolute;top:17px;left:8px;width:5px;height:6px;background:#fff;clip-path:polygon(0 0, 100% 0, 50% 100%);"></div>
+              <div style="position:absolute;top:17px;right:8px;width:5px;height:6px;background:#fff;clip-path:polygon(0 0, 100% 0, 50% 100%);"></div>
+              <!-- Tongue -->
+              <div style="position:absolute;top:10px;left:50%;margin-left:-2px;width:4px;height:23px;background:#ef4444;transform-origin:top;animation:coiled-tongue 3s infinite;z-index:1;">
+                <div style="position:absolute;bottom:-6px;left:-1px;width:4px;height:7px;background:#ef4444;clip-path:polygon(0 0, 100% 0, 50% 100%);transform:rotate(-35deg);transform-origin:top center;"></div>
+                <div style="position:absolute;bottom:-6px;right:-1px;width:4px;height:7px;background:#ef4444;clip-path:polygon(0 0, 100% 0, 50% 100%);transform:rotate(35deg);transform-origin:top center;"></div>
+              </div>
+            </div>
           </div>
         </div>
-
-        <!-- Prismatic shimmer effects -->
-        <div style="position:absolute;left:20%;top:32%;width:3px;height:3px;background:rgba(200,160,220,0.9);border-radius:50%;box-shadow:0 0 6px rgba(180,140,200,0.7);animation:twinkle 2.5s ease-in-out infinite;"></div>
-        <div style="position:absolute;right:28%;top:35%;width:3px;height:3px;background:rgba(180,140,200,0.85);border-radius:50%;box-shadow:0 0 5px rgba(160,120,180,0.6);animation:twinkle 2.8s ease-in-out infinite 0.7s;"></div>
       </div>
     `,
-    5:` <!-- Rainbow Serpent -->
-      <div style="position:relative;width:110px;height:95px;display:inline-block;">
-        <!-- Rainbow shimmer aura -->
-        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:105px;height:90px;background:radial-gradient(circle,rgba(255,200,255,0.16),rgba(200,255,255,0.1),transparent 65%);border-radius:50%;animation:pulse-grow 2.3s ease-in-out infinite;"></div>
-
-        <!-- Body segments - RAINBOW COLORS with more wave -->
-        <!-- Tail (RED) -->
-        <div style="position:absolute;left:2%;top:64%;width:9px;height:9px;background:radial-gradient(circle,rgba(255,60,60,1),rgba(240,40,40,0.98));border-radius:50%;box-shadow:0 2px 5px rgba(200,30,30,0.32),0 0 5px rgba(255,100,100,0.25);animation:snake-wave 2s ease-in-out infinite;"></div>
-
-        <!-- ORANGE (slight dip) -->
-        <div style="position:absolute;left:9%;top:66%;width:11px;height:11px;background:radial-gradient(circle,rgba(255,140,50,1),rgba(240,120,40,0.98));border-radius:50%;box-shadow:0 2px 5px rgba(210,100,30,0.32),0 0 5px rgba(255,160,80,0.25);animation:snake-wave 2s ease-in-out infinite 0.1s;"></div>
-
-        <!-- YELLOW (rising) -->
-        <div style="position:absolute;left:17%;top:60%;width:13px;height:13px;background:radial-gradient(circle,rgba(255,220,50,1),rgba(245,200,40,0.98));border-radius:50%;box-shadow:0 2px 6px rgba(210,180,30,0.33),0 0 6px rgba(255,240,100,0.26);animation:snake-wave 2s ease-in-out infinite 0.2s;"></div>
-
-        <!-- GREEN (dip again) -->
-        <div style="position:absolute;left:27%;top:57%;width:15px;height:15px;background:radial-gradient(circle,rgba(80,220,80,1),rgba(60,200,60,0.98));border-radius:50%;box-shadow:0 2px 6px rgba(50,170,50,0.34),0 0 6px rgba(120,240,120,0.27);animation:snake-wave 2s ease-in-out infinite 0.3s;"></div>
-
-        <!-- CYAN (peak) -->
-        <div style="position:absolute;left:39%;top:51%;width:17px;height:17px;background:radial-gradient(circle,rgba(50,180,255,1),rgba(40,160,240,0.98));border-radius:50%;box-shadow:0 3px 8px rgba(30,140,210,0.36),inset -1px -2px 4px rgba(100,210,255,0.3);animation:snake-wave 2s ease-in-out infinite 0.4s;"></div>
-
-        <!-- INDIGO (rising) -->
-        <div style="position:absolute;left:53%;top:44%;width:15px;height:15px;background:radial-gradient(circle,rgba(100,80,255,1),rgba(80,60,240,0.98));border-radius:50%;box-shadow:0 2px 7px rgba(70,50,200,0.34),0 0 6px rgba(140,120,255,0.27);animation:snake-wave 2s ease-in-out infinite 0.5s;"></div>
-
-        <!-- VIOLET -->
-        <div style="position:absolute;right:28%;top:38%;width:14px;height:14px;background:radial-gradient(circle,rgba(180,60,255,1),rgba(160,50,240,0.98));border-radius:50%;box-shadow:0 2px 6px rgba(140,40,200,0.33),0 0 6px rgba(200,100,255,0.26);animation:snake-wave 2s ease-in-out infinite 0.6s;"></div>
-
-        <!-- PINK (neck) -->
-        <div style="position:absolute;right:18%;top:32%;width:13px;height:13px;background:radial-gradient(circle,rgba(255,80,200,1),rgba(240,60,180,0.98));border-radius:50%;box-shadow:0 2px 5px rgba(200,50,150,0.32),0 0 5px rgba(255,120,220,0.25);animation:snake-wave 2s ease-in-out infinite 0.7s;"></div>
-
-        <!-- WHITE (connects to head) -->
-        <div style="position:absolute;right:11%;top:28%;width:12px;height:12px;background:radial-gradient(circle,rgba(255,200,255,1),rgba(240,180,240,0.98));border-radius:50%;box-shadow:0 2px 5px rgba(200,150,200,0.3),0 0 5px rgba(255,220,255,0.24);animation:snake-wave 2s ease-in-out infinite 0.8s;"></div>
-
-        <!-- Head (flat top, tapers to rounded snout point, matches body color) -->
-        <div style="position:absolute;right:8%;top:24%;width:18px;height:20px;background:radial-gradient(ellipse at 50% 35%,rgba(255,200,255,1),rgba(240,180,240,0.98));border-radius:15% 15% 50% 50% / 18% 18% 55% 55%;box-shadow:0 2px 5px rgba(200,150,200,0.3),0 0 5px rgba(255,220,255,0.24);animation:snake-wave 2s ease-in-out infinite 0.9s;">
-          <!-- Two eyes (same color) -->
-          <div style="position:absolute;left:22%;top:30%;width:5px;height:5px;background:radial-gradient(circle,rgba(255,255,255,1),rgba(240,240,240,0.98));border-radius:50%;border:1px solid rgba(80,80,80,0.8);">
-            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:2px;height:3px;background:rgba(20,20,30,0.95);border-radius:50%;"></div>
-            <div style="position:absolute;top:1px;left:1.5px;width:1.5px;height:1.5px;background:rgba(255,255,255,1);border-radius:50%;"></div>
+    8:` <!-- Rainbow Snake -->
+      <div style="position:relative;width:240px;height:280px;display:flex;justify-content:center;align-items:center;animation:rainbow-bounce 2s ease-in-out infinite;">
+        <!-- SVG Body Container -->
+        <div style="position:absolute;top:90px;left:0;width:240px;height:120px;animation:rainbow-wiggle 3s ease-in-out infinite;">
+          <svg viewBox="0 0 400 200" style="width:100%;height:100%;overflow:visible;">
+            <defs>
+              <linearGradient id="rainbowGrad8" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#ef4444"/>
+                <stop offset="20%" style="stop-color:#f59e0b"/>
+                <stop offset="40%" style="stop-color:#facc15"/>
+                <stop offset="60%" style="stop-color:#22c55e"/>
+                <stop offset="80%" style="stop-color:#3b82f6"/>
+                <stop offset="100%" style="stop-color:#a855f7"/>
+              </linearGradient>
+            </defs>
+            <!-- Main rainbow body -->
+            <path d="M 45,95 C 100,20 160,170 230,95 C 280,40 340,120 380,85" fill="none" stroke="url(#rainbowGrad8)" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Diamond pattern overlay -->
+            <path d="M 60,95 C 110,30 170,160 230,95 C 270,50 330,110 370,85" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="10" stroke-dasharray="8 25"/>
+          </svg>
+        </div>
+        <!-- Head -->
+        <div style="position:absolute;width:38px;height:35px;background:radial-gradient(circle at 35% 30%,#f87171,#ef4444,#b91c1c);border-radius:50% 50% 48% 48% / 65% 65% 45% 45%;top:120px;left:8px;z-index:20;box-shadow:inset 2px 2px 4px rgba(255,255,255,0.4),0 4px 8px rgba(0,0,0,0.2);">
+          <!-- Eyes -->
+          <div style="display:flex;gap:3px;justify-content:center;margin-top:6px;">
+            <div class="s-eye" style="width:13px;height:14px;background:white;border-radius:50%;position:relative;animation:rainbow-blink 4s infinite;">
+              <div style="width:8px;height:10px;background:#1a1a1a;border-radius:50%;position:absolute;top:2px;left:2px;">
+                <div style="position:absolute;width:4px;height:4px;background:white;border-radius:50%;top:1px;left:1px;"></div>
+              </div>
+            </div>
+            <div class="s-eye" style="width:13px;height:14px;background:white;border-radius:50%;position:relative;animation:rainbow-blink 4s infinite;">
+              <div style="width:8px;height:10px;background:#1a1a1a;border-radius:50%;position:absolute;top:2px;left:2px;">
+                <div style="position:absolute;width:4px;height:4px;background:white;border-radius:50%;top:1px;left:1px;"></div>
+              </div>
+            </div>
           </div>
-          <div style="position:absolute;right:22%;top:30%;width:5px;height:5px;background:radial-gradient(circle,rgba(255,255,255,1),rgba(240,240,240,0.98));border-radius:50%;border:1px solid rgba(80,80,80,0.8);">
-            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:2px;height:3px;background:rgba(20,20,30,0.95);border-radius:50%;"></div>
-            <div style="position:absolute;top:1px;left:1.5px;width:1.5px;height:1.5px;background:rgba(255,255,255,1);border-radius:50%;"></div>
+          <!-- Blush -->
+          <div style="position:absolute;top:20px;width:100%;display:flex;justify-content:space-around;padding:0 6px;">
+            <div style="width:7px;height:4px;background:#fca5a5;border-radius:50%;opacity:0.8;"></div>
+            <div style="width:7px;height:4px;background:#fca5a5;border-radius:50%;opacity:0.8;"></div>
           </div>
-
-          <!-- Nostrils (near bottom of head) -->
-          <div style="position:absolute;left:42%;bottom:12%;width:1.5px;height:1.5px;background:rgba(120,80,140,0.85);border-radius:50%;"></div>
-          <div style="position:absolute;right:42%;bottom:12%;width:1.5px;height:1.5px;background:rgba(120,80,140,0.85);border-radius:50%;"></div>
-
-          <!-- Tongue (comes from bottom of head, ANIMATED) -->
-          <div style="position:absolute;left:50%;bottom:0%;transform:translateX(-50%);width:2px;height:7px;background:linear-gradient(to bottom,rgba(255,180,220,0.9),rgba(240,160,200,0.85));transform-origin:top center;animation:tongue-flick 2.8s ease-in-out infinite;">
-            <div style="position:absolute;bottom:-1px;left:-1.5px;width:3px;height:2px;background:rgba(255,160,200,0.85);transform:rotate(-30deg);"></div>
-            <div style="position:absolute;bottom:-1px;right:-1.5px;width:3px;height:2px;background:rgba(255,160,200,0.85);transform:rotate(30deg);"></div>
+          <!-- Snout -->
+          <div style="position:absolute;width:20px;height:12px;background:#991b1b;border-radius:40% 40% 60% 60%;bottom:2px;left:50%;transform:translateX(-50%);z-index:21;">
+            <div style="display:flex;gap:5px;justify-content:center;padding-top:2px;">
+              <div style="width:3px;height:1px;background:rgba(0,0,0,0.5);border-radius:1px;transform:rotate(15deg);"></div>
+              <div style="width:3px;height:1px;background:rgba(0,0,0,0.5);border-radius:1px;transform:rotate(-15deg);"></div>
+            </div>
+            <!-- Fangs -->
+            <div style="position:absolute;bottom:-2px;left:5px;width:3px;height:4px;background:#fff;clip-path:polygon(50% 100%, 0% 0%, 100% 0%);"></div>
+            <div style="position:absolute;bottom:-2px;right:5px;width:3px;height:4px;background:#fff;clip-path:polygon(50% 100%, 0% 0%, 100% 0%);"></div>
+            <!-- Tongue -->
+            <div style="position:absolute;width:2px;height:7px;background:#ff4757;bottom:-7px;left:50%;transform:translateX(-50%) scaleY(0);transform-origin:top;animation:rainbow-tongue 3s infinite;z-index:21;">
+              <div style="position:absolute;bottom:-4px;left:-1px;width:2px;height:5px;background:#ff4757;clip-path:polygon(50% 100%, 0% 0%, 100% 0%);transform:rotate(-30deg);transform-origin:top center;"></div>
+              <div style="position:absolute;bottom:-4px;right:-1px;width:2px;height:5px;background:#ff4757;clip-path:polygon(50% 100%, 0% 0%, 100% 0%);transform:rotate(30deg);transform-origin:top center;"></div>
+            </div>
           </div>
         </div>
-
-        <!-- Rainbow sparkles -->
-        <div style="position:absolute;left:20%;top:50%;width:3px;height:3px;background:rgba(255,200,100,0.95);border-radius:50%;box-shadow:0 0 7px rgba(255,180,80,0.8);animation:twinkle 2.1s ease-in-out infinite;"></div>
-        <div style="position:absolute;right:35%;top:54%;width:3px;height:3px;background:rgba(150,200,255,0.9);border-radius:50%;box-shadow:0 0 6px rgba(120,180,240,0.75);animation:twinkle 2.4s ease-in-out infinite 0.5s;"></div>
+        <!-- 3D highlight spots -->
+        <div style="position:absolute;top:145px;left:80px;width:10px;height:10px;background:radial-gradient(circle,rgba(255,255,255,0.6),transparent);border-radius:50%;filter:blur(2px);"></div>
+        <div style="position:absolute;top:155px;left:140px;width:8px;height:8px;background:radial-gradient(circle,rgba(255,255,255,0.5),transparent);border-radius:50%;filter:blur(2px);"></div>
       </div>
     `,
-    6:` <!-- Celestial Cobra (front-facing hood, side-view body) -->
-      <div style="position:relative;width:110px;height:100px;display:inline-block;">
-        <!-- Celestial aura -->
-        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:105px;height:95px;background:radial-gradient(circle,rgba(80,100,200,0.16),rgba(60,80,180,0.1),transparent 65%);border-radius:50%;animation:pulse-grow 3.2s ease-in-out infinite;"></div>
-
-        <!-- Body segments - rising from tail toward hood/head -->
-        <!-- Tail (low) -->
-        <div style="position:absolute;left:2%;top:62%;width:8px;height:8px;background:radial-gradient(circle,rgba(50,70,130,0.96),rgba(40,60,115,0.93));border-radius:50%;box-shadow:0 2px 5px rgba(30,50,100,0.3);animation:snake-wave 2.5s ease-in-out infinite;">
-          <div style="position:absolute;left:30%;top:28%;width:2px;height:2px;background:rgba(170,190,245,0.7);border-radius:50%;"></div>
-        </div>
-        <div style="position:absolute;left:8%;top:61%;width:10px;height:10px;background:radial-gradient(circle,rgba(60,80,150,0.98),rgba(50,70,130,0.96));border-radius:50%;box-shadow:0 2px 5px rgba(40,60,120,0.32);animation:snake-wave 2.5s ease-in-out infinite 0.1s;">
-          <div style="position:absolute;left:32%;top:26%;width:2px;height:2px;background:rgba(180,200,255,0.75);border-radius:50%;"></div>
-        </div>
-        <div style="position:absolute;left:15%;top:58%;width:12px;height:12px;background:radial-gradient(circle,rgba(70,90,160,1),rgba(60,80,145,0.98));border-radius:50%;box-shadow:0 2px 6px rgba(50,70,130,0.34);animation:snake-wave 2.5s ease-in-out infinite 0.2s;">
-          <div style="position:absolute;left:34%;top:28%;width:2px;height:2px;background:rgba(190,210,255,0.8);border-radius:50%;box-shadow:0 0 2px rgba(160,180,235,0.6);"></div>
-        </div>
-
-        <!-- Rising -->
-        <div style="position:absolute;left:24%;top:54%;width:14px;height:14px;background:radial-gradient(circle,rgba(75,95,165,1),rgba(65,85,150,0.98));border-radius:50%;box-shadow:0 2px 7px rgba(55,75,135,0.35);animation:snake-wave 2.5s ease-in-out infinite 0.3s;">
-          <div style="position:absolute;left:36%;top:30%;width:2px;height:2px;background:rgba(200,220,255,0.82);border-radius:50%;box-shadow:0 0 3px rgba(170,190,245,0.7);"></div>
-        </div>
-        <div style="position:absolute;left:35%;top:49%;width:15px;height:15px;background:radial-gradient(circle,rgba(80,100,170,1),rgba(70,90,155,0.98));border-radius:50%;box-shadow:0 2px 7px rgba(60,80,140,0.36);animation:snake-wave 2.5s ease-in-out infinite 0.4s;">
-          <div style="position:absolute;left:38%;top:28%;width:3px;height:3px;background:rgba(210,230,255,0.85);border-radius:50%;box-shadow:0 0 3px rgba(180,200,255,0.72);"></div>
-        </div>
-        <div style="position:absolute;left:47%;top:44%;width:14px;height:14px;background:radial-gradient(circle,rgba(75,95,165,1),rgba(65,85,150,0.98));border-radius:50%;box-shadow:0 2px 6px rgba(55,75,135,0.34);animation:snake-wave 2.5s ease-in-out infinite 0.5s;">
-          <div style="position:absolute;left:35%;top:30%;width:2px;height:2px;background:rgba(200,220,255,0.82);border-radius:50%;"></div>
-        </div>
-
-        <!-- Approaching hood -->
-        <div style="position:absolute;right:32%;top:38%;width:13px;height:13px;background:radial-gradient(circle,rgba(70,90,160,1),rgba(60,80,145,0.98));border-radius:50%;box-shadow:0 2px 6px rgba(50,70,130,0.33);animation:snake-wave 2.5s ease-in-out infinite 0.6s;"></div>
-        <div style="position:absolute;right:22%;top:32%;width:12px;height:12px;background:radial-gradient(circle,rgba(65,85,150,0.98),rgba(55,75,135,0.96));border-radius:50%;box-shadow:0 2px 5px rgba(45,65,120,0.3);animation:snake-wave 2.5s ease-in-out infinite 0.7s;"></div>
-
-        <!-- Cobra HOOD (flared, realistic, behind and around head) -->
-        <div style="position:absolute;right:8%;top:12%;width:52px;height:48px;background:radial-gradient(ellipse at 50% 60%,rgba(85,105,175,0.98),rgba(72,92,162,0.96),rgba(60,80,150,0.93));border-radius:50% 50% 48% 48%;box-shadow:0 5px 15px rgba(40,60,130,0.5),inset 0 -4px 10px rgba(105,125,200,0.4);z-index:-1;">
-          <!-- Hood texture ridges -->
-          <div style="position:absolute;left:50%;top:15%;transform:translateX(-50%);width:80%;height:2px;background:linear-gradient(to right,transparent,rgba(100,120,190,0.4),transparent);"></div>
-          <div style="position:absolute;left:50%;top:25%;transform:translateX(-50%);width:85%;height:2px;background:linear-gradient(to right,transparent,rgba(100,120,190,0.45),transparent);"></div>
-
-          <!-- Spectacle marks (iconic cobra pattern) -->
-          <div style="position:absolute;left:20%;top:45%;width:12px;height:16px;border:2.5px solid rgba(200,220,255,0.8);border-radius:50% 50% 55% 45%;background:radial-gradient(ellipse,rgba(125,145,225,0.45),transparent 65%);box-shadow:inset 0 0 5px rgba(155,175,245,0.55);"></div>
-          <div style="position:absolute;right:20%;top:45%;width:12px;height:16px;border:2.5px solid rgba(200,220,255,0.8);border-radius:50% 50% 45% 55%;background:radial-gradient(ellipse,rgba(125,145,225,0.45),transparent 65%);box-shadow:inset 0 0 5px rgba(155,175,245,0.55);"></div>
-
-          <!-- Celestial stars on hood -->
-          <div style="position:absolute;left:16%;top:28%;width:3px;height:3px;background:rgba(225,245,255,1);border-radius:50%;box-shadow:0 0 6px rgba(185,205,255,0.95);"></div>
-          <div style="position:absolute;right:14%;top:32%;width:2.5px;height:2.5px;background:rgba(210,230,255,0.98);border-radius:50%;box-shadow:0 0 5px rgba(170,190,240,0.9);"></div>
-          <div style="position:absolute;left:50%;top:22%;transform:translateX(-50%);width:2.5px;height:2.5px;background:rgba(220,240,255,1);border-radius:50%;box-shadow:0 0 5px rgba(180,200,250,0.92);"></div>
-        </div>
-
-        <!-- Head (flat top, tapers to rounded snout point, matches body color, in front of hood) -->
-        <div style="position:absolute;right:18%;top:30%;width:20px;height:22px;background:radial-gradient(ellipse at 50% 35%,rgba(85,105,175,1),rgba(72,92,162,0.98));border-radius:15% 15% 50% 50% / 18% 18% 55% 55%;box-shadow:0 2px 5px rgba(50,70,130,0.3),0 0 5px rgba(115,135,205,0.24);animation:snake-wave 2.5s ease-in-out infinite 0.9s;">
-          <!-- Two eyes (same color) -->
-          <div style="position:absolute;left:22%;top:30%;width:5px;height:5px;background:radial-gradient(circle,rgba(255,255,255,1),rgba(240,240,240,0.98));border-radius:50%;border:1px solid rgba(80,80,80,0.8);">
-            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:2px;height:3px;background:rgba(20,20,30,0.95);border-radius:50%;"></div>
-            <div style="position:absolute;top:1px;left:1.5px;width:1.5px;height:1.5px;background:rgba(255,255,255,1);border-radius:50%;"></div>
-          </div>
-          <div style="position:absolute;right:22%;top:30%;width:5px;height:5px;background:radial-gradient(circle,rgba(255,255,255,1),rgba(240,240,240,0.98));border-radius:50%;border:1px solid rgba(80,80,80,0.8);">
-            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:2px;height:3px;background:rgba(20,20,30,0.95);border-radius:50%;"></div>
-            <div style="position:absolute;top:1px;left:1.5px;width:1.5px;height:1.5px;background:rgba(255,255,255,1);border-radius:50%;"></div>
-          </div>
-
-          <!-- Nostrils (near bottom of head) -->
-          <div style="position:absolute;left:42%;bottom:12%;width:1.5px;height:1.5px;background:rgba(30,45,90,0.85);border-radius:50%;"></div>
-          <div style="position:absolute;right:42%;bottom:12%;width:1.5px;height:1.5px;background:rgba(30,45,90,0.85);border-radius:50%;"></div>
-
-          <!-- Tongue (comes from bottom of head, ANIMATED) -->
-          <div style="position:absolute;left:50%;bottom:0%;transform:translateX(-50%);width:2px;height:8px;background:linear-gradient(to bottom,rgba(140,100,180,0.92),rgba(120,85,165,0.88));transform-origin:top center;animation:tongue-flick 2.8s ease-in-out infinite;">
-            <div style="position:absolute;bottom:-1px;left:-1.5px;width:3px;height:2px;background:rgba(130,95,175,0.88);transform:rotate(-30deg);"></div>
-            <div style="position:absolute;bottom:-1px;right:-1.5px;width:3px;height:2px;background:rgba(130,95,175,0.88);transform:rotate(30deg);"></div>
+    9:` <!-- Purple Cobra -->
+      <div style="position:relative;width:240px;height:280px;display:flex;justify-content:center;align-items:center;animation:pcobra-sway 3s ease-in-out infinite alternate;">
+        <!-- Tail tip -->
+        <div style="position:absolute;width:36px;height:24px;bottom:22px;left:35px;background:radial-gradient(circle at 35% 30%,#a78bfa,#8b5cf6,#6d28d9);border:2px solid #4c1d95;border-radius:50% 0 0 50%;z-index:5;transform-origin:right center;animation:pcobra-tail 0.6s ease-in-out infinite alternate;box-shadow:inset 1px 1px 4px rgba(255,255,255,0.2);"></div>
+        <!-- Cobra Hood -->
+        <div style="position:absolute;width:144px;height:120px;top:60px;left:48px;border-radius:50% 50% 50% 50% / 30% 30% 80% 80%;background:repeating-linear-gradient(to bottom, transparent, transparent 12px, #5b21b6 12px, #5b21b6 14px), linear-gradient(to bottom, #a78bfa, #8b5cf6);border:2px solid #4c1d95;z-index:18;box-shadow:inset 0 0 18px #6d28d9;overflow:hidden;">
+          <!-- Hood Markings -->
+          <div style="position:absolute;top:18px;left:50%;transform:translateX(-50%);width:78px;height:42px;">
+            <div style="position:absolute;width:27px;height:27px;background:#8b5cf6;border:2px solid #ddd6fe;border-radius:50%;top:0;left:3px;box-shadow:0 0 10px #ddd6fe;"></div>
+            <div style="position:absolute;width:27px;height:27px;background:#8b5cf6;border:2px solid #ddd6fe;border-radius:50%;top:0;right:3px;box-shadow:0 0 10px #ddd6fe;"></div>
+            <div style="position:absolute;top:13px;left:18px;width:36px;height:24px;border:2px solid #ddd6fe;border-top:none;border-radius:0 0 50% 50%;box-shadow:0 3px 10px #ddd6fe;"></div>
           </div>
         </div>
-
-        <!-- Celestial sparkles -->
-        <div style="position:absolute;left:12%;top:32%;width:3px;height:3px;background:rgba(200,220,255,1);border-radius:50%;box-shadow:0 0 6px rgba(170,190,245,0.85);animation:twinkle 3s ease-in-out infinite;"></div>
-        <div style="position:absolute;right:8%;top:68%;width:3px;height:3px;background:rgba(180,200,240,0.95);border-radius:50%;box-shadow:0 0 5px rgba(150,170,220,0.8);animation:twinkle 3.4s ease-in-out infinite 0.8s;"></div>
+        <!-- Neck -->
+        <div style="position:absolute;width:50px;height:96px;bottom:70px;left:95px;z-index:25;background:linear-gradient(145deg, #8b5cf6, #6d28d9);border:2px solid #4c1d95;border-bottom:none;border-top:none;border-radius:6px;box-shadow:inset 1px 1px 6px rgba(255,255,255,0.2);">
+          <div style="position:absolute;top:0;left:13px;width:24px;height:100%;background:linear-gradient(to right, #ddd6fe, #8b5cf6);opacity:0.9;"></div>
+        </div>
+        <!-- Coil Middle -->
+        <div style="position:absolute;width:102px;height:48px;bottom:58px;left:69px;z-index:12;background:radial-gradient(circle at 35% 30%,#a78bfa,#8b5cf6,#6d28d9);border:2px solid #4c1d95;border-radius:24px;box-shadow:inset 1px 1px 6px rgba(255,255,255,0.2);"></div>
+        <!-- Coil Base -->
+        <div style="position:absolute;width:132px;height:54px;bottom:18px;left:54px;z-index:10;background:radial-gradient(circle at 35% 30%,#a78bfa,#8b5cf6,#6d28d9);border:2px solid #4c1d95;border-radius:27px;box-shadow:inset 1px 1px 6px rgba(255,255,255,0.2);"></div>
+        <!-- Head -->
+        <div style="position:absolute;width:90px;height:72px;top:55px;left:75px;z-index:30;background:radial-gradient(circle at 35% 30%,#a78bfa,#8b5cf6,#4c1d95);border:2px solid #4c1d95;border-radius:45% 55% 45% 45% / 55% 55% 45% 45%;box-shadow:inset 2px 2px 6px rgba(255,255,255,0.2);">
+          <!-- Eyes (Yellow) -->
+          <div style="display:flex;gap:5px;justify-content:center;margin-top:13px;">
+            <div class="s-eye" style="width:26px;height:29px;background:#facc15;border-radius:55% 55% 45% 45%;position:relative;animation:pcobra-blink 4s infinite;box-shadow:0 0 5px #facc15;">
+              <div style="position:absolute;width:18px;height:19px;background:#312e81;border-radius:50%;top:5px;left:4px;">
+                <div style="position:absolute;width:7px;height:7px;background:white;border-radius:50%;top:3px;left:3px;"></div>
+                <div style="position:absolute;width:4px;height:4px;background:white;border-radius:50%;bottom:4px;right:5px;opacity:0.9;"></div>
+              </div>
+            </div>
+            <div class="s-eye" style="width:26px;height:29px;background:#facc15;border-radius:55% 55% 45% 45%;position:relative;animation:pcobra-blink 4s infinite;box-shadow:0 0 5px #facc15;">
+              <div style="position:absolute;width:18px;height:19px;background:#312e81;border-radius:50%;top:5px;left:4px;">
+                <div style="position:absolute;width:7px;height:7px;background:white;border-radius:50%;top:3px;left:3px;"></div>
+                <div style="position:absolute;width:4px;height:4px;background:white;border-radius:50%;bottom:4px;right:5px;opacity:0.9;"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Blush -->
+          <div style="position:absolute;top:42px;width:100%;display:flex;justify-content:space-around;padding:0 9px;">
+            <div style="width:12px;height:7px;background:#c084fc;border-radius:50%;opacity:0.5;"></div>
+            <div style="width:12px;height:7px;background:#c084fc;border-radius:50%;opacity:0.5;"></div>
+          </div>
+          <!-- Snout -->
+          <div style="position:absolute;width:52px;height:18px;background:linear-gradient(145deg, #8b5cf6, #4c1d95);border:2px solid #4c1d95;border-radius:20% 20% 40% 40% / 50% 50% 50% 50%;bottom:0;left:50%;transform:translateX(-50%);z-index:10;box-shadow:inset 1px 1px 2px rgba(255,255,255,0.2);">
+            <div style="display:flex;justify-content:space-between;padding:4px 7px 0 7px;">
+              <div style="width:4px;height:2px;background:#4c1d95;border-radius:50%;transform:rotate(25deg);opacity:0.8;"></div>
+              <div style="width:4px;height:2px;background:#4c1d95;border-radius:50%;transform:rotate(-25deg);opacity:0.8;"></div>
+            </div>
+            <!-- Fangs -->
+            <div style="position:absolute;top:17px;left:9px;width:6px;height:10px;background:#f3f4f6;clip-path:polygon(0 0, 100% 0, 50% 100%);z-index:5;border-top:1px solid #4c1d95;"></div>
+            <div style="position:absolute;top:17px;right:9px;width:6px;height:10px;background:#f3f4f6;clip-path:polygon(0 0, 100% 0, 50% 100%);z-index:5;border-top:1px solid #4c1d95;"></div>
+            <!-- Tongue -->
+            <div style="position:absolute;top:12px;left:50%;margin-left:-2px;width:4px;height:20px;background:#db2777;transform-origin:top;animation:pcobra-tongue 3s infinite;z-index:1;">
+              <div style="position:absolute;bottom:-5px;left:-1px;width:4px;height:6px;background:#db2777;clip-path:polygon(0 0, 100% 0, 50% 100%);transform:rotate(-35deg);transform-origin:top center;"></div>
+              <div style="position:absolute;bottom:-5px;right:-1px;width:4px;height:6px;background:#db2777;clip-path:polygon(0 0, 100% 0, 50% 100%);transform:rotate(35deg);transform-origin:top center;"></div>
+            </div>
+          </div>
+        </div>
+        <!-- 3D highlight spots -->
+        <div style="position:absolute;top:85px;left:75px;width:8px;height:8px;background:radial-gradient(circle,rgba(255,255,255,0.5),transparent);border-radius:50%;filter:blur(1px);"></div>
+        <div style="position:absolute;top:100px;left:155px;width:6px;height:6px;background:radial-gradient(circle,rgba(255,255,255,0.4),transparent);border-radius:50%;filter:blur(1px);"></div>
       </div>
     `,
-    7:` <!-- Void Viper (body rises toward front-facing head) -->
-      <div style="position:relative;width:110px;height:95px;display:inline-block;">
-        <!-- Void aura (dark, absorbing light) -->
-        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:105px;height:90px;background:radial-gradient(circle,rgba(20,10,40,0.22),rgba(10,5,25,0.15),transparent 65%);border-radius:50%;animation:pulse-grow 3.5s ease-in-out infinite;"></div>
-
-        <!-- Body segments - horizontal at tail, rising toward head -->
-        <!-- Tail end (low, horizontal) -->
-        <div style="position:absolute;left:2%;top:59%;width:7px;height:7px;background:radial-gradient(ellipse,rgba(25,15,45,0.97),rgba(15,10,30,0.95));border-radius:50%;box-shadow:0 2px 5px rgba(5,0,20,0.4),inset 0 -1px 3px rgba(60,40,90,0.2);animation:snake-wave 2.1s ease-in-out infinite;">
-          <div style="position:absolute;left:28%;top:26%;width:1.5px;height:1.5px;background:rgba(80,60,120,0.4);border-radius:50%;"></div>
-        </div>
-        <div style="position:absolute;left:7%;top:59%;width:10px;height:9px;background:radial-gradient(ellipse,rgba(30,20,50,0.98),rgba(20,15,40,0.96));border-radius:50%;box-shadow:0 2px 6px rgba(8,5,20,0.35),0 0 3px rgba(80,60,120,0.15);animation:snake-wave 2.1s ease-in-out infinite 0.1s;">
-          <div style="position:absolute;left:28%;top:24%;width:2px;height:2px;background:rgba(100,80,140,0.5);border-radius:50%;box-shadow:0 0 2px rgba(80,60,120,0.4);"></div>
-        </div>
-        <div style="position:absolute;left:15%;top:58%;width:12px;height:10px;background:radial-gradient(ellipse,rgba(35,25,60,1),rgba(28,20,50,0.98));border-radius:50%;box-shadow:0 2px 7px rgba(10,8,25,0.4),0 0 4px rgba(90,70,130,0.18);animation:snake-wave 2.1s ease-in-out infinite 0.2s;">
-          <div style="position:absolute;left:30%;top:26%;width:2px;height:2px;background:rgba(110,90,150,0.55);border-radius:50%;box-shadow:0 0 3px rgba(90,70,130,0.45);"></div>
-        </div>
-
-        <!-- Starting to rise -->
-        <div style="position:absolute;left:25%;top:55%;width:14px;height:12px;background:radial-gradient(ellipse,rgba(40,28,65,1),rgba(32,23,55,0.98));border-radius:50%;box-shadow:0 2px 8px rgba(12,10,28,0.42),0 0 5px rgba(95,75,135,0.2);animation:snake-wave 2.1s ease-in-out infinite 0.3s;">
-          <div style="position:absolute;left:32%;top:28%;width:3px;height:3px;background:rgba(120,95,160,0.6);border-radius:50%;box-shadow:0 0 3px rgba(100,80,140,0.5);"></div>
-          <div style="position:absolute;right:30%;top:46%;width:2px;height:2px;background:rgba(90,70,130,0.45);border-radius:50%;"></div>
-        </div>
-
-        <!-- Mid section (void energy concentration, rising more) -->
-        <div style="position:absolute;left:37%;top:50%;width:16px;height:14px;background:radial-gradient(ellipse,rgba(45,32,70,1),rgba(38,27,62,0.98));border-radius:50%;box-shadow:0 3px 9px rgba(15,12,32,0.45),inset -1px -2px 5px rgba(100,80,140,0.25);animation:snake-wave 2.1s ease-in-out infinite 0.4s;">
-          <div style="position:absolute;left:36%;top:26%;width:4px;height:4px;background:rgba(130,105,170,0.65);border-radius:50%;box-shadow:0 0 4px rgba(110,90,150,0.55);"></div>
-          <div style="position:absolute;right:34%;top:48%;width:3px;height:3px;background:rgba(100,80,140,0.5);border-radius:50%;"></div>
-        </div>
-        <div style="position:absolute;left:50%;top:44%;width:15px;height:13px;background:radial-gradient(ellipse,rgba(40,28,65,1),rgba(32,23,55,0.98));border-radius:50%;box-shadow:0 2px 8px rgba(12,10,28,0.42),0 0 5px rgba(95,75,135,0.2);animation:snake-wave 2.1s ease-in-out infinite 0.5s;">
-          <div style="position:absolute;left:33%;top:30%;width:3px;height:3px;background:rgba(120,95,160,0.6);border-radius:50%;box-shadow:0 0 3px rgba(100,80,140,0.5);"></div>
-        </div>
-
-        <!-- Neck region (rising more toward head) -->
-        <div style="position:absolute;right:26%;top:38%;width:13px;height:12px;background:radial-gradient(ellipse,rgba(38,27,62,1),rgba(30,22,52,0.98));border-radius:50%;box-shadow:0 2px 7px rgba(10,8,25,0.4),0 0 4px rgba(90,70,130,0.18);animation:snake-wave 2.1s ease-in-out infinite 0.6s;">
-          <div style="position:absolute;left:30%;top:27%;width:2px;height:2px;background:rgba(110,90,150,0.55);border-radius:50%;"></div>
-        </div>
-        <div style="position:absolute;right:16%;top:32%;width:12px;height:11px;background:radial-gradient(ellipse,rgba(35,25,58,0.99),rgba(28,20,48,0.97));border-radius:50%;box-shadow:0 2px 6px rgba(8,6,22,0.38);animation:snake-wave 2.1s ease-in-out infinite 0.7s;"></div>
-
-        <!-- Head (flat top, tapers to rounded snout point, matches body color, sinister void viper) -->
-        <div style="position:absolute;right:10%;top:24%;width:20px;height:22px;background:radial-gradient(ellipse at 50% 35%,rgba(45,32,70,1),rgba(36,26,60,0.98));border-radius:15% 15% 50% 50% / 18% 18% 55% 55%;box-shadow:0 2px 5px rgba(10,8,25,0.3),0 0 5px rgba(80,60,120,0.24);animation:snake-wave 2.1s ease-in-out infinite 0.9s;">
-          <!-- Two eyes (same color) -->
-          <div style="position:absolute;left:22%;top:30%;width:5px;height:5px;background:radial-gradient(circle,rgba(255,255,255,1),rgba(240,240,240,0.98));border-radius:50%;border:1px solid rgba(80,80,80,0.8);">
-            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:2px;height:3px;background:rgba(20,20,30,0.95);border-radius:50%;"></div>
-            <div style="position:absolute;top:1px;left:1.5px;width:1.5px;height:1.5px;background:rgba(255,255,255,1);border-radius:50%;"></div>
-          </div>
-          <div style="position:absolute;right:22%;top:30%;width:5px;height:5px;background:radial-gradient(circle,rgba(255,255,255,1),rgba(240,240,240,0.98));border-radius:50%;border:1px solid rgba(80,80,80,0.8);">
-            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:2px;height:3px;background:rgba(20,20,30,0.95);border-radius:50%;"></div>
-            <div style="position:absolute;top:1px;left:1.5px;width:1.5px;height:1.5px;background:rgba(255,255,255,1);border-radius:50%;"></div>
-          </div>
-
-          <!-- Nostrils (near bottom of head) -->
-          <div style="position:absolute;left:42%;bottom:12%;width:1.5px;height:1.5px;background:rgba(25,15,45,0.85);border-radius:50%;"></div>
-          <div style="position:absolute;right:42%;bottom:12%;width:1.5px;height:1.5px;background:rgba(25,15,45,0.85);border-radius:50%;"></div>
-
-          <!-- Tongue (comes from bottom of head, ANIMATED) -->
-          <div style="position:absolute;left:50%;bottom:0%;transform:translateX(-50%);width:2px;height:8px;background:linear-gradient(to bottom,rgba(110,70,150,0.94),rgba(95,60,135,0.90));transform-origin:top center;animation:tongue-flick 2.8s ease-in-out infinite;">
-            <div style="position:absolute;bottom:-1px;left:-1.5px;width:3px;height:2px;background:rgba(105,65,145,0.90);transform:rotate(-30deg);"></div>
-            <div style="position:absolute;bottom:-1px;right:-1.5px;width:3px;height:2px;background:rgba(105,65,145,0.90);transform:rotate(30deg);"></div>
+    10:` <!-- Flaming Cobra -->
+      <div style="position:relative;width:240px;height:280px;display:flex;justify-content:center;align-items:center;animation:fcobra-sway 3s ease-in-out infinite alternate;filter:drop-shadow(0 0 12px rgba(234,88,12,0.7)) drop-shadow(0 0 36px rgba(255,165,0,0.6));">
+        <!-- Flame layers -->
+        <div style="position:absolute;left:50%;top:78px;transform:translateX(-50%) rotate(45deg);width:300px;height:300px;border-radius:0 50% 50% 50%;background:radial-gradient(circle at 75% 75%, #fde047 5%, #fb923c 30%, #c2410c 70%, transparent 90%);box-shadow:0 0 50px #fb923c,inset 0 0 36px #fde047;pointer-events:none;mix-blend-mode:screen;z-index:1;opacity:0.6;animation:fcobra-flicker 2.5s infinite alternate ease-in-out;"></div>
+        <div style="position:absolute;left:50%;top:108px;transform:translateX(-50%) rotate(45deg);width:270px;height:270px;border-radius:0 50% 50% 50%;background:radial-gradient(circle at 75% 75%, #fde047 5%, #fb923c 30%, #c2410c 70%, transparent 90%);box-shadow:0 0 48px #fb923c,inset 0 0 36px #fde047;pointer-events:none;mix-blend-mode:screen;z-index:2;opacity:0.8;animation:fcobra-flicker 2s infinite alternate-reverse ease-in-out 0.3s;"></div>
+        <div style="position:absolute;left:50%;top:138px;transform:translateX(-50%) rotate(45deg);width:240px;height:240px;border-radius:0 50% 50% 50%;background:radial-gradient(circle at 75% 75%, #fff 0%, #fde047 30%, #fb923c 60%, transparent 90%);pointer-events:none;mix-blend-mode:screen;z-index:3;opacity:0.9;animation:fcobra-flicker 1.5s infinite alternate ease-in-out 0.7s;"></div>
+        <!-- Tail tip -->
+        <div style="position:absolute;width:36px;height:24px;bottom:22px;left:35px;background:radial-gradient(circle at 35% 30%,#fb923c,#c2410c);border:2px solid #7c2d12;border-radius:50% 0 0 50%;z-index:5;transform-origin:right center;animation:fcobra-tail 0.6s ease-in-out infinite alternate;box-shadow:inset 1px 1px 3px rgba(255,255,0,0.5),0 0 6px rgba(234,88,12,0.7);"></div>
+        <!-- Cobra Hood -->
+        <div style="position:absolute;width:144px;height:120px;top:60px;left:48px;border-radius:50% 50% 50% 50% / 30% 30% 80% 80%;background:repeating-linear-gradient(to bottom, transparent, transparent 12px, #ea580c 12px, #ea580c 14px), linear-gradient(to bottom, #facc15, #fb923c);border:2px solid #7c2d12;z-index:18;box-shadow:inset 0 0 18px #fb923c;overflow:hidden;">
+          <!-- Hood Markings -->
+          <div style="position:absolute;top:18px;left:50%;transform:translateX(-50%);width:78px;height:42px;">
+            <div style="position:absolute;width:27px;height:27px;background:#fb923c;border:2px solid #fde047;border-radius:50%;top:0;left:3px;box-shadow:0 0 10px #fde047;"></div>
+            <div style="position:absolute;width:27px;height:27px;background:#fb923c;border:2px solid #fde047;border-radius:50%;top:0;right:3px;box-shadow:0 0 10px #fde047;"></div>
+            <div style="position:absolute;top:13px;left:18px;width:36px;height:24px;border:2px solid #fde047;border-top:none;border-radius:0 0 50% 50%;box-shadow:0 3px 10px #fde047;"></div>
           </div>
         </div>
-
-        <!-- Void particles (dark matter wisps) -->
-        <div style="position:absolute;left:16%;top:34%;width:3px;height:3px;background:rgba(80,60,120,0.7);border-radius:50%;box-shadow:0 0 6px rgba(60,40,100,0.6);animation:twinkle 3.2s ease-in-out infinite;"></div>
-        <div style="position:absolute;right:24%;top:14%;width:2px;height:2px;background:rgba(70,50,110,0.65);border-radius:50%;box-shadow:0 0 5px rgba(50,30,90,0.55);animation:twinkle 3.6s ease-in-out infinite 0.9s;"></div>
-        <div style="position:absolute;left:38%;top:32%;width:2px;height:2px;background:rgba(90,70,130,0.6);border-radius:50%;box-shadow:0 0 4px rgba(70,50,110,0.5);animation:twinkle 3.8s ease-in-out infinite 0.4s;"></div>
+        <!-- Neck -->
+        <div style="position:absolute;width:50px;height:96px;bottom:70px;left:95px;z-index:25;background:linear-gradient(145deg, #fb923c, #c2410c);border:2px solid #7c2d12;border-bottom:none;border-top:none;border-radius:6px;box-shadow:inset 1px 1px 3px rgba(255,255,0,0.5),0 0 6px rgba(234,88,12,0.7);">
+          <div style="position:absolute;top:0;left:13px;width:24px;height:100%;background:linear-gradient(to right, #fde047, #fb923c);opacity:0.9;"></div>
+        </div>
+        <!-- Coil Middle -->
+        <div style="position:absolute;width:102px;height:48px;bottom:58px;left:69px;z-index:12;background:radial-gradient(circle at 35% 30%,#fb923c,#c2410c);border:2px solid #7c2d12;border-radius:24px;box-shadow:inset 1px 1px 3px rgba(255,255,0,0.5),0 0 6px rgba(234,88,12,0.7);"></div>
+        <!-- Coil Base -->
+        <div style="position:absolute;width:132px;height:54px;bottom:18px;left:54px;z-index:10;background:radial-gradient(circle at 35% 30%,#fb923c,#c2410c);border:2px solid #7c2d12;border-radius:27px;box-shadow:inset 1px 1px 3px rgba(255,255,0,0.5),0 0 6px rgba(234,88,12,0.7);"></div>
+        <!-- Head -->
+        <div style="position:absolute;width:90px;height:72px;top:55px;left:75px;z-index:30;background:radial-gradient(circle at 35% 30%,#fb923c,#c2410c,#7c2d12);border:2px solid #7c2d12;border-radius:45% 55% 45% 45% / 55% 55% 45% 45%;box-shadow:inset 2px 2px 6px rgba(255,255,0,0.6);">
+          <!-- Eyes (Yellow glowing) -->
+          <div style="display:flex;gap:5px;justify-content:center;margin-top:13px;">
+            <div class="s-eye" style="width:26px;height:29px;background:#fef08a;border-radius:55% 55% 45% 45%;position:relative;animation:fcobra-blink 4s infinite;box-shadow:0 0 10px #fef08a;">
+              <div style="position:absolute;width:18px;height:19px;background:#ea580c;border-radius:50%;top:5px;left:4px;">
+                <div style="position:absolute;width:7px;height:7px;background:white;border-radius:50%;top:3px;left:3px;box-shadow:0 0 3px white;"></div>
+                <div style="position:absolute;width:4px;height:4px;background:white;border-radius:50%;bottom:4px;right:5px;opacity:0.9;"></div>
+              </div>
+            </div>
+            <div class="s-eye" style="width:26px;height:29px;background:#fef08a;border-radius:55% 55% 45% 45%;position:relative;animation:fcobra-blink 4s infinite;box-shadow:0 0 10px #fef08a;">
+              <div style="position:absolute;width:18px;height:19px;background:#ea580c;border-radius:50%;top:5px;left:4px;">
+                <div style="position:absolute;width:7px;height:7px;background:white;border-radius:50%;top:3px;left:3px;box-shadow:0 0 3px white;"></div>
+                <div style="position:absolute;width:4px;height:4px;background:white;border-radius:50%;bottom:4px;right:5px;opacity:0.9;"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Blush -->
+          <div style="position:absolute;top:42px;width:100%;display:flex;justify-content:space-around;padding:0 9px;">
+            <div style="width:12px;height:7px;background:#fed7aa;border-radius:50%;opacity:0.6;box-shadow:0 0 6px #fed7aa;"></div>
+            <div style="width:12px;height:7px;background:#fed7aa;border-radius:50%;opacity:0.6;box-shadow:0 0 6px #fed7aa;"></div>
+          </div>
+          <!-- Snout -->
+          <div style="position:absolute;width:52px;height:18px;background:linear-gradient(145deg, #fb923c, #7c2d12);border:2px solid #7c2d12;border-radius:20% 20% 40% 40% / 50% 50% 50% 50%;bottom:0;left:50%;transform:translateX(-50%);z-index:10;box-shadow:inset 1px 1px 2px rgba(255,255,0,0.3);">
+            <div style="display:flex;justify-content:space-between;padding:4px 7px 0 7px;">
+              <div style="width:4px;height:2px;background:rgba(80,20,0,0.9);border-radius:50%;transform:rotate(25deg);box-shadow:0 0 2px #7c2d12;"></div>
+              <div style="width:4px;height:2px;background:rgba(80,20,0,0.9);border-radius:50%;transform:rotate(-25deg);box-shadow:0 0 2px #7c2d12;"></div>
+            </div>
+            <!-- Fangs -->
+            <div style="position:absolute;top:17px;left:9px;width:6px;height:10px;background:#fffbeb;clip-path:polygon(0 0, 100% 0, 50% 100%);z-index:5;box-shadow:0 0 6px white;"></div>
+            <div style="position:absolute;top:17px;right:9px;width:6px;height:10px;background:#fffbeb;clip-path:polygon(0 0, 100% 0, 50% 100%);z-index:5;box-shadow:0 0 6px white;"></div>
+            <!-- Tongue -->
+            <div style="position:absolute;top:12px;left:50%;margin-left:-2px;width:4px;height:20px;background:#ef4444;transform-origin:top;animation:fcobra-tongue 3s infinite;z-index:1;">
+              <div style="position:absolute;bottom:-5px;left:-1px;width:4px;height:6px;background:#ef4444;clip-path:polygon(0 0, 100% 0, 50% 100%);transform:rotate(-35deg);transform-origin:top center;"></div>
+              <div style="position:absolute;bottom:-5px;right:-1px;width:4px;height:6px;background:#ef4444;clip-path:polygon(0 0, 100% 0, 50% 100%);transform:rotate(35deg);transform-origin:top center;"></div>
+            </div>
+          </div>
+        </div>
       </div>
     `,
-    8:` <!-- Luminous Lizard (side view) -->
-      <div style="position:relative;width:110px;height:100px;display:inline-block;">
-        <!-- Luminous bioluminescent aura -->
-        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:105px;height:95px;background:radial-gradient(circle,rgba(50,255,180,0.24),rgba(30,240,160,0.16),transparent 65%);border-radius:50%;animation:pulse-grow 2.1s ease-in-out infinite;"></div>
-
-        <!-- Body (glowing bioluminescent lizard, side view) -->
-        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:54px;height:24px;background:radial-gradient(ellipse,rgba(40,255,170,1),rgba(30,240,155,0.98));border-radius:50%;box-shadow:0 0 14px rgba(40,255,170,0.55),inset -2px -2px 7px rgba(120,255,200,0.4);"></div>
-
-        <!-- Bioluminescent spots on body -->
-        <div style="position:absolute;left:38%;top:48%;width:5px;height:5px;background:rgba(100,255,200,0.85);border-radius:50%;box-shadow:0 0 8px rgba(80,255,190,0.7);"></div>
-        <div style="position:absolute;left:48%;top:46%;width:6px;height:6px;background:rgba(120,255,210,0.9);border-radius:50%;box-shadow:0 0 9px rgba(100,255,200,0.75);"></div>
-        <div style="position:absolute;right:36%;top:51%;width:5px;height:5px;background:rgba(110,255,205,0.87);border-radius:50%;box-shadow:0 0 8px rgba(90,255,195,0.72);"></div>
-
-        <!-- Head (alert lizard head, side view) -->
-        <div style="position:absolute;right:20%;top:43%;width:20px;height:19px;background:radial-gradient(circle,rgba(40,255,170,1),rgba(30,240,155,0.98));border-radius:50% 35% 50% 45%;transform:rotate(-8deg);animation:head-bob 2.1s ease-in-out infinite;box-shadow:0 0 10px rgba(40,255,170,0.45),inset -1px -1px 4px rgba(120,255,200,0.35);"></div>
-
-        <!-- Large bioluminescent eye (side view) -->
-        <div style="position:absolute;right:22%;top:45%;width:11px;height:12px;background:radial-gradient(circle,rgba(150,255,220,1),rgba(120,250,200,0.95));border-radius:50%;border:2px solid rgba(20,180,120,0.85);position:relative;animation:blink 4.3s infinite;box-shadow:0 0 10px rgba(100,255,200,0.65);">
-          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:3px;height:9px;background:black;border-radius:50%;"></div>
-          <div style="position:absolute;top:2px;left:4px;width:3px;height:4px;background:rgba(255,255,255,0.95);border-radius:50%;"></div>
+    11:` <!-- Ice Cobra -->
+      <div style="position:relative;width:240px;height:280px;display:flex;justify-content:center;align-items:center;animation:icobra-sway 3s ease-in-out infinite alternate;filter:drop-shadow(0 0 12px rgba(56,189,248,0.6)) drop-shadow(0 0 30px rgba(186,230,253,0.4));">
+        <!-- Frost mist -->
+        <div style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);width:210px;height:60px;background:radial-gradient(ellipse at center bottom, rgba(186,230,253,0.8) 0%, transparent 70%);z-index:0;animation:icobra-mist 4s ease-in-out infinite;"></div>
+        <!-- Snowflakes -->
+        <div style="position:absolute;top:100px;left:48%;z-index:1;filter:drop-shadow(0 0 5px white) drop-shadow(0 0 10px rgba(56,189,248,0.6));animation:icobra-snow 4s ease-in-out infinite;"><div style="position:relative;width:3px;height:27px;background:white;border-radius:2px;"><div style="position:absolute;top:0;left:0;width:100%;height:100%;background:white;border-radius:2px;transform:rotate(60deg);"></div><div style="position:absolute;top:0;left:0;width:100%;height:100%;background:white;border-radius:2px;transform:rotate(-60deg);"></div></div></div>
+        <div style="position:absolute;top:165px;left:20%;z-index:1;filter:drop-shadow(0 0 5px white) drop-shadow(0 0 10px rgba(56,189,248,0.6));animation:icobra-snow 3s ease-in-out infinite reverse 0.5s;"><div style="position:relative;width:2px;height:18px;background:white;border-radius:2px;"><div style="position:absolute;top:0;left:0;width:100%;height:100%;background:white;border-radius:2px;transform:rotate(60deg);"></div><div style="position:absolute;top:0;left:0;width:100%;height:100%;background:white;border-radius:2px;transform:rotate(-60deg);"></div></div></div>
+        <div style="position:absolute;top:175px;left:80%;z-index:1;filter:drop-shadow(0 0 5px white) drop-shadow(0 0 10px rgba(56,189,248,0.6));animation:icobra-snow 3.5s ease-in-out infinite 1s;"><div style="position:relative;width:2px;height:21px;background:white;border-radius:2px;"><div style="position:absolute;top:0;left:0;width:100%;height:100%;background:white;border-radius:2px;transform:rotate(60deg);"></div><div style="position:absolute;top:0;left:0;width:100%;height:100%;background:white;border-radius:2px;transform:rotate(-60deg);"></div></div></div>
+        <div style="position:absolute;top:210px;left:72%;z-index:1;filter:drop-shadow(0 0 5px white) drop-shadow(0 0 10px rgba(56,189,248,0.6));animation:icobra-snow 3s ease-in-out infinite 0.8s;"><div style="position:relative;width:2px;height:17px;background:white;border-radius:2px;"><div style="position:absolute;top:0;left:0;width:100%;height:100%;background:white;border-radius:2px;transform:rotate(60deg);"></div><div style="position:absolute;top:0;left:0;width:100%;height:100%;background:white;border-radius:2px;transform:rotate(-60deg);"></div></div></div>
+        <!-- Tail tip -->
+        <div style="position:absolute;width:36px;height:24px;bottom:22px;left:35px;background:radial-gradient(circle at 35% 30%,#bae6fd,#7dd3fc,#0284c7);border:2px solid #0c4a6e;border-radius:50% 0 0 50%;z-index:5;transform-origin:right center;animation:icobra-tail 0.6s ease-in-out infinite alternate;box-shadow:inset 1px 1px 6px rgba(255,255,255,0.4),0 0 5px rgba(186,230,253,0.8);"></div>
+        <!-- Cobra Hood -->
+        <div style="position:absolute;width:144px;height:120px;top:60px;left:48px;border-radius:50% 50% 50% 50% / 30% 30% 80% 80%;background:repeating-linear-gradient(to bottom, transparent, transparent 12px, #0369a1 12px, #0369a1 14px), linear-gradient(to bottom, #bae6fd, #7dd3fc);border:2px solid #0c4a6e;z-index:18;box-shadow:inset 0 0 18px rgba(186,230,253,0.8);overflow:hidden;">
+          <!-- Hood Markings -->
+          <div style="position:absolute;top:18px;left:50%;transform:translateX(-50%);width:78px;height:42px;">
+            <div style="position:absolute;width:27px;height:27px;background:#7dd3fc;border:2px solid #e0f2fe;border-radius:50%;top:0;left:3px;box-shadow:0 0 10px #e0f2fe;"></div>
+            <div style="position:absolute;width:27px;height:27px;background:#7dd3fc;border:2px solid #e0f2fe;border-radius:50%;top:0;right:3px;box-shadow:0 0 10px #e0f2fe;"></div>
+            <div style="position:absolute;top:13px;left:18px;width:36px;height:24px;border:2px solid #e0f2fe;border-top:none;border-radius:0 0 50% 50%;box-shadow:0 3px 10px #e0f2fe;"></div>
+          </div>
         </div>
-
-        <!-- Snout -->
-        <div style="position:absolute;right:16%;top:47%;width:9px;height:7px;background:rgba(35,245,165,0.96);border-radius:50% 70% 50% 40%;box-shadow:0 0 6px rgba(40,255,170,0.4);"></div>
-
-        <!-- Tail (long, glowing, extends left) -->
-        <div style="position:absolute;left:16%;top:52%;width:34px;height:15px;background:linear-gradient(to left,rgba(35,245,165,0.96),rgba(30,230,150,0.92));border-radius:50%;transform:rotate(6deg);box-shadow:0 0 8px rgba(40,255,170,0.35);"></div>
-        <div style="position:absolute;left:14%;top:58%;width:22px;height:11px;background:linear-gradient(to left,rgba(30,230,150,0.92),rgba(25,215,135,0.88));border-radius:50%;transform:rotate(-12deg);box-shadow:0 0 7px rgba(35,245,165,0.3);"></div>
-
-        <!-- Legs (side view, glowing) -->
-        <div style="position:absolute;left:38%;top:60%;width:11px;height:7px;background:rgba(35,245,165,0.96);border-radius:50%;transform:rotate(38deg);box-shadow:0 0 6px rgba(40,255,170,0.4);"></div>
-        <div style="position:absolute;left:54%;top:62%;width:11px;height:7px;background:rgba(35,245,165,0.96);border-radius:50%;transform:rotate(-38deg);box-shadow:0 0 6px rgba(40,255,170,0.4);"></div>
-        <div style="position:absolute;right:30%;top:60%;width:10px;height:6px;background:rgba(35,245,165,0.96);border-radius:50%;transform:rotate(42deg);box-shadow:0 0 6px rgba(40,255,170,0.4);"></div>
-        <div style="position:absolute;right:24%;top:56%;width:10px;height:6px;background:rgba(35,245,165,0.96);border-radius:50%;transform:rotate(-32deg);box-shadow:0 0 6px rgba(40,255,170,0.4);"></div>
-
-        <!-- Toe pads (glowing) -->
-        <div style="position:absolute;left:46%;top:65%;width:4px;height:4px;background:rgba(120,255,210,0.9);border-radius:50%;box-shadow:0 0 5px rgba(100,255,200,0.7);"></div>
-        <div style="position:absolute;left:63%;top:67%;width:4px;height:4px;background:rgba(120,255,210,0.9);border-radius:50%;box-shadow:0 0 5px rgba(100,255,200,0.7);"></div>
-
-        <!-- Luminous bioluminescent sparkles -->
-        <div style="position:absolute;left:18%;top:34%;width:4px;height:4px;background:rgba(150,255,220,1);border-radius:50%;box-shadow:0 0 11px rgba(120,255,210,0.95);animation:twinkle 1.9s ease-in-out infinite;"></div>
-        <div style="position:absolute;right:20%;top:36%;width:3px;height:3px;background:rgba(140,255,215,0.98);border-radius:50%;box-shadow:0 0 9px rgba(110,255,205,0.9);animation:twinkle 2.3s ease-in-out infinite 0.6s;"></div>
-        <div style="position:absolute;left:60%;top:38%;width:3px;height:3px;background:rgba(130,255,210,0.95);border-radius:50%;box-shadow:0 0 8px rgba(100,255,200,0.85);animation:twinkle 2.5s ease-in-out infinite 0.3s;"></div>
-      </div>
-    `,
-    9:` <!-- Aether Anole (side view) -->
-      <div style="position:relative;width:110px;height:100px;display:inline-block;">
-        <!-- Ethereal aether aura -->
-        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:105px;height:95px;background:radial-gradient(circle,rgba(255,200,240,0.2),rgba(255,220,248,0.14),transparent 65%);border-radius:50%;animation:pulse-grow 2.7s ease-in-out infinite;"></div>
-
-        <!-- Body (slender anole body, side view, translucent ethereal) -->
-        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:48px;height:20px;background:radial-gradient(ellipse,rgba(255,190,230,0.96),rgba(255,205,240,0.93));border-radius:50%;box-shadow:0 3px 10px rgba(255,190,230,0.28),inset -1px -2px 6px rgba(255,235,250,0.45);"></div>
-
-        <!-- Ethereal shimmer on body -->
-        <div style="position:absolute;left:42%;top:48%;width:4px;height:4px;background:rgba(255,240,252,0.75);border-radius:50%;box-shadow:0 0 5px rgba(255,230,248,0.6);"></div>
-        <div style="position:absolute;right:38%;top:51%;width:4px;height:4px;background:rgba(255,235,250,0.72);border-radius:50%;box-shadow:0 0 5px rgba(255,225,245,0.58);"></div>
-
-        <!-- Head (delicate anole head, side view) -->
-        <div style="position:absolute;right:22%;top:44%;width:18px;height:16px;background:radial-gradient(circle,rgba(255,190,230,0.98),rgba(255,205,240,0.95));border-radius:48% 38% 50% 48%;transform:rotate(-6deg);animation:head-bob 2.4s ease-in-out infinite;box-shadow:0 2px 8px rgba(255,190,230,0.25),inset -1px -1px 3px rgba(255,235,250,0.4);"></div>
-
-        <!-- Delicate eye (side view) -->
-        <div style="position:absolute;right:24%;top:46%;width:9px;height:10px;background:radial-gradient(circle,rgba(255,235,248,1),rgba(240,210,240,0.95));border-radius:50%;border:1.5px solid rgba(210,160,210,0.75);position:relative;animation:blink 5.1s infinite;box-shadow:0 0 6px rgba(255,230,248,0.5);">
-          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:3px;height:6px;background:black;border-radius:50%;"></div>
-          <div style="position:absolute;top:2px;left:3px;width:2px;height:2.5px;background:white;border-radius:50%;"></div>
+        <!-- Neck -->
+        <div style="position:absolute;width:50px;height:96px;bottom:70px;left:95px;z-index:25;background:linear-gradient(145deg, #7dd3fc, #0284c7);border:2px solid #0c4a6e;border-bottom:none;border-top:none;border-radius:6px;box-shadow:inset 1px 1px 6px rgba(255,255,255,0.4),0 0 5px rgba(186,230,253,0.8);">
+          <div style="position:absolute;top:0;left:13px;width:24px;height:100%;background:linear-gradient(to right, #e0f2fe, #7dd3fc);opacity:0.9;"></div>
         </div>
-
-        <!-- Snout (pointed anole snout) -->
-        <div style="position:absolute;right:18%;top:47%;width:8px;height:6px;background:rgba(255,200,238,0.94);border-radius:50% 65% 50% 42%;box-shadow:0 1px 4px rgba(255,190,230,0.2);"></div>
-
-        <!-- Dewlap (distinctive anole throat fan, extended in display) -->
-        <div style="position:absolute;right:22%;top:56%;width:16px;height:18px;background:radial-gradient(ellipse at 50% 0%,rgba(255,160,220,0.88),rgba(255,180,230,0.78),rgba(255,200,240,0.65));border-radius:45% 45% 50% 50%;box-shadow:0 3px 8px rgba(255,160,220,0.35),inset 0 -2px 5px rgba(255,210,245,0.4);transform:rotate(-3deg);">
-          <!-- Dewlap pattern (ethereal vein-like details) -->
-          <div style="position:absolute;left:50%;top:25%;transform:translateX(-50%);width:1px;height:8px;background:rgba(240,130,200,0.4);"></div>
-          <div style="position:absolute;left:35%;top:30%;width:1px;height:6px;background:rgba(240,130,200,0.35);transform:rotate(-20deg);"></div>
-          <div style="position:absolute;right:35%;top:30%;width:1px;height:6px;background:rgba(240,130,200,0.35);transform:rotate(20deg);"></div>
+        <!-- Coil Middle -->
+        <div style="position:absolute;width:102px;height:48px;bottom:58px;left:69px;z-index:12;background:radial-gradient(circle at 35% 30%,#bae6fd,#7dd3fc,#0284c7);border:2px solid #0c4a6e;border-radius:24px;box-shadow:inset 1px 1px 6px rgba(255,255,255,0.4),0 0 5px rgba(186,230,253,0.8);"></div>
+        <!-- Coil Base -->
+        <div style="position:absolute;width:132px;height:54px;bottom:18px;left:54px;z-index:10;background:radial-gradient(circle at 35% 30%,#bae6fd,#7dd3fc,#0284c7);border:2px solid #0c4a6e;border-radius:27px;box-shadow:inset 1px 1px 6px rgba(255,255,255,0.4),0 0 5px rgba(186,230,253,0.8);"></div>
+        <!-- Head -->
+        <div style="position:absolute;width:90px;height:72px;top:55px;left:75px;z-index:30;background:radial-gradient(circle at 35% 30%,#bae6fd,#7dd3fc,#0c4a6e);border:2px solid #0c4a6e;border-radius:45% 55% 45% 45% / 55% 55% 45% 45%;box-shadow:inset 2px 2px 6px rgba(255,255,255,0.5);">
+          <!-- Eyes (Icy pale) -->
+          <div style="display:flex;gap:5px;justify-content:center;margin-top:13px;">
+            <div class="s-eye" style="width:26px;height:29px;background:#e0f2fe;border-radius:55% 55% 45% 45%;position:relative;animation:icobra-blink 4s infinite;box-shadow:0 0 10px #e0f2fe;">
+              <div style="position:absolute;width:18px;height:19px;background:#1e3a8a;border-radius:50%;top:5px;left:4px;">
+                <div style="position:absolute;width:7px;height:7px;background:white;border-radius:50%;top:3px;left:3px;box-shadow:0 0 3px white;"></div>
+                <div style="position:absolute;width:4px;height:4px;background:white;border-radius:50%;bottom:4px;right:5px;opacity:0.9;"></div>
+              </div>
+            </div>
+            <div class="s-eye" style="width:26px;height:29px;background:#e0f2fe;border-radius:55% 55% 45% 45%;position:relative;animation:icobra-blink 4s infinite;box-shadow:0 0 10px #e0f2fe;">
+              <div style="position:absolute;width:18px;height:19px;background:#1e3a8a;border-radius:50%;top:5px;left:4px;">
+                <div style="position:absolute;width:7px;height:7px;background:white;border-radius:50%;top:3px;left:3px;box-shadow:0 0 3px white;"></div>
+                <div style="position:absolute;width:4px;height:4px;background:white;border-radius:50%;bottom:4px;right:5px;opacity:0.9;"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Blush -->
+          <div style="position:absolute;top:42px;width:100%;display:flex;justify-content:space-around;padding:0 9px;">
+            <div style="width:12px;height:7px;background:#bae6fd;border-radius:50%;opacity:0.5;box-shadow:0 0 5px #bae6fd;"></div>
+            <div style="width:12px;height:7px;background:#bae6fd;border-radius:50%;opacity:0.5;box-shadow:0 0 5px #bae6fd;"></div>
+          </div>
+          <!-- Snout -->
+          <div style="position:absolute;width:52px;height:18px;background:linear-gradient(145deg, #7dd3fc, #0c4a6e);border:2px solid #0c4a6e;border-radius:20% 20% 40% 40% / 50% 50% 50% 50%;bottom:0;left:50%;transform:translateX(-50%);z-index:10;box-shadow:inset 1px 1px 2px rgba(255,255,255,0.3);">
+            <div style="display:flex;justify-content:space-between;padding:4px 7px 0 7px;">
+              <div style="width:4px;height:2px;background:#0c4a6e;border-radius:50%;transform:rotate(25deg);opacity:0.8;"></div>
+              <div style="width:4px;height:2px;background:#0c4a6e;border-radius:50%;transform:rotate(-25deg);opacity:0.8;"></div>
+            </div>
+            <!-- Fangs -->
+            <div style="position:absolute;top:17px;left:9px;width:6px;height:10px;background:#f0f9ff;clip-path:polygon(0 0, 100% 0, 50% 100%);z-index:5;box-shadow:0 0 5px white;"></div>
+            <div style="position:absolute;top:17px;right:9px;width:6px;height:10px;background:#f0f9ff;clip-path:polygon(0 0, 100% 0, 50% 100%);z-index:5;box-shadow:0 0 5px white;"></div>
+            <!-- Ice blue tongue -->
+            <div style="position:absolute;top:12px;left:50%;margin-left:-2px;width:4px;height:20px;background:#60a5fa;transform-origin:top;animation:icobra-tongue 3s infinite;z-index:1;">
+              <div style="position:absolute;bottom:-5px;left:-1px;width:4px;height:6px;background:#60a5fa;clip-path:polygon(0 0, 100% 0, 50% 100%);transform:rotate(-35deg);transform-origin:top center;"></div>
+              <div style="position:absolute;bottom:-5px;right:-1px;width:4px;height:6px;background:#60a5fa;clip-path:polygon(0 0, 100% 0, 50% 100%);transform:rotate(35deg);transform-origin:top center;"></div>
+            </div>
+          </div>
         </div>
-
-        <!-- Tail (long slender anole tail, extends left) -->
-        <div style="position:absolute;left:18%;top:51%;width:32px;height:13px;background:linear-gradient(to left,rgba(255,200,238,0.94),rgba(255,190,235,0.9));border-radius:50%;transform:rotate(5deg);box-shadow:0 2px 6px rgba(255,190,230,0.2);"></div>
-        <div style="position:absolute;left:16%;top:57%;width:20px;height:9px;background:linear-gradient(to left,rgba(255,190,235,0.9),rgba(255,180,230,0.86));border-radius:50%;transform:rotate(-10deg);box-shadow:0 2px 5px rgba(255,185,228,0.18);"></div>
-
-        <!-- Legs (delicate anole legs, side view) -->
-        <div style="position:absolute;left:40%;top:58%;width:10px;height:6px;background:rgba(255,200,238,0.94);border-radius:50%;transform:rotate(36deg);box-shadow:0 1px 3px rgba(255,190,230,0.25);"></div>
-        <div style="position:absolute;left:54%;top:60%;width:10px;height:6px;background:rgba(255,200,238,0.94);border-radius:50%;transform:rotate(-36deg);box-shadow:0 1px 3px rgba(255,190,230,0.25);"></div>
-        <div style="position:absolute;right:32%;top:58%;width:9px;height:5px;background:rgba(255,200,238,0.94);border-radius:50%;transform:rotate(40deg);box-shadow:0 1px 3px rgba(255,190,230,0.25);"></div>
-        <div style="position:absolute;right:26%;top:54%;width:9px;height:5px;background:rgba(255,200,238,0.94);border-radius:50%;transform:rotate(-30deg);box-shadow:0 1px 3px rgba(255,190,230,0.25);"></div>
-
-        <!-- Delicate toe pads -->
-        <div style="position:absolute;left:47%;top:62%;width:3px;height:3px;background:rgba(255,220,245,0.9);border-radius:50%;"></div>
-        <div style="position:absolute;left:62%;top:64%;width:3px;height:3px;background:rgba(255,220,245,0.9);border-radius:50%;"></div>
-
-        <!-- Ethereal sparkles -->
-        <div style="position:absolute;left:20%;top:34%;width:3px;height:3px;background:rgba(255,245,252,1);border-radius:50%;box-shadow:0 0 8px rgba(255,235,250,0.9);animation:twinkle 2.6s ease-in-out infinite;"></div>
-        <div style="position:absolute;right:18%;top:36%;width:3px;height:3px;background:rgba(255,240,250,0.98);border-radius:50%;box-shadow:0 0 7px rgba(255,230,248,0.85);animation:twinkle 2.9s ease-in-out infinite 0.7s;"></div>
-        <div style="position:absolute;left:56%;top:38%;width:2px;height:2px;background:rgba(255,235,248,0.95);border-radius:50%;box-shadow:0 0 6px rgba(255,225,245,0.8);animation:twinkle 3.1s ease-in-out infinite 0.4s;"></div>
       </div>
     `
   };
