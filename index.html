@@ -391,6 +391,14 @@
     @keyframes peacock-fan{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.05)}}
     @keyframes flamingo-stand{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
 
+    /* Reptile animations (gecko, etc) */
+    @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
+    @keyframes snake-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes gecko-eye-look{0%,45%,100%{transform:translateX(0)}50%,95%{transform:translateX(5px)}}
+    @keyframes gecko-tongue-extend{0%,88%,100%{clip-path:inset(100% 0 0 0)}90%,96%{clip-path:inset(0 0 0 0)}}
+    @keyframes gecko-tongue-lick{0%,88%,100%{transform:rotate(0deg)}91%{transform:rotate(-8deg)}93%{transform:rotate(8deg)}95%{transform:rotate(-5deg)}97%{transform:rotate(0deg)}}
+    @keyframes gecko-leg-burst{0%,70%,100%{transform:rotate(var(--leg-rest))}72%,74%,76%,78%{transform:rotate(var(--leg-run1))}73%,75%,77%,79%{transform:rotate(var(--leg-run2))}}
+
     /* Egg animations */
     @keyframes egg-hatch-wiggle{0%,100%{transform:rotate(0deg) translateX(0)}10%{transform:rotate(-8deg) translateX(-2px)}30%{transform:rotate(8deg) translateX(2px)}50%{transform:rotate(-6deg) translateX(-1px)}70%{transform:rotate(6deg) translateX(1px)}90%{transform:rotate(-3deg) translateX(-0.5px)}}
     @keyframes egg-wiggle{0%,100%{transform:rotate(0deg) translateX(0)}20%{transform:rotate(-5deg) translateX(-1px)}60%{transform:rotate(5deg) translateX(1px)}}
@@ -690,7 +698,7 @@ const CREATURE_CATEGORIES={
     teenVariants:['🦎','🦎','🐢','🐍','🐢','🐍','🐸','🐸','🦎','🐢'],  // Young reptiles (for reference)
     teenNames:['Scaleling I','Scaleling II','Scaleling III','Scaleling IV','Scaleling V','Scaleling VI','Scaleling VII','Scaleling VIII','Scaleling IX','Scaleling X'],
     adultVariants:['🦎','🐊','🐢','🐍','🦕','🦖','🐉','🦕','🦎','🐢'],  // Adult reptiles - full body
-    adultNames:['Gilded Gecko','Solar Skink','Abyssal Adder','Glacial Gator','Prism Python','Rainbow Serpent','Celestial Cobra','Void Viper','Luminous Lizard','Aether Anole']
+    adultNames:['Gecko','Solar Skink','Abyssal Adder','Glacial Gator','Prism Python','Rainbow Serpent','Celestial Cobra','Void Viper','Luminous Lizard','Aether Anole']
   },
   dragons:{
     eggType:'speckled',
@@ -767,8 +775,12 @@ const CREATURE_CATEGORIES={
 // Array of category keys for random selection
 const CATEGORY_KEYS=Object.keys(CREATURE_CATEGORIES);
 
-// Initialize state with random creature category for first egg
-const initialCategory=CATEGORY_KEYS[Math.floor(Math.random()*CATEGORY_KEYS.length)];
+// Categories with fully designed CSS creatures (egg → adult)
+// Other categories only have emoji fallbacks - don't let users get those
+const FULLY_DESIGNED_CATEGORIES=['birds','reptiles','mammals'];
+
+// Initialize state with random creature category for first egg (only fully designed ones)
+const initialCategory=FULLY_DESIGNED_CATEGORIES[Math.floor(Math.random()*FULLY_DESIGNED_CATEGORIES.length)];
 let S=JSON.parse(localStorage.getItem('sb')||'null')||{xp:0,streak:0,lastLogin:null,todayCount:0,todayDate:null,milestones:[],verses:STARTER.map((v,i)=>({id:i+1,type:v.t,ref:v.r,text:v.x,tags:v.g,mastery:0,modeUsage:{predict:0,blanks:0,jumble:0,first:0,recall:0},lastPracticed:null})),nextId:STARTER.length+1,careMode:'relaxed',buddyStage:'egg',growthXP:0,eggXP:0,creatureCategory:initialCategory,creatureVariant:null,happiness:100,health:100,lastFed:null,lastHappinessUpdate:null,lastHealthUpdate:null,buddyName:null,hatchDate:null,inventory:[],equipped:{hat:null,eyes:null,held:null,back:null,effect:null},foodInventory:[],graduatedBuddies:[]};
 
 // Ensure new properties exist for existing saves
@@ -815,8 +827,8 @@ if(S.eggXP===undefined)S.eggXP=S.buddyStage==='egg'?0:0; // Fresh start with 0 f
 if(S.hatchDate===undefined)S.hatchDate=S.buddyStage!=='egg'?new Date().toISOString():null; // Migrate existing non-egg buddies
 // Migrate to new creature category system
 if(S.creatureCategory===undefined||S.creatureCategory===null){
-  // Assign random category (eggs and hatched buddies)
-  S.creatureCategory=CATEGORY_KEYS[Math.floor(Math.random()*CATEGORY_KEYS.length)];
+  // Assign random category from fully designed ones only
+  S.creatureCategory=FULLY_DESIGNED_CATEGORIES[Math.floor(Math.random()*FULLY_DESIGNED_CATEGORIES.length)];
 
   // For existing hatched buddies, also assign variant
   if(S.buddyStage!=='egg'){
@@ -825,6 +837,12 @@ if(S.creatureCategory===undefined||S.creatureCategory===null){
     // Eggs get variant assigned at hatching
     S.creatureVariant=null;
   }
+}
+// Migrate users stuck with incomplete category designs to fully designed ones
+if(!FULLY_DESIGNED_CATEGORIES.includes(S.creatureCategory)){
+  S.creatureCategory=FULLY_DESIGNED_CATEGORIES[Math.floor(Math.random()*FULLY_DESIGNED_CATEGORIES.length)];
+  console.log('Migrated to fully designed category:',S.creatureCategory);
+  localStorage.setItem('sb',JSON.stringify(S));
 }
 if(S.snacksFed!==undefined){
   S.growthXP=Math.min(S.snacksFed*25,99); // Migrate old saves, cap at 99 to prevent overflow
@@ -6216,35 +6234,94 @@ function renderAdultReptile(variantIndex){
   const variant=variantIndex||0;
 
   const reptileDesigns={
-    0:` <!-- Gilded Gecko (side view) -->
-      <div style="position:relative;width:110px;height:100px;display:inline-block;">
-        <!-- Golden sun aura -->
-        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:105px;height:95px;background:radial-gradient(circle,rgba(255,215,0,0.2),rgba(255,200,50,0.15),transparent 65%);border-radius:50%;animation:pulse-grow 2.5s ease-in-out infinite;"></div>
-        <!-- Body (elongated golden gecko) -->
-        <div style="position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);width:50px;height:22px;background:radial-gradient(ellipse,rgba(255,215,0,1),rgba(255,200,50,0.98));border-radius:50%;box-shadow:0 3px 12px rgba(255,215,0,0.4),inset -2px -2px 8px rgba(255,240,150,0.5);"></div>
-        <!-- Head (triangular gecko head, side view) -->
-        <div style="position:absolute;right:22%;top:42%;width:18px;height:18px;background:radial-gradient(circle,rgba(255,215,0,1),rgba(255,190,50,0.98));border-radius:50% 30% 50% 40%;transform:rotate(-10deg);animation:head-bob 2s ease-in-out infinite;box-shadow:inset -1px -1px 4px rgba(255,240,150,0.4);"></div>
-        <!-- Large gecko eye (side view) -->
-        <div style="position:absolute;right:24%;top:44%;width:10px;height:11px;background:radial-gradient(circle,rgba(255,200,0,1),rgba(200,150,0,0.9));border-radius:50%;border:2px solid rgba(100,80,0,0.8);position:relative;animation:blink 4s infinite;box-shadow:0 0 6px rgba(255,215,0,0.5);">
-          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:2px;height:8px;background:black;border-radius:50%;"></div>
-          <div style="position:absolute;top:2px;left:4px;width:2px;height:3px;background:rgba(255,255,255,0.9);border-radius:50%;"></div>
+    // ===== GECKO - Reptiles Variant 0 =====
+    // Source: gecko_buddy.html (scaled 0.7x to fit 240x280 canvas)
+    0:`
+      <div style="position:relative;width:240px;height:280px;">
+        <!-- Tail (SVG curved) - right side, behind body -->
+        <div style="position:absolute;right:5px;top:75px;width:112px;height:91px;z-index:5;transform-origin:left center;animation:tail-sway 3s ease-in-out infinite;">
+          <svg viewBox="0 0 160 130" style="width:100%;height:100%;overflow:visible;">
+            <path d="M 0,100 Q 70,100 130,30 Q 140,15 130,5 Q 100,30 0,60 Z" fill="#8cc63f" stroke="#3f6212" stroke-width="4" stroke-linejoin="round"/>
+          </svg>
+          <div style="position:absolute;top:42px;left:28px;width:7px;height:5px;background:#65a30d;border-radius:50%;opacity:0.7;"></div>
+          <div style="position:absolute;top:28px;left:56px;width:5px;height:4px;background:#65a30d;border-radius:50%;opacity:0.7;"></div>
         </div>
-        <!-- Snout -->
-        <div style="position:absolute;right:18%;top:46%;width:8px;height:6px;background:rgba(255,200,50,0.95);border-radius:50% 80% 50% 30%;"></div>
-        <!-- Long curled tail -->
-        <div style="position:absolute;left:18%;top:50%;width:32px;height:14px;background:linear-gradient(to left,rgba(255,215,0,0.95),rgba(255,180,0,0.9));border-radius:50%;transform:rotate(8deg);"></div>
-        <div style="position:absolute;left:16%;top:56%;width:20px;height:10px;background:linear-gradient(to left,rgba(255,180,0,0.9),rgba(255,150,0,0.85));border-radius:50%;transform:rotate(-15deg);"></div>
-        <!-- Legs (splayed gecko style) -->
-        <div style="position:absolute;left:40%;top:56%;width:12px;height:6px;background:rgba(255,200,50,0.95);border-radius:50%;transform:rotate(35deg);"></div>
-        <div style="position:absolute;left:56%;top:58%;width:12px;height:6px;background:rgba(255,200,50,0.95);border-radius:50%;transform:rotate(-35deg);"></div>
-        <div style="position:absolute;right:32%;top:56%;width:10px;height:5px;background:rgba(255,200,50,0.95);border-radius:50%;transform:rotate(40deg);"></div>
-        <div style="position:absolute;right:26%;top:52%;width:10px;height:5px;background:rgba(255,200,50,0.95);border-radius:50%;transform:rotate(-30deg);"></div>
-        <!-- Toe pads -->
-        <div style="position:absolute;left:48%;top:60%;width:4px;height:4px;background:rgba(255,180,0,0.9);border-radius:50%;"></div>
-        <div style="position:absolute;left:66%;top:62%;width:4px;height:4px;background:rgba(255,180,0,0.9);border-radius:50%;"></div>
-        <!-- Golden sparkles -->
-        <div style="position:absolute;left:20%;top:35%;width:4px;height:4px;background:rgba(255,240,150,1);border-radius:50%;box-shadow:0 0 8px rgba(255,215,0,0.9);animation:twinkle 2s ease-in-out infinite;"></div>
-        <div style="position:absolute;right:22%;top:38%;width:3px;height:3px;background:rgba(255,230,120,0.95);border-radius:50%;box-shadow:0 0 6px rgba(255,200,80,0.8);animation:twinkle 2.3s ease-in-out infinite 0.5s;"></div>
+
+        <!-- Back right leg (behind body, darker) -->
+        <div style="position:absolute;top:135px;left:154px;width:21px;height:32px;background:#7ab332;border:3px solid #3f6212;border-radius:10px;z-index:10;transform-origin:top center;--leg-rest:10deg;--leg-run1:-25deg;--leg-run2:40deg;animation:gecko-leg-burst 5s ease-in-out infinite;">
+          <div style="position:absolute;bottom:-4px;left:-2px;width:26px;height:9px;display:flex;gap:1px;">
+            <div style="width:7px;height:7px;background:#7ab332;border:2px solid #3f6212;border-radius:50%;"></div>
+            <div style="width:7px;height:7px;background:#7ab332;border:2px solid #3f6212;border-radius:50%;"></div>
+            <div style="width:7px;height:7px;background:#7ab332;border:2px solid #3f6212;border-radius:50%;"></div>
+          </div>
+        </div>
+
+        <!-- Body -->
+        <div style="position:absolute;top:107px;left:70px;width:98px;height:60px;background:#8cc63f;border:3px solid #3f6212;border-radius:50% 50% 45% 45% / 60% 60% 40% 40%;z-index:20;animation:breathe 3s infinite;">
+          <div style="position:absolute;bottom:3px;left:14px;width:70px;height:24px;background:#fbfde3;border-radius:50%;opacity:0.9;"></div>
+          <div style="position:absolute;top:10px;left:21px;width:8px;height:7px;background:#65a30d;border-radius:50%;opacity:0.7;"></div>
+          <div style="position:absolute;top:18px;left:42px;width:7px;height:5px;background:#65a30d;border-radius:50%;opacity:0.7;"></div>
+          <div style="position:absolute;top:7px;left:63px;width:5px;height:4px;background:#65a30d;border-radius:50%;opacity:0.7;"></div>
+        </div>
+
+        <!-- Head (connected to body - overlaps at bottom) -->
+        <div style="position:absolute;top:55px;left:24px;width:112px;height:80px;background:#8cc63f;border:3px solid #3f6212;border-radius:45% 55% 45% 45% / 55% 55% 45% 45%;z-index:30;transform:rotate(-10deg);animation:breathe 3s infinite;">
+          <div style="position:absolute;bottom:3px;left:14px;width:84px;height:28px;background:#fbfde3;border-radius:50%;"></div>
+
+          <!-- Right eye -->
+          <div style="position:absolute;top:7px;right:-4px;width:40px;height:40px;transform:rotate(8deg);z-index:35;">
+            <div style="width:100%;height:100%;background:#ea580c;border:3px solid #3f2e18;border-radius:50%;overflow:hidden;position:relative;animation:snake-blink 4s infinite;">
+              <div style="position:absolute;width:24px;height:24px;background:#2a1a10;border-radius:50%;top:8px;left:7px;animation:gecko-eye-look 6s ease-in-out infinite;">
+                <div style="position:absolute;width:7px;height:7px;background:white;border-radius:50%;top:3px;left:3px;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Left eye -->
+          <div style="position:absolute;top:7px;left:-4px;width:40px;height:40px;transform:rotate(-8deg);z-index:35;">
+            <div style="width:100%;height:100%;background:#ea580c;border:3px solid #3f2e18;border-radius:50%;overflow:hidden;position:relative;animation:snake-blink 4s infinite 0.1s;">
+              <div style="position:absolute;width:24px;height:24px;background:#2a1a10;border-radius:50%;top:8px;left:7px;animation:gecko-eye-look 6s ease-in-out infinite;">
+                <div style="position:absolute;width:7px;height:7px;background:white;border-radius:50%;top:3px;left:3px;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tongue (curved SVG from mouth to left eye) -->
+          <div style="position:absolute;bottom:16px;left:-12px;width:70px;height:55px;z-index:36;transform-origin:bottom right;animation:gecko-tongue-lick 10s ease-in-out infinite;">
+            <svg viewBox="0 0 70 55" style="width:100%;height:100%;overflow:visible;animation:gecko-tongue-extend 10s ease-in-out infinite;">
+              <path d="M 45,55 C 35,55 30,50 22,40 C 14,30 8,22 8,14 C 8,6 16,2 26,6 C 36,10 38,22 30,32 C 40,42 55,55 55,55 Z" fill="#ff6b81" stroke="#e84057" stroke-width="1"/>
+              <ellipse cx="17" cy="10" rx="18" ry="12" fill="#ff6b81"/>
+            </svg>
+          </div>
+
+          <!-- Nostrils -->
+          <div style="position:absolute;top:45px;left:38px;width:3px;height:2px;background:#3f6212;border-radius:50%;"></div>
+          <div style="position:absolute;top:45px;left:70px;width:3px;height:2px;background:#3f6212;border-radius:50%;"></div>
+
+          <!-- Mouth line -->
+          <div style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%) rotate(-2deg);width:49px;height:17px;border-bottom:3px solid #3f6212;border-radius:50%;"></div>
+
+          <!-- Head spot -->
+          <div style="position:absolute;top:7px;left:52px;width:5px;height:4px;background:#65a30d;border-radius:50%;opacity:0.7;"></div>
+        </div>
+
+        <!-- Front left leg -->
+        <div style="position:absolute;top:145px;left:77px;width:21px;height:32px;background:#8cc63f;border:3px solid #3f6212;border-radius:10px;z-index:25;transform-origin:top center;--leg-rest:15deg;--leg-run1:-25deg;--leg-run2:45deg;animation:gecko-leg-burst 5s ease-in-out infinite;">
+          <div style="position:absolute;bottom:-4px;left:-2px;width:26px;height:9px;display:flex;gap:1px;">
+            <div style="width:7px;height:7px;background:#8cc63f;border:2px solid #3f6212;border-radius:50%;"></div>
+            <div style="width:7px;height:7px;background:#8cc63f;border:2px solid #3f6212;border-radius:50%;"></div>
+            <div style="width:7px;height:7px;background:#8cc63f;border:2px solid #3f6212;border-radius:50%;"></div>
+          </div>
+        </div>
+
+        <!-- Back left leg -->
+        <div style="position:absolute;top:145px;left:133px;width:21px;height:32px;background:#8cc63f;border:3px solid #3f6212;border-radius:10px;z-index:25;transform-origin:top center;--leg-rest:-10deg;--leg-run1:35deg;--leg-run2:-35deg;animation:gecko-leg-burst 5s ease-in-out infinite;">
+          <div style="position:absolute;bottom:-4px;left:-2px;width:26px;height:9px;display:flex;gap:1px;">
+            <div style="width:7px;height:7px;background:#8cc63f;border:2px solid #3f6212;border-radius:50%;"></div>
+            <div style="width:7px;height:7px;background:#8cc63f;border:2px solid #3f6212;border-radius:50%;"></div>
+            <div style="width:7px;height:7px;background:#8cc63f;border:2px solid #3f6212;border-radius:50%;"></div>
+          </div>
+        </div>
       </div>
     `,
     1:` <!-- Solar Skink (side view) -->
@@ -7766,7 +7843,7 @@ function resetAfterConsequence(){
   S.buddyStage='egg';
   S.growthXP=0;
   S.eggXP=0;
-  S.creatureCategory=CATEGORY_KEYS[Math.floor(Math.random()*CATEGORY_KEYS.length)];
+  S.creatureCategory=FULLY_DESIGNED_CATEGORIES[Math.floor(Math.random()*FULLY_DESIGNED_CATEGORIES.length)];
   S.creatureVariant=null;
   S.happiness=100;
   S.health=100;
@@ -7909,7 +7986,7 @@ function graduateBuddy(){
   S.buddyStage='egg';
   S.growthXP=0;
   S.eggXP=0; // Fresh start with new egg
-  S.creatureCategory=CATEGORY_KEYS[Math.floor(Math.random()*CATEGORY_KEYS.length)]; // Random category for new egg
+  S.creatureCategory=FULLY_DESIGNED_CATEGORIES[Math.floor(Math.random()*FULLY_DESIGNED_CATEGORIES.length)]; // Random category for new egg (only fully designed ones)
   S.creatureVariant=null; // Variant assigned at hatching
   S.happiness=100; // Perfect condition for new egg!
   S.health=100; // Perfect condition for new egg!
@@ -8569,6 +8646,42 @@ const quickPractice=()=>{
     setScreen('practice');
   }
 };
+
+// Continue practicing after completing a verse - picks different verse or different mode
+const continuePracticing=()=>{
+  pState.celebration=false;
+  const justCompletedId=pState.completedVerse?.id;
+  const justCompletedMode=pState.completedMode;
+  const modeOpts=['predict','blanks','jumble','first','recall','hangman'];
+
+  // Try to get a different verse
+  const recs=getRecommendations();
+  const otherVerses=recs.verses.filter(v=>v.id!==justCompletedId);
+
+  if(otherVerses.length>0){
+    // Practice a different verse
+    const v=otherVerses[Math.floor(Math.random()*otherVerses.length)];
+    selectedVerse=v.id;
+    const modes=recs.modes[v.id];
+    if(modes&&modes.length){
+      startPractice(modes[0]);
+    }else{
+      startPractice(modeOpts[Math.floor(Math.random()*modeOpts.length)]);
+    }
+  }else if(recs.verses.length>0){
+    // Only one verse, try a different mode
+    const v=recs.verses[0];
+    selectedVerse=v.id;
+    const otherModes=modeOpts.filter(m=>m!==justCompletedMode);
+    startPractice(otherModes[Math.floor(Math.random()*otherModes.length)]);
+  }else{
+    // Fallback to random
+    selectedVerse='random';
+    const otherModes=modeOpts.filter(m=>m!==justCompletedMode);
+    startPractice(otherModes[Math.floor(Math.random()*otherModes.length)]);
+  }
+};
+
 const startPractice=mode=>{
   if(!S.verses.length)return;
 
@@ -8858,6 +8971,7 @@ function render(){
         {id:'new-testament',name:'New Testament',icon:'✝️',desc:'Matthew, John, Romans...'},
         {id:'book-of-mormon',name:'Book of Mormon',icon:'📘',desc:'1 Nephi, Alma, Moroni...'},
         {id:'doctrine-covenants',name:'Doctrine & Covenants',icon:'📙',desc:'Modern revelations'},
+        {id:'pearl-great-price',name:'Pearl of Great Price',icon:'💎',desc:'Moses, Abraham, JS-History'},
         {id:'articles-of-faith',name:'Articles of Faith',icon:'📜',desc:'13 core beliefs'},
         {id:'lds-quotes',name:'LDS Leader Quotes',icon:'🎤',desc:'Prophet teachings'},
         {id:'catholic-prayers',name:'Catholic Prayers',icon:'🙏',desc:'Traditional prayers'},
@@ -8880,6 +8994,9 @@ function render(){
       ]},
       {category:'Sikhism',packs:[
         {id:'guru-granth',name:'Guru Granth Sahib',icon:'🙏',desc:'Sikh scripture'}
+      ]},
+      {category:'Inspiration',packs:[
+        {id:'inspirational-quotes',name:'Inspirational Quotes',icon:'💡',desc:'Lincoln, Churchill, Gandhi...'}
       ]}
     ];
 
@@ -9603,13 +9720,13 @@ function render(){
   else if(screen==='album'&&!pMode){
     const graduated=S.graduatedBuddies||[];
 
-    // Build collection tracking data
+    // Build collection tracking data (only for fully designed categories)
     const collected={};
-    CATEGORY_KEYS.forEach(cat=>{
+    FULLY_DESIGNED_CATEGORIES.forEach(cat=>{
       collected[cat]={hasAny:false,variants:new Set()};
     });
     graduated.forEach(buddy=>{
-      if(buddy.creatureCategory){
+      if(buddy.creatureCategory&&FULLY_DESIGNED_CATEGORIES.includes(buddy.creatureCategory)){
         collected[buddy.creatureCategory].hasAny=true;
         if(buddy.creatureVariant!==undefined&&buddy.creatureVariant!==null){
           collected[buddy.creatureCategory].variants.add(buddy.creatureVariant);
@@ -9620,7 +9737,7 @@ function render(){
     // Count total collected unique variants
     let totalCollected=0;
     let totalPossible=0;
-    CATEGORY_KEYS.forEach(cat=>{
+    FULLY_DESIGNED_CATEGORIES.forEach(cat=>{
       const category=CREATURE_CATEGORIES[cat];
       if(category){
         totalPossible+=category.adultVariants.length;
@@ -9642,7 +9759,7 @@ function render(){
       </div>
 
       <div class="space-y-4">
-        ${CATEGORY_KEYS.map(categoryKey=>{
+        ${FULLY_DESIGNED_CATEGORIES.map(categoryKey=>{
           const category=CREATURE_CATEGORIES[categoryKey];
           const categoryName=categoryKey.charAt(0).toUpperCase()+categoryKey.slice(1);
           const hasAnyCollected=collected[categoryKey].hasAny;
@@ -10380,7 +10497,7 @@ function render(){
       </div>
 
       <div class="space-y-4">
-        ${CATEGORY_KEYS.map(categoryKey=>{
+        ${FULLY_DESIGNED_CATEGORIES.map(categoryKey=>{
           const category=CREATURE_CATEGORIES[categoryKey];
           const categoryName=categoryKey.charAt(0).toUpperCase()+categoryKey.slice(1);
 
@@ -10720,8 +10837,8 @@ function render(){
         <button onclick="collectXP()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-4 rounded-2xl mb-2">
           Collect XP
         </button>
-        <button onclick="pState.celebration=false;pVerse=pState.completedVerse;selectedVerse=pState.completedVerse.id;startPractice(pState.completedMode)" class="w-full bg-purple-100 text-purple-700 font-semibold py-3 rounded-2xl">
-          Practice Again
+        <button onclick="continuePracticing()" class="w-full bg-purple-100 text-purple-700 font-semibold py-3 rounded-2xl">
+          Continue Practicing
         </button>
       </div>
     </div>`;
@@ -11657,7 +11774,7 @@ function showCollectionStageCard(stage,categoryKey){
 
 // Debug: Add a test graduated Scribby for testing trades
 function addTestScribby(){
-  const randomCat=CATEGORY_KEYS[Math.floor(Math.random()*CATEGORY_KEYS.length)];
+  const randomCat=FULLY_DESIGNED_CATEGORIES[Math.floor(Math.random()*FULLY_DESIGNED_CATEGORIES.length)];
   const category=CREATURE_CATEGORIES[randomCat];
   const variants=category.adultVariants.length;
   const randomVariant=Math.floor(Math.random()*variants);
