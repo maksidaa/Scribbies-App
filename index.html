@@ -408,6 +408,14 @@
     @keyframes frog-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
     @keyframes frog-paw-wiggle{0%,40%,60%,100%{transform:scale(1)}50%{transform:scale(1.1) rotate(15deg)}}
     @keyframes frog-croak{0%,80%,100%{transform:translateX(-50%) scale(1)}90%{transform:translateX(-50%) scale(1.3)}}
+    @keyframes frog-fly-buzz{0%{transform:translate(-80px,0) scale(1) rotate(0deg)}6%{transform:translate(-40px,-10px) scale(1) rotate(10deg)}14%{transform:translate(20px,-25px) scale(1) rotate(-5deg)}22%{transform:translate(60px,-15px) scale(1) rotate(15deg)}30%{transform:translate(80px,5px) scale(1) rotate(-10deg)}38%{transform:translate(50px,20px) scale(1) rotate(20deg)}46%{transform:translate(20px,0px) scale(1) rotate(-15deg)}54%{transform:translate(40px,-20px) scale(1) rotate(10deg)}62%{transform:translate(70px,10px) scale(1) rotate(-5deg)}70%{transform:translate(55px,25px) scale(1) rotate(15deg)}78%{transform:translate(60px,15px) scale(1) rotate(0deg)}80%{transform:translate(60px,15px) scale(0) rotate(0deg)}97%{transform:translate(60px,15px) scale(0) rotate(0deg)}98%{transform:translate(-80px,0) scale(1) rotate(0deg)}100%{transform:translate(-80px,0) scale(1) rotate(0deg)}}
+    @keyframes frog-fly-wings{0%,100%{transform:scaleY(1)}50%{transform:scaleY(0.3)}}
+    @keyframes frog-tongue-shoot{0%,75%{transform:translateY(0) scaleY(0);opacity:0}76%{transform:translateY(0) scaleY(0);opacity:1}77%{transform:translateY(0) scaleY(0.4);opacity:1}79%{transform:translateY(0) scaleY(1);opacity:1}83%{transform:translateY(-10px) scaleY(1.1);opacity:1}87%{transform:translateY(0) scaleY(0.6);opacity:1}90%{transform:translateY(0) scaleY(0);opacity:0}100%{transform:translateY(0) scaleY(0);opacity:0}}
+    @keyframes frog-eye-track{0%{transform:translate(-6px,0)}6%{transform:translate(-4px,-1px)}14%{transform:translate(2px,-3px)}22%{transform:translate(5px,-2px)}30%{transform:translate(6px,0)}38%{transform:translate(4px,2px)}46%{transform:translate(2px,0)}54%{transform:translate(3px,-2px)}62%{transform:translate(5px,1px)}70%{transform:translate(4px,2px)}78%{transform:translate(5px,2px)}80%{transform:translate(5px,2px)}85%{transform:translate(0,0)}90%{transform:translate(-6px,0)}100%{transform:translate(-6px,0)}}
+    @keyframes frog-mouth-open{0%,74%,93%,100%{transform:translateX(-50%) scaleY(1)}76%,90%{transform:translateX(-50%) scaleY(2.5)}}
+    @keyframes frog-mouth-inside{0%,74%,93%,100%{opacity:0;transform:translateX(-50%) scaleY(0)}76%,90%{opacity:1;transform:translateX(-50%) scaleY(1)}}
+    @keyframes frog-hop{0%,70%,100%{transform:translateY(0) scale(1)}76%{transform:translateY(-25px) scale(1.05,0.95)}82%{transform:translateY(-30px) scale(0.95,1.05)}88%{transform:translateY(-10px) scale(1.02,0.98)}}
+    @keyframes frog-leg-jump{0%,70%,100%{transform:translateY(0)}76%{transform:translateY(25px)}82%{transform:translateY(30px)}84%{transform:translateY(15px)}86%{transform:translateY(0)}88%,92%{transform:translateY(0)}}
     /* Turtle animations */
     @keyframes turtle-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
     @keyframes turtle-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
@@ -6413,12 +6421,31 @@ function renderAdultReptile(variantIndex){
       </div>
     `,
     // ===== FROG - Reptiles Variant 1 =====
-    // Source: frog_buddy.html (scaled to 240x280, 3D effects added)
+    // Source: frog_buddy.html (scaled to 240x280, 3D effects added, fly-catching animations)
     1:`
-      <div style="position:relative;width:240px;height:280px;animation:frog-bounce 2s ease-in-out infinite;">
+      <div style="position:relative;width:240px;height:280px;animation:frog-hop 8s ease-in-out infinite;">
+        <!-- Buzzing Fly -->
+        <div style="position:absolute;top:40px;left:60px;z-index:50;animation:frog-fly-buzz 8s linear infinite;">
+          <div style="position:relative;width:12px;height:10px;">
+            <!-- Fly body -->
+            <div style="position:absolute;width:10px;height:8px;background:radial-gradient(circle at 40% 30%, #555, #222);border-radius:50%;top:2px;left:1px;"></div>
+            <!-- Fly head -->
+            <div style="position:absolute;width:5px;height:5px;background:#333;border-radius:50%;top:0;left:6px;"></div>
+            <!-- Fly eyes -->
+            <div style="position:absolute;width:2px;height:2px;background:#c41;border-radius:50%;top:0;left:8px;"></div>
+            <!-- Wings -->
+            <div style="position:absolute;width:8px;height:4px;background:rgba(200,220,255,0.6);border-radius:50%;top:-1px;left:0;transform-origin:right center;animation:frog-fly-wings 0.05s linear infinite;"></div>
+            <div style="position:absolute;width:8px;height:4px;background:rgba(200,220,255,0.6);border-radius:50%;top:5px;left:0;transform-origin:right center;animation:frog-fly-wings 0.05s linear infinite 0.025s;"></div>
+          </div>
+        </div>
+
         <!-- Back feet (behind body) -->
-        <div style="position:absolute;top:175px;left:25px;width:42px;height:30px;background:radial-gradient(ellipse at 35% 30%, #6ee7a0 0%, #4ade80 50%, #22c55e 100%);border:3px solid #16a34a;border-radius:50%;z-index:15;transform:rotate(-20deg);box-shadow:inset 2px 2px 6px rgba(200,255,220,0.4), inset -2px -2px 4px rgba(20,120,60,0.3);animation:frog-paw-wiggle 2s ease-in-out infinite;"></div>
-        <div style="position:absolute;top:175px;right:25px;width:42px;height:30px;background:radial-gradient(ellipse at 35% 30%, #6ee7a0 0%, #4ade80 50%, #22c55e 100%);border:3px solid #16a34a;border-radius:50%;z-index:15;transform:rotate(20deg);box-shadow:inset 2px 2px 6px rgba(200,255,220,0.4), inset -2px -2px 4px rgba(20,120,60,0.3);animation:frog-paw-wiggle 2s ease-in-out infinite;"></div>
+        <div style="position:absolute;top:175px;left:25px;z-index:15;animation:frog-leg-jump 8s ease-in-out infinite;">
+          <div style="width:42px;height:30px;background:radial-gradient(ellipse at 35% 30%, #6ee7a0 0%, #4ade80 50%, #22c55e 100%);border:3px solid #16a34a;border-radius:50%;transform:rotate(-20deg);box-shadow:inset 2px 2px 6px rgba(200,255,220,0.4), inset -2px -2px 4px rgba(20,120,60,0.3);"></div>
+        </div>
+        <div style="position:absolute;top:175px;right:25px;z-index:15;animation:frog-leg-jump 8s ease-in-out infinite;">
+          <div style="width:42px;height:30px;background:radial-gradient(ellipse at 35% 30%, #6ee7a0 0%, #4ade80 50%, #22c55e 100%);border:3px solid #16a34a;border-radius:50%;transform:rotate(20deg);box-shadow:inset 2px 2px 6px rgba(200,255,220,0.4), inset -2px -2px 4px rgba(20,120,60,0.3);"></div>
+        </div>
 
         <!-- Body (pear-shaped) -->
         <div style="position:absolute;top:80px;left:45px;width:150px;height:130px;background:radial-gradient(ellipse at 35% 30%, #6ee7a0 0%, #4ade80 50%, #16a34a 100%);border-radius:50% 50% 42% 42% / 65% 65% 38% 38%;z-index:20;box-shadow:inset 5px 5px 15px rgba(200,255,220,0.5), inset -4px -4px 10px rgba(20,120,60,0.3);">
@@ -6427,14 +6454,18 @@ function renderAdultReptile(variantIndex){
 
           <!-- Eyes (positioned on top of body) -->
           <div style="position:absolute;top:-25px;width:100%;display:flex;justify-content:center;gap:10px;">
-            <div style="width:46px;height:48px;background:radial-gradient(ellipse at 35% 30%, #ffffff 0%, #f0f0f0 70%, #e0e0e0 100%);border-radius:50%;border:4px solid #16a34a;position:relative;animation:frog-blink 4s infinite;box-shadow:inset 2px 2px 8px rgba(255,255,255,0.8), inset -2px -2px 6px rgba(180,180,180,0.3);">
-              <div style="position:absolute;width:24px;height:28px;background:radial-gradient(circle at 30% 30%, #333, #1a1a1a);border-radius:50%;top:10px;left:11px;">
+            <div class="s-eye" style="width:46px;height:48px;background:radial-gradient(ellipse at 35% 30%, #ffffff 0%, #f0f0f0 70%, #e0e0e0 100%);border-radius:50%;border:4px solid #16a34a;position:relative;animation:frog-blink 4s infinite;box-shadow:inset 2px 2px 8px rgba(255,255,255,0.8), inset -2px -2px 6px rgba(180,180,180,0.3);">
+              <!-- Upper eyelid -->
+              <div style="position:absolute;top:-2px;left:50%;transform:translateX(-50%);width:40px;height:14px;background:linear-gradient(to bottom, #22c55e 0%, #4ade80 100%);border-radius:50% 50% 40% 40% / 100% 100% 40% 40%;z-index:5;"></div>
+              <div style="position:absolute;width:24px;height:28px;background:radial-gradient(circle at 30% 30%, #333, #1a1a1a);border-radius:50%;top:10px;left:11px;animation:frog-eye-track 8s ease-in-out infinite;">
                 <div style="position:absolute;width:10px;height:10px;background:white;border-radius:50%;top:4px;left:4px;"></div>
                 <div style="position:absolute;width:4px;height:4px;background:white;border-radius:50%;bottom:6px;right:5px;opacity:0.5;"></div>
               </div>
             </div>
-            <div style="width:46px;height:48px;background:radial-gradient(ellipse at 35% 30%, #ffffff 0%, #f0f0f0 70%, #e0e0e0 100%);border-radius:50%;border:4px solid #16a34a;position:relative;animation:frog-blink 4s infinite;box-shadow:inset 2px 2px 8px rgba(255,255,255,0.8), inset -2px -2px 6px rgba(180,180,180,0.3);">
-              <div style="position:absolute;width:24px;height:28px;background:radial-gradient(circle at 30% 30%, #333, #1a1a1a);border-radius:50%;top:10px;left:11px;">
+            <div class="s-eye" style="width:46px;height:48px;background:radial-gradient(ellipse at 35% 30%, #ffffff 0%, #f0f0f0 70%, #e0e0e0 100%);border-radius:50%;border:4px solid #16a34a;position:relative;animation:frog-blink 4s infinite;box-shadow:inset 2px 2px 8px rgba(255,255,255,0.8), inset -2px -2px 6px rgba(180,180,180,0.3);">
+              <!-- Upper eyelid -->
+              <div style="position:absolute;top:-2px;left:50%;transform:translateX(-50%);width:40px;height:14px;background:linear-gradient(to bottom, #22c55e 0%, #4ade80 100%);border-radius:50% 50% 40% 40% / 100% 100% 40% 40%;z-index:5;"></div>
+              <div style="position:absolute;width:24px;height:28px;background:radial-gradient(circle at 30% 30%, #333, #1a1a1a);border-radius:50%;top:10px;left:11px;animation:frog-eye-track 8s ease-in-out infinite;">
                 <div style="position:absolute;width:10px;height:10px;background:white;border-radius:50%;top:4px;left:4px;"></div>
                 <div style="position:absolute;width:4px;height:4px;background:white;border-radius:50%;bottom:6px;right:5px;opacity:0.5;"></div>
               </div>
@@ -6453,16 +6484,31 @@ function renderAdultReptile(variantIndex){
             <div style="width:4px;height:2px;background:rgba(0,0,0,0.3);border-radius:2px;transform:rotate(-15deg);"></div>
           </div>
 
-          <!-- Mouth -->
-          <div style="position:absolute;width:50px;height:14px;border-bottom:3.5px solid #16a34a;border-radius:0 0 25px 25px;top:55px;left:50%;transform:translateX(-50%);z-index:23;opacity:0.8;"></div>
+          <!-- Mouth interior (dark, visible when open) -->
+          <div style="position:absolute;top:60px;left:50%;transform:translateX(-50%) scaleY(0);width:35px;height:18px;background:radial-gradient(ellipse at 50% 30%, #5c3d2e, #3d2820);border-radius:50%;opacity:0;z-index:22;animation:frog-mouth-inside 8s ease-in-out infinite;"></div>
+
+          <!-- Mouth line (animates open) -->
+          <div style="position:absolute;width:50px;height:14px;border-bottom:3.5px solid #16a34a;border-radius:0 0 25px 25px;top:55px;left:50%;transform:translateX(-50%);z-index:24;opacity:0.8;transform-origin:top center;animation:frog-mouth-open 8s ease-in-out infinite;"></div>
+
+          <!-- Tongue (shoots out from mouth to catch fly) -->
+          <div style="position:absolute;top:-25px;left:50%;transform:translateX(-50%) scaleY(0);width:14px;height:90px;z-index:21;transform-origin:bottom center;opacity:0;animation:frog-tongue-shoot 8s ease-in-out infinite;">
+            <div style="width:100%;height:100%;background:linear-gradient(to top, #ff6b81, #ff8a9b);border-radius:7px 7px 50% 50%;">
+              <!-- Tongue tip (sticky pad) -->
+              <div style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:20px;height:14px;background:radial-gradient(ellipse at 50% 60%, #ff5070, #ff6b81);border-radius:50%;"></div>
+            </div>
+          </div>
 
           <!-- Vocal sac -->
-          <div style="position:absolute;width:65px;height:40px;background:radial-gradient(ellipse at 50% 30%, #d1fae5 0%, #bbf7d0 50%, #a7f3d0 100%);border-radius:50%;bottom:10px;left:50%;transform:translateX(-50%);z-index:22;animation:frog-croak 3s ease-in-out infinite;border:2px solid rgba(0,0,0,0.05);box-shadow:inset 2px 2px 8px rgba(255,255,255,0.5);"></div>
+          <div style="position:absolute;width:65px;height:40px;background:radial-gradient(ellipse at 50% 30%, #d1fae5 0%, #bbf7d0 50%, #a7f3d0 100%);border-radius:50%;bottom:10px;left:50%;transform:translateX(-50%);z-index:21;animation:frog-croak 3s ease-in-out infinite;border:2px solid rgba(0,0,0,0.05);box-shadow:inset 2px 2px 8px rgba(255,255,255,0.5);"></div>
         </div>
 
         <!-- Front feet -->
-        <div style="position:absolute;top:175px;left:72px;width:38px;height:28px;background:radial-gradient(ellipse at 35% 30%, #6ee7a0 0%, #4ade80 50%, #22c55e 100%);border:3px solid #16a34a;border-radius:50%;z-index:25;transform:rotate(8deg);box-shadow:inset 2px 2px 6px rgba(200,255,220,0.4), inset -2px -2px 4px rgba(20,120,60,0.3);animation:frog-paw-wiggle 2s ease-in-out infinite;"></div>
-        <div style="position:absolute;top:175px;right:72px;width:38px;height:28px;background:radial-gradient(ellipse at 35% 30%, #6ee7a0 0%, #4ade80 50%, #22c55e 100%);border:3px solid #16a34a;border-radius:50%;z-index:25;transform:rotate(-8deg);box-shadow:inset 2px 2px 6px rgba(200,255,220,0.4), inset -2px -2px 4px rgba(20,120,60,0.3);animation:frog-paw-wiggle 2s ease-in-out infinite;"></div>
+        <div style="position:absolute;top:175px;left:72px;z-index:25;animation:frog-leg-jump 8s ease-in-out infinite;">
+          <div style="width:38px;height:28px;background:radial-gradient(ellipse at 35% 30%, #6ee7a0 0%, #4ade80 50%, #22c55e 100%);border:3px solid #16a34a;border-radius:50%;transform:rotate(8deg);box-shadow:inset 2px 2px 6px rgba(200,255,220,0.4), inset -2px -2px 4px rgba(20,120,60,0.3);"></div>
+        </div>
+        <div style="position:absolute;top:175px;right:72px;z-index:25;animation:frog-leg-jump 8s ease-in-out infinite;">
+          <div style="width:38px;height:28px;background:radial-gradient(ellipse at 35% 30%, #6ee7a0 0%, #4ade80 50%, #22c55e 100%);border:3px solid #16a34a;border-radius:50%;transform:rotate(-8deg);box-shadow:inset 2px 2px 6px rgba(200,255,220,0.4), inset -2px -2px 4px rgba(20,120,60,0.3);"></div>
+        </div>
       </div>
     `,
     // ===== TURTLE - Reptiles Variant 2 =====
@@ -10215,7 +10261,7 @@ function render(){
                         </div>
                       `}
                     </div>
-                    <p class="text-[9px] ${isCollected?'text-purple-600':'text-purple-300'} leading-tight text-center mt-1">${isCollected?category.adultNames[idx]:'???'}</p>
+                    <p class="text-[9px] ${isCollected?'text-purple-600':'text-purple-300'} leading-tight text-center mt-1" style="position:relative;z-index:100;">${isCollected?category.adultNames[idx]:'???'}</p>
                     ${buddyInfo?`<p class="text-[7px] text-purple-400 leading-tight">${buddyInfo.name}</p>`:''}
                   </div>`;
                 }).join('')}
@@ -10923,7 +10969,7 @@ function render(){
                     <div class="cursor-pointer hover:scale-110 transition-transform" style="width:84px;height:98px;overflow:visible;display:flex;align-items:center;justify-content:center;" onclick="showCreaturePreview('adult','${categoryKey}',${idx})">
                       <div style="transform:scale(0.35);transform-origin:center;">${categoryKey==='birds'?renderAdultBird(idx):categoryKey==='reptiles'?renderAdultReptile(idx):categoryKey==='mammals'?renderAdultMammal(idx):`<div class="text-3xl">${emoji}</div>`}</div>
                     </div>
-                    <p class="text-[9px] text-purple-600 leading-tight text-center mt-2">${category.adultNames[idx]}</p>
+                    <p class="text-[9px] text-purple-600 leading-tight text-center mt-2" style="position:relative;z-index:100;">${category.adultNames[idx]}</p>
                   </div>
                 `).join('')}
               </div>
