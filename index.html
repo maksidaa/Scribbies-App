@@ -2319,6 +2319,20 @@ function getBuddyEmoji(){
   return'🥚'; // Fallback
 }
 
+// Compact buddy status for practice screens - shows actual creature and stage-specific XP
+function getPracticeStatusBar(){
+  const stage=S.buddyStage||'egg';
+  let xpDisplay;
+  if(stage==='egg')xpDisplay=`${S.eggXP||0}/${STAGES.egg.hatchXP}`;
+  else if(stage==='adult')xpDisplay='Max';
+  else xpDisplay=`${S.growthXP||0}/${STAGES[stage].growthNeeded}`;
+
+  return`<div class="bg-white/10 rounded-xl px-3 py-2 mb-3 flex items-center gap-2">
+    <div style="transform:scale(0.2);transform-origin:left center;width:50px;height:40px;margin:-20px 0;">${renderBuddyVisual()}</div>
+    <span class="text-white/90 text-sm font-semibold">✨ ${xpDisplay} XP</span>
+  </div>`;
+}
+
 function getStageName(){
   const stage=S.buddyStage||'egg';
 
@@ -8495,21 +8509,21 @@ const startPractice=mode=>{
   }
   pMode=mode;
   const W=getWords(pVerse.text);
-  if(mode==='predict')pState={W,cur:0,rev:[W[0]],correct:0,total:W.length-1,wrong:false,done:false};
-  else if(mode==='blanks'){const bl=W.map((w,i)=>(i+1)%4===0?'':w),mi=W.filter((w,i)=>(i+1)%4===0);pState={W,blanks:bl,missing:mi,cBlank:0,inp:'',wrong:false,done:false}}
-  else if(mode==='jumble')pState={W,shuf:shuffle(W),sel:[],wrong:false,done:false};
-  else if(mode==='first'){const h=W.map(w=>w[0]+'_'.repeat(w.length-1));pState={W,hints:h,cWord:0,inp:'',wrong:false,done:false}}
-  else if(mode==='recall')pState={W,inp:'',checked:false,score:0,done:false};
+  if(mode==='predict')pState={W,cur:0,rev:[W[0]],correct:0,total:W.length-1,wrong:false,wrongCount:0,done:false};
+  else if(mode==='blanks'){const bl=W.map((w,i)=>(i+1)%4===0?'':w),mi=W.filter((w,i)=>(i+1)%4===0);pState={W,blanks:bl,missing:mi,cBlank:0,inp:'',wrong:false,wrongCount:0,done:false}}
+  else if(mode==='jumble')pState={W,shuf:shuffle(W),sel:[],wrong:false,wrongCount:0,done:false};
+  else if(mode==='first'){const h=W.map(w=>w[0]+'_'.repeat(w.length-1));pState={W,hints:h,cWord:0,inp:'',wrong:false,wrongCount:0,done:false}}
+  else if(mode==='recall')pState={W,inp:'',checked:false,score:0,wrongCount:0,done:false};
   else if(mode==='hangman'){
-    pState={W,guessed:[],wrong:0,maxWrong:8,done:false,won:false};
+    pState={W,guessed:[],wrong:0,maxWrong:8,wrongCount:0,done:false,won:false};
   }
   render();
 };
 
-const selectPredict=w=>{const cor=pState.W[pState.cur+1];pState.rev.push(cor);if(clean(w)===clean(cor)){pState.correct++;pState.wrong=false}else pState.wrong=true;pState.cur++;if(pState.cur>=pState.W.length-1){pState.done=true;setTimeout(()=>completePractice(),500)}render()};
-const checkBlanks=()=>{const exp=pState.missing[pState.cBlank];if(clean(pState.inp)===clean(exp)){pState.blanks[pState.blanks.indexOf('')]=exp;pState.cBlank++;pState.inp='';pState.wrong=false;if(pState.cBlank>=pState.missing.length){pState.done=true;setTimeout(()=>completePractice(),500)}}else pState.wrong=true;render()};
-const selectJumble=i=>{const w=pState.shuf[i],exp=pState.W[pState.sel.length];if(clean(w)===clean(exp)){pState.sel.push(w);pState.shuf.splice(i,1);pState.wrong=false;if(pState.sel.length>=pState.W.length){pState.done=true;setTimeout(()=>completePractice(),500)}}else pState.wrong=true;render()};
-const checkFirst=()=>{const exp=pState.W[pState.cWord];if(clean(pState.inp)===clean(exp)){pState.hints[pState.cWord]=exp;pState.cWord++;pState.inp='';pState.wrong=false;if(pState.cWord>=pState.W.length){pState.done=true;setTimeout(()=>completePractice(),500)}}else pState.wrong=true;render()};
+const selectPredict=w=>{const cor=pState.W[pState.cur+1];pState.rev.push(cor);if(clean(w)===clean(cor)){pState.correct++;pState.wrong=false}else{pState.wrong=true;pState.wrongCount++}pState.cur++;if(pState.cur>=pState.W.length-1){pState.done=true;setTimeout(()=>completePractice(),500)}render()};
+const checkBlanks=()=>{const exp=pState.missing[pState.cBlank];if(clean(pState.inp)===clean(exp)){pState.blanks[pState.blanks.indexOf('')]=exp;pState.cBlank++;pState.inp='';pState.wrong=false;if(pState.cBlank>=pState.missing.length){pState.done=true;setTimeout(()=>completePractice(),500)}}else{pState.wrong=true;pState.wrongCount++}render()};
+const selectJumble=i=>{const w=pState.shuf[i],exp=pState.W[pState.sel.length];if(clean(w)===clean(exp)){pState.sel.push(w);pState.shuf.splice(i,1);pState.wrong=false;if(pState.sel.length>=pState.W.length){pState.done=true;setTimeout(()=>completePractice(),500)}}else{pState.wrong=true;pState.wrongCount++}render()};
+const checkFirst=()=>{const exp=pState.W[pState.cWord];if(clean(pState.inp)===clean(exp)){pState.hints[pState.cWord]=exp;pState.cWord++;pState.inp='';pState.wrong=false;if(pState.cWord>=pState.W.length){pState.done=true;setTimeout(()=>completePractice(),500)}}else{pState.wrong=true;pState.wrongCount++}render()};
 const checkRecall=()=>{const iw=getWords(pState.inp);let c=0;pState.W.forEach((w,i)=>{if(iw[i]&&clean(iw[i])===clean(w))c++});pState.score=Math.round(c/pState.W.length*100);pState.checked=true;pState.done=pState.score>=80;if(pState.done)setTimeout(()=>completePractice(),500);render()};
 const guessLetter=l=>{
   if(pState.guessed.includes(l))return;
@@ -8521,6 +8535,7 @@ const guessLetter=l=>{
 
   if(!isCorrect){
     pState.wrong++;
+    pState.wrongCount++;
     if(pState.wrong>=pState.maxWrong){
       // Game over - failed
       pState.done=true;
@@ -8564,6 +8579,10 @@ const completePractice=()=>{
   // Apply mode multiplier
   const multiplier=getModeMultiplier(v,pMode);
   let xp=Math.round(baseXP*multiplier);
+
+  // Apply wrong answer penalty - 5% reduction per wrong answer, min 50%
+  const wrongPenalty=Math.max(0.5,1-(pState.wrongCount||0)*0.05);
+  xp=Math.round(xp*wrongPenalty);
 
   // Length bonus based on word count
   const wordCount=getWords(v.text).length;
@@ -10053,31 +10072,6 @@ function render(){
     if(!selectedVerse){
       // Verse selection screen
       const reviewList=S.verses.filter(needsReview);
-      const recommendations=getRecommendations();
-      const modeNames={predict:'🎯 Predict',blanks:'✏️ Blanks',hangman:'⚔️ Hangman',jumble:'🔀 Jumble',first:'🔤 First Letters',recall:'💭 Recall'};
-
-      const recommendedList=recommendations.verses.map(v=>{
-        const recModes=recommendations.modes[v.id]||[];
-        const bonus=v.mastery>=5?getReviewBonus(v):0;
-        const daysSince=v.lastPracticed?Math.floor((Date.now()-new Date(v.lastPracticed).getTime())/(1000*60*60*24)):null;
-        return`<div class="bg-white rounded-2xl p-4 mb-3">
-          <div class="flex justify-between mb-1">
-            <p class="font-bold text-purple-800">${v.ref}</p>
-            <div class="flex gap-2 items-center">
-              ${bonus>0?`<span class="text-xs px-2 py-1 rounded-full bg-green-500 text-white">+${bonus} XP</span>`:''}
-              <div class="text-right">
-                <div class="text-sm">${getStars(v.mastery)}</div>
-                <div class="text-xs text-purple-500 font-semibold">${v.mastery.toFixed(1)} / 5</div>
-              </div>
-            </div>
-          </div>
-          <div class="h-1.5 bg-purple-100 rounded-full mb-2">
-            <div class="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all" style="width:${v.mastery/5*100}%"></div>
-          </div>
-          <p class="text-purple-700 text-sm line-clamp-2 mb-2">${v.text}</p>
-          ${daysSince!==null?`<p class="text-purple-400 text-xs mb-2">Last practiced ${daysSince} day${daysSince!==1?'s':''} ago</p>`:'<p class="text-purple-400 text-xs mb-2">Not practiced yet</p>'}
-          <div class="flex gap-2">${recModes.map(m=>`<button onclick="selectedVerse=${v.id};startPractice('${m}')" class="flex-1 text-xs py-2 px-3 rounded-lg bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-semibold">${modeNames[m]}</button>`).join('')}</div>
-        </div>`}).join('');
 
       const verseList=S.verses.map(v=>{
         const bonus=v.mastery>=5?getReviewBonus(v):0;
@@ -10116,15 +10110,7 @@ function render(){
               <div class="text-sm font-normal opacity-90">${reviewList.length} verse${reviewList.length!==1?'s':''} need${reviewList.length===1?'s':''} review</div>
             </div>
           </button>`:''}
-          ${recommendations.verses.length?`
-            <div class="mb-3">
-              <p class="text-white font-semibold mb-2 flex items-center gap-2">
-                <span>💡</span>
-                <span>Recommended for you</span>
-              </p>
-              ${recommendedList}
-            </div>`:''}
-          <p class="text-white/80 text-sm mb-3 text-center">All verses:</p>
+          <p class="text-white/80 text-sm mb-3 text-center">Your verses:</p>
           ${verseList}`:'<div class="bg-white/95 rounded-3xl p-8 text-center"><p class="text-purple-800">Add verses first!</p></div>'}
       </div>`;
     }else{
@@ -10689,10 +10675,7 @@ function render(){
   }
 
   else if(pMode==='predict'){
-    const buddyStatusCompact=`<div class="bg-white/10 rounded-xl px-3 py-2 mb-3 flex items-center gap-2">
-      <span class="text-2xl">${getBuddyEmoji()}</span>
-      <span class="text-white/90 text-sm font-semibold">✨ ${S.xp} XP</span>
-    </div>`;
+    const buddyStatusCompact=getPracticeStatusBar();
     const p=pState.total>0?Math.round(pState.correct/pState.total*100):0;
     let inner='';
     if(pState.done){
@@ -10707,10 +10690,7 @@ function render(){
   }
 
   else if(pMode==='blanks'){
-    const buddyStatusCompact=`<div class="bg-white/10 rounded-xl px-3 py-2 mb-3 flex items-center gap-2">
-      <span class="text-2xl">${getBuddyEmoji()}</span>
-      <span class="text-white/90 text-sm font-semibold">✨ ${S.xp} XP</span>
-    </div>`;
+    const buddyStatusCompact=getPracticeStatusBar();
     const disp=pState.blanks.map(w=>w===''?'<span class="bg-yellow-200 px-1 rounded">____</span>':w).join(' ');
     let inner='';
     if(pState.done)inner=`<div class="text-center"><p class="text-green-500 font-bold text-xl mb-4">✨ Perfect!</p><button onclick="completePractice()" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 px-8 rounded-xl">+5 XP</button></div>`;
@@ -10720,10 +10700,7 @@ function render(){
   }
 
   else if(pMode==='hangman'){
-    const buddyStatusCompact=`<div class="bg-white/10 rounded-xl px-3 py-2 mb-3 flex items-center gap-2">
-      <span class="text-2xl">${getBuddyEmoji()}</span>
-      <span class="text-white/90 text-sm font-semibold">✨ ${S.xp} XP</span>
-    </div>`;
+    const buddyStatusCompact=getPracticeStatusBar();
     const hangmanStages=['😊','😊','😐','😟','😰','😱','💀','💀','☠️'];
     let inner='';
     if(pState.done){
@@ -10747,10 +10724,7 @@ function render(){
   }
 
   else if(pMode==='jumble'){
-    const buddyStatusCompact=`<div class="bg-white/10 rounded-xl px-3 py-2 mb-3 flex items-center gap-2">
-      <span class="text-2xl">${getBuddyEmoji()}</span>
-      <span class="text-white/90 text-sm font-semibold">✨ ${S.xp} XP</span>
-    </div>`;
+    const buddyStatusCompact=getPracticeStatusBar();
     let inner='';
     if(pState.done)inner=`<div class="text-center"><p class="text-green-500 font-bold text-xl mb-4">✨ Perfect!</p><button onclick="completePractice()" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 px-8 rounded-xl">+7 XP</button></div>`;
     else inner=`<div class="flex flex-wrap gap-2">${pState.shuf.map((w,i)=>`<button onclick="selectJumble(${i})" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white px-3 py-2 rounded-lg">${w}</button>`).join('')}</div>`;
@@ -10759,10 +10733,7 @@ function render(){
   }
 
   else if(pMode==='first'){
-    const buddyStatusCompact=`<div class="bg-white/10 rounded-xl px-3 py-2 mb-3 flex items-center gap-2">
-      <span class="text-2xl">${getBuddyEmoji()}</span>
-      <span class="text-white/90 text-sm font-semibold">✨ ${S.xp} XP</span>
-    </div>`;
+    const buddyStatusCompact=getPracticeStatusBar();
     const disp=pState.hints.map((h,i)=>i<pState.cWord?`<span class="text-green-600">${pState.W[i]}</span>`:i===pState.cWord?`<span class="bg-yellow-200 px-1 rounded">${h}</span>`:`<span class="text-purple-400">${h}</span>`).join(' ');
     let inner='';
     if(pState.done)inner=`<div class="text-center"><p class="text-green-500 font-bold text-xl mb-4">✨ Amazing!</p><button onclick="completePractice()" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 px-8 rounded-xl">+8 XP</button></div>`;
@@ -10772,10 +10743,7 @@ function render(){
   }
 
   else if(pMode==='recall'){
-    const buddyStatusCompact=`<div class="bg-white/10 rounded-xl px-3 py-2 mb-3 flex items-center gap-2">
-      <span class="text-2xl">${getBuddyEmoji()}</span>
-      <span class="text-white/90 text-sm font-semibold">✨ ${S.xp} XP</span>
-    </div>`;
+    const buddyStatusCompact=getPracticeStatusBar();
     let inner='';
     if(pState.checked){
       if(pState.done)inner=`<div class="text-center"><p class="text-4xl font-bold text-green-500">${pState.score}%</p><p class="text-purple-600 mb-4">Great job!</p><button onclick="completePractice()" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 px-8 rounded-xl">+${pState.score===100?15:10} XP</button></div>`;
