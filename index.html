@@ -401,6 +401,18 @@
     .egg-rock{animation:egg-rock 2s ease-in-out infinite}
     .egg-pulse{animation:egg-pulse 7s ease-in-out infinite}
 
+    /* Progressive egg particle effects */
+    @keyframes star-float{0%{transform:translateY(0) scale(1) rotate(0deg);opacity:1}50%{transform:translateY(-30px) scale(1.2) rotate(180deg);opacity:0.8}100%{transform:translateY(-60px) scale(0.5) rotate(360deg);opacity:0}}
+    @keyframes music-float{0%{transform:translateY(0) translateX(0) scale(1);opacity:0.9}50%{transform:translateY(-25px) translateX(10px) scale(1.1);opacity:0.7}100%{transform:translateY(-50px) translateX(-5px) scale(0.8);opacity:0}}
+    @keyframes spark-burst{0%{transform:scale(0) rotate(0deg);opacity:1}50%{transform:scale(1.5) rotate(180deg);opacity:0.8}100%{transform:scale(0.3) rotate(360deg);opacity:0}}
+    @keyframes smoke-rise{0%{transform:translateY(0) scale(1);opacity:0.4}50%{transform:translateY(-40px) scale(1.5);opacity:0.25}100%{transform:translateY(-80px) scale(2);opacity:0}}
+    @keyframes mystical-swirl{0%{transform:rotate(0deg) scale(1);opacity:0.3}50%{transform:rotate(180deg) scale(1.2);opacity:0.5}100%{transform:rotate(360deg) scale(1);opacity:0.3}}
+    @keyframes heart-pop{0%{transform:scale(0) translateY(0);opacity:1}30%{transform:scale(1.3) translateY(-10px);opacity:0.9}100%{transform:scale(0.6) translateY(-40px);opacity:0}}
+    @keyframes crack-glow{0%,100%{opacity:0.3;filter:brightness(1)}50%{opacity:0.8;filter:brightness(1.5)}}
+    @keyframes energy-pulse{0%{transform:scale(0.8);opacity:0.2}50%{transform:scale(1.3);opacity:0.5}100%{transform:scale(0.8);opacity:0.2}}
+    .egg-particles{position:absolute;width:100%;height:100%;top:0;left:0;pointer-events:none;overflow:visible}
+    .egg-particle{position:absolute;animation-fill-mode:forwards;animation-iteration-count:infinite}
+
     /* 3D Floating Buddy Card */
     @keyframes buddy-levitate{
       0%,100%{transform:translateY(0) rotateX(2deg) rotateY(-1deg)}
@@ -3619,7 +3631,7 @@ function renderBuddyVisual(){
       animClass='';  // Completely still at the start
     }
 
-    buddyHTML=`<div class="egg-container ${animClass}">${renderEgg(S.creatureCategory)}</div>`;
+    buddyHTML=`<div class="egg-container ${animClass}" style="position:relative;">${renderEggParticles(xp, S.creatureCategory)}${renderEgg(S.creatureCategory)}</div>`;
   }else if(stage==='blob'){
     buddyHTML=renderBlob(S.creatureCategory);
   }else if(stage==='child'){
@@ -3658,6 +3670,113 @@ function renderBuddyVisual(){
   }
 
   return`<div class="buddy-card-container${customizeClass}"><div class="buddy-with-accessories${stateClass}">${stateDecorations}${renderAccessories()}${buddyHTML}</div></div>`;
+}
+
+// Generate progressive particle effects for eggs based on hatching progress
+function renderEggParticles(eggXP, category){
+  const progress = (eggXP || 0) / 50; // 0 to 1 (50 is hatch threshold)
+  let particles = '';
+
+  // Category-specific particle configurations
+  const categoryEffects = {
+    birds: {
+      colors: ['#fbbf24', '#f59e0b', '#fcd34d'], // Golden stars
+      symbols: ['✨', '⭐', '🌟', '✧'],
+      smokeColor: 'rgba(255,255,255,0.3)'
+    },
+    aquatic: {
+      colors: ['#22d3ee', '#06b6d4', '#67e8f9'], // Teal bubbles
+      symbols: ['💫', '✨', '🫧', '○'],
+      smokeColor: 'rgba(34,211,238,0.25)'
+    },
+    reptiles: {
+      colors: ['#fbbf24', '#f97316', '#fcd34d'], // Amber sparks
+      symbols: ['✦', '⚡', '✧', '★'],
+      smokeColor: 'rgba(251,191,36,0.2)'
+    },
+    dragons: {
+      colors: ['#f97316', '#ef4444', '#fbbf24'], // Fire/lava
+      symbols: ['🔥', '✨', '⚡', '💥'],
+      smokeColor: 'rgba(120,113,108,0.35)'
+    },
+    insects: {
+      colors: ['#fbbf24', '#84cc16', '#a3e635'], // Honey/nature
+      symbols: ['✨', '🎵', '♪', '✧'],
+      smokeColor: 'rgba(251,191,36,0.2)'
+    }
+  };
+
+  const effects = categoryEffects[category] || categoryEffects.birds;
+
+  // Stage 1 (10-25%): Subtle mystical aura
+  if(progress >= 0.1){
+    particles += `<div class="egg-particle" style="position:absolute;width:180px;height:180px;top:50%;left:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,${effects.colors[0]}22,transparent 70%);border-radius:50%;animation:energy-pulse 3s ease-in-out infinite;"></div>`;
+  }
+
+  // Stage 2 (25-50%): Small sparkles appear
+  if(progress >= 0.25){
+    const sparkleCount = Math.floor(progress * 6);
+    for(let i=0; i<sparkleCount; i++){
+      const x = 20 + Math.random() * 120;
+      const y = 10 + Math.random() * 80;
+      const size = 8 + Math.random() * 8;
+      const delay = Math.random() * 2;
+      particles += `<div class="egg-particle" style="left:${x}px;top:${y}px;font-size:${size}px;animation:star-float 2.5s ease-in-out infinite ${delay}s;color:${effects.colors[i%3]};">${effects.symbols[i%4]}</div>`;
+    }
+  }
+
+  // Stage 3 (50-75%): More particles + subtle smoke/mist
+  if(progress >= 0.5){
+    // Add mystical mist
+    particles += `<div class="egg-particle" style="position:absolute;width:100px;height:60px;bottom:20px;left:30px;background:${effects.smokeColor};border-radius:50%;filter:blur(15px);animation:smoke-rise 4s ease-in-out infinite;"></div>`;
+    particles += `<div class="egg-particle" style="position:absolute;width:80px;height:50px;bottom:30px;right:20px;background:${effects.smokeColor};border-radius:50%;filter:blur(12px);animation:smoke-rise 5s ease-in-out infinite 1s;"></div>`;
+
+    // Music notes for some categories
+    if(category === 'birds' || category === 'insects'){
+      particles += `<div class="egg-particle" style="left:10px;top:30px;font-size:14px;animation:music-float 3s ease-in-out infinite;color:${effects.colors[1]};">♪</div>`;
+      particles += `<div class="egg-particle" style="right:15px;top:40px;font-size:12px;animation:music-float 3.5s ease-in-out infinite 0.5s;color:${effects.colors[2]};">♫</div>`;
+    }
+  }
+
+  // Stage 4 (75-90%): Intense effects - hearts, more sparkles, cracks glowing
+  if(progress >= 0.75){
+    // Hearts popping out
+    particles += `<div class="egg-particle" style="left:50%;top:20px;font-size:16px;animation:heart-pop 2s ease-out infinite;color:#f472b6;">💕</div>`;
+    particles += `<div class="egg-particle" style="left:30%;top:40px;font-size:12px;animation:heart-pop 2.5s ease-out infinite 0.5s;color:#fb7185;">💗</div>`;
+    particles += `<div class="egg-particle" style="right:25%;top:35px;font-size:14px;animation:heart-pop 2.2s ease-out infinite 1s;color:#f472b6;">💖</div>`;
+
+    // Intense sparkle burst
+    for(let i=0; i<4; i++){
+      const angle = (i * 90) * Math.PI / 180;
+      const x = 80 + Math.cos(angle) * 60;
+      const y = 100 + Math.sin(angle) * 50;
+      particles += `<div class="egg-particle" style="left:${x}px;top:${y}px;width:10px;height:10px;background:${effects.colors[i%3]};border-radius:50%;animation:spark-burst 1.5s ease-out infinite ${i*0.3}s;box-shadow:0 0 10px ${effects.colors[i%3]};"></div>`;
+    }
+
+    // Glowing crack lines
+    particles += `<div class="egg-particle" style="position:absolute;width:3px;height:40px;left:45%;top:30%;background:linear-gradient(to bottom,transparent,${effects.colors[0]},transparent);animation:crack-glow 1.5s ease-in-out infinite;border-radius:2px;"></div>`;
+    particles += `<div class="egg-particle" style="position:absolute;width:3px;height:30px;left:55%;top:50%;background:linear-gradient(to bottom,transparent,${effects.colors[1]},transparent);animation:crack-glow 1.8s ease-in-out infinite 0.3s;border-radius:2px;transform:rotate(15deg);"></div>`;
+  }
+
+  // Stage 5 (90%+): Maximum intensity - ready to hatch!
+  if(progress >= 0.9){
+    // Swirling mystical energy
+    particles += `<div class="egg-particle" style="position:absolute;width:200px;height:200px;top:50%;left:50%;transform:translate(-50%,-50%);border:3px dashed ${effects.colors[0]}44;border-radius:50%;animation:mystical-swirl 4s linear infinite;"></div>`;
+    particles += `<div class="egg-particle" style="position:absolute;width:160px;height:160px;top:50%;left:50%;transform:translate(-50%,-50%);border:2px dashed ${effects.colors[1]}33;border-radius:50%;animation:mystical-swirl 3s linear infinite reverse;"></div>`;
+
+    // Explosion of stars
+    for(let i=0; i<8; i++){
+      const angle = (i * 45) * Math.PI / 180;
+      const x = 80 + Math.cos(angle) * 80;
+      const y = 100 + Math.sin(angle) * 70;
+      particles += `<div class="egg-particle" style="left:${x}px;top:${y}px;font-size:${12+Math.random()*8}px;animation:star-float 1.5s ease-out infinite ${i*0.2}s;color:${effects.colors[i%3]};">✨</div>`;
+    }
+
+    // "Ready!" sparkle aura
+    particles += `<div class="egg-particle" style="position:absolute;width:220px;height:220px;top:50%;left:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,${effects.colors[0]}33,${effects.colors[1]}22,transparent 70%);border-radius:50%;animation:energy-pulse 1s ease-in-out infinite;"></div>`;
+  }
+
+  return particles ? `<div class="egg-particles">${particles}</div>` : '';
 }
 
 function renderEgg(categoryKey){
