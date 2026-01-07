@@ -426,6 +426,17 @@
     .hatch-creature-pop{animation:hatch-creature-pop 0.8s ease-out forwards}
     .hatch-text-pop{animation:hatch-text-pop 0.6s ease-out forwards}
 
+    /* Evolution burst animations */
+    @keyframes evo-spin-fast{0%{transform:rotate(0deg) scale(1)}25%{transform:rotate(180deg) scale(1.05)}50%{transform:rotate(360deg) scale(0.95)}75%{transform:rotate(540deg) scale(1.1)}100%{transform:rotate(720deg) scale(1)}}
+    @keyframes evo-shake-intense{0%,100%{transform:translateX(0) translateY(0)}10%{transform:translateX(-8px) translateY(-3px)}20%{transform:translateX(8px) translateY(3px)}30%{transform:translateX(-6px) translateY(-5px)}40%{transform:translateX(6px) translateY(5px)}50%{transform:translateX(-10px) translateY(-2px)}60%{transform:translateX(10px) translateY(2px)}70%{transform:translateX(-5px) translateY(-4px)}80%{transform:translateX(5px) translateY(4px)}90%{transform:translateX(-3px) translateY(-1px)}}
+    @keyframes evo-glow-buildup{0%{box-shadow:0 0 10px rgba(251,191,36,0.3)}50%{box-shadow:0 0 40px rgba(251,191,36,0.6),0 0 80px rgba(168,85,247,0.4)}100%{box-shadow:0 0 80px rgba(251,191,36,1),0 0 120px rgba(168,85,247,0.8),0 0 160px rgba(236,72,153,0.6)}}
+    @keyframes evo-smoke-burst{0%{opacity:0;transform:scale(0.3)}30%{opacity:0.8;transform:scale(1.2)}100%{opacity:0;transform:scale(2.5)}}
+    @keyframes evo-lightning{0%,100%{opacity:0}10%,30%{opacity:1}20%,40%{opacity:0}50%{opacity:1}60%,80%{opacity:0}70%,90%{opacity:1}}
+    @keyframes evo-star-explode{0%{opacity:1;transform:translate(0,0) scale(1) rotate(0deg)}100%{opacity:0;transform:translate(var(--ex),var(--ey)) scale(0.3) rotate(360deg)}}
+    @keyframes evo-ring-expand{0%{opacity:0.8;transform:translate(-50%,-50%) scale(0.5)}100%{opacity:0;transform:translate(-50%,-50%) scale(3)}}
+    @keyframes evo-flash{0%{opacity:0}50%{opacity:1}100%{opacity:0}}
+    .evo-spin-buildup{animation:evo-spin-fast 0.4s linear infinite,evo-shake-intense 0.15s linear infinite,evo-glow-buildup 2s ease-in forwards}
+
     /* 3D Floating Buddy Card */
     @keyframes buddy-levitate{
       0%,100%{transform:translateY(0) rotateX(2deg) rotateY(-1deg)}
@@ -8624,6 +8635,8 @@ const completePractice=()=>{
     v.mastery=Math.min(5,v.mastery+masteryGain);
     if(v.mastery>=5){v.mastery=5;S.xp+=50}
   }
+  // Capture stage BEFORE growth check for evolution animation
+  const prevStage=S.buddyStage;
   const growth=checkBuddyGrowth();
   S.happiness=Math.min(100,S.happiness+3);
 
@@ -8648,14 +8661,16 @@ const completePractice=()=>{
   pState.completedMode=pMode;
   pState.completedVerse=pVerse;
 
-  // Check if egg just hatched - show hatching celebration instead!
-  if(growth==='hatched'){
-    pState.hatching=true;
-    pState.hatchingPhase='shaking'; // shaking -> cracking -> reveal -> naming
+  // Check if evolution happened - show evolution celebration!
+  if(growth==='hatched'||growth==='grew'){
+    pState.evolving=true;
+    pState.evolvePhase='buildup'; // buildup -> burst -> reveal -> (naming if hatched)
+    pState.evolveType=growth; // 'hatched' or 'grew'
+    pState.prevStage=prevStage;
     pState.celebration=false;
   }else{
     pState.celebration=true;
-    pState.hatching=false;
+    pState.evolving=false;
   }
 
   render();
@@ -10426,14 +10441,69 @@ function render(){
     </div>`;
   }
 
-  // HATCHING CELEBRATION - The magical moment!
-  else if(pState.hatching){
-    const phase=pState.hatchingPhase||'shaking';
+  // EVOLUTION CELEBRATION - The magical moment! (works for hatching AND growing)
+  else if(pState.evolving){
+    const phase=pState.evolvePhase||'buildup';
+    const evoType=pState.evolveType||'grew'; // 'hatched' or 'grew'
+    const prevStage=pState.prevStage||'egg';
     const category=S.creatureCategory||'birds';
     const categoryData=CREATURE_CATEGORIES[category];
     const categoryName=categoryData?categoryData.name:'Creature';
+    const currentStage=S.buddyStage;
 
-    // Generate confetti for reveal phase
+    // Stage names for display
+    const stageNames={egg:'Egg',blob:'Blob',child:'Child',teen:'Teen',adult:'Adult'};
+    const prevStageName=stageNames[prevStage]||prevStage;
+    const newStageName=stageNames[currentStage]||currentStage;
+
+    // Render previous form (for buildup phase)
+    const renderPrevForm=()=>{
+      if(prevStage==='egg')return renderEgg(category);
+      if(prevStage==='blob')return renderBlob(category);
+      if(prevStage==='child')return renderBaby(category);
+      if(prevStage==='teen')return renderTeen(category);
+      return renderBuddyVisual();
+    };
+
+    // Render new form
+    const renderNewForm=()=>{
+      if(currentStage==='blob')return renderBlob(category);
+      if(currentStage==='child')return renderBaby(category);
+      if(currentStage==='teen')return renderTeen(category);
+      if(currentStage==='adult')return renderBuddyVisual();
+      return renderBuddyVisual();
+    };
+
+    // Generate burst effects (stars, smoke, lightning)
+    let burstEffects='';
+    if(phase==='burst'||phase==='reveal'||phase==='naming'){
+      // Smoke puffs
+      const smokeColors=['rgba(168,85,247,0.6)','rgba(236,72,153,0.5)','rgba(251,191,36,0.4)'];
+      for(let i=0;i<6;i++){
+        const x=20+Math.random()*60;
+        const y=20+Math.random()*60;
+        const size=80+Math.random()*60;
+        const delay=Math.random()*0.3;
+        burstEffects+=`<div style="position:absolute;left:${x}%;top:${y}%;width:${size}px;height:${size}px;background:${smokeColors[i%3]};border-radius:50%;filter:blur(20px);animation:evo-smoke-burst 1.5s ease-out ${delay}s forwards;"></div>`;
+      }
+      // Exploding stars
+      for(let i=0;i<12;i++){
+        const angle=(i*30)*Math.PI/180;
+        const dist=100+Math.random()*80;
+        const ex=Math.cos(angle)*dist;
+        const ey=Math.sin(angle)*dist;
+        const colors=['#fbbf24','#f472b6','#a78bfa','#34d399','#60a5fa'];
+        burstEffects+=`<div style="position:absolute;left:50%;top:50%;font-size:${16+Math.random()*12}px;--ex:${ex}px;--ey:${ey}px;animation:evo-star-explode 1s ease-out ${i*0.05}s forwards;color:${colors[i%5]};">✨</div>`;
+      }
+      // Lightning bolts
+      burstEffects+=`<div style="position:absolute;left:20%;top:10%;font-size:40px;animation:evo-lightning 0.5s ease-in-out 3;color:#fef08a;text-shadow:0 0 20px #fbbf24;">⚡</div>`;
+      burstEffects+=`<div style="position:absolute;right:20%;top:15%;font-size:35px;animation:evo-lightning 0.5s ease-in-out 3 0.1s;color:#fef08a;text-shadow:0 0 20px #fbbf24;">⚡</div>`;
+      // Expanding rings
+      burstEffects+=`<div style="position:absolute;left:50%;top:50%;width:100px;height:100px;border:4px solid rgba(251,191,36,0.8);border-radius:50%;animation:evo-ring-expand 1s ease-out forwards;"></div>`;
+      burstEffects+=`<div style="position:absolute;left:50%;top:50%;width:100px;height:100px;border:4px solid rgba(168,85,247,0.6);border-radius:50%;animation:evo-ring-expand 1s ease-out 0.2s forwards;"></div>`;
+    }
+
+    // Confetti for reveal phase
     let confetti='';
     if(phase==='reveal'||phase==='naming'){
       const colors=['#fbbf24','#f472b6','#a78bfa','#34d399','#60a5fa','#fb7185'];
@@ -10446,87 +10516,87 @@ function render(){
       }
     }
 
-    h=`<div class="p-5 min-h-screen flex items-center justify-center" style="background:linear-gradient(135deg,#1e1b4b,#312e81,#4c1d95);">
-      <div class="text-center max-w-md w-full relative overflow-hidden">
-        ${confetti}
+    const isHatching=evoType==='hatched';
+    const evolveTitle=isHatching?'Your egg is hatching!':`${S.buddyName||categoryName} is evolving!`;
 
-        ${phase==='shaking'?`
-          <!-- Phase 1: Egg Shaking -->
+    h=`<div class="p-5 min-h-screen flex items-center justify-center" style="background:linear-gradient(135deg,#1e1b4b,#312e81,#4c1d95);">
+      <div class="text-center max-w-md w-full relative overflow-hidden" style="min-height:500px;">
+        ${confetti}${burstEffects}
+
+        ${phase==='buildup'?`
+          <!-- Phase 1: Speed Buildup -->
           <div class="mb-6">
-            <p class="text-yellow-300 text-xl font-bold mb-4 animate-pulse">Something's happening!</p>
-            <div class="hatch-shake inline-block" style="animation:hatch-glow-pulse 1s ease-in-out infinite;">
-              ${renderEgg(category)}
+            <p class="text-yellow-300 text-xl font-bold mb-4 animate-pulse">${evolveTitle}</p>
+            <div class="evo-spin-buildup inline-block rounded-3xl" style="transform-origin:center;">
+              <div style="transform:scale(0.7);transform-origin:center;">
+                ${renderPrevForm()}
+              </div>
             </div>
           </div>
-          <p class="text-white/80 text-sm mb-4">Your egg is moving...</p>
-          <button onclick="pState.hatchingPhase='cracking';render()" class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-bold py-4 px-8 rounded-2xl text-lg shadow-lg">
-            👀 Watch closely...
+          <p class="text-white/80 text-sm mb-4">Energy is building up...</p>
+          <button onclick="pState.evolvePhase='burst';render()" class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-bold py-4 px-8 rounded-2xl text-lg shadow-lg animate-pulse">
+            ⚡ Release the energy!
           </button>
         `:''}
 
-        ${phase==='cracking'?`
-          <!-- Phase 2: Cracks Appearing -->
-          <div class="mb-6 relative inline-block">
-            <p class="text-yellow-300 text-xl font-bold mb-4">It's hatching!</p>
-            <div class="hatch-shake inline-block relative" style="animation-duration:0.5s;">
-              ${renderEgg(category)}
-              <!-- Glowing cracks overlay -->
-              <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100%;height:100%;pointer-events:none;">
-                <div style="position:absolute;width:4px;height:60px;left:45%;top:20%;background:linear-gradient(to bottom,transparent,#fef08a,#fbbf24,transparent);animation:hatch-crack-appear 0.5s ease-out;border-radius:2px;box-shadow:0 0 15px #fbbf24;"></div>
-                <div style="position:absolute;width:4px;height:45px;left:55%;top:35%;background:linear-gradient(to bottom,transparent,#fef08a,#fbbf24,transparent);animation:hatch-crack-appear 0.5s ease-out 0.2s;border-radius:2px;transform:rotate(15deg);box-shadow:0 0 12px #fbbf24;"></div>
-                <div style="position:absolute;width:4px;height:35px;left:38%;top:40%;background:linear-gradient(to bottom,transparent,#fef08a,#fbbf24,transparent);animation:hatch-crack-appear 0.5s ease-out 0.4s;border-radius:2px;transform:rotate(-10deg);box-shadow:0 0 10px #fbbf24;"></div>
-              </div>
-              <!-- Light bursting through -->
-              <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:200px;height:200px;background:radial-gradient(circle,rgba(254,240,138,0.8),rgba(251,191,36,0.4),transparent 70%);border-radius:50%;animation:energy-pulse 0.8s ease-in-out infinite;"></div>
-            </div>
+        ${phase==='burst'?`
+          <!-- Phase 2: Burst! Flash of light -->
+          <div class="mb-6 relative" style="min-height:250px;">
+            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:300px;height:300px;background:radial-gradient(circle,rgba(255,255,255,1) 0%,rgba(251,191,36,0.8) 30%,rgba(168,85,247,0.4) 60%,transparent 80%);border-radius:50%;animation:evo-flash 0.8s ease-out;"></div>
+            <p class="text-white text-3xl font-bold pt-24" style="text-shadow:0 0 30px white;">✨ EVOLUTION! ✨</p>
           </div>
-          <p class="text-white/80 text-sm mb-4">Light is bursting through!</p>
-          <button onclick="pState.hatchingPhase='reveal';render()" class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-bold py-4 px-8 rounded-2xl text-lg shadow-lg animate-pulse">
-            ✨ See what's inside!
+          <button onclick="pState.evolvePhase='reveal';render()" class="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-4 px-8 rounded-2xl text-lg shadow-lg">
+            🌟 See the transformation!
           </button>
         `:''}
 
         ${phase==='reveal'?`
-          <!-- Phase 3: Creature Revealed! -->
+          <!-- Phase 3: New Form Revealed! -->
           <div class="mb-6">
-            <p class="text-yellow-300 text-3xl font-bold mb-2 hatch-text-pop">🎉 Congratulations! 🎉</p>
-            <p class="text-white text-lg mb-4">Your egg hatched into a...</p>
+            <p class="text-yellow-300 text-3xl font-bold mb-2 hatch-text-pop">🎉 ${isHatching?'It hatched!':'Evolved!'} 🎉</p>
+            <p class="text-white text-lg mb-4">${isHatching?`Your egg became a ${categoryName} ${newStageName}!`:`${S.buddyName||categoryName} evolved from ${prevStageName} to ${newStageName}!`}</p>
             <div class="hatch-creature-pop inline-block bg-white/20 rounded-3xl p-6" style="backdrop-filter:blur(10px);">
-              <div style="transform:scale(0.7);transform-origin:center;">
-                ${renderBlob(category)}
+              <div style="transform:scale(0.65);transform-origin:center;">
+                ${renderNewForm()}
               </div>
             </div>
-            <p class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-pink-300 to-purple-300 mt-4">${categoryName} Blob!</p>
+            <p class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-pink-300 to-purple-300 mt-4">${categoryName} ${newStageName}!</p>
           </div>
           <div class="bg-white/10 rounded-2xl p-4 mb-4">
             <p class="text-yellow-200 text-sm">+${pState.xpEarned} XP earned from practice!</p>
           </div>
-          <button onclick="pState.hatchingPhase='naming';render()" class="bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold py-4 px-8 rounded-2xl text-lg shadow-lg">
-            💕 Give them a name!
-          </button>
+          ${isHatching&&!S.buddyName?`
+            <button onclick="pState.evolvePhase='naming';render()" class="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold py-4 rounded-2xl text-lg shadow-lg">
+              💕 Give them a name!
+            </button>
+          `:`
+            <button onclick="pState.evolving=false;pState.celebration=true;render()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-4 rounded-2xl text-lg shadow-lg">
+              🎉 Continue
+            </button>
+          `}
         `:''}
 
         ${phase==='naming'?`
-          <!-- Phase 4: Name Your Friend -->
+          <!-- Phase 4: Name Your Friend (only for hatching) -->
           <div class="mb-6">
             <p class="text-yellow-300 text-2xl font-bold mb-4">Name Your New Friend!</p>
             <div class="inline-block bg-white/20 rounded-3xl p-6 mb-4" style="backdrop-filter:blur(10px);">
-              <div style="transform:scale(0.65);transform-origin:center;">
-                ${renderBlob(category)}
+              <div style="transform:scale(0.6);transform-origin:center;">
+                ${renderNewForm()}
               </div>
             </div>
           </div>
           <div class="bg-white/95 rounded-2xl p-4 mb-4">
-            <input type="text" id="hatch-name-input" placeholder="Enter a name..." maxlength="20"
+            <input type="text" id="evo-name-input" placeholder="Enter a name..." maxlength="20"
               class="w-full text-center text-xl font-bold text-purple-800 bg-purple-50 rounded-xl py-3 px-4 outline-none focus:ring-2 focus:ring-purple-400"
               value="${S.buddyName||''}"
-              onkeydown="if(event.key==='Enter'){const n=this.value.trim();if(n){S.buddyName=n;save();pState.hatching=false;pState.celebration=true;render()}}">
+              onkeydown="if(event.key==='Enter'){const n=this.value.trim();if(n){S.buddyName=n;save();pState.evolving=false;pState.celebration=true;render()}}">
             <p class="text-purple-500 text-xs mt-2">Press Enter or tap the button below</p>
           </div>
-          <button onclick="const inp=document.getElementById('hatch-name-input');const n=inp?inp.value.trim():'';if(n){S.buddyName=n;save();pState.hatching=false;pState.celebration=true;render()}else{alert('Please enter a name!')}" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-4 rounded-2xl text-lg shadow-lg">
+          <button onclick="const inp=document.getElementById('evo-name-input');const n=inp?inp.value.trim():'';if(n){S.buddyName=n;save();pState.evolving=false;pState.celebration=true;render()}else{alert('Please enter a name!')}" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-4 rounded-2xl text-lg shadow-lg">
             💜 Welcome, ${S.buddyName||'friend'}!
           </button>
-          <button onclick="S.buddyName='Buddy';save();pState.hatching=false;pState.celebration=true;render()" class="w-full bg-white/20 text-white/80 font-semibold py-3 rounded-2xl mt-2">
+          <button onclick="S.buddyName='Buddy';save();pState.evolving=false;pState.celebration=true;render()" class="w-full bg-white/20 text-white/80 font-semibold py-3 rounded-2xl mt-2">
             Skip (name later)
           </button>
         `:''}
