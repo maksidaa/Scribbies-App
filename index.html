@@ -2319,20 +2319,6 @@ function getBuddyEmoji(){
   return'🥚'; // Fallback
 }
 
-// Compact buddy status for practice screens - shows actual creature and stage-specific XP
-function getPracticeStatusBar(){
-  const stage=S.buddyStage||'egg';
-  let xpDisplay;
-  if(stage==='egg')xpDisplay=`${S.eggXP||0}/${STAGES.egg.hatchXP}`;
-  else if(stage==='adult')xpDisplay='Max';
-  else xpDisplay=`${S.growthXP||0}/${STAGES[stage].growthNeeded}`;
-
-  return`<div class="bg-white/10 rounded-xl px-3 py-2 mb-3 flex items-center gap-2">
-    <div style="transform:scale(0.2);transform-origin:left center;width:50px;height:40px;margin:-20px 0;">${renderBuddyVisual()}</div>
-    <span class="text-white/90 text-sm font-semibold">✨ ${xpDisplay} XP</span>
-  </div>`;
-}
-
 function getStageName(){
   const stage=S.buddyStage||'egg';
 
@@ -3708,6 +3694,20 @@ function renderBuddyVisual(){
   }
 
   return`<div class="buddy-card-container${customizeClass}"><div class="buddy-with-accessories${stateClass}">${stateDecorations}${renderAccessories()}${buddyHTML}</div></div>`;
+}
+
+// Compact buddy status for practice screens - shows actual creature and stage-specific XP
+function getPracticeStatusBar(){
+  const stage=S.buddyStage||'egg';
+  let xpDisplay;
+  if(stage==='egg')xpDisplay=`${S.eggXP||0}/${STAGES.egg.hatchXP}`;
+  else if(stage==='adult')xpDisplay='Max';
+  else xpDisplay=`${S.growthXP||0}/${STAGES[stage].growthNeeded}`;
+
+  return`<div class="bg-white/10 rounded-xl px-3 py-2 mb-3 flex items-center gap-2">
+    <div style="transform:scale(0.2);transform-origin:left center;width:50px;height:40px;margin:-20px 0;">${renderBuddyVisual()}</div>
+    <span class="text-white/90 text-sm font-semibold">✨ ${xpDisplay} XP</span>
+  </div>`;
 }
 
 // Generate progressive particle effects for eggs based on hatching progress
