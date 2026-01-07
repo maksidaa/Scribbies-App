@@ -10031,7 +10031,12 @@ function render(){
       <div class="flex-1">
         <div class="flex justify-between items-center mb-1">
           <span class="text-white font-semibold text-sm">${getStageName()}</span>
-          <span class="text-white/90 font-bold">✨ ${S.xp} XP</span>
+          <span class="text-white/90 font-bold">✨ ${(()=>{
+            const stage=S.buddyStage||'egg';
+            if(stage==='egg')return `${S.eggXP||0}/${STAGES.egg.hatchXP}`;
+            if(stage==='adult')return 'Max';
+            return `${S.growthXP||0}/${STAGES[stage].growthNeeded}`;
+          })()} XP</span>
         </div>
         <div class="h-1.5 bg-white/20 rounded-full overflow-hidden">
           <div class="h-full bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full transition-all" style="width:${(()=>{
