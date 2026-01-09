@@ -12013,8 +12013,10 @@ function render(){
         scribbyVisual=renderAdultPrehistoric(varIdx);
       }else if(cat==='aquatic'){
         scribbyVisual=renderAdultAquatic(varIdx);
+      }else if(cat==='alien'){
+        scribbyVisual=renderAdultAlien(varIdx);
       }else{
-        // For other categories (dragons, insects, fantasy, alien), use emoji
+        // For other categories (dragons, insects, fantasy), use emoji
         const emoji=category?.adultVariants?.[varIdx]||'🐾';
         scribbyVisual=`<div style="font-size:4rem;">${emoji}</div>`;
       }
@@ -12097,6 +12099,8 @@ function render(){
         scribbyVisual=renderAdultPrehistoric(varIdx);
       }else if(cat==='aquatic'){
         scribbyVisual=renderAdultAquatic(varIdx);
+      }else if(cat==='alien'){
+        scribbyVisual=renderAdultAlien(varIdx);
       }else{
         const emoji=category?.adultVariants?.[varIdx]||'🐾';
         scribbyVisual=`<div style="font-size:4rem;">${emoji}</div>`;
@@ -12383,7 +12387,7 @@ function render(){
                   return`<div class="flex flex-col items-center pt-1 ${isCollected?'cursor-pointer hover:bg-purple-50 rounded-lg transition-colors':''}" ${isCollected&&buddyInfo?`onclick="showScribbyCard('${categoryKey}',${idx},${buddyInfo.id})"`:''}>
                     <div style="width:60px;height:70px;overflow:visible;display:flex;align-items:center;justify-content:center;">
                       ${isCollected?`
-                        <div style="transform:scale(0.25);transform-origin:center;">${categoryKey==='birds'?renderAdultBird(idx):categoryKey==='reptiles'?renderAdultReptile(idx):categoryKey==='mammals'?renderAdultMammal(idx):categoryKey==='mystical'?renderAdultMystical(idx):categoryKey==='prehistoric'?renderAdultPrehistoric(idx):categoryKey==='aquatic'?renderAdultAquatic(idx):`<div class="text-2xl">${emoji}</div>`}</div>
+                        <div style="transform:scale(0.25);transform-origin:center;">${categoryKey==='birds'?renderAdultBird(idx):categoryKey==='reptiles'?renderAdultReptile(idx):categoryKey==='mammals'?renderAdultMammal(idx):categoryKey==='mystical'?renderAdultMystical(idx):categoryKey==='prehistoric'?renderAdultPrehistoric(idx):categoryKey==='aquatic'?renderAdultAquatic(idx):categoryKey==='alien'?renderAdultAlien(idx):`<div class="text-2xl">${emoji}</div>`}</div>
                       `:`
                         <div style="width:50px;height:50px;border-radius:50%;border:3px dashed rgba(147,112,219,0.3);display:flex;align-items:center;justify-content:center;">
                           <span class="text-purple-300 text-2xl">?</span>
@@ -13097,7 +13101,7 @@ function render(){
                 ${category.adultVariants.map((emoji,idx)=>`
                   <div class="flex flex-col items-center pt-2">
                     <div class="cursor-pointer hover:scale-110 transition-transform" style="width:84px;height:98px;overflow:visible;display:flex;align-items:center;justify-content:center;" onclick="showCreaturePreview('adult','${categoryKey}',${idx})">
-                      <div style="transform:scale(0.35);transform-origin:center;">${categoryKey==='birds'?renderAdultBird(idx):categoryKey==='reptiles'?renderAdultReptile(idx):categoryKey==='mammals'?renderAdultMammal(idx):categoryKey==='mystical'?renderAdultMystical(idx):categoryKey==='prehistoric'?renderAdultPrehistoric(idx):categoryKey==='aquatic'?renderAdultAquatic(idx):`<div class="text-3xl">${emoji}</div>`}</div>
+                      <div style="transform:scale(0.35);transform-origin:center;">${categoryKey==='birds'?renderAdultBird(idx):categoryKey==='reptiles'?renderAdultReptile(idx):categoryKey==='mammals'?renderAdultMammal(idx):categoryKey==='mystical'?renderAdultMystical(idx):categoryKey==='prehistoric'?renderAdultPrehistoric(idx):categoryKey==='aquatic'?renderAdultAquatic(idx):categoryKey==='alien'?renderAdultAlien(idx):`<div class="text-3xl">${emoji}</div>`}</div>
                     </div>
                     <p class="text-[9px] text-purple-600 leading-tight text-center mt-2" style="position:relative;z-index:100;">${category.adultNames[idx]}</p>
                   </div>
@@ -14157,6 +14161,8 @@ function showCreaturePreview(stage,categoryKey,variantIdx=0){
       creatureHTML=renderAdultPrehistoric(variantIdx);
     }else if(categoryKey==='aquatic'){
       creatureHTML=renderAdultAquatic(variantIdx);
+    }else if(categoryKey==='alien'){
+      creatureHTML=renderAdultAlien(variantIdx);
     }else{
       creatureHTML=`<div style="font-size:10rem;line-height:1;">${category.adultVariants[variantIdx]}</div>`;
     }
@@ -14207,6 +14213,8 @@ function showScribbyCard(categoryKey,variantIdx,buddyId,stage='adult'){
     creatureHTML=renderAdultPrehistoric(variantIdx);
   }else if(categoryKey==='aquatic'){
     creatureHTML=renderAdultAquatic(variantIdx);
+  }else if(categoryKey==='alien'){
+    creatureHTML=renderAdultAlien(variantIdx);
   }else{
     creatureHTML=`<div style="font-size:8rem;line-height:1;">${category.adultVariants[variantIdx]}</div>`;
   }
@@ -14478,6 +14486,8 @@ async function showPendingTrade(buddyId){
     scribbyVisual=renderAdultPrehistoric(varIdx);
   }else if(cat==='aquatic'){
     scribbyVisual=renderAdultAquatic(varIdx);
+  }else if(cat==='alien'){
+    scribbyVisual=renderAdultAlien(varIdx);
   }else{
     const emoji=category?.adultVariants?.[varIdx]||'🐾';
     scribbyVisual=`<div style="font-size:5rem;">${emoji}</div>`;
@@ -14562,6 +14572,8 @@ function showTradeTerms(buddyId){
     scribbyVisual=renderAdultPrehistoric(varIdx);
   }else if(cat==='aquatic'){
     scribbyVisual=renderAdultAquatic(varIdx);
+  }else if(cat==='alien'){
+    scribbyVisual=renderAdultAlien(varIdx);
   }else{
     const emoji=category?.adultVariants?.[varIdx]||'🐾';
     scribbyVisual=`<div style="font-size:5rem;">${emoji}</div>`;
@@ -14857,6 +14869,8 @@ async function initiateTrade(buddyId){
     scribbyVisual=renderAdultPrehistoric(varIdx);
   }else if(cat==='aquatic'){
     scribbyVisual=renderAdultAquatic(varIdx);
+  }else if(cat==='alien'){
+    scribbyVisual=renderAdultAlien(varIdx);
   }else{
     const emoji=category?.adultVariants?.[varIdx]||'🐾';
     scribbyVisual=`<div style="font-size:4rem;">${emoji}</div>`;
@@ -15175,6 +15189,8 @@ function showPendingScribbyTrade(tradeCode){
     scribbyVisual=renderAdultPrehistoric(varIdx);
   }else if(cat==='aquatic'){
     scribbyVisual=renderAdultAquatic(varIdx);
+  }else if(cat==='alien'){
+    scribbyVisual=renderAdultAlien(varIdx);
   }else{
     const emoji=category?.adultVariants?.[varIdx]||'🐾';
     scribbyVisual=`<div style="font-size:4rem;">${emoji}</div>`;
