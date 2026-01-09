@@ -496,7 +496,8 @@
     /* Alien animations */
     @keyframes alien-float{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-10px) rotate(1deg)}50%{transform:translateY(-15px) rotate(0deg)}75%{transform:translateY(-10px) rotate(-1deg)}}
     @keyframes alien-blink{0%,92%,100%{transform:scaleY(1)}94%,98%{transform:scaleY(0.1)}}
-    @keyframes alien-eye-look{0%,15%{transform:translate(0,0)}18%,28%{transform:translate(0,-5px)}30%,40%{transform:translate(4px,-3px)}42%,52%{transform:translate(5px,0)}54%,64%{transform:translate(0,0)}66%,76%{transform:translate(-4px,-3px)}78%,88%{transform:translate(-5px,0)}90%,100%{transform:translate(0,0)}}
+    @keyframes alien-eye-look{0%,10%{transform:translate(-50%,-50%)}12%,22%{transform:translate(-50%,-58%)}24%,34%{transform:translate(-42%,-55%)}36%,46%{transform:translate(-42%,-50%)}48%,58%{transform:translate(-50%,-50%)}60%,70%{transform:translate(-58%,-55%)}72%,82%{transform:translate(-58%,-50%)}84%,94%{transform:translate(-50%,-45%)}96%,100%{transform:translate(-50%,-50%)}}
+    @keyframes alien-waddle{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-3px) rotate(-2deg)}50%{transform:translateY(0) rotate(0deg)}75%{transform:translateY(-3px) rotate(2deg)}}
     @keyframes alien-antenna-l{0%,100%{transform:rotate(-15deg)}25%{transform:rotate(-25deg)}50%{transform:rotate(-10deg)}75%{transform:rotate(-20deg)}}
     @keyframes alien-antenna-r{0%,100%{transform:rotate(15deg)}25%{transform:rotate(25deg)}50%{transform:rotate(10deg)}75%{transform:rotate(20deg)}}
     @keyframes alien-glow{0%,100%{opacity:0.6;transform:scale(1)}50%{opacity:1;transform:scale(1.2)}}
@@ -10094,118 +10095,113 @@ function renderAdultAlien(variantIndex){
   // Alien design with features borrowed from teen variants
   const alienDesign = `
 <!-- COSMIC ALIEN BUDDY - Extra Cute with Glowing Features -->
-<div data-part="container" style="position:relative;width:200px;height:260px;animation:alien-float 4s ease-in-out infinite;">
+<div data-part="container" style="position:relative;width:200px;height:240px;animation:alien-waddle 1.2s ease-in-out infinite;">
   <!-- Cosmic glow aura behind alien -->
-  <div style="position:absolute;width:160px;height:160px;background:radial-gradient(circle,rgba(0,255,255,0.25),rgba(138,43,226,0.15),transparent 70%);border-radius:50%;top:30px;left:20px;z-index:1;animation:alien-glow 3s ease-in-out infinite;"></div>
+  <div style="position:absolute;width:140px;height:140px;background:radial-gradient(circle,rgba(0,255,255,0.25),rgba(138,43,226,0.15),transparent 70%);border-radius:50%;top:30px;left:30px;z-index:1;animation:alien-glow 3s ease-in-out infinite;"></div>
 
   <!-- Left Antenna - Neon Cyan/Pink -->
-  <div style="position:absolute;width:9px;height:55px;top:8px;left:52px;z-index:25;transform-origin:bottom center;animation:alien-antenna-l 2.5s ease-in-out infinite;">
+  <div style="position:absolute;width:8px;height:45px;top:12px;left:58px;z-index:25;transform-origin:bottom center;animation:alien-antenna-l 2.5s ease-in-out infinite;">
     <div style="width:100%;height:100%;background:linear-gradient(to top,rgba(0,255,255,0.9),rgba(255,0,255,0.95));border:2px solid rgba(138,43,226,0.6);border-radius:20px 20px 8px 8px;box-shadow:0 0 8px rgba(0,255,255,0.5);"></div>
     <!-- Glowing tip orb -->
-    <div style="position:absolute;width:18px;height:18px;background:radial-gradient(circle at 40% 40%,rgba(0,255,255,1),rgba(0,206,209,0.9));border:2px solid rgba(0,180,180,0.6);border-radius:50%;top:-12px;left:50%;transform:translateX(-50%);box-shadow:0 0 15px rgba(0,255,255,0.8),0 0 25px rgba(0,255,255,0.4);animation:alien-glow 1.5s ease-in-out infinite;"></div>
+    <div style="position:absolute;width:16px;height:16px;background:radial-gradient(circle at 40% 40%,rgba(0,255,255,1),rgba(0,206,209,0.9));border:2px solid rgba(0,180,180,0.6);border-radius:50%;top:-10px;left:50%;transform:translateX(-50%);box-shadow:0 0 15px rgba(0,255,255,0.8),0 0 25px rgba(0,255,255,0.4);animation:alien-glow 1.5s ease-in-out infinite;"></div>
   </div>
 
   <!-- Right Antenna - Neon Pink/Cyan -->
-  <div style="position:absolute;width:9px;height:55px;top:8px;right:52px;z-index:25;transform-origin:bottom center;animation:alien-antenna-r 2.5s ease-in-out infinite;">
+  <div style="position:absolute;width:8px;height:45px;top:12px;right:58px;z-index:25;transform-origin:bottom center;animation:alien-antenna-r 2.5s ease-in-out infinite;">
     <div style="width:100%;height:100%;background:linear-gradient(to top,rgba(255,0,255,0.9),rgba(0,255,255,0.95));border:2px solid rgba(138,43,226,0.6);border-radius:20px 20px 8px 8px;box-shadow:0 0 8px rgba(255,0,255,0.5);"></div>
     <!-- Glowing tip orb -->
-    <div style="position:absolute;width:18px;height:18px;background:radial-gradient(circle at 40% 40%,rgba(255,0,255,1),rgba(218,112,214,0.9));border:2px solid rgba(180,0,180,0.6);border-radius:50%;top:-12px;left:50%;transform:translateX(-50%);box-shadow:0 0 15px rgba(255,0,255,0.8),0 0 25px rgba(255,0,255,0.4);animation:alien-glow 1.5s ease-in-out infinite 0.5s;"></div>
+    <div style="position:absolute;width:16px;height:16px;background:radial-gradient(circle at 40% 40%,rgba(255,0,255,1),rgba(218,112,214,0.9));border:2px solid rgba(180,0,180,0.6);border-radius:50%;top:-10px;left:50%;transform:translateX(-50%);box-shadow:0 0 15px rgba(255,0,255,0.8),0 0 25px rgba(255,0,255,0.4);animation:alien-glow 1.5s ease-in-out infinite 0.5s;"></div>
   </div>
 
-  <!-- Body (oval connected to head) -->
-  <div style="position:absolute;width:80px;height:65px;background:radial-gradient(ellipse at 40% 30%,#c4b5fd,#a78bfa,#8b5cf6);border:3px solid #7c3aed;border-radius:50%;top:115px;left:60px;z-index:20;box-shadow:inset 6px 6px 15px rgba(200,180,255,0.5),inset -4px -4px 10px rgba(100,50,180,0.3),0 0 20px rgba(138,43,226,0.3);">
+  <!-- Stubby Arms (connected to body) -->
+  <div style="position:absolute;width:18px;height:28px;background:radial-gradient(ellipse at 50% 30%,#c4b5fd,#a78bfa,#8b5cf6);border:2px solid #7c3aed;border-radius:50%;top:118px;left:48px;z-index:19;transform-origin:top right;animation:alien-arm-wave-l 2s ease-in-out infinite;box-shadow:0 0 8px rgba(138,43,226,0.3);">
+    <!-- 3 stubby fingers -->
+    <div style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:16px;height:10px;">
+      <div style="position:absolute;width:5px;height:8px;background:radial-gradient(ellipse,#c4b5fd,#a78bfa);border:1px solid #7c3aed;border-radius:50%;left:0;"></div>
+      <div style="position:absolute;width:5px;height:10px;background:radial-gradient(ellipse,#c4b5fd,#a78bfa);border:1px solid #7c3aed;border-radius:50%;left:5px;"></div>
+      <div style="position:absolute;width:5px;height:8px;background:radial-gradient(ellipse,#c4b5fd,#a78bfa);border:1px solid #7c3aed;border-radius:50%;right:0;"></div>
+    </div>
+  </div>
+  <div style="position:absolute;width:18px;height:28px;background:radial-gradient(ellipse at 50% 30%,#c4b5fd,#a78bfa,#8b5cf6);border:2px solid #7c3aed;border-radius:50%;top:118px;right:48px;z-index:19;transform-origin:top left;animation:alien-arm-wave-r 2s ease-in-out infinite;box-shadow:0 0 8px rgba(138,43,226,0.3);">
+    <!-- 3 stubby fingers -->
+    <div style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:16px;height:10px;">
+      <div style="position:absolute;width:5px;height:8px;background:radial-gradient(ellipse,#c4b5fd,#a78bfa);border:1px solid #7c3aed;border-radius:50%;left:0;"></div>
+      <div style="position:absolute;width:5px;height:10px;background:radial-gradient(ellipse,#c4b5fd,#a78bfa);border:1px solid #7c3aed;border-radius:50%;left:5px;"></div>
+      <div style="position:absolute;width:5px;height:8px;background:radial-gradient(ellipse,#c4b5fd,#a78bfa);border:1px solid #7c3aed;border-radius:50%;right:0;"></div>
+    </div>
+  </div>
+
+  <!-- Body (oval) -->
+  <div style="position:absolute;width:70px;height:55px;background:radial-gradient(ellipse at 40% 30%,#c4b5fd,#a78bfa,#8b5cf6);border:3px solid #7c3aed;border-radius:50%;top:110px;left:65px;z-index:20;box-shadow:inset 6px 6px 15px rgba(200,180,255,0.5),inset -4px -4px 10px rgba(100,50,180,0.3),0 0 20px rgba(138,43,226,0.3);">
     <!-- Belly highlight -->
-    <div style="position:absolute;width:45px;height:35px;background:radial-gradient(ellipse at 50% 40%,rgba(237,233,254,0.6),transparent);border-radius:50%;top:12px;left:50%;transform:translateX(-50%);"></div>
+    <div style="position:absolute;width:40px;height:30px;background:radial-gradient(ellipse at 50% 40%,rgba(237,233,254,0.6),transparent);border-radius:50%;top:8px;left:50%;transform:translateX(-50%);"></div>
     <!-- Glowing energy core -->
-    <div style="position:absolute;width:28px;height:28px;background:radial-gradient(circle,rgba(255,255,255,0.9),rgba(0,255,255,0.7),rgba(255,0,255,0.5));border-radius:50%;bottom:8px;left:50%;transform:translateX(-50%);box-shadow:0 0 20px rgba(0,255,255,0.6),0 0 30px rgba(255,0,255,0.3);animation:alien-glow 2s ease-in-out infinite;"></div>
-    <!-- Circuit patterns -->
-    <div style="position:absolute;left:8px;top:20px;width:3px;height:18px;background:rgba(0,255,255,0.5);box-shadow:0 0 6px rgba(0,255,255,0.5);border-radius:2px;"></div>
-    <div style="position:absolute;right:8px;top:20px;width:3px;height:18px;background:rgba(255,0,255,0.5);box-shadow:0 0 6px rgba(255,0,255,0.5);border-radius:2px;"></div>
+    <div style="position:absolute;width:22px;height:22px;background:radial-gradient(circle,rgba(255,255,255,0.9),rgba(0,255,255,0.7),rgba(255,0,255,0.5));border-radius:50%;bottom:6px;left:50%;transform:translateX(-50%);box-shadow:0 0 15px rgba(0,255,255,0.6),0 0 25px rgba(255,0,255,0.3);animation:alien-glow 2s ease-in-out infinite;"></div>
   </div>
 
-  <!-- Arms (connected to body sides) -->
-  <div style="position:absolute;width:14px;height:40px;background:radial-gradient(ellipse at 50% 30%,#c4b5fd,#a78bfa,#8b5cf6);border:2px solid #7c3aed;border-radius:20px;top:125px;left:42px;z-index:19;transform-origin:top right;animation:alien-arm-wave-l 2s ease-in-out infinite;box-shadow:0 0 8px rgba(138,43,226,0.3);">
-    <!-- 3-fingered hand -->
-    <div style="position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);width:20px;height:14px;">
-      <div style="position:absolute;width:6px;height:12px;background:radial-gradient(ellipse,#c4b5fd,#a78bfa);border:2px solid #7c3aed;border-radius:50%;left:0;transform:rotate(-20deg);"></div>
-      <div style="position:absolute;width:6px;height:14px;background:radial-gradient(ellipse,#c4b5fd,#a78bfa);border:2px solid #7c3aed;border-radius:50%;left:7px;"></div>
-      <div style="position:absolute;width:6px;height:12px;background:radial-gradient(ellipse,#c4b5fd,#a78bfa);border:2px solid #7c3aed;border-radius:50%;right:0;transform:rotate(20deg);"></div>
-    </div>
+  <!-- Stubby Legs -->
+  <div style="position:absolute;width:20px;height:25px;background:radial-gradient(ellipse at 50% 30%,#c4b5fd,#a78bfa,#8b5cf6);border:2px solid #7c3aed;border-radius:50%;top:155px;left:72px;z-index:18;box-shadow:0 0 8px rgba(138,43,226,0.3);">
+    <!-- Stubby Foot -->
+    <div style="position:absolute;width:26px;height:10px;background:radial-gradient(ellipse at 50% 30%,#c4b5fd,#a78bfa);border:2px solid #7c3aed;border-radius:50%;bottom:-4px;left:50%;transform:translateX(-50%);"></div>
   </div>
-  <div style="position:absolute;width:14px;height:40px;background:radial-gradient(ellipse at 50% 30%,#c4b5fd,#a78bfa,#8b5cf6);border:2px solid #7c3aed;border-radius:20px;top:125px;right:42px;z-index:19;transform-origin:top left;animation:alien-arm-wave-r 2s ease-in-out infinite;box-shadow:0 0 8px rgba(138,43,226,0.3);">
-    <!-- 3-fingered hand -->
-    <div style="position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);width:20px;height:14px;">
-      <div style="position:absolute;width:6px;height:12px;background:radial-gradient(ellipse,#c4b5fd,#a78bfa);border:2px solid #7c3aed;border-radius:50%;left:0;transform:rotate(-20deg);"></div>
-      <div style="position:absolute;width:6px;height:14px;background:radial-gradient(ellipse,#c4b5fd,#a78bfa);border:2px solid #7c3aed;border-radius:50%;left:7px;"></div>
-      <div style="position:absolute;width:6px;height:12px;background:radial-gradient(ellipse,#c4b5fd,#a78bfa);border:2px solid #7c3aed;border-radius:50%;right:0;transform:rotate(20deg);"></div>
-    </div>
-  </div>
-
-  <!-- Little Legs -->
-  <div style="position:absolute;width:16px;height:35px;background:radial-gradient(ellipse at 50% 30%,#c4b5fd,#a78bfa,#8b5cf6);border:2px solid #7c3aed;border-radius:20px;bottom:20px;left:68px;z-index:18;box-shadow:0 0 8px rgba(138,43,226,0.3);">
-    <!-- Foot -->
-    <div style="position:absolute;width:24px;height:12px;background:radial-gradient(ellipse at 50% 30%,#c4b5fd,#a78bfa);border:2px solid #7c3aed;border-radius:50%;bottom:-6px;left:50%;transform:translateX(-50%);"></div>
-  </div>
-  <div style="position:absolute;width:16px;height:35px;background:radial-gradient(ellipse at 50% 30%,#c4b5fd,#a78bfa,#8b5cf6);border:2px solid #7c3aed;border-radius:20px;bottom:20px;right:68px;z-index:18;box-shadow:0 0 8px rgba(138,43,226,0.3);">
-    <!-- Foot -->
-    <div style="position:absolute;width:24px;height:12px;background:radial-gradient(ellipse at 50% 30%,#c4b5fd,#a78bfa);border:2px solid #7c3aed;border-radius:50%;bottom:-6px;left:50%;transform:translateX(-50%);"></div>
+  <div style="position:absolute;width:20px;height:25px;background:radial-gradient(ellipse at 50% 30%,#c4b5fd,#a78bfa,#8b5cf6);border:2px solid #7c3aed;border-radius:50%;top:155px;right:72px;z-index:18;box-shadow:0 0 8px rgba(138,43,226,0.3);">
+    <!-- Stubby Foot -->
+    <div style="position:absolute;width:26px;height:10px;background:radial-gradient(ellipse at 50% 30%,#c4b5fd,#a78bfa);border:2px solid #7c3aed;border-radius:50%;bottom:-4px;left:50%;transform:translateX(-50%);"></div>
   </div>
 
   <!-- Big Adorable Head -->
-  <div style="position:absolute;width:130px;height:110px;top:25px;left:35px;z-index:30;animation:alien-happy 6s ease-in-out infinite;">
+  <div style="position:absolute;width:120px;height:100px;top:25px;left:40px;z-index:30;animation:alien-happy 6s ease-in-out infinite;">
     <!-- Main head shape - chrome lavender -->
     <div style="width:100%;height:100%;background:radial-gradient(ellipse at 40% 30%,#ede9fe,#c4b5fd 40%,#a78bfa,#8b5cf6);border:3px solid #7c3aed;border-radius:50% 50% 45% 45% / 55% 55% 45% 45%;position:relative;overflow:hidden;box-shadow:inset 8px 8px 20px rgba(255,255,255,0.4),inset -5px -5px 15px rgba(100,50,180,0.2),0 0 25px rgba(138,43,226,0.4);">
       <!-- Spots pattern - bioluminescent -->
-      <div style="position:absolute;width:10px;height:10px;background:rgba(0,255,255,0.7);border-radius:50%;top:12px;left:12px;box-shadow:0 0 10px rgba(0,255,255,0.6);"></div>
-      <div style="position:absolute;width:7px;height:7px;background:rgba(255,0,255,0.7);border-radius:50%;top:8px;right:18px;box-shadow:0 0 8px rgba(255,0,255,0.6);"></div>
-      <div style="position:absolute;width:8px;height:8px;background:rgba(0,255,255,0.6);border-radius:50%;top:30px;left:20px;box-shadow:0 0 8px rgba(0,255,255,0.5);"></div>
+      <div style="position:absolute;width:9px;height:9px;background:rgba(0,255,255,0.7);border-radius:50%;top:10px;left:10px;box-shadow:0 0 10px rgba(0,255,255,0.6);"></div>
+      <div style="position:absolute;width:6px;height:6px;background:rgba(255,0,255,0.7);border-radius:50%;top:6px;right:15px;box-shadow:0 0 8px rgba(255,0,255,0.6);"></div>
+      <div style="position:absolute;width:7px;height:7px;background:rgba(0,255,255,0.6);border-radius:50%;top:28px;left:18px;box-shadow:0 0 8px rgba(0,255,255,0.5);"></div>
       <!-- Main highlight -->
-      <div style="position:absolute;width:35px;height:25px;background:radial-gradient(ellipse,rgba(255,255,255,0.6),transparent);border-radius:50%;top:15px;left:22px;"></div>
+      <div style="position:absolute;width:32px;height:22px;background:radial-gradient(ellipse,rgba(255,255,255,0.6),transparent);border-radius:50%;top:12px;left:18px;"></div>
     </div>
 
     <!-- HUGE Adorable Eyes -->
-    <div style="position:absolute;top:32px;width:100%;display:flex;justify-content:center;gap:6px;">
-      <!-- Left Eye - Glowing amber/orange like teen variant 2 -->
-      <div style="width:42px;height:46px;background:radial-gradient(ellipse at 45% 45%,#1f2937,#0f172a);border:3px solid #7c3aed;border-radius:50%;position:relative;animation:alien-blink 5s infinite;box-shadow:0 0 15px rgba(255,140,0,0.4);">
-        <!-- Iris - glowing orange/amber -->
-        <div style="position:absolute;width:26px;height:28px;background:radial-gradient(ellipse at 40% 40%,rgba(255,215,0,0.9),rgba(255,140,0,0.95),rgba(255,69,0,0.8));border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);animation:alien-eye-look 4s ease-in-out infinite;box-shadow:0 0 12px rgba(255,140,0,0.6);">
+    <div style="position:absolute;top:28px;width:100%;display:flex;justify-content:center;gap:4px;">
+      <!-- Left Eye -->
+      <div style="width:38px;height:42px;background:radial-gradient(ellipse at 45% 45%,#1f2937,#0f172a);border:3px solid #7c3aed;border-radius:50%;position:relative;overflow:hidden;animation:alien-blink 5s infinite;box-shadow:0 0 15px rgba(255,140,0,0.4);">
+        <!-- Iris - glowing orange/amber - contained inside eye -->
+        <div style="position:absolute;width:22px;height:24px;background:radial-gradient(ellipse at 40% 40%,rgba(255,215,0,0.9),rgba(255,140,0,0.95),rgba(255,69,0,0.8));border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);animation:alien-eye-look 5s ease-in-out infinite;box-shadow:0 0 10px rgba(255,140,0,0.6);">
           <!-- Pupil -->
-          <div style="position:absolute;width:12px;height:14px;background:#0f172a;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+          <div style="position:absolute;width:10px;height:12px;background:#0f172a;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
           <!-- Highlight -->
-          <div style="position:absolute;width:8px;height:8px;background:white;border-radius:50%;top:5px;left:5px;"></div>
-          <div style="position:absolute;width:4px;height:4px;background:white;border-radius:50%;top:16px;left:14px;opacity:0.6;"></div>
+          <div style="position:absolute;width:6px;height:6px;background:white;border-radius:50%;top:3px;left:3px;"></div>
         </div>
       </div>
       <!-- Right Eye -->
-      <div style="width:42px;height:46px;background:radial-gradient(ellipse at 45% 45%,#1f2937,#0f172a);border:3px solid #7c3aed;border-radius:50%;position:relative;animation:alien-blink 5s infinite;box-shadow:0 0 15px rgba(255,140,0,0.4);">
-        <!-- Iris - glowing orange/amber -->
-        <div style="position:absolute;width:26px;height:28px;background:radial-gradient(ellipse at 40% 40%,rgba(255,215,0,0.9),rgba(255,140,0,0.95),rgba(255,69,0,0.8));border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);animation:alien-eye-look 4s ease-in-out infinite;box-shadow:0 0 12px rgba(255,140,0,0.6);">
+      <div style="width:38px;height:42px;background:radial-gradient(ellipse at 45% 45%,#1f2937,#0f172a);border:3px solid #7c3aed;border-radius:50%;position:relative;overflow:hidden;animation:alien-blink 5s infinite;box-shadow:0 0 15px rgba(255,140,0,0.4);">
+        <!-- Iris - glowing orange/amber - contained inside eye -->
+        <div style="position:absolute;width:22px;height:24px;background:radial-gradient(ellipse at 40% 40%,rgba(255,215,0,0.9),rgba(255,140,0,0.95),rgba(255,69,0,0.8));border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);animation:alien-eye-look 5s ease-in-out infinite;box-shadow:0 0 10px rgba(255,140,0,0.6);">
           <!-- Pupil -->
-          <div style="position:absolute;width:12px;height:14px;background:#0f172a;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+          <div style="position:absolute;width:10px;height:12px;background:#0f172a;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
           <!-- Highlight -->
-          <div style="position:absolute;width:8px;height:8px;background:white;border-radius:50%;top:5px;left:5px;"></div>
-          <div style="position:absolute;width:4px;height:4px;background:white;border-radius:50%;top:16px;left:14px;opacity:0.6;"></div>
+          <div style="position:absolute;width:6px;height:6px;background:white;border-radius:50%;top:3px;left:3px;"></div>
         </div>
       </div>
     </div>
 
     <!-- Cute pink blush -->
-    <div style="position:absolute;top:76px;width:100%;display:flex;justify-content:center;gap:50px;">
-      <div style="width:16px;height:7px;background:#f472b6;border-radius:50%;opacity:0.5;filter:blur(2px);"></div>
-      <div style="width:16px;height:7px;background:#f472b6;border-radius:50%;opacity:0.5;filter:blur(2px);"></div>
+    <div style="position:absolute;top:68px;width:100%;display:flex;justify-content:center;gap:42px;">
+      <div style="width:14px;height:6px;background:#f472b6;border-radius:50%;opacity:0.5;filter:blur(2px);"></div>
+      <div style="width:14px;height:6px;background:#f472b6;border-radius:50%;opacity:0.5;filter:blur(2px);"></div>
     </div>
 
     <!-- Happy cat-like smile -->
-    <div style="position:absolute;bottom:14px;left:50%;transform:translateX(-50%);">
-      <div style="width:30px;height:14px;border-bottom:4px solid #7c3aed;border-radius:0 0 50% 50%;"></div>
+    <div style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);">
+      <div style="width:26px;height:12px;border-bottom:3px solid #7c3aed;border-radius:0 0 50% 50%;"></div>
     </div>
   </div>
 
   <!-- Floating sparkles around alien -->
-  <div style="position:absolute;width:6px;height:6px;background:rgba(255,215,0,0.9);border-radius:50%;top:15px;left:25px;box-shadow:0 0 8px rgba(255,215,0,0.7);animation:alien-glow 2s ease-in-out infinite;"></div>
-  <div style="position:absolute;width:5px;height:5px;background:rgba(0,255,255,0.9);border-radius:50%;top:10px;right:30px;box-shadow:0 0 6px rgba(0,255,255,0.7);animation:alien-glow 2.5s ease-in-out infinite 0.3s;"></div>
-  <div style="position:absolute;width:4px;height:4px;background:rgba(255,0,255,0.9);border-radius:50%;bottom:60px;left:20px;box-shadow:0 0 6px rgba(255,0,255,0.7);animation:alien-glow 2s ease-in-out infinite 0.6s;"></div>
-  <div style="position:absolute;width:5px;height:5px;background:rgba(255,255,255,0.95);border-radius:50%;bottom:50px;right:25px;box-shadow:0 0 8px rgba(255,255,255,0.8);animation:alien-glow 2.2s ease-in-out infinite 0.9s;"></div>
+  <div style="position:absolute;width:5px;height:5px;background:rgba(255,215,0,0.9);border-radius:50%;top:12px;left:28px;box-shadow:0 0 8px rgba(255,215,0,0.7);animation:alien-glow 2s ease-in-out infinite;"></div>
+  <div style="position:absolute;width:4px;height:4px;background:rgba(0,255,255,0.9);border-radius:50%;top:8px;right:32px;box-shadow:0 0 6px rgba(0,255,255,0.7);animation:alien-glow 2.5s ease-in-out infinite 0.3s;"></div>
+  <div style="position:absolute;width:4px;height:4px;background:rgba(255,0,255,0.9);border-radius:50%;bottom:50px;left:22px;box-shadow:0 0 6px rgba(255,0,255,0.7);animation:alien-glow 2s ease-in-out infinite 0.6s;"></div>
+  <div style="position:absolute;width:4px;height:4px;background:rgba(255,255,255,0.95);border-radius:50%;bottom:45px;right:28px;box-shadow:0 0 8px rgba(255,255,255,0.8);animation:alien-glow 2.2s ease-in-out infinite 0.9s;"></div>
 </div>
   `;
 
