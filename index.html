@@ -1036,7 +1036,43 @@ const STARTER=[
   {t:'quote',r:'Billy Graham',x:'God has given us two hands, one to receive with and the other to give with.',g:['Service','Charity']},
 ];
 
-// 10 Creature Categories - Each with unique evolution path
+// Rarity tiers with spawn probabilities (must sum to 100)
+const RARITY_WEIGHTS={
+  'Common':45,      // 45% chance
+  'Uncommon':28,    // 28% chance
+  'Rare':15,        // 15% chance
+  'Epic':8,         // 8% chance
+  'Legendary':3,    // 3% chance
+  'Mythic':1        // 1% chance - extremely rare!
+};
+
+// Rarity display colors for UI
+const RARITY_COLORS={
+  'Common':'from-gray-400 to-gray-500',
+  'Uncommon':'from-green-400 to-emerald-500',
+  'Rare':'from-blue-400 to-indigo-500',
+  'Epic':'from-purple-400 to-violet-600',
+  'Legendary':'from-yellow-400 to-orange-500',
+  'Mythic':'from-pink-400 via-rose-500 to-red-500'
+};
+
+// Select a random variant index based on rarity weights
+function selectVariantByRarity(category){
+  const rarities=category.adultRarities;
+  if(!rarities||!rarities.length)return Math.floor(Math.random()*category.adultVariants.length);
+
+  // Build weighted pool
+  const pool=[];
+  rarities.forEach((rarity,idx)=>{
+    const weight=RARITY_WEIGHTS[rarity]||RARITY_WEIGHTS['Common'];
+    for(let i=0;i<weight;i++)pool.push(idx);
+  });
+
+  // Random selection from pool
+  return pool[Math.floor(Math.random()*pool.length)];
+}
+
+// 9 Creature Categories - Each with unique evolution path
 const CREATURE_CATEGORIES={
   birds:{
     eggType:'white',
@@ -1046,7 +1082,8 @@ const CREATURE_CATEGORIES={
     teenVariants:['🐤','🐤','🐤','🐤','🐤','🐤','🐤','🐤','🐤','🐤','🐤'],  // Young birds (for reference)
     teenNames:['Fledgling I','Fledgling II','Fledgling III','Fledgling IV','Fledgling V','Fledgling VI','Fledgling VII','Fledgling VIII','Fledgling IX','Fledgling X','Fledgling XI'],
     adultVariants:['🦆','🕊️','🦅','🦆','🦉','🦚','🦜','🦢','🦩','🦢','🐧','🦆','🐓','🦜'],  // Mature birds - full body
-    adultNames:['Duck','Dove','Eagle','Mallard','Owl','Peacock','Parrot','Swan','Flamingo','Royal Swan','Penguin','Quacky','Rooster','Toucan']
+    adultNames:['Duck','Dove','Eagle','Mallard','Owl','Peacock','Parrot','Swan','Flamingo','Royal Swan','Penguin','Quacky','Rooster','Toucan'],
+    adultRarities:['Common','Common','Uncommon','Common','Rare','Epic','Uncommon','Rare','Legendary','Mythic','Rare','Common','Uncommon','Epic']
   },
   aquatic:{
     eggType:'blue',
@@ -1056,7 +1093,8 @@ const CREATURE_CATEGORIES={
     teenVariants:['🐟','🐠','🐡','🐡','🐙','🦑','🦞','🦀','🐚','🪼'],  // Smaller sea creatures (for reference)
     teenNames:['Swimmer I','Swimmer II','Swimmer III','Swimmer IV','Swimmer V','Swimmer VI','Swimmer VII','Swimmer VIII','Swimmer IX','Swimmer X'],
     adultVariants:['🐋','🐬','🦭','🦈','🐙','🦑','🦞','🦀','🦑','🪼','🦎','🦄','🪼','🐙'],  // Large sea creatures
-    adultNames:['Whale','Dolphin','Seal','Shark','Octopus','Squid','Lobster','Crab','Giant Squid','Jellyfish','Axolotl','Narwhal','Jellyfish','Octopus']
+    adultNames:['Whale','Dolphin','Seal','Shark','Octopus','Squid','Lobster','Crab','Giant Squid','Jellyfish','Axolotl','Narwhal','Jellyfish','Octopus'],
+    adultRarities:['Rare','Common','Common','Uncommon','Uncommon','Common','Common','Common','Epic','Rare','Legendary','Mythic','Rare','Uncommon']
   },
   reptiles:{
     eggType:'spotted',
@@ -1066,7 +1104,8 @@ const CREATURE_CATEGORIES={
     teenVariants:['🦎','🦎','🐢','🐍','🐢','🐍','🐸','🐸','🦎','🐢','🐍','🐍','🐍','🦎'],  // Young reptiles (for reference)
     teenNames:['Scaleling I','Scaleling II','Scaleling III','Scaleling IV','Scaleling V','Scaleling VI','Scaleling VII','Scaleling VIII','Scaleling IX','Scaleling X','Scaleling XI','Scaleling XII','Scaleling XIII','Scaleling XIV'],
     adultVariants:['🦎','🐸','🐢','🐍','🐍','🐍','🐍','🐍','🐍','🐍','🐍','🐍','🐍','🦎'],  // Adult reptiles - full body (14 variants)
-    adultNames:['Gecko','Frog','Turtle','Cobra','Emerald Python','Purple Snake','Pygmy Rattlesnake','Coiled Rattlesnake','Rainbow Snake','Purple Cobra','Flaming Cobra','Ice Cobra','King Cobra','Golden Gecko']
+    adultNames:['Gecko','Frog','Turtle','Cobra','Emerald Python','Purple Snake','Pygmy Rattlesnake','Coiled Rattlesnake','Rainbow Snake','Purple Cobra','Flaming Cobra','Ice Cobra','King Cobra','Golden Gecko'],
+    adultRarities:['Common','Common','Common','Uncommon','Rare','Uncommon','Common','Common','Epic','Rare','Legendary','Legendary','Epic','Mythic']
   },
   insects:{
     eggType:'small',
@@ -1076,7 +1115,8 @@ const CREATURE_CATEGORIES={
     teenVariants:['🐛','🐛','🐝','🐞','🦗','🪰','🪲','🦟','🪳','🕷️'],  // Larva/young bugs (for reference)
     teenNames:['Larva I','Larva II','Larva III','Larva IV','Larva V','Larva VI','Larva VII','Larva VIII','Larva IX','Larva X'],
     adultVariants:['🦋','🐝','🐞','🦗','🪰','🪲','🦟','🪳','🕷️','🐞'],  // Adult insects - all full body
-    adultNames:['Butterfly','Bee','Ladybug','Cricket','Fly','Beetle','Mosquito','Cockroach','Spider','Giant Ladybug']
+    adultNames:['Butterfly','Bee','Ladybug','Cricket','Fly','Beetle','Mosquito','Cockroach','Spider','Giant Ladybug'],
+    adultRarities:['Uncommon','Common','Common','Common','Common','Common','Common','Common','Rare','Mythic']
   },
   mammals:{
     eggType:'brown',
@@ -1086,7 +1126,8 @@ const CREATURE_CATEGORIES={
     teenVariants:['🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐨','🦁'],  // Baby mammals (for reference)
     teenNames:['Fuzzy I','Fuzzy II','Fuzzy III','Fuzzy IV','Fuzzy V','Fuzzy VI','Fuzzy VII','Fuzzy VIII','Fuzzy IX','Fuzzy X'],
     adultVariants:['🐕','🐈','🐎','🐗','🐆','🐅','🦬','🐘','🦏','🦛','🦊','🐿️','🐻','🐴','🐄'],  // Adult mammals - full body (15 variants: 0-14)
-    adultNames:['Bunny','Kitty','Koala','Fox','Mouse','Trash Panda','Red Panda','Sloth','Fox In Sox','Panda','Puppy','Squirrel','Bear','Horse','Cow']
+    adultNames:['Bunny','Kitty','Koala','Fox','Mouse','Trash Panda','Red Panda','Sloth','Fox In Sox','Panda','Puppy','Squirrel','Bear','Horse','Cow'],
+    adultRarities:['Common','Common','Uncommon','Uncommon','Common','Rare','Epic','Rare','Mythic','Legendary','Common','Common','Uncommon','Common','Common']
   },
   fantasy:{
     eggType:'large',
@@ -1096,7 +1137,8 @@ const CREATURE_CATEGORIES={
     teenVariants:['🦄','🐴','🦓','🦌','🐺','🦝','🦡','🦘','🦫','🦦'],  // Young fantasy creatures (for reference)
     teenNames:['Mystic I','Mystic II','Mystic III','Mystic IV','Mystic V','Mystic VI','Mystic VII','Mystic VIII','Mystic IX','Mystic X'],
     adultVariants:['🦓','🦓','🦓','🦌','🦝','🦝','🦡','🦘','🦫','🦦'],  // Adult fantasy - full body
-    adultNames:['Zebracorn','Striped Unicorn','Zebra','Deer','Raccoon','Magic Raccoon','Badger','Kangaroo','Beaver','Otter']
+    adultNames:['Zebracorn','Striped Unicorn','Zebra','Deer','Raccoon','Magic Raccoon','Badger','Kangaroo','Beaver','Otter'],
+    adultRarities:['Epic','Rare','Common','Common','Common','Legendary','Uncommon','Uncommon','Common','Rare']
   },
   prehistoric:{
     eggType:'large',
@@ -1106,7 +1148,8 @@ const CREATURE_CATEGORIES={
     teenVariants:['🦖','🦕','🦖'],  // Young prehistoric (for reference)
     teenNames:['Triceratops','Velociraptor','T-Rex'],
     adultVariants:['🦖','🦕','🦖','🦖'],  // Adult prehistoric (renders used instead)
-    adultNames:['T-Rex','Bronto','Stego','Lil T-Rex']
+    adultNames:['T-Rex','Bronto','Stego','Lil T-Rex'],
+    adultRarities:['Uncommon','Common','Rare','Mythic']
   },
   alien:{
     eggType:'blue',
@@ -1116,7 +1159,8 @@ const CREATURE_CATEGORIES={
     teenVariants:['👾','🤖','👽','🛸','💫','⭐','✨','🌟','💥','🔮'],  // Young aliens (for reference)
     teenNames:['Cosmic I','Cosmic II','Cosmic III','Cosmic IV','Cosmic V','Cosmic VI','Cosmic VII','Cosmic VIII','Cosmic IX','Cosmic X'],
     adultVariants:['👽','👽','👽','👽','👽','👽','👽','👽','👽','👽'],  // CSS-rendered aliens
-    adultNames:['Cosmic Friend','Neon Visitor','Space Buddy','Star Child','Galaxy Pal','Astro Baby','Nebula Friend','Cosmic Cutie','Stellar Buddy','Universe Friend']
+    adultNames:['Cosmic Friend','Neon Visitor','Space Buddy','Star Child','Galaxy Pal','Astro Baby','Nebula Friend','Cosmic Cutie','Stellar Buddy','Universe Friend'],
+    adultRarities:['Common','Common','Common','Uncommon','Rare','Rare','Epic','Epic','Legendary','Mythic']
   },
   mystical:{
     eggType:'speckled',
@@ -1126,7 +1170,8 @@ const CREATURE_CATEGORIES={
     teenVariants:['🧙','🧚','🧛','🧜','🧞','🧝','🎃','👻','💀','🦇'],  // Young mystical (for reference)
     teenNames:['Enchanted I','Enchanted II','Enchanted III','Enchanted IV','Enchanted V','Enchanted VI','Enchanted VII','Enchanted VIII','Enchanted IX','Enchanted X'],
     adultVariants:['🧚','🧚','🧜','🧜','🧞','🎃','🎃','👻','🦇','🦇','🦄'],  // Ancient mystical - full body
-    adultNames:['Fairy','Dark Fairy','Merperson','Sea Witch','Genie','Pumpkin King','Jack-o-Lantern','Ghost','Vampire Bat','Bat','Unicorn']
+    adultNames:['Fairy','Dark Fairy','Merperson','Sea Witch','Genie','Pumpkin King','Jack-o-Lantern','Ghost','Vampire Bat','Bat','Unicorn'],
+    adultRarities:['Common','Epic','Uncommon','Rare','Legendary','Common','Rare','Uncommon','Common','Uncommon','Mythic']
   }
 };
 
@@ -1259,8 +1304,9 @@ S.graduatedBuddies.forEach(buddy=>{
       if(buddy.variant!==undefined){
         buddy.creatureVariant=buddy.variant;
       }else{
-        // Assign random variant (0-9)
-        buddy.creatureVariant=Math.floor(Math.random()*10);
+        // Assign variant based on rarity
+        const cat=CREATURE_CATEGORIES[buddy.creatureCategory];
+        buddy.creatureVariant=cat?selectVariantByRarity(cat):Math.floor(Math.random()*10);
       }
     }
     console.log('Migrated graduated buddy:',buddy.name,'to category:',buddy.creatureCategory,'variant:',buddy.creatureVariant);
@@ -1277,9 +1323,10 @@ if(S.creatureCategory===undefined||S.creatureCategory===null){
   // Assign random category from fully designed ones only
   S.creatureCategory=FULLY_DESIGNED_CATEGORIES[Math.floor(Math.random()*FULLY_DESIGNED_CATEGORIES.length)];
 
-  // For existing hatched buddies, also assign variant
+  // For existing hatched buddies, also assign variant based on rarity
   if(S.buddyStage!=='egg'){
-    S.creatureVariant=Math.floor(Math.random()*10);
+    const cat=CREATURE_CATEGORIES[S.creatureCategory];
+    S.creatureVariant=cat?selectVariantByRarity(cat):Math.floor(Math.random()*10);
   }else{
     // Eggs get variant assigned at hatching
     S.creatureVariant=null;
@@ -10669,8 +10716,9 @@ function canEvolve(){
 
 function checkBuddyGrowth(){
   if(S.buddyStage==='egg'&&S.eggXP>=STAGES.egg.hatchXP){
-    // Assign random variant when hatching (category already assigned to egg)
-    S.creatureVariant=Math.floor(Math.random()*10);
+    // Assign variant based on rarity weights when hatching (determines adult form)
+    const category=CREATURE_CATEGORIES[S.creatureCategory];
+    S.creatureVariant=category?selectVariantByRarity(category):Math.floor(Math.random()*10);
 
     S.buddyStage='blob';
     S.growthXP=0;
@@ -14425,9 +14473,44 @@ function showCreaturePreview(stage,categoryKey,variantIdx=0){
 
   content.innerHTML=creatureHTML;
   name.textContent=creatureName;
-  info.textContent=`${categoryName} - ${stageName}`;
+
+  // Show rarity for adult stage with editing for devs
+  if(stage==='adult'&&category.adultRarities){
+    const currentRarity=category.adultRarities[variantIdx]||'Common';
+    const isDev=isDevUser();
+    if(isDev){
+      // Dev can edit rarity
+      const rarityOptions=Object.keys(RARITY_WEIGHTS).map(r=>
+        `<option value="${r}" ${r===currentRarity?'selected':''} class="text-gray-800">${r}</option>`
+      ).join('');
+      info.innerHTML=`${categoryName} - ${stageName}<br>
+        <span class="text-xs">Rarity:</span>
+        <select onchange="updateCreatureRarity('${categoryKey}',${variantIdx},this.value)"
+          class="ml-1 px-2 py-0.5 rounded text-xs bg-gradient-to-r ${RARITY_COLORS[currentRarity]} text-white border-none cursor-pointer">
+          ${rarityOptions}
+        </select>`;
+    }else{
+      info.innerHTML=`${categoryName} - ${stageName}<br>
+        <span class="text-xs font-bold px-2 py-0.5 rounded bg-gradient-to-r ${RARITY_COLORS[currentRarity]} text-white">${currentRarity}</span>`;
+    }
+  }else{
+    info.textContent=`${categoryName} - ${stageName}`;
+  }
+
   modal.classList.remove('hidden');
   modal.classList.add('flex');
+}
+
+// Update creature rarity (dev only)
+function updateCreatureRarity(categoryKey,variantIdx,newRarity){
+  if(!isDevUser())return;
+  const category=CREATURE_CATEGORIES[categoryKey];
+  if(category&&category.adultRarities){
+    category.adultRarities[variantIdx]=newRarity;
+    console.log(`Updated ${categoryKey} variant ${variantIdx} to ${newRarity}`);
+    // Re-render the preview to update colors
+    showCreaturePreview('adult',categoryKey,variantIdx);
+  }
 }
 
 function closeCreaturePreview(){
@@ -14478,10 +14561,8 @@ function showScribbyCard(categoryKey,variantIdx,buddyId,stage='adult'){
   // Calculate a "power level" based on stats for fun
   const powerLevel=Math.min(100,Math.round((buddy.happiness||50)*.4+(buddy.health||50)*.4+(buddy.daysRaised||1)*2));
 
-  // Determine rarity based on category
-  const rarities={birds:'Common',aquatic:'Uncommon',reptiles:'Common',mammals:'Common',mystical:'Rare',prehistoric:'Epic',alien:'Legendary',insects:'Uncommon',fantasy:'Rare'};
-  const rarity=rarities[categoryKey]||'Common';
-  const rarityColors={Common:'from-gray-400 to-gray-500',Uncommon:'from-green-400 to-emerald-500',Rare:'from-blue-400 to-indigo-500',Epic:'from-purple-400 to-violet-600',Legendary:'from-yellow-400 to-orange-500'};
+  // Get rarity from the variant's adultRarities (individual creature rarity)
+  const rarity=category.adultRarities&&category.adultRarities[variantIdx]?category.adultRarities[variantIdx]:'Common';
 
   const modal=document.getElementById('scribbyCardModal');
   const content=document.getElementById('scribbyCardContent');
@@ -14499,7 +14580,7 @@ function showScribbyCard(categoryKey,variantIdx,buddyId,stage='adult'){
               <p class="text-white/70 text-xs">${creatureName}</p>
             </div>
             <div class="flex items-center gap-2">
-              <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-gradient-to-r ${rarityColors[rarity]} text-white">${rarity}</span>
+              <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-gradient-to-r ${RARITY_COLORS[rarity]} text-white">${rarity}</span>
               <button onclick="closeScribbyCard()" class="bg-white/20 text-white font-bold w-8 h-8 rounded-full flex items-center justify-center text-sm hover:bg-white/30">×</button>
             </div>
           </div>
