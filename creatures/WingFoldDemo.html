@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Folding Wing Demo</title>
+<style>
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
+    font-family: system-ui, sans-serif;
+}
+
+.demo-container {
+    background: rgba(255,255,255,0.95);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #1e293b;
+    margin-bottom: 20px;
+}
+
+.creature {
+    position: relative;
+    width: 300px;
+    height: 200px;
+}
+
+/* Body - simple oval */
+.body {
+    position: absolute;
+    width: 120px;
+    height: 80px;
+    background: radial-gradient(ellipse at 40% 30%, #fef3c7, #fcd34d, #f59e0b);
+    border: 3px solid #b45309;
+    border-radius: 50%;
+    top: 60px;
+    left: 90px;
+    z-index: 20;
+}
+
+/* Wing folding keyframes - coordinated timing */
+/* Upper wing: extends horizontally (0deg), folds down (90deg) */
+@keyframes upper-wing-fold {
+    0%, 30% { transform: rotate(0deg); }      /* Extended */
+    40%, 90% { transform: rotate(80deg); }    /* Folded down */
+    100% { transform: rotate(0deg); }         /* Back to extended */
+}
+
+/* Lower wing: straight (0deg) when extended, folds back (-120deg) when tucked */
+@keyframes lower-wing-fold {
+    0%, 30% { transform: rotate(0deg); }      /* Extended */
+    40%, 90% { transform: rotate(-130deg); }  /* Folded back */
+    100% { transform: rotate(0deg); }         /* Back to extended */
+}
+
+/* Wing tip: slight adjustment for natural fold */
+@keyframes wing-tip-fold {
+    0%, 30% { transform: rotate(0deg); }      /* Extended */
+    40%, 90% { transform: rotate(40deg); }    /* Tucked */
+    100% { transform: rotate(0deg); }         /* Back to extended */
+}
+
+/* === LEFT WING (extends left, folds down) === */
+.left-wing-assembly {
+    position: absolute;
+    top: 70px;
+    left: 90px;
+    z-index: 15;
+}
+
+/* Upper wing bone - pivots from RIGHT (shoulder) */
+.left-upper-wing {
+    position: absolute;
+    width: 60px;
+    height: 16px;
+    background: radial-gradient(ellipse at 80% 40%, #fef3c7, #fcd34d, #f59e0b);
+    border: 2px solid #b45309;
+    border-radius: 8px 4px 4px 8px;
+    right: 0;
+    top: 0;
+    transform-origin: right center;
+    animation: upper-wing-fold 6s ease-in-out infinite;
+}
+
+/* Shoulder joint */
+.left-shoulder {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: radial-gradient(circle at 40% 40%, #fef3c7, #f59e0b);
+    border: 2px solid #b45309;
+    border-radius: 50%;
+    right: -7px;
+    top: -1px;
+    z-index: 2;
+}
+
+/* Elbow joint */
+.left-elbow {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: radial-gradient(circle at 40% 40%, #fef3c7, #f59e0b);
+    border: 2px solid #b45309;
+    border-radius: 50%;
+    left: -6px;
+    top: 0px;
+    z-index: 2;
+}
+
+/* Lower wing bone - NESTED inside upper wing, pivots from LEFT (elbow) */
+.left-lower-wing {
+    position: absolute;
+    width: 50px;
+    height: 12px;
+    background: radial-gradient(ellipse at 80% 40%, #fef3c7, #fcd34d, #f59e0b);
+    border: 2px solid #b45309;
+    border-radius: 6px 3px 3px 6px;
+    left: -50px;
+    top: 2px;
+    transform-origin: right center;
+    animation: lower-wing-fold 6s ease-in-out infinite;
+}
+
+/* Wrist joint */
+.left-wrist {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: radial-gradient(circle at 40% 40%, #fef3c7, #f59e0b);
+    border: 2px solid #b45309;
+    border-radius: 50%;
+    left: -5px;
+    top: -1px;
+    z-index: 2;
+}
+
+/* Wing tip - NESTED inside lower wing, pivots from LEFT (wrist) */
+.left-wing-tip {
+    position: absolute;
+    width: 35px;
+    height: 10px;
+    background: radial-gradient(ellipse at 80% 40%, #fef3c7, #fcd34d);
+    border: 2px solid #b45309;
+    border-radius: 5px 2px 2px 5px;
+    left: -35px;
+    top: 1px;
+    transform-origin: right center;
+    animation: wing-tip-fold 6s ease-in-out infinite;
+}
+
+/* === RIGHT WING (extends right, folds down) === */
+.right-wing-assembly {
+    position: absolute;
+    top: 70px;
+    right: 90px;
+    z-index: 15;
+}
+
+/* Upper wing bone - pivots from LEFT (shoulder) */
+.right-upper-wing {
+    position: absolute;
+    width: 60px;
+    height: 16px;
+    background: radial-gradient(ellipse at 20% 40%, #fef3c7, #fcd34d, #f59e0b);
+    border: 2px solid #b45309;
+    border-radius: 4px 8px 8px 4px;
+    left: 0;
+    top: 0;
+    transform-origin: left center;
+    animation: upper-wing-fold 6s ease-in-out infinite;
+}
+
+/* Shoulder joint */
+.right-shoulder {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: radial-gradient(circle at 60% 40%, #fef3c7, #f59e0b);
+    border: 2px solid #b45309;
+    border-radius: 50%;
+    left: -7px;
+    top: -1px;
+    z-index: 2;
+}
+
+/* Elbow joint */
+.right-elbow {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: radial-gradient(circle at 60% 40%, #fef3c7, #f59e0b);
+    border: 2px solid #b45309;
+    border-radius: 50%;
+    right: -6px;
+    top: 0px;
+    z-index: 2;
+}
+
+/* Lower wing bone - NESTED inside upper wing, pivots from RIGHT (elbow) */
+.right-lower-wing {
+    position: absolute;
+    width: 50px;
+    height: 12px;
+    background: radial-gradient(ellipse at 20% 40%, #fef3c7, #fcd34d, #f59e0b);
+    border: 2px solid #b45309;
+    border-radius: 3px 6px 6px 3px;
+    right: -50px;
+    top: 2px;
+    transform-origin: left center;
+    animation: lower-wing-fold 6s ease-in-out infinite;
+}
+
+/* Wrist joint */
+.right-wrist {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: radial-gradient(circle at 60% 40%, #fef3c7, #f59e0b);
+    border: 2px solid #b45309;
+    border-radius: 50%;
+    right: -5px;
+    top: -1px;
+    z-index: 2;
+}
+
+/* Wing tip - NESTED inside lower wing, pivots from RIGHT (wrist) */
+.right-wing-tip {
+    position: absolute;
+    width: 35px;
+    height: 10px;
+    background: radial-gradient(ellipse at 20% 40%, #fef3c7, #fcd34d);
+    border: 2px solid #b45309;
+    border-radius: 2px 5px 5px 2px;
+    right: -35px;
+    top: 1px;
+    transform-origin: left center;
+    animation: wing-tip-fold 6s ease-in-out infinite;
+}
+
+.info {
+    text-align: center;
+    margin-top: 20px;
+    color: #64748b;
+    font-size: 14px;
+    max-width: 300px;
+}
+
+.info strong {
+    color: #1e293b;
+}
+</style>
+</head>
+<body>
+
+<div class="demo-container">
+    <div class="title">Folding Wing Animation</div>
+
+    <div class="creature">
+        <!-- Body -->
+        <div class="body"></div>
+
+        <!-- LEFT WING - Nested structure for coordinated folding -->
+        <div class="left-wing-assembly">
+            <!-- Upper wing bone (pivots from shoulder on right side) -->
+            <div class="left-upper-wing">
+                <div class="left-shoulder"></div>
+                <div class="left-elbow"></div>
+
+                <!-- Lower wing bone (NESTED - pivots from elbow on right side) -->
+                <div class="left-lower-wing">
+                    <div class="left-wrist"></div>
+
+                    <!-- Wing tip (NESTED - pivots from wrist on right side) -->
+                    <div class="left-wing-tip"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT WING - Mirror of left wing -->
+        <div class="right-wing-assembly">
+            <!-- Upper wing bone (pivots from shoulder on left side) -->
+            <div class="right-upper-wing">
+                <div class="right-shoulder"></div>
+                <div class="right-elbow"></div>
+
+                <!-- Lower wing bone (NESTED - pivots from elbow on left side) -->
+                <div class="right-lower-wing">
+                    <div class="right-wrist"></div>
+
+                    <!-- Wing tip (NESTED - pivots from wrist on left side) -->
+                    <div class="right-wing-tip"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="info">
+        <strong>Technique:</strong> Nested divs with coordinated keyframes.
+        Each bone segment is nested inside its parent and pivots from
+        <code>transform-origin</code> at the joint.
+    </div>
+</div>
+
+</body>
+</html>

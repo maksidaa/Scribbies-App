@@ -428,6 +428,10 @@
     .egg-shadow{position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);width:65%;height:15px;background:radial-gradient(ellipse,rgba(0,0,0,0.18),transparent 70%);border-radius:50%;filter:blur(4px);animation:egg-shadow-pulse 3s ease-in-out infinite;pointer-events:none;z-index:0}
     @keyframes egg-shadow-pulse{0%,100%{opacity:0.3;transform:translateX(-50%) scale(1)}50%{opacity:0.15;transform:translateX(-50%) scale(0.85)}}
 
+    /* Blob ground shadow - simple shadow like adults */
+    .blob-shadow{position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);width:70%;height:14px;background:radial-gradient(ellipse,rgba(0,0,0,0.2),transparent 70%);border-radius:50%;filter:blur(4px);animation:blob-shadow-pulse 2.5s ease-in-out infinite;pointer-events:none;z-index:0}
+    @keyframes blob-shadow-pulse{0%,100%{opacity:0.3;transform:translateX(-50%) scale(1)}50%{opacity:0.18;transform:translateX(-50%) scale(0.88)}}
+
     /* Blob creature animations - PREFIX: bl- */
     @keyframes bl-float{0%,100%{transform:translateY(0px)}50%{transform:translateY(-6px)}}
     @keyframes bl-fluff-pulse{0%,100%{box-shadow:0 0 0 3px rgba(255,255,255,0.4),0 0 0 6px rgba(236,72,153,0.3),0 0 0 9px rgba(168,85,247,0.2),0 4px 12px rgba(124,58,237,0.4)}50%{box-shadow:0 0 0 4px rgba(255,255,255,0.5),0 0 0 8px rgba(236,72,153,0.4),0 0 0 12px rgba(168,85,247,0.3),0 4px 12px rgba(124,58,237,0.5)}}
@@ -646,7 +650,7 @@
     @keyframes evo-star-explode{0%{opacity:1;transform:translate(0,0) scale(1) rotate(0deg)}100%{opacity:0;transform:translate(var(--ex),var(--ey)) scale(0.3) rotate(360deg)}}
     @keyframes evo-ring-expand{0%{opacity:0.8;transform:translate(-50%,-50%) scale(0.5)}100%{opacity:0;transform:translate(-50%,-50%) scale(3)}}
     @keyframes evo-flash{0%{opacity:0}50%{opacity:1}100%{opacity:0}}
-    .evo-spin-buildup{animation:evo-spin-fast 0.4s linear infinite,evo-shake-intense 0.15s linear infinite,evo-glow-buildup 2s ease-in forwards;border-radius:50%}
+    .evo-spin-buildup{animation:evo-spin-fast 0.4s linear infinite,evo-shake-intense 0.15s linear infinite,evo-glow-buildup 2s ease-in forwards}
 
     /* 3D Floating Buddy Card */
     @keyframes buddy-levitate{
@@ -1134,9 +1138,9 @@ const CREATURE_CATEGORIES={
     teenEmoji:'teen',   // Uses renderTeen() - 3 progressive designs
     teenVariants:['🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐨','🦁'],  // Baby mammals (for reference)
     teenNames:['Fuzzy I','Fuzzy II','Fuzzy III','Fuzzy IV','Fuzzy V','Fuzzy VI','Fuzzy VII','Fuzzy VIII','Fuzzy IX','Fuzzy X'],
-    adultVariants:['🐕','🐈','🐎','🐗','🐆','🐅','🦬','🐘','🦏','🦛','🦊','🐿️','🐻','🐴','🐄'],  // Adult mammals - full body (15 variants: 0-14)
-    adultNames:['Bunny','Kitty','Koala','Fox','Mouse','Trash Panda','Red Panda','Sloth','Fox In Sox','Panda','Puppy','Squirrel','Bear','Horse','Cow'],
-    adultRarities:['Common','Common','Uncommon','Uncommon','Common','Rare','Epic','Rare','Mythic','Legendary','Common','Common','Uncommon','Common','Common']
+    adultVariants:['🐕','🐈','🐎','🐗','🐆','🐅','🦬','🐘','🦏','🦛','🦊','🐿️','🐻','🐴','🐄','🦝'],  // Adult mammals - full body (16 variants: 0-15)
+    adultNames:['Bunny','Kitty','Koala','Fox','Mouse','Trash Panda','Red Panda','Sloth','Fox In Sox','Panda','Puppy','Squirrel','Bear','Horse','Cow','Golden Raccoon'],
+    adultRarities:['Common','Common','Uncommon','Uncommon','Common','Rare','Epic','Rare','Mythic','Legendary','Common','Common','Uncommon','Common','Common','Legendary']
   },
   fantasy:{
     eggType:'large',
@@ -4746,8 +4750,6 @@ function renderBlob(categoryKey){
     // Birds - nest base, speckles, feathers, and animated elements
     birds:`
       <div class="bl-creature" style="animation:bl-float 2.5s ease-in-out infinite;">
-        <!-- Nest wisps base from egg -->
-        <div style="position:absolute;width:100px;height:20px;bottom:-8px;left:-5px;background:repeating-linear-gradient(75deg,transparent,transparent 6px,#d4a574 6px,#c4956a 9px);border-radius:50%;opacity:0.5;"></div>
         <!-- Outer glow aura -->
         <div style="position:absolute;width:85px;height:85px;top:3px;left:3px;background:radial-gradient(circle,rgba(236,72,153,0.15),transparent 60%);border-radius:50%;animation:pulse-grow 3s ease-in-out infinite;"></div>
         <div class="bl-body" style="background:radial-gradient(circle at 40% 35%, rgba(255,255,255,0.95), rgba(186,230,253,0.85), rgba(125,211,252,0.9));box-shadow:0 0 0 3px rgba(255,255,255,0.4),0 0 0 6px rgba(186,230,253,0.3),0 0 0 9px rgba(125,211,252,0.2),0 4px 12px rgba(56,189,248,0.4);">
@@ -4776,8 +4778,6 @@ function renderBlob(categoryKey){
     // Aquatic - water shimmer, bubbles rising, wave effect
     aquatic:`
       <div class="bl-creature" style="animation:wiggle 3s ease-in-out infinite;">
-        <!-- Water shimmer base -->
-        <div style="position:absolute;width:95px;height:25px;bottom:-10px;left:-2px;background:linear-gradient(90deg,transparent,rgba(56,189,248,0.2),rgba(14,165,233,0.3),rgba(56,189,248,0.2),transparent);border-radius:50%;animation:shimmer 2s ease-in-out infinite;"></div>
         <!-- Outer water glow -->
         <div style="position:absolute;width:90px;height:90px;top:0;left:0;background:radial-gradient(circle,rgba(56,189,248,0.2),transparent 60%);border-radius:50%;animation:pulse-grow 3s ease-in-out infinite;"></div>
         <div class="bl-body" style="background:radial-gradient(circle at 40% 35%, rgba(255,255,255,0.95), rgba(96,165,250,0.85), rgba(59,130,246,0.9));box-shadow:0 0 0 3px rgba(255,255,255,0.4),0 0 0 6px rgba(96,165,250,0.3),0 0 15px rgba(59,130,246,0.4),0 4px 12px rgba(37,99,235,0.4);">
@@ -4805,8 +4805,6 @@ function renderBlob(categoryKey){
     // Reptiles - sand base, scale patterns, cracks, movement
     reptiles:`
       <div class="bl-creature" style="animation:bl-float 2.5s ease-in-out infinite;">
-        <!-- Sand/dirt base -->
-        <div style="position:absolute;width:100px;height:18px;bottom:-10px;left:-5px;background:radial-gradient(ellipse,#d4a574,#c4956a);border-radius:50%;opacity:0.4;"></div>
         <!-- Warm glow -->
         <div style="position:absolute;width:88px;height:88px;top:1px;left:1px;background:radial-gradient(circle,rgba(34,197,94,0.15),transparent 55%);border-radius:50%;"></div>
         <div class="bl-body" style="background:radial-gradient(circle at 40% 35%, rgba(255,255,255,0.95), rgba(74,222,128,0.85), rgba(34,197,94,0.9));box-shadow:0 0 0 3px rgba(255,255,255,0.4),0 0 0 6px rgba(74,222,128,0.3),0 0 0 9px rgba(34,197,94,0.2),0 4px 12px rgba(22,163,74,0.4);">
@@ -4837,8 +4835,6 @@ function renderBlob(categoryKey){
         <!-- Smoke wisps -->
         <div style="position:absolute;width:15px;height:20px;background:linear-gradient(to top,rgba(100,100,100,0.2),transparent);border-radius:50%;top:-15px;left:35%;filter:blur(3px);animation:egg-float 3s ease-in-out infinite;"></div>
         <div style="position:absolute;width:10px;height:15px;background:linear-gradient(to top,rgba(100,100,100,0.15),transparent);border-radius:50%;top:-10px;right:30%;filter:blur(2px);animation:egg-float 3.5s ease-in-out infinite 0.5s;"></div>
-        <!-- Volcanic glow base -->
-        <div style="position:absolute;width:100px;height:22px;bottom:-12px;left:-5px;background:radial-gradient(ellipse,rgba(249,115,22,0.4),rgba(234,88,12,0.2),transparent);border-radius:50%;animation:lava-pulse 2s ease-in-out infinite;"></div>
         <!-- Outer fire glow -->
         <div style="position:absolute;width:95px;height:95px;top:-2px;left:-2px;background:radial-gradient(circle,rgba(249,115,22,0.25),rgba(239,68,68,0.15),transparent 60%);border-radius:50%;animation:pulse-grow 2s ease-in-out infinite;"></div>
         <div class="bl-body" style="background:radial-gradient(circle at 40% 35%, rgba(255,255,255,0.95), rgba(251,146,60,0.85), rgba(239,68,68,0.9));box-shadow:0 0 0 3px rgba(255,255,255,0.4),0 0 0 6px rgba(251,146,60,0.4),0 0 20px rgba(249,115,22,0.6),0 0 35px rgba(234,88,12,0.3),0 4px 12px rgba(220,38,38,0.4);">
@@ -4868,11 +4864,6 @@ function renderBlob(categoryKey){
     // Insects - honeycomb, honey drips, pollen sparkles
     insects:`
       <div class="bl-creature" style="animation:bl-float 2.5s ease-in-out infinite;">
-        <!-- Honey drip base -->
-        <div style="position:absolute;width:85px;height:18px;bottom:-10px;left:2px;background:radial-gradient(ellipse,rgba(251,191,36,0.35),rgba(217,119,6,0.2),transparent);border-radius:50%;"></div>
-        <!-- Honey drips -->
-        <div style="position:absolute;width:6px;height:12px;background:linear-gradient(to bottom,rgba(251,191,36,0.5),rgba(217,119,6,0.6));border-radius:0 0 50% 50%;bottom:-5px;left:25%;"></div>
-        <div style="position:absolute;width:4px;height:8px;background:linear-gradient(to bottom,rgba(251,191,36,0.4),rgba(217,119,6,0.5));border-radius:0 0 50% 50%;bottom:-3px;right:30%;"></div>
         <!-- Warm glow -->
         <div style="position:absolute;width:88px;height:88px;top:1px;left:1px;background:radial-gradient(circle,rgba(251,191,36,0.15),transparent 55%);border-radius:50%;"></div>
         <div class="bl-body" style="background:radial-gradient(circle at 40% 35%, rgba(255,255,255,0.95), rgba(252,211,77,0.85), rgba(234,179,8,0.9));box-shadow:0 0 0 3px rgba(255,255,255,0.4),0 0 0 6px rgba(252,211,77,0.3),0 0 0 9px rgba(234,179,8,0.2),0 4px 12px rgba(202,138,4,0.4);">
@@ -4901,8 +4892,6 @@ function renderBlob(categoryKey){
     // Mammals - fur nest, heartbeat, paw prints, warmth
     mammals:`
       <div class="bl-creature" style="animation:bl-float 2.5s ease-in-out infinite;">
-        <!-- Fur nest base -->
-        <div style="position:absolute;width:105px;height:22px;bottom:-12px;left:-7px;background:repeating-linear-gradient(85deg,transparent,transparent 4px,rgba(180,83,9,0.15) 4px,rgba(120,53,15,0.1) 6px);border-radius:50%;opacity:0.7;"></div>
         <!-- Warm glow aura -->
         <div style="position:absolute;width:92px;height:92px;top:-1px;left:-1px;background:radial-gradient(circle,rgba(251,191,36,0.18),transparent 55%);border-radius:50%;animation:pulse-grow 3s ease-in-out infinite;"></div>
         <div class="bl-body" style="background:radial-gradient(circle at 40% 35%, rgba(255,255,255,0.95), rgba(217,119,6,0.85), rgba(180,83,9,0.9));box-shadow:0 0 0 3px rgba(255,255,255,0.4),0 0 0 6px rgba(217,119,6,0.3),0 0 0 9px rgba(180,83,9,0.2),0 4px 12px rgba(146,64,14,0.4);">
@@ -4962,8 +4951,6 @@ function renderBlob(categoryKey){
     // Prehistoric - ground base, fossils, dust, ancient feel
     prehistoric:`
       <div class="bl-creature" style="animation:bl-float 2.5s ease-in-out infinite;">
-        <!-- Dirt/ground base -->
-        <div style="position:absolute;width:105px;height:20px;bottom:-12px;left:-7px;background:radial-gradient(ellipse,rgba(120,53,15,0.4),rgba(146,64,14,0.25),transparent);border-radius:50%;"></div>
         <!-- Ancient dust particles -->
         <div style="position:absolute;width:3px;height:3px;background:rgba(217,119,6,0.5);border-radius:50%;top:-8px;left:35%;animation:egg-float 3s ease-in-out infinite;"></div>
         <div style="position:absolute;width:2px;height:2px;background:rgba(217,119,6,0.4);border-radius:50%;top:-5px;right:25%;animation:egg-float 3.5s ease-in-out infinite 0.5s;"></div>
@@ -4995,8 +4982,6 @@ function renderBlob(categoryKey){
         <div style="position:absolute;width:4px;height:18px;background:linear-gradient(to top,rgba(34,211,238,0.5),transparent);border-radius:50%;top:-12px;left:40%;filter:blur(1px);animation:egg-float 2s ease-in-out infinite;"></div>
         <div style="position:absolute;width:3px;height:14px;background:linear-gradient(to top,rgba(168,85,247,0.4),transparent);border-radius:50%;top:-8px;right:30%;filter:blur(1px);animation:egg-float 2.5s ease-in-out infinite 0.3s;"></div>
         <div style="position:absolute;width:3px;height:12px;background:linear-gradient(to top,rgba(34,197,94,0.35),transparent);border-radius:50%;top:-5px;left:20%;filter:blur(1px);animation:egg-float 3s ease-in-out infinite 0.6s;"></div>
-        <!-- Tech glow base -->
-        <div style="position:absolute;width:100px;height:18px;bottom:-10px;left:-5px;background:radial-gradient(ellipse,rgba(34,211,238,0.25),rgba(168,85,247,0.15),transparent);border-radius:50%;animation:alien-glow 2s ease-in-out infinite;"></div>
         <!-- Multi-layer alien aura -->
         <div style="position:absolute;width:100px;height:100px;top:-5px;left:-5px;background:radial-gradient(circle,rgba(34,211,238,0.2),rgba(168,85,247,0.1),transparent 60%);border-radius:50%;animation:pulse-grow 2s ease-in-out infinite;"></div>
         <div class="bl-body" style="background:radial-gradient(circle at 40% 35%, rgba(255,255,255,0.95), rgba(192,132,252,0.85), rgba(168,85,247,0.9));box-shadow:0 0 0 3px rgba(255,255,255,0.4),0 0 0 6px rgba(192,132,252,0.4),0 0 15px rgba(34,211,238,0.5),0 0 25px rgba(168,85,247,0.3),0 4px 12px rgba(124,58,237,0.4);">
@@ -5059,7 +5044,9 @@ function renderBlob(categoryKey){
     `
   };
 
-  return blobDesigns[category]||blobDesigns.birds;
+  const design = blobDesigns[category]||blobDesigns.birds;
+  const shadowHTML = `<div class="blob-shadow"></div>`;
+  return `<div style="position:relative;">${design}${shadowHTML}</div>`;
 }
 
 function renderBaby(categoryKey){
@@ -9808,6 +9795,79 @@ function renderAdultMammal(variantIndex, level = 1){
           </div>
         </div>
       </div>
+    `,
+    // ===== GOLDEN RACCOON - Mammals Variant 15 =====
+    // A legendary golden version of the Trash Panda with shimmering effects
+    15:`
+      <div style="position:relative;width:240px;height:280px;animation:raccoon-bounce 3s ease-in-out infinite;">
+        <!-- Golden sparkles around the creature -->
+        <div style="position:absolute;width:6px;height:6px;background:#fef08a;border-radius:50%;top:15px;left:30px;box-shadow:0 0 8px #fbbf24,0 0 16px #f59e0b;animation:sparkle-twinkle 1.5s ease-in-out infinite;"></div>
+        <div style="position:absolute;width:5px;height:5px;background:#fef08a;border-radius:50%;top:40px;right:25px;box-shadow:0 0 6px #fbbf24,0 0 12px #f59e0b;animation:sparkle-twinkle 1.8s ease-in-out infinite 0.3s;"></div>
+        <div style="position:absolute;width:4px;height:4px;background:#fef08a;border-radius:50%;bottom:100px;left:15px;box-shadow:0 0 5px #fbbf24,0 0 10px #f59e0b;animation:sparkle-twinkle 2s ease-in-out infinite 0.6s;"></div>
+        <div style="position:absolute;width:5px;height:5px;background:#fef08a;border-radius:50%;bottom:120px;right:20px;box-shadow:0 0 6px #fbbf24,0 0 12px #f59e0b;animation:sparkle-twinkle 1.6s ease-in-out infinite 0.9s;"></div>
+        <!-- Golden glow aura -->
+        <div style="position:absolute;width:220px;height:260px;top:10px;left:10px;background:radial-gradient(circle,rgba(251,191,36,0.15),transparent 60%);border-radius:50%;filter:blur(10px);animation:pulse-grow 3s ease-in-out infinite;"></div>
+        <!-- Ears -->
+        <div style="position:absolute;width:48px;height:48px;background:#f59e0b;border:4px solid #78350f;border-radius:50% 50% 10% 10%;z-index:30;top:15px;left:45px;transform:rotate(-20deg);">
+          <div style="position:absolute;width:24px;height:24px;background:#fef3c7;border-radius:50% 50% 10% 10%;bottom:3px;left:50%;transform:translateX(-50%);opacity:0.9;"></div>
+        </div>
+        <div style="position:absolute;width:48px;height:48px;background:#f59e0b;border:4px solid #78350f;border-radius:50% 50% 10% 10%;z-index:30;top:15px;right:45px;transform:rotate(20deg);">
+          <div style="position:absolute;width:24px;height:24px;background:#fef3c7;border-radius:50% 50% 10% 10%;bottom:3px;left:50%;transform:translateX(-50%);opacity:0.9;"></div>
+        </div>
+        <!-- Tail with golden stripes -->
+        <div style="position:absolute;width:120px;height:45px;background:repeating-linear-gradient(to right,#78350f,#78350f 25px,#fbbf24 25px,#fbbf24 50px);border:4px solid #78350f;border-radius:30px;bottom:55px;right:-25px;z-index:5;transform-origin:left center;animation:tail-swish 2s ease-in-out infinite;box-shadow:inset 6px 6px 14px rgba(254,243,199,0.5), inset -4px -4px 10px rgba(120,53,15,0.4),0 0 20px rgba(251,191,36,0.3);"></div>
+        <!-- Back paws -->
+        <div style="position:absolute;width:44px;height:34px;background:radial-gradient(ellipse at 35% 30%, #d97706 0%, #b45309 25%, #92400e 55%, #78350f 100%);border:3.5px solid #451a03;border-radius:18px 18px 14px 14px;top:215px;left:50%;z-index:21;margin-left:-55px;transform:rotate(-5deg);box-shadow:inset 4px 4px 10px rgba(217,119,6,0.7), inset -2px -2px 6px rgba(69,26,3,0.4);"></div>
+        <div style="position:absolute;width:44px;height:34px;background:radial-gradient(ellipse at 35% 30%, #d97706 0%, #b45309 25%, #92400e 55%, #78350f 100%);border:3.5px solid #451a03;border-radius:18px 18px 14px 14px;top:215px;left:50%;z-index:21;margin-left:11px;transform:rotate(5deg);box-shadow:inset 4px 4px 10px rgba(217,119,6,0.7), inset -2px -2px 6px rgba(69,26,3,0.4);"></div>
+        <!-- Body -->
+        <div style="position:absolute;width:150px;height:120px;background:radial-gradient(ellipse at 35% 30%, #fef3c7 0%, #fcd34d 25%, #f59e0b 55%, #d97706 100%);border:4px solid #78350f;border-radius:50% 50% 45% 45% / 60% 60% 40% 40%;top:120px;left:45px;z-index:20;overflow:hidden;box-shadow:inset 8px 8px 22px rgba(254,243,199,0.8), inset -6px -6px 16px rgba(180,83,9,0.3),0 0 30px rgba(251,191,36,0.25);">
+          <!-- Body highlight spot (primary) -->
+          <div style="position:absolute;width:44px;height:32px;background:rgba(255,255,255,0.75);border-radius:50%;top:8px;left:14px;filter:blur(5px);"></div>
+          <!-- Body highlight spot (secondary) -->
+          <div style="position:absolute;width:22px;height:16px;background:rgba(255,255,255,0.5);border-radius:50%;top:26px;right:22px;filter:blur(3px);"></div>
+          <div style="position:absolute;width:90px;height:70px;background:#fef3c7;border-radius:50%;bottom:-10px;left:50%;transform:translateX(-50%);opacity:0.7;"></div>
+        </div>
+        <!-- Front paws with fingers -->
+        <div style="position:absolute;width:40px;height:30px;background:radial-gradient(ellipse at 35% 30%, #d97706 0%, #b45309 25%, #92400e 55%, #78350f 100%);border:3px solid #451a03;border-radius:12px;top:145px;left:40px;z-index:45;display:flex;justify-content:center;align-items:flex-start;gap:2px;padding-top:2px;animation:hand-wave-l 3s ease-in-out infinite;box-shadow:inset 4px 4px 10px rgba(217,119,6,0.7), inset -2px -2px 6px rgba(69,26,3,0.4);">
+          <div style="width:10px;height:10px;background:radial-gradient(ellipse at 35% 30%, #d97706 0%, #b45309 50%, #92400e 100%);border:2px solid #451a03;border-radius:50%;margin-top:-6px;box-shadow:inset 2px 2px 4px rgba(217,119,6,0.6);"></div>
+          <div style="width:10px;height:10px;background:radial-gradient(ellipse at 35% 30%, #d97706 0%, #b45309 50%, #92400e 100%);border:2px solid #451a03;border-radius:50%;margin-top:-6px;box-shadow:inset 2px 2px 4px rgba(217,119,6,0.6);"></div>
+          <div style="width:10px;height:10px;background:radial-gradient(ellipse at 35% 30%, #d97706 0%, #b45309 50%, #92400e 100%);border:2px solid #451a03;border-radius:50%;margin-top:-6px;box-shadow:inset 2px 2px 4px rgba(217,119,6,0.6);"></div>
+        </div>
+        <div style="position:absolute;width:40px;height:30px;background:radial-gradient(ellipse at 35% 30%, #d97706 0%, #b45309 25%, #92400e 55%, #78350f 100%);border:3px solid #451a03;border-radius:12px;top:145px;right:40px;z-index:45;display:flex;justify-content:center;align-items:flex-start;gap:2px;padding-top:2px;animation:hand-wave-r 3s ease-in-out infinite;box-shadow:inset 4px 4px 10px rgba(217,119,6,0.7), inset -2px -2px 6px rgba(69,26,3,0.4);">
+          <div style="width:10px;height:10px;background:radial-gradient(ellipse at 35% 30%, #d97706 0%, #b45309 50%, #92400e 100%);border:2px solid #451a03;border-radius:50%;margin-top:-6px;box-shadow:inset 2px 2px 4px rgba(217,119,6,0.6);"></div>
+          <div style="width:10px;height:10px;background:radial-gradient(ellipse at 35% 30%, #d97706 0%, #b45309 50%, #92400e 100%);border:2px solid #451a03;border-radius:50%;margin-top:-6px;box-shadow:inset 2px 2px 4px rgba(217,119,6,0.6);"></div>
+          <div style="width:10px;height:10px;background:radial-gradient(ellipse at 35% 30%, #d97706 0%, #b45309 50%, #92400e 100%);border:2px solid #451a03;border-radius:50%;margin-top:-6px;box-shadow:inset 2px 2px 4px rgba(217,119,6,0.6);"></div>
+        </div>
+        <!-- Head -->
+        <div style="position:absolute;width:140px;height:115px;background:radial-gradient(ellipse at 35% 30%, #fef3c7 0%, #fcd34d 25%, #f59e0b 55%, #d97706 100%);border:4px solid #78350f;border-radius:50% 50% 48% 48% / 60% 60% 40% 40%;top:30px;left:50px;z-index:40;box-shadow:inset 8px 8px 22px rgba(254,243,199,0.8), inset -6px -6px 16px rgba(180,83,9,0.3),0 0 25px rgba(251,191,36,0.2);">
+          <!-- Head highlight spot (primary) -->
+          <div style="position:absolute;width:40px;height:28px;background:rgba(255,255,255,0.75);border-radius:50%;top:8px;left:16px;filter:blur(5px);"></div>
+          <!-- Head highlight spot (secondary) -->
+          <div style="position:absolute;width:20px;height:14px;background:rgba(255,255,255,0.5);border-radius:50%;top:24px;right:26px;filter:blur(3px);"></div>
+          <!-- Dark mask patches -->
+          <div style="position:absolute;width:55px;height:42px;background:#78350f;top:35px;left:10px;border-radius:50%;transform:rotate(-10deg);"></div>
+          <div style="position:absolute;width:55px;height:42px;background:#78350f;top:35px;right:10px;border-radius:50%;transform:rotate(10deg);"></div>
+          <!-- Eyes -->
+          <div style="position:absolute;top:40px;width:100%;display:flex;justify-content:center;gap:32px;z-index:45;">
+            <div style="width:22px;height:24px;background:#451a03;border-radius:50%;position:relative;animation:raccoon-blink 4s infinite;">
+              <div style="position:absolute;width:8px;height:8px;background:#fef08a;border-radius:50%;top:3px;left:3px;"></div>
+            </div>
+            <div style="width:22px;height:24px;background:#451a03;border-radius:50%;position:relative;animation:raccoon-blink 4s infinite;">
+              <div style="position:absolute;width:8px;height:8px;background:#fef08a;border-radius:50%;top:3px;left:3px;"></div>
+            </div>
+          </div>
+          <!-- Golden nose -->
+          <div style="position:absolute;width:18px;height:12px;background:#451a03;border-radius:50%;top:75px;left:50%;transform:translateX(-50%);z-index:50;box-shadow:0 0 8px rgba(251,191,36,0.4);"></div>
+          <!-- Mouth -->
+          <div style="position:absolute;top:82px;left:50%;transform:translateX(-50%);display:flex;">
+            <div style="width:12px;height:8px;border:2.5px solid #78350f;border-top:none;border-radius:0 0 10px 10px;margin:0 -0.5px;"></div>
+            <div style="width:12px;height:8px;border:2.5px solid #78350f;border-top:none;border-radius:0 0 10px 10px;margin:0 -0.5px;"></div>
+          </div>
+          <!-- Blush -->
+          <div style="position:absolute;top:68px;left:16px;width:16px;height:8px;background:#fed7aa;border-radius:50%;opacity:0.5;"></div>
+          <div style="position:absolute;top:68px;right:16px;width:16px;height:8px;background:#fed7aa;border-radius:50%;opacity:0.5;"></div>
+        </div>
+      </div>
     `
   };
 
@@ -10184,7 +10244,7 @@ function renderAdultMystical(variantIndex, level = 1){
     // ===== PEGASUS - Mystical Variant 12 =====
     // Majestic white winged horse with flowing mane and feathered wings
     12:`
-      <div style="position:relative;width:280px;height:320px;animation:pegasus-float 3.5s ease-in-out infinite;">
+      <div style="position:relative;width:280px;height:320px;overflow:visible;animation:pegasus-float 3.5s ease-in-out infinite;">
         <!-- Cloud wisps at the bottom -->
         <div style="position:absolute;bottom:10px;left:20px;width:240px;height:50px;z-index:1;">
           <div style="position:absolute;width:80px;height:35px;background:radial-gradient(ellipse at 50% 60%, rgba(255,255,255,0.9), rgba(230,240,255,0.6), transparent);border-radius:50%;left:0;bottom:0;filter:blur(6px);animation:cloud-drift 4s ease-in-out infinite;"></div>
@@ -10199,40 +10259,76 @@ function renderAdultMystical(variantIndex, level = 1){
         <div style="position:absolute;width:5px;height:5px;background:rgba(230,240,255,0.9);border-radius:50%;top:40px;right:60px;box-shadow:0 0 8px rgba(200,220,255,0.8);animation:star-rise 3.2s ease-in-out infinite 0.3s;"></div>
         <div style="position:absolute;width:4px;height:4px;background:rgba(255,255,255,0.9);border-radius:50%;bottom:80px;left:60px;box-shadow:0 0 6px rgba(180,200,255,0.7);animation:star-rise 3.8s ease-in-out infinite 0.8s;"></div>
 
-        <!-- LEFT WING (large feathered wing with flap animation) -->
-        <div style="position:absolute;top:95px;left:30px;z-index:8;transform-origin:right center;animation:pegasus-wing-left 1.2s ease-in-out infinite;">
-          <!-- Primary feathers (longest, bottom layer) -->
-          <div style="position:absolute;width:95px;height:130px;z-index:1;">
-            <div style="position:absolute;width:18px;height:75px;background:linear-gradient(180deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);border:2px solid #94a3b8;border-radius:8px 8px 50% 50%;left:0;top:55px;transform:rotate(-25deg);transform-origin:top center;box-shadow:inset 3px 3px 8px rgba(255,255,255,0.8),inset -2px -2px 5px rgba(100,116,139,0.2);"></div>
-            <div style="position:absolute;width:16px;height:70px;background:linear-gradient(180deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);border:2px solid #94a3b8;border-radius:8px 8px 50% 50%;left:12px;top:48px;transform:rotate(-18deg);transform-origin:top center;box-shadow:inset 3px 3px 8px rgba(255,255,255,0.8),inset -2px -2px 5px rgba(100,116,139,0.2);"></div>
-            <div style="position:absolute;width:15px;height:65px;background:linear-gradient(180deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);border:2px solid #94a3b8;border-radius:8px 8px 50% 50%;left:24px;top:42px;transform:rotate(-12deg);transform-origin:top center;box-shadow:inset 3px 3px 8px rgba(255,255,255,0.8),inset -2px -2px 5px rgba(100,116,139,0.2);"></div>
-            <div style="position:absolute;width:14px;height:60px;background:linear-gradient(180deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);border:2px solid #94a3b8;border-radius:8px 8px 50% 50%;left:36px;top:36px;transform:rotate(-6deg);transform-origin:top center;box-shadow:inset 3px 3px 8px rgba(255,255,255,0.8),inset -2px -2px 5px rgba(100,116,139,0.2);"></div>
-            <div style="position:absolute;width:13px;height:55px;background:linear-gradient(180deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);border:2px solid #94a3b8;border-radius:8px 8px 50% 50%;left:47px;top:32px;transform:rotate(0deg);transform-origin:top center;box-shadow:inset 3px 3px 8px rgba(255,255,255,0.8),inset -2px -2px 5px rgba(100,116,139,0.2);"></div>
-          </div>
-          <!-- Secondary feathers (middle layer) -->
-          <div style="position:absolute;width:70px;height:50px;background:radial-gradient(ellipse at 60% 40%, #ffffff 0%, #f1f5f9 40%, #e2e8f0 100%);border:3px solid #94a3b8;border-radius:60% 40% 70% 30%;left:25px;top:15px;z-index:2;box-shadow:inset 5px 5px 15px rgba(255,255,255,0.9),inset -3px -3px 8px rgba(100,116,139,0.15);"></div>
-          <!-- Covert feathers (top layer, closest to body) -->
-          <div style="position:absolute;width:50px;height:35px;background:radial-gradient(ellipse at 50% 40%, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%);border:2px solid #94a3b8;border-radius:50% 50% 60% 40%;left:45px;top:0;z-index:3;box-shadow:inset 4px 4px 10px rgba(255,255,255,0.9),inset -2px -2px 6px rgba(100,116,139,0.1);"></div>
-          <!-- Wing shimmer -->
-          <div style="position:absolute;width:40px;height:20px;background:rgba(255,255,255,0.6);border-radius:50%;left:50px;top:10px;filter:blur(4px);z-index:4;"></div>
+        <!-- LEFT WING (elegant feathered wing) -->
+        <div style="position:absolute;top:80px;left:-15px;z-index:8;transform-origin:100% 50%;animation:pegasus-wing-left 1.8s ease-in-out infinite;">
+          <!-- Wing base shape -->
+          <svg width="110" height="140" viewBox="0 0 110 140" style="overflow:visible;">
+            <!-- Primary feathers (longest) -->
+            <ellipse cx="15" cy="120" rx="8" ry="35" fill="url(#wingGrad1)" stroke="#94a3b8" stroke-width="1.5" transform="rotate(-30 15 120)"/>
+            <ellipse cx="28" cy="110" rx="7" ry="32" fill="url(#wingGrad1)" stroke="#94a3b8" stroke-width="1.5" transform="rotate(-22 28 110)"/>
+            <ellipse cx="40" cy="100" rx="7" ry="30" fill="url(#wingGrad1)" stroke="#94a3b8" stroke-width="1.5" transform="rotate(-15 40 100)"/>
+            <ellipse cx="52" cy="92" rx="6" ry="28" fill="url(#wingGrad1)" stroke="#94a3b8" stroke-width="1.5" transform="rotate(-8 52 92)"/>
+            <ellipse cx="63" cy="86" rx="6" ry="26" fill="url(#wingGrad1)" stroke="#94a3b8" stroke-width="1.5" transform="rotate(-2 63 86)"/>
+            <!-- Secondary feathers (middle) -->
+            <ellipse cx="55" cy="55" rx="35" ry="25" fill="url(#wingGrad2)" stroke="#94a3b8" stroke-width="2"/>
+            <!-- Covert feathers (top, near body) -->
+            <ellipse cx="75" cy="35" rx="25" ry="18" fill="url(#wingGrad3)" stroke="#94a3b8" stroke-width="1.5"/>
+            <!-- Highlight -->
+            <ellipse cx="70" cy="40" rx="15" ry="8" fill="rgba(255,255,255,0.5)" filter="blur(3px)"/>
+            <!-- Gradients -->
+            <defs>
+              <linearGradient id="wingGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#f8fafc"/>
+                <stop offset="50%" style="stop-color:#e2e8f0"/>
+                <stop offset="100%" style="stop-color:#cbd5e1"/>
+              </linearGradient>
+              <linearGradient id="wingGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#ffffff"/>
+                <stop offset="50%" style="stop-color:#f1f5f9"/>
+                <stop offset="100%" style="stop-color:#e2e8f0"/>
+              </linearGradient>
+              <linearGradient id="wingGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#ffffff"/>
+                <stop offset="100%" style="stop-color:#f1f5f9"/>
+              </linearGradient>
+            </defs>
+          </svg>
         </div>
 
-        <!-- RIGHT WING (large feathered wing with flap animation) -->
-        <div style="position:absolute;top:95px;right:30px;z-index:8;transform-origin:left center;animation:pegasus-wing-right 1.2s ease-in-out infinite;">
-          <!-- Primary feathers (longest, bottom layer) -->
-          <div style="position:absolute;width:95px;height:130px;z-index:1;">
-            <div style="position:absolute;width:18px;height:75px;background:linear-gradient(180deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);border:2px solid #94a3b8;border-radius:8px 8px 50% 50%;right:0;top:55px;transform:rotate(25deg);transform-origin:top center;box-shadow:inset -3px 3px 8px rgba(255,255,255,0.8),inset 2px -2px 5px rgba(100,116,139,0.2);"></div>
-            <div style="position:absolute;width:16px;height:70px;background:linear-gradient(180deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);border:2px solid #94a3b8;border-radius:8px 8px 50% 50%;right:12px;top:48px;transform:rotate(18deg);transform-origin:top center;box-shadow:inset -3px 3px 8px rgba(255,255,255,0.8),inset 2px -2px 5px rgba(100,116,139,0.2);"></div>
-            <div style="position:absolute;width:15px;height:65px;background:linear-gradient(180deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);border:2px solid #94a3b8;border-radius:8px 8px 50% 50%;right:24px;top:42px;transform:rotate(12deg);transform-origin:top center;box-shadow:inset -3px 3px 8px rgba(255,255,255,0.8),inset 2px -2px 5px rgba(100,116,139,0.2);"></div>
-            <div style="position:absolute;width:14px;height:60px;background:linear-gradient(180deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);border:2px solid #94a3b8;border-radius:8px 8px 50% 50%;right:36px;top:36px;transform:rotate(6deg);transform-origin:top center;box-shadow:inset -3px 3px 8px rgba(255,255,255,0.8),inset 2px -2px 5px rgba(100,116,139,0.2);"></div>
-            <div style="position:absolute;width:13px;height:55px;background:linear-gradient(180deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);border:2px solid #94a3b8;border-radius:8px 8px 50% 50%;right:47px;top:32px;transform:rotate(0deg);transform-origin:top center;box-shadow:inset -3px 3px 8px rgba(255,255,255,0.8),inset 2px -2px 5px rgba(100,116,139,0.2);"></div>
-          </div>
-          <!-- Secondary feathers (middle layer) -->
-          <div style="position:absolute;width:70px;height:50px;background:radial-gradient(ellipse at 40% 40%, #ffffff 0%, #f1f5f9 40%, #e2e8f0 100%);border:3px solid #94a3b8;border-radius:40% 60% 30% 70%;right:25px;top:15px;z-index:2;box-shadow:inset -5px 5px 15px rgba(255,255,255,0.9),inset 3px -3px 8px rgba(100,116,139,0.15);"></div>
-          <!-- Covert feathers (top layer, closest to body) -->
-          <div style="position:absolute;width:50px;height:35px;background:radial-gradient(ellipse at 50% 40%, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%);border:2px solid #94a3b8;border-radius:50% 50% 40% 60%;right:45px;top:0;z-index:3;box-shadow:inset -4px 4px 10px rgba(255,255,255,0.9),inset 2px -2px 6px rgba(100,116,139,0.1);"></div>
-          <!-- Wing shimmer -->
-          <div style="position:absolute;width:40px;height:20px;background:rgba(255,255,255,0.6);border-radius:50%;right:50px;top:10px;filter:blur(4px);z-index:4;"></div>
+        <!-- RIGHT WING (elegant feathered wing) -->
+        <div style="position:absolute;top:80px;right:-15px;z-index:8;transform-origin:0% 50%;animation:pegasus-wing-right 1.8s ease-in-out infinite;">
+          <!-- Wing base shape (mirrored) -->
+          <svg width="110" height="140" viewBox="0 0 110 140" style="overflow:visible;transform:scaleX(-1);">
+            <!-- Primary feathers (longest) -->
+            <ellipse cx="15" cy="120" rx="8" ry="35" fill="url(#wingGradR1)" stroke="#94a3b8" stroke-width="1.5" transform="rotate(-30 15 120)"/>
+            <ellipse cx="28" cy="110" rx="7" ry="32" fill="url(#wingGradR1)" stroke="#94a3b8" stroke-width="1.5" transform="rotate(-22 28 110)"/>
+            <ellipse cx="40" cy="100" rx="7" ry="30" fill="url(#wingGradR1)" stroke="#94a3b8" stroke-width="1.5" transform="rotate(-15 40 100)"/>
+            <ellipse cx="52" cy="92" rx="6" ry="28" fill="url(#wingGradR1)" stroke="#94a3b8" stroke-width="1.5" transform="rotate(-8 52 92)"/>
+            <ellipse cx="63" cy="86" rx="6" ry="26" fill="url(#wingGradR1)" stroke="#94a3b8" stroke-width="1.5" transform="rotate(-2 63 86)"/>
+            <!-- Secondary feathers (middle) -->
+            <ellipse cx="55" cy="55" rx="35" ry="25" fill="url(#wingGradR2)" stroke="#94a3b8" stroke-width="2"/>
+            <!-- Covert feathers (top, near body) -->
+            <ellipse cx="75" cy="35" rx="25" ry="18" fill="url(#wingGradR3)" stroke="#94a3b8" stroke-width="1.5"/>
+            <!-- Highlight -->
+            <ellipse cx="70" cy="40" rx="15" ry="8" fill="rgba(255,255,255,0.5)" filter="blur(3px)"/>
+            <!-- Gradients -->
+            <defs>
+              <linearGradient id="wingGradR1" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#f8fafc"/>
+                <stop offset="50%" style="stop-color:#e2e8f0"/>
+                <stop offset="100%" style="stop-color:#cbd5e1"/>
+              </linearGradient>
+              <linearGradient id="wingGradR2" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#ffffff"/>
+                <stop offset="50%" style="stop-color:#f1f5f9"/>
+                <stop offset="100%" style="stop-color:#e2e8f0"/>
+              </linearGradient>
+              <linearGradient id="wingGradR3" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#ffffff"/>
+                <stop offset="100%" style="stop-color:#f1f5f9"/>
+              </linearGradient>
+            </defs>
+          </svg>
         </div>
 
         <!-- EARS (z-index 30) -->
@@ -13973,16 +14069,15 @@ function render(){
         `:''}
 
         ${phase==='reveal'?`
-          <!-- Phase 3: New Form Revealed! Cute announcement -->
+          <!-- Phase 3: New Form Revealed! Minimal text, maximum excitement -->
           <div class="pt-8" style="overflow:visible;">
-            <p class="text-2xl font-bold text-yellow-300 mb-4">${isHatching?'🎉 Congratulations! 🎉':'✨ Amazing! ✨'}</p>
             <div class="hatch-creature-pop inline-block mb-6" style="overflow:visible;">
-              <div style="transform:scale(0.8);transform-origin:center;overflow:visible;">
+              <div style="transform:scale(0.85);transform-origin:center;overflow:visible;">
                 ${renderNewForm()}
               </div>
             </div>
-            <p class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-pink-300 to-purple-300 mb-2">${isHatching?'You hatched a '+newStageName+'!':(S.buddyName?S.buddyName+' grew!':'Your buddy evolved!')}</p>
-            <p class="text-xl text-white/90 mb-6">${isHatching?'Say hello to your adorable':'Meet your amazing'} <span class="font-bold text-pink-300">${categoryName} ${newStageName}</span>!</p>
+            <p class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-pink-300 to-purple-300 mb-2 animate-pulse">${isHatching?newStageName+'!':(S.buddyName||'Evolved!')}</p>
+            <p class="text-lg text-white/80 mb-6">${categoryName} ${newStageName}</p>
           </div>
           ${isHatching&&!S.buddyName?`
             <button onclick="pState.evolvePhase='naming';render()" class="bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold py-4 px-10 rounded-2xl text-lg shadow-lg">

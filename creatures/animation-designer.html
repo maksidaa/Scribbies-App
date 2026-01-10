@@ -1,0 +1,1787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Animation Keyframe Designer</title>
+<style>
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    font-family: system-ui, sans-serif;
+    color: #f1f5f9;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    color: #fbbf24;
+    margin-bottom: 5px;
+    font-size: 24px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #94a3b8;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.main-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr 280px;
+    gap: 15px;
+}
+
+.panel {
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 15px;
+    border: 2px solid #475569;
+}
+
+.panel h2 {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    color: #fbbf24;
+}
+
+.panel h3 {
+    margin: 12px 0 8px 0;
+    font-size: 12px;
+    color: #94a3b8;
+    border-top: 1px solid #475569;
+    padding-top: 12px;
+}
+
+/* Stage */
+.stage {
+    width: 100%;
+    height: 450px;
+    background:
+        linear-gradient(rgba(71,85,105,0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(71,85,105,0.3) 1px, transparent 1px),
+        radial-gradient(circle at 50% 50%, #334155, #1e293b);
+    background-size: 20px 20px, 20px 20px, 100% 100%;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid #475569;
+}
+
+/* Segment list */
+.segment-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 180px;
+    overflow-y: auto;
+}
+
+.segment-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px;
+    background: #0f172a;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    font-size: 12px;
+}
+
+.segment-item:hover { border-color: #475569; }
+.segment-item.selected { border-color: #fbbf24; background: #1e3a5f; }
+
+.segment-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    border: 2px solid rgba(255,255,255,0.3);
+}
+
+.segment-name { flex: 1; }
+
+.segment-delete {
+    width: 22px;
+    height: 22px;
+    border: none;
+    background: #ef4444;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    opacity: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.segment-delete:hover { background: #dc2626; transform: scale(1.1); }
+
+/* Shape elements on stage */
+.shape-element {
+    position: absolute;
+    cursor: grab;
+    user-select: none;
+}
+
+.shape-element:active { cursor: grabbing; }
+.shape-element.selected { filter: drop-shadow(0 0 4px #fbbf24); }
+
+/* Pivot indicator */
+.pivot-dot {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #22c55e;
+    border: 2px solid white;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 100;
+    transform: translate(-50%, -50%);
+}
+
+/* Joint connector line */
+.joint-line {
+    position: absolute;
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* Rotate handle */
+.rotate-handle {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background: #ef4444;
+    border: 2px solid white;
+    border-radius: 50%;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    color: white;
+    z-index: 50;
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.control-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.control-row label {
+    width: 55px;
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+.control-row input[type="range"] {
+    flex: 1;
+    height: 5px;
+    -webkit-appearance: none;
+    background: #475569;
+    border-radius: 3px;
+}
+
+.control-row input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    background: #fbbf24;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.control-row .value {
+    width: 40px;
+    text-align: right;
+    font-family: monospace;
+    font-size: 11px;
+    color: #fbbf24;
+}
+
+.control-row input[type="text"], .control-row input[type="number"] {
+    flex: 1;
+    padding: 5px 8px;
+    border-radius: 4px;
+    border: 1px solid #475569;
+    background: #0f172a;
+    color: #f1f5f9;
+    font-size: 12px;
+}
+
+.control-row select {
+    flex: 1;
+    padding: 5px 8px;
+    border-radius: 4px;
+    border: 1px solid #475569;
+    background: #0f172a;
+    color: #f1f5f9;
+    font-size: 12px;
+}
+
+/* Shape selector */
+.shape-selector {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.shape-btn {
+    width: 32px;
+    height: 32px;
+    border: 2px solid #475569;
+    background: #0f172a;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: all 0.2s;
+}
+
+.shape-btn:hover { border-color: #64748b; }
+.shape-btn.selected { border-color: #fbbf24; background: #1e3a5f; }
+
+/* Buttons */
+.btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-primary { background: #fbbf24; color: #1e293b; }
+.btn-primary:hover { background: #f59e0b; }
+
+.btn-secondary { background: #475569; color: #f1f5f9; }
+.btn-secondary:hover { background: #64748b; }
+
+.btn-success { background: #22c55e; color: white; }
+.btn-success:hover { background: #16a34a; }
+
+.btn-danger { background: #ef4444; color: white; }
+.btn-danger:hover { background: #dc2626; }
+
+.btn-sm { padding: 5px 10px; font-size: 11px; }
+
+.button-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+/* State panels */
+.state-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.state-panel {
+    background: #0f172a;
+    border-radius: 8px;
+    padding: 10px;
+    border: 2px solid #475569;
+}
+
+.state-panel h3 {
+    margin: 0 0 8px 0;
+    font-size: 12px;
+    border: none;
+    padding: 0;
+}
+
+.state-panel h3.start { color: #22c55e; }
+.state-panel h3.end { color: #ef4444; }
+
+.state-preview {
+    height: 80px;
+    background: #1e293b;
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.state-info {
+    font-size: 10px;
+    color: #64748b;
+    max-height: 40px;
+    overflow-y: auto;
+}
+
+/* Output section */
+.output-section { margin-top: 15px; }
+
+.code-output {
+    background: #0f172a;
+    border-radius: 6px;
+    padding: 10px;
+    font-family: 'Fira Code', monospace;
+    font-size: 10px;
+    color: #22d3ee;
+    max-height: 200px;
+    overflow: auto;
+    white-space: pre-wrap;
+}
+
+.code-output .keyword { color: #c084fc; }
+.code-output .value { color: #fbbf24; }
+.code-output .comment { color: #64748b; }
+
+/* Color swatches */
+.color-swatches {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.color-swatch {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.color-swatch:hover, .color-swatch.selected {
+    border-color: white;
+    transform: scale(1.1);
+}
+
+/* Checkbox */
+.checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+.checkbox-row input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+/* Toolbar */
+.toolbar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+/* Keyframe items */
+.keyframe-item {
+    display: flex;
+    flex-direction: column;
+    background: #0f172a;
+    border: 2px solid #475569;
+    border-radius: 8px;
+    padding: 6px;
+    min-width: 80px;
+    cursor: pointer;
+}
+
+.keyframe-item:hover { border-color: #64748b; }
+.keyframe-item.active { border-color: #fbbf24; background: #1e3a5f; }
+
+.keyframe-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    margin-bottom: 4px;
+}
+
+.keyframe-name {
+    font-size: 10px;
+    font-weight: bold;
+    color: #fbbf24;
+}
+
+.keyframe-delete {
+    width: 16px;
+    height: 16px;
+    border: none;
+    background: #ef4444;
+    color: white;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.keyframe-delete:hover { background: #dc2626; }
+
+.keyframe-preview {
+    width: 68px;
+    height: 40px;
+    background: #1e293b;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+}
+
+.keyframe-actions {
+    display: flex;
+    gap: 2px;
+    margin-top: 4px;
+}
+
+.keyframe-btn {
+    flex: 1;
+    padding: 2px 4px;
+    font-size: 9px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.keyframe-btn.save { background: #22c55e; color: white; }
+.keyframe-btn.save:hover { background: #16a34a; }
+.keyframe-btn.load { background: #475569; color: white; }
+.keyframe-btn.load:hover { background: #64748b; }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Animation Keyframe Designer</h1>
+    <p class="subtitle">Design multi-segment articulated animations with shapes</p>
+
+    <div class="main-layout">
+        <!-- Left Panel: Segments -->
+        <div class="panel">
+            <h2>Segments</h2>
+
+            <div class="toolbar">
+                <button class="btn btn-primary btn-sm" onclick="addSegment()">+ Add</button>
+                <button class="btn btn-secondary btn-sm" onclick="duplicateSegment()">Duplicate</button>
+                <button class="btn btn-danger btn-sm" onclick="deleteSelected()">Delete</button>
+            </div>
+
+            <div class="segment-list" id="segmentList"></div>
+
+            <h3>Selected Segment</h3>
+            <div id="segmentControls" style="display: none;">
+                <div class="controls">
+                    <div class="control-row">
+                        <label>Name:</label>
+                        <input type="text" id="segName" onchange="updateSegment('name')">
+                    </div>
+
+                    <div class="control-row">
+                        <label>Shape:</label>
+                    </div>
+                    <div class="shape-selector" id="shapeSelector">
+                        <button class="shape-btn" data-shape="bone" onclick="setShape('bone')" title="Bone">🦴</button>
+                        <button class="shape-btn" data-shape="circle" onclick="setShape('circle')" title="Circle">⬤</button>
+                        <button class="shape-btn" data-shape="square" onclick="setShape('square')" title="Square">◼</button>
+                        <button class="shape-btn" data-shape="triangle" onclick="setShape('triangle')" title="Triangle">▲</button>
+                        <button class="shape-btn" data-shape="line" onclick="setShape('line')" title="Line">╱</button>
+                        <button class="shape-btn" data-shape="oval" onclick="setShape('oval')" title="Oval">⬭</button>
+                        <button class="shape-btn" data-shape="membrane" onclick="setShape('membrane')" title="Membrane (connects segments)">🪽</button>
+                    </div>
+
+                    <div class="control-row">
+                        <label>Width:</label>
+                        <input type="range" id="segWidth" min="10" max="200" value="80" oninput="updateSegment('width')">
+                        <span class="value" id="segWidthVal">80</span>
+                    </div>
+                    <div class="control-row">
+                        <label>Height:</label>
+                        <input type="range" id="segHeight" min="10" max="200" value="20" oninput="updateSegment('height')">
+                        <span class="value" id="segHeightVal">20</span>
+                    </div>
+                    <div class="control-row">
+                        <label>X:</label>
+                        <input type="range" id="segX" min="0" max="600" value="100" oninput="updateSegment('x')">
+                        <span class="value" id="segXVal">100</span>
+                    </div>
+                    <div class="control-row">
+                        <label>Y:</label>
+                        <input type="range" id="segY" min="0" max="430" value="200" oninput="updateSegment('y')">
+                        <span class="value" id="segYVal">200</span>
+                    </div>
+                    <div class="control-row">
+                        <label>Rotation:</label>
+                        <input type="range" id="segRot" min="-180" max="180" value="0" oninput="updateSegment('rotation')">
+                        <span class="value" id="segRotVal">0°</span>
+                    </div>
+
+                    <div class="control-row">
+                        <label>Join to:</label>
+                        <select id="segParent" onchange="updateSegment('parentId')">
+                            <option value="">None</option>
+                        </select>
+                    </div>
+
+                    <div class="checkbox-row">
+                        <input type="checkbox" id="segSnap" onchange="updateSegment('snapped')">
+                        <label for="segSnap">Snap to parent's end</label>
+                    </div>
+
+                    <!-- Membrane vertices selector (only shows for membrane shape) -->
+                    <div id="membraneControls" style="display: none; margin-top: 8px;">
+                        <label style="font-size: 11px; color: #94a3b8;">Connect vertices (select segments):</label>
+                        <div id="vertexSelector" style="display: flex; flex-direction: column; gap: 4px; margin-top: 6px; max-height: 120px; overflow-y: auto;"></div>
+                        <div style="font-size: 10px; color: #64748b; margin-top: 6px;">
+                            Check segments to use their start (S) or end (E) points as membrane vertices. Order matters for shape.
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 8px;">
+                        <label style="font-size: 11px; color: #94a3b8;">Color:</label>
+                        <div class="color-swatches" id="colorSwatches"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="noSegmentSelected" style="color: #64748b; font-size: 12px; text-align: center; padding: 15px;">
+                Click segment to edit
+            </div>
+        </div>
+
+        <!-- Center Panel: Stage -->
+        <div class="panel">
+            <h2>Stage <span style="font-weight: normal; color: #64748b; font-size: 11px;">(drag shapes, red handle to rotate)</span></h2>
+            <div class="stage" id="stage"></div>
+
+            <div style="margin-top: 15px;">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                    <h3 style="margin: 0; font-size: 12px; color: #94a3b8;">Keyframes</h3>
+                    <button class="btn btn-primary btn-sm" onclick="addKeyframe()">+ Add</button>
+                </div>
+                <div id="keyframeList" style="display: flex; gap: 8px; flex-wrap: wrap; max-height: 120px; overflow-y: auto;"></div>
+                <div style="font-size: 10px; color: #64748b; margin-top: 6px;">
+                    Add keyframes in order. Animation will play through them sequentially.
+                </div>
+            </div>
+
+            <div class="button-row" style="margin-top: 10px; justify-content: center;">
+                <button class="btn btn-success" onclick="playPreview()">▶ Play</button>
+                <button class="btn btn-secondary" onclick="stopPreview()">⏹ Stop</button>
+            </div>
+        </div>
+
+        <!-- Right Panel: Output -->
+        <div class="panel">
+            <h2>Settings</h2>
+            <div class="controls">
+                <div class="control-row">
+                    <label>Duration:</label>
+                    <input type="number" id="animDuration" value="2" min="0.1" max="10" step="0.1" style="width: 60px;" onchange="generateCode()">
+                    <span style="color: #64748b; font-size: 11px;">sec</span>
+                </div>
+                <div class="control-row">
+                    <label>Easing:</label>
+                    <select id="animEasing" onchange="generateCode()">
+                        <option value="ease-in-out">ease-in-out</option>
+                        <option value="ease">ease</option>
+                        <option value="linear">linear</option>
+                    </select>
+                </div>
+                <div class="control-row">
+                    <label>Mode:</label>
+                    <select id="animMode" onchange="generateCode()">
+                        <option value="ping-pong">Ping-pong</option>
+                        <option value="sequence">Sequence (once)</option>
+                        <option value="loop">Loop</option>
+                    </select>
+                </div>
+                <div style="font-size: 10px; color: #64748b; margin-top: 4px;" id="modeDescription">
+                    Forward → backward, repeats forever
+                </div>
+            </div>
+
+            <div class="output-section">
+                <h3 style="margin-top: 0; border: none; padding: 0;">Generated CSS</h3>
+                <div class="code-output" id="codeOutput">/* Add segments and set states */</div>
+                <button class="btn btn-primary btn-sm" style="width: 100%; margin-top: 8px;" onclick="copyCode()">Copy CSS</button>
+            </div>
+
+            <h3>HTML Structure</h3>
+            <div class="code-output" id="htmlOutput" style="max-height: 120px;">/* Set parent relationships */</div>
+            <button class="btn btn-secondary btn-sm" style="width: 100%; margin-top: 8px;" onclick="copyHtml()">Copy HTML</button>
+
+            <h3 style="color: #22c55e;">Complete Paste-Ready Code</h3>
+            <div class="code-output" id="completeOutput" style="max-height: 200px; border: 2px solid #22c55e;">/* Add keyframes and structure */</div>
+            <button class="btn btn-success" style="width: 100%; margin-top: 8px;" onclick="copyComplete()">Copy Complete Code</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const COLORS = [
+    { bg: '#fcd34d', border: '#b45309' },
+    { bg: '#22d3ee', border: '#0e7490' },
+    { bg: '#f472b6', border: '#9d174d' },
+    { bg: '#a78bfa', border: '#5b21b6' },
+    { bg: '#4ade80', border: '#166534' },
+    { bg: '#fb923c', border: '#c2410c' },
+    { bg: '#f87171', border: '#b91c1c' },
+    { bg: '#60a5fa', border: '#1d4ed8' },
+];
+
+const SHAPES = {
+    bone: { icon: '🦴', hasJoints: true },
+    circle: { icon: '⬤', hasJoints: false },
+    square: { icon: '◼', hasJoints: false },
+    triangle: { icon: '▲', hasJoints: false },
+    line: { icon: '╱', hasJoints: true },
+    oval: { icon: '⬭', hasJoints: false },
+    membrane: { icon: '🪽', hasJoints: false, isConnector: true },
+};
+
+let segments = [];
+let selectedId = null;
+let keyframes = []; // Array of {id, name, state: [...segments]}
+let nextId = 1;
+let nextKeyframeId = 1;
+let animations = [];
+
+// Legacy support
+let startState = null;
+let endState = null;
+
+let isDragging = false;
+let isRotating = false;
+let dragOffset = { x: 0, y: 0 };
+
+// Initialize
+function init() {
+    const swatches = document.getElementById('colorSwatches');
+    swatches.innerHTML = COLORS.map((c, i) =>
+        `<div class="color-swatch" style="background: ${c.bg};" onclick="setColor(${i})"></div>`
+    ).join('');
+}
+
+// Add segment
+function addSegment() {
+    const seg = {
+        id: nextId++,
+        name: `Seg${segments.length + 1}`,
+        shape: 'bone',
+        x: 200 + segments.length * 40,
+        y: 200,
+        width: 80,
+        height: 20,
+        rotation: 0,
+        colorIndex: segments.length % COLORS.length,
+        parentId: null,
+        snapped: false,
+        vertices: [] // For membrane: array of {segId, point: 'start'|'end'}
+    };
+    segments.push(seg);
+    render();
+    selectSegment(seg.id);
+}
+
+// Duplicate segment
+function duplicateSegment() {
+    if (!selectedId) return;
+    const src = segments.find(s => s.id === selectedId);
+    if (!src) return;
+    const seg = { ...src, id: nextId++, name: src.name + '_copy', x: src.x + 30, y: src.y + 30 };
+    segments.push(seg);
+    render();
+    selectSegment(seg.id);
+}
+
+// Delete segment
+function deleteSegment(id) {
+    segments = segments.filter(s => s.id !== id);
+    segments.forEach(s => { if (s.parentId === id) s.parentId = null; });
+    if (selectedId === id) {
+        selectedId = null;
+        document.getElementById('segmentControls').style.display = 'none';
+        document.getElementById('noSegmentSelected').style.display = 'block';
+    }
+    render();
+    generateCode();
+}
+
+// Delete selected segment
+function deleteSelected() {
+    if (selectedId) {
+        deleteSegment(selectedId);
+    }
+}
+
+// Keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+    if ((e.key === 'Delete' || e.key === 'Backspace') && selectedId) {
+        e.preventDefault();
+        deleteSelected();
+    }
+});
+
+// Select segment
+function selectSegment(id) {
+    selectedId = id;
+    const seg = segments.find(s => s.id === id);
+    if (!seg) return;
+
+    document.getElementById('segmentControls').style.display = 'block';
+    document.getElementById('noSegmentSelected').style.display = 'none';
+
+    document.getElementById('segName').value = seg.name;
+    document.getElementById('segWidth').value = seg.width;
+    document.getElementById('segWidthVal').textContent = seg.width;
+    document.getElementById('segHeight').value = seg.height;
+    document.getElementById('segHeightVal').textContent = seg.height;
+    document.getElementById('segX').value = seg.x;
+    document.getElementById('segXVal').textContent = Math.round(seg.x);
+    document.getElementById('segY').value = seg.y;
+    document.getElementById('segYVal').textContent = Math.round(seg.y);
+    document.getElementById('segRot').value = seg.rotation;
+    document.getElementById('segRotVal').textContent = seg.rotation + '°';
+    document.getElementById('segSnap').checked = seg.snapped;
+
+    // Shape buttons
+    document.querySelectorAll('.shape-btn').forEach(btn => {
+        btn.classList.toggle('selected', btn.dataset.shape === seg.shape);
+    });
+
+    // Color swatches
+    document.querySelectorAll('.color-swatch').forEach((sw, i) => {
+        sw.classList.toggle('selected', i === seg.colorIndex);
+    });
+
+    // Parent dropdown
+    const parentSelect = document.getElementById('segParent');
+    parentSelect.innerHTML = '<option value="">None</option>';
+    segments.forEach(s => {
+        if (s.id !== id) {
+            parentSelect.innerHTML += `<option value="${s.id}" ${seg.parentId === s.id ? 'selected' : ''}>${s.name}</option>`;
+        }
+    });
+
+    // Membrane controls
+    const membraneControls = document.getElementById('membraneControls');
+    if (seg.shape === 'membrane') {
+        membraneControls.style.display = 'block';
+        updateVertexSelector(seg);
+    } else {
+        membraneControls.style.display = 'none';
+    }
+
+    render();
+}
+
+// Update vertex selector for membranes
+function updateVertexSelector(seg) {
+    const selector = document.getElementById('vertexSelector');
+    const otherSegs = segments.filter(s => s.id !== seg.id && s.shape !== 'membrane');
+
+    if (!seg.vertices) seg.vertices = [];
+
+    selector.innerHTML = otherSegs.map(s => {
+        const hasStart = seg.vertices.some(v => v.segId === s.id && v.point === 'start');
+        const hasEnd = seg.vertices.some(v => v.segId === s.id && v.point === 'end');
+        const color = COLORS[s.colorIndex];
+        return `
+            <div style="display: flex; align-items: center; gap: 6px; padding: 4px; background: #1e293b; border-radius: 4px;">
+                <div style="width: 12px; height: 12px; background: ${color.bg}; border-radius: 2px;"></div>
+                <span style="flex: 1; font-size: 11px;">${s.name}</span>
+                <label style="font-size: 10px; display: flex; align-items: center; gap: 2px;">
+                    <input type="checkbox" ${hasStart ? 'checked' : ''} onchange="toggleVertex(${s.id}, 'start', this.checked)"> S
+                </label>
+                <label style="font-size: 10px; display: flex; align-items: center; gap: 2px;">
+                    <input type="checkbox" ${hasEnd ? 'checked' : ''} onchange="toggleVertex(${s.id}, 'end', this.checked)"> E
+                </label>
+            </div>
+        `;
+    }).join('');
+}
+
+// Toggle a vertex in the membrane
+function toggleVertex(segId, point, checked) {
+    const seg = segments.find(s => s.id === selectedId);
+    if (!seg || seg.shape !== 'membrane') return;
+
+    if (!seg.vertices) seg.vertices = [];
+
+    if (checked) {
+        // Add vertex
+        seg.vertices.push({ segId, point });
+    } else {
+        // Remove vertex
+        seg.vertices = seg.vertices.filter(v => !(v.segId === segId && v.point === point));
+    }
+
+    render();
+    generateCode();
+}
+
+// Update segment property
+function updateSegment(prop) {
+    const seg = segments.find(s => s.id === selectedId);
+    if (!seg) return;
+
+    switch (prop) {
+        case 'name':
+            seg.name = document.getElementById('segName').value;
+            break;
+        case 'width':
+            seg.width = parseInt(document.getElementById('segWidth').value);
+            document.getElementById('segWidthVal').textContent = seg.width;
+            break;
+        case 'height':
+            seg.height = parseInt(document.getElementById('segHeight').value);
+            document.getElementById('segHeightVal').textContent = seg.height;
+            break;
+        case 'x':
+            seg.x = parseInt(document.getElementById('segX').value);
+            document.getElementById('segXVal').textContent = seg.x;
+            break;
+        case 'y':
+            seg.y = parseInt(document.getElementById('segY').value);
+            document.getElementById('segYVal').textContent = seg.y;
+            break;
+        case 'rotation':
+            seg.rotation = parseInt(document.getElementById('segRot').value);
+            document.getElementById('segRotVal').textContent = seg.rotation + '°';
+            break;
+        case 'parentId':
+            const val = document.getElementById('segParent').value;
+            seg.parentId = val ? parseInt(val) : null;
+            if (seg.snapped && seg.parentId) snapToParent(seg);
+            break;
+        case 'snapped':
+            seg.snapped = document.getElementById('segSnap').checked;
+            if (seg.snapped && seg.parentId) snapToParent(seg);
+            break;
+    }
+    render();
+    generateCode();
+}
+
+// Set shape
+function setShape(shape) {
+    const seg = segments.find(s => s.id === selectedId);
+    if (!seg) return;
+    seg.shape = shape;
+
+    // Adjust default dimensions for shape
+    if (shape === 'circle') {
+        seg.height = seg.width;
+        document.getElementById('segHeight').value = seg.height;
+        document.getElementById('segHeightVal').textContent = seg.height;
+    } else if (shape === 'line') {
+        seg.height = 4;
+        document.getElementById('segHeight').value = seg.height;
+        document.getElementById('segHeightVal').textContent = seg.height;
+    } else if (shape === 'membrane') {
+        if (!seg.vertices) seg.vertices = [];
+    }
+
+    document.querySelectorAll('.shape-btn').forEach(btn => {
+        btn.classList.toggle('selected', btn.dataset.shape === shape);
+    });
+
+    // Show/hide membrane controls
+    const membraneControls = document.getElementById('membraneControls');
+    if (shape === 'membrane') {
+        membraneControls.style.display = 'block';
+        updateVertexSelector(seg);
+    } else {
+        membraneControls.style.display = 'none';
+    }
+
+    render();
+}
+
+// Set color
+function setColor(index) {
+    const seg = segments.find(s => s.id === selectedId);
+    if (!seg) return;
+    seg.colorIndex = index;
+    document.querySelectorAll('.color-swatch').forEach((sw, i) => {
+        sw.classList.toggle('selected', i === index);
+    });
+    render();
+}
+
+// Snap child to parent's end point
+function snapToParent(child) {
+    const parent = segments.find(s => s.id === child.parentId);
+    if (!parent) return;
+
+    // Calculate parent's end point
+    const rad = parent.rotation * Math.PI / 180;
+    const endX = parent.x + Math.cos(rad) * parent.width;
+    const endY = parent.y + Math.sin(rad) * parent.width;
+
+    child.x = endX;
+    child.y = endY;
+
+    document.getElementById('segX').value = child.x;
+    document.getElementById('segXVal').textContent = Math.round(child.x);
+    document.getElementById('segY').value = child.y;
+    document.getElementById('segYVal').textContent = Math.round(child.y);
+}
+
+// Get end point of a segment
+function getEndPoint(seg) {
+    const rad = seg.rotation * Math.PI / 180;
+    return {
+        x: seg.x + Math.cos(rad) * seg.width,
+        y: seg.y + Math.sin(rad) * seg.width
+    };
+}
+
+// Get vertex position from a segment
+function getVertexPosition(segId, point, stateSegments = null) {
+    const segs = stateSegments || segments;
+    const seg = segs.find(s => s.id === segId);
+    if (!seg) return null;
+
+    if (point === 'start') {
+        return { x: seg.x, y: seg.y };
+    } else {
+        return getEndPoint(seg);
+    }
+}
+
+// Calculate WORLD (absolute) position and rotation for a segment
+// by walking up the parent chain and compounding transforms
+function getWorldTransform(seg, segmentList = segments) {
+    let worldX = seg.x;
+    let worldY = seg.y;
+    let worldRot = seg.rotation;
+
+    // If snapped to parent, position is relative to parent's end
+    if (seg.snapped && seg.parentId) {
+        const parent = segmentList.find(s => s.id === seg.parentId);
+        if (parent) {
+            const parentWorld = getWorldTransform(parent, segmentList);
+            const parentRadians = parentWorld.rotation * Math.PI / 180;
+
+            // Child starts at parent's end point
+            worldX = parentWorld.x + Math.cos(parentRadians) * parent.width;
+            worldY = parentWorld.y + Math.sin(parentRadians) * parent.width;
+
+            // Child's rotation compounds with parent (seg.rotation is relative)
+            worldRot = parentWorld.rotation + seg.rotation;
+        }
+    }
+
+    return { x: worldX, y: worldY, rotation: worldRot };
+}
+
+// Render all segments
+// IMPORTANT: Uses same compound transform logic as CSS nested elements
+// So what you see in preview = what you get from exported CSS
+function render() {
+    const stage = document.getElementById('stage');
+    stage.querySelectorAll('.shape-element, .joint-line, .pivot-dot, .rotate-handle, .membrane-svg').forEach(el => el.remove());
+
+    // Draw membranes first (behind bones)
+    segments.filter(s => s.shape === 'membrane').forEach(seg => {
+        if (!seg.vertices || seg.vertices.length < 3) return;
+
+        const color = COLORS[seg.colorIndex];
+        const points = seg.vertices.map(v => {
+            const refSeg = segments.find(s => s.id === v.segId);
+            if (!refSeg) return null;
+            const world = getWorldTransform(refSeg);
+            if (v.point === 'start') {
+                return { x: world.x, y: world.y };
+            } else {
+                const rad = world.rotation * Math.PI / 180;
+                return { x: world.x + Math.cos(rad) * refSeg.width, y: world.y + Math.sin(rad) * refSeg.width };
+            }
+        }).filter(p => p);
+        if (points.length < 3) return;
+
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.classList.add('membrane-svg');
+        svg.dataset.id = seg.id;
+        svg.style.cssText = `position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;`;
+
+        const pointsStr = points.map(p => `${p.x},${p.y}`).join(' ');
+        svg.innerHTML = `
+            <defs>
+                <linearGradient id="memGrad${seg.id}" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:${color.bg};stop-opacity:0.8" />
+                    <stop offset="100%" style="stop-color:${darken(color.bg)};stop-opacity:0.6" />
+                </linearGradient>
+            </defs>
+            <polygon points="${pointsStr}" fill="url(#memGrad${seg.id})" stroke="${color.border}" stroke-width="2" style="cursor: pointer;"/>
+        `;
+
+        // Make membrane clickable
+        svg.style.pointerEvents = 'auto';
+        svg.querySelector('polygon').addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            selectSegment(seg.id);
+        });
+
+        stage.appendChild(svg);
+    });
+
+    // Draw shapes using WORLD coordinates (what CSS with nested transforms will produce)
+    segments.filter(s => s.shape !== 'membrane').forEach(seg => {
+        const color = COLORS[seg.colorIndex];
+        const world = getWorldTransform(seg);
+        const el = document.createElement('div');
+        el.className = 'shape-element' + (seg.id === selectedId ? ' selected' : '');
+        el.dataset.id = seg.id;
+
+        // Use WORLD position and rotation for display (matches CSS compound transforms)
+        let styles = `left: ${world.x}px; top: ${world.y}px; transform: rotate(${world.rotation}deg); transform-origin: 0% 50%;`;
+
+        switch (seg.shape) {
+            case 'bone':
+                styles += `width: ${seg.width}px; height: ${seg.height}px; background: linear-gradient(180deg, ${color.bg}, ${darken(color.bg)}); border: 3px solid ${color.border}; border-radius: ${seg.height / 2}px;`;
+                el.innerHTML = `
+                    <div style="position: absolute; left: -${seg.height/2 + 2}px; top: -3px; width: ${seg.height + 4}px; height: ${seg.height + 4}px; background: ${color.bg}; border: 3px solid ${color.border}; border-radius: 50%;"></div>
+                    <div style="position: absolute; right: -${seg.height/2 - 2}px; top: 0; width: ${seg.height - 2}px; height: ${seg.height - 2}px; background: ${color.bg}; border: 2px solid ${color.border}; border-radius: 50%;"></div>
+                `;
+                break;
+            case 'circle':
+                styles += `width: ${seg.width}px; height: ${seg.width}px; background: radial-gradient(circle at 30% 30%, ${color.bg}, ${darken(color.bg)}); border: 3px solid ${color.border}; border-radius: 50%;`;
+                break;
+            case 'square':
+                styles += `width: ${seg.width}px; height: ${seg.height}px; background: linear-gradient(135deg, ${color.bg}, ${darken(color.bg)}); border: 3px solid ${color.border}; border-radius: 4px;`;
+                break;
+            case 'triangle':
+                styles += `width: 0; height: 0; border-left: ${seg.width/2}px solid transparent; border-right: ${seg.width/2}px solid transparent; border-bottom: ${seg.height}px solid ${color.bg}; filter: drop-shadow(0 0 0 ${color.border});`;
+                break;
+            case 'line':
+                styles += `width: ${seg.width}px; height: ${seg.height}px; background: linear-gradient(180deg, ${color.bg}, ${darken(color.bg)}); border-radius: ${seg.height / 2}px;`;
+                break;
+            case 'oval':
+                styles += `width: ${seg.width}px; height: ${seg.height}px; background: radial-gradient(ellipse at 30% 30%, ${color.bg}, ${darken(color.bg)}); border: 3px solid ${color.border}; border-radius: 50%;`;
+                break;
+        }
+
+        el.style.cssText = styles;
+        el.addEventListener('mousedown', (e) => startDrag(e, seg.id));
+        stage.appendChild(el);
+
+        // Add pivot dot at WORLD position
+        const pivot = document.createElement('div');
+        pivot.className = 'pivot-dot';
+        pivot.dataset.id = seg.id;
+        pivot.style.cssText = `left: ${world.x}px; top: ${world.y}px;`;
+        stage.appendChild(pivot);
+
+        // Add rotate handle at WORLD end position
+        if (seg.id === selectedId) {
+            const handle = document.createElement('div');
+            handle.className = 'rotate-handle';
+            const rad = world.rotation * Math.PI / 180;
+            const endX = world.x + Math.cos(rad) * seg.width;
+            const endY = world.y + Math.sin(rad) * seg.width;
+            handle.style.cssText = `left: ${endX + 15}px; top: ${endY - 8}px;`;
+            handle.innerHTML = '↻';
+            handle.addEventListener('mousedown', (e) => startRotate(e, seg.id));
+            stage.appendChild(handle);
+        }
+    });
+
+    // Update segment list
+    const list = document.getElementById('segmentList');
+    list.innerHTML = segments.map(seg => {
+        const color = COLORS[seg.colorIndex];
+        const icon = SHAPES[seg.shape]?.icon || '?';
+        return `
+            <div class="segment-item ${seg.id === selectedId ? 'selected' : ''}" onclick="selectSegment(${seg.id})">
+                <div class="segment-color" style="background: ${color.bg};">${icon}</div>
+                <span class="segment-name">${seg.name}</span>
+                <button class="segment-delete" onclick="event.stopPropagation(); deleteSegment(${seg.id})">×</button>
+            </div>
+        `;
+    }).join('');
+}
+
+// Dragging
+function startDrag(e, id) {
+    if (e.target.classList.contains('rotate-handle')) return;
+    e.preventDefault();
+    selectSegment(id);
+    isDragging = true;
+    const seg = segments.find(s => s.id === id);
+    const rect = document.getElementById('stage').getBoundingClientRect();
+    // For root segments, use their stored position; snapped segments can't be dragged
+    dragOffset = { x: e.clientX - rect.left - seg.x, y: e.clientY - rect.top - seg.y };
+}
+
+function startRotate(e, id) {
+    e.preventDefault();
+    e.stopPropagation();
+    isRotating = true;
+}
+
+document.addEventListener('mousemove', (e) => {
+    if (isDragging && selectedId) {
+        const seg = segments.find(s => s.id === selectedId);
+
+        // Don't allow direct position drag for snapped children (their position is derived from parent)
+        if (seg.snapped && seg.parentId) {
+            return; // Position comes from parent
+        }
+
+        const rect = document.getElementById('stage').getBoundingClientRect();
+        seg.x = Math.max(0, Math.min(600, e.clientX - rect.left - dragOffset.x));
+        seg.y = Math.max(0, Math.min(430, e.clientY - rect.top - dragOffset.y));
+
+        document.getElementById('segX').value = seg.x;
+        document.getElementById('segXVal').textContent = Math.round(seg.x);
+        document.getElementById('segY').value = seg.y;
+        document.getElementById('segYVal').textContent = Math.round(seg.y);
+        render();
+    }
+
+    if (isRotating && selectedId) {
+        const seg = segments.find(s => s.id === selectedId);
+        const rect = document.getElementById('stage').getBoundingClientRect();
+
+        // Get the segment's WORLD position (where it actually appears on screen)
+        const world = getWorldTransform(seg);
+        const pivotX = rect.left + world.x;
+        const pivotY = rect.top + world.y;
+
+        // Calculate absolute angle from mouse to pivot
+        const absAngle = Math.atan2(e.clientY - pivotY, e.clientX - pivotX) * 180 / Math.PI;
+
+        // If snapped to parent, store RELATIVE rotation (subtract parent's world rotation)
+        if (seg.snapped && seg.parentId) {
+            const parent = segments.find(s => s.id === seg.parentId);
+            if (parent) {
+                const parentWorld = getWorldTransform(parent);
+                seg.rotation = Math.round(absAngle - parentWorld.rotation);
+            } else {
+                seg.rotation = Math.round(absAngle);
+            }
+        } else {
+            seg.rotation = Math.round(absAngle);
+        }
+
+        document.getElementById('segRot').value = seg.rotation;
+        document.getElementById('segRotVal').textContent = seg.rotation + '°';
+        render();
+    }
+});
+
+document.addEventListener('mouseup', () => {
+    isDragging = false;
+    isRotating = false;
+});
+
+// Keyframe management
+function addKeyframe() {
+    if (segments.length === 0) {
+        alert('Add some segments first!');
+        return;
+    }
+    const kf = {
+        id: nextKeyframeId++,
+        name: `KF${keyframes.length + 1}`,
+        state: segments.map(s => ({ ...s }))
+    };
+    keyframes.push(kf);
+    renderKeyframes();
+    generateCode();
+}
+
+function saveKeyframe(id) {
+    const kf = keyframes.find(k => k.id === id);
+    if (!kf) return;
+    kf.state = segments.map(s => ({ ...s }));
+    renderKeyframes();
+    generateCode();
+}
+
+function loadKeyframe(id) {
+    const kf = keyframes.find(k => k.id === id);
+    if (!kf) return;
+    segments = kf.state.map(s => ({ ...s }));
+    render();
+    if (selectedId) selectSegment(selectedId);
+}
+
+function deleteKeyframe(id) {
+    keyframes = keyframes.filter(k => k.id !== id);
+    renderKeyframes();
+    generateCode();
+}
+
+function renderKeyframes() {
+    const list = document.getElementById('keyframeList');
+    list.innerHTML = keyframes.map((kf, idx) => `
+        <div class="keyframe-item" onclick="loadKeyframe(${kf.id})">
+            <div class="keyframe-header">
+                <span class="keyframe-name">${kf.name}</span>
+                <button class="keyframe-delete" onclick="event.stopPropagation(); deleteKeyframe(${kf.id})">×</button>
+            </div>
+            <div class="keyframe-preview" id="kfPreview${kf.id}"></div>
+            <div class="keyframe-actions">
+                <button class="keyframe-btn save" onclick="event.stopPropagation(); saveKeyframe(${kf.id})">Save</button>
+                <button class="keyframe-btn load" onclick="event.stopPropagation(); loadKeyframe(${kf.id})">Load</button>
+            </div>
+        </div>
+    `).join('');
+
+    // Render previews
+    keyframes.forEach(kf => {
+        renderKeyframePreview(`kfPreview${kf.id}`, kf.state);
+    });
+
+    // Update legacy state for backwards compatibility
+    if (keyframes.length >= 1) startState = keyframes[0].state;
+    if (keyframes.length >= 2) endState = keyframes[keyframes.length - 1].state;
+}
+
+function renderKeyframePreview(containerId, state) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = '';
+    if (!state) return;
+
+    const scale = 0.12;
+    state.forEach(seg => {
+        if (seg.shape === 'membrane') return; // Skip membranes in preview
+        const color = COLORS[seg.colorIndex];
+        const el = document.createElement('div');
+        el.style.cssText = `
+            position: absolute;
+            left: ${seg.x * scale}px;
+            top: ${seg.y * scale}px;
+            width: ${seg.width * scale}px;
+            height: ${(seg.shape === 'circle' ? seg.width : seg.height) * scale}px;
+            background: ${color.bg};
+            border: 1px solid ${color.border};
+            border-radius: ${seg.shape === 'circle' || seg.shape === 'oval' ? '50%' : '2px'};
+            transform: rotate(${seg.rotation}deg);
+            transform-origin: 0% 50%;
+        `;
+        container.appendChild(el);
+    });
+}
+
+// Preview animation - uses JS loop to maintain snap relationships
+let animationFrame = null;
+let animationStartTime = null;
+let isPlaying = false;
+
+function playPreview() {
+    if (keyframes.length < 2) {
+        alert('Add at least 2 keyframes!');
+        return;
+    }
+    stopPreview();
+    isPlaying = true;
+    animationStartTime = performance.now();
+    animateFrame();
+}
+
+function animateFrame() {
+    if (!isPlaying) return;
+
+    const duration = parseFloat(document.getElementById('animDuration').value) * 1000;
+    const mode = document.getElementById('animMode').value;
+    const elapsed = performance.now() - animationStartTime;
+    const totalDuration = duration * (keyframes.length - 1); // Time for one full pass
+
+    let progress;
+
+    if (mode === 'ping-pong') {
+        // Forward → backward, repeats
+        const cycle = elapsed / totalDuration;
+        const pingPong = cycle % 2;
+        progress = pingPong <= 1 ? pingPong * (keyframes.length - 1) : (2 - pingPong) * (keyframes.length - 1);
+    } else if (mode === 'sequence') {
+        // Plays once, stops at end
+        progress = Math.min(elapsed / totalDuration, 1) * (keyframes.length - 1);
+        if (elapsed >= totalDuration) {
+            stopPreview();
+            return;
+        }
+    } else if (mode === 'loop') {
+        // Forward only, loops from start
+        const cycle = (elapsed / totalDuration) % 1;
+        progress = cycle * (keyframes.length - 1);
+    }
+
+    // Determine which two keyframes we're between
+    const kfIndex = Math.min(Math.floor(progress), keyframes.length - 2);
+    let t = progress - kfIndex; // 0-1 between current pair
+
+    // Apply easing
+    const easing = document.getElementById('animEasing').value;
+    t = applyEasing(t, easing);
+
+    const fromKf = keyframes[kfIndex];
+    const toKf = keyframes[kfIndex + 1];
+
+    // Create interpolated state (RELATIVE rotations - matching CSS behavior)
+    const currentState = segments.map(seg => {
+        const from = fromKf.state.find(s => s.id === seg.id);
+        const to = toKf.state.find(s => s.id === seg.id);
+        if (!from || !to) return { ...seg };
+
+        return {
+            ...seg,
+            x: lerp(from.x, to.x, t),
+            y: lerp(from.y, to.y, t),
+            rotation: lerp(from.rotation, to.rotation, t)  // This is RELATIVE rotation
+        };
+    });
+
+    // Helper to get world transform for interpolated state
+    function getInterpolatedWorldTransform(seg) {
+        let worldX = seg.x;
+        let worldY = seg.y;
+        let worldRot = seg.rotation;
+
+        if (seg.snapped && seg.parentId) {
+            const parent = currentState.find(s => s.id === seg.parentId);
+            if (parent) {
+                const parentWorld = getInterpolatedWorldTransform(parent);
+                const parentRadians = parentWorld.rotation * Math.PI / 180;
+
+                worldX = parentWorld.x + Math.cos(parentRadians) * parent.width;
+                worldY = parentWorld.y + Math.sin(parentRadians) * parent.width;
+                worldRot = parentWorld.rotation + seg.rotation;
+            }
+        }
+        return { x: worldX, y: worldY, rotation: worldRot };
+    }
+
+    // Update DOM - regular shapes using WORLD coordinates
+    currentState.forEach(seg => {
+        if (seg.shape === 'membrane') return;
+
+        const world = getInterpolatedWorldTransform(seg);
+        const el = document.querySelector(`.shape-element[data-id="${seg.id}"]`);
+        const pivot = document.querySelector(`.pivot-dot[data-id="${seg.id}"]`);
+        if (el) {
+            el.style.left = world.x + 'px';
+            el.style.top = world.y + 'px';
+            el.style.transform = `rotate(${world.rotation}deg)`;
+        }
+        if (pivot) {
+            pivot.style.left = world.x + 'px';
+            pivot.style.top = world.y + 'px';
+        }
+    });
+
+    // Update membrane polygons using world coordinates
+    currentState.filter(s => s.shape === 'membrane').forEach(seg => {
+        const svg = document.querySelector(`.membrane-svg[data-id="${seg.id}"]`);
+        if (!svg || !seg.vertices) return;
+
+        const points = seg.vertices.map(v => {
+            const refSeg = currentState.find(s => s.id === v.segId);
+            if (!refSeg) return null;
+            const world = getInterpolatedWorldTransform(refSeg);
+            if (v.point === 'start') {
+                return { x: world.x, y: world.y };
+            } else {
+                const rad = world.rotation * Math.PI / 180;
+                return {
+                    x: world.x + Math.cos(rad) * refSeg.width,
+                    y: world.y + Math.sin(rad) * refSeg.width
+                };
+            }
+        }).filter(p => p);
+
+        if (points.length >= 3) {
+            const pointsStr = points.map(p => `${p.x},${p.y}`).join(' ');
+            const polygon = svg.querySelector('polygon');
+            if (polygon) polygon.setAttribute('points', pointsStr);
+        }
+    });
+
+    animationFrame = requestAnimationFrame(animateFrame);
+}
+
+function lerp(a, b, t) {
+    return a + (b - a) * t;
+}
+
+function applyEasing(t, easing) {
+    switch (easing) {
+        case 'ease-in-out':
+            return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+        case 'ease':
+            return t * t * (3 - 2 * t);
+        case 'linear':
+        default:
+            return t;
+    }
+}
+
+function stopPreview() {
+    isPlaying = false;
+    if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+        animationFrame = null;
+    }
+    render();
+}
+
+// Code generation
+function generateCode() {
+    const output = document.getElementById('codeOutput');
+    const htmlOutput = document.getElementById('htmlOutput');
+
+    if (keyframes.length < 2 || segments.length === 0) {
+        output.innerHTML = '/* Add segments and at least 2 keyframes */';
+        htmlOutput.innerHTML = '/* Set parent relationships */';
+        return;
+    }
+
+    const duration = document.getElementById('animDuration').value;
+    const easing = document.getElementById('animEasing').value;
+    const mode = document.getElementById('animMode').value;
+    const totalDuration = parseFloat(duration) * (keyframes.length - 1);
+
+    // Update mode description
+    const modeDesc = document.getElementById('modeDescription');
+    const modeDescriptions = {
+        'ping-pong': 'Forward → backward, repeats forever',
+        'sequence': 'Plays through once, then stops',
+        'loop': 'Forward only, loops from start'
+    };
+    modeDesc.textContent = modeDescriptions[mode];
+
+    let css = '';
+    const n = keyframes.length;
+
+    // Generate keyframes for each segment
+    segments.filter(s => s.shape !== 'membrane').forEach(seg => {
+        const name = seg.name.toLowerCase().replace(/\s+/g, '-');
+
+        // Check if this segment has any rotation changes
+        const rotations = keyframes.map(kf => {
+            const s = kf.state.find(st => st.id === seg.id);
+            return s ? s.rotation : 0;
+        });
+        const hasRotation = rotations.some((r, i, arr) => i > 0 && r !== arr[0]);
+
+        if (hasRotation) {
+            css += `<span class="keyword">@keyframes</span> ${name}-anim {\n`;
+
+            if (mode === 'ping-pong') {
+                // Ping-pong: 0% → 50% forward, 50% → 100% backward
+                keyframes.forEach((kf, idx) => {
+                    const s = kf.state.find(st => st.id === seg.id);
+                    // Rotations are already RELATIVE in keyframe state
+                    const rot = s ? Math.round(s.rotation) : 0;
+                    const forwardPct = Math.round((idx / (n - 1)) * 50);
+                    const backwardPct = 100 - forwardPct;
+
+                    if (idx === 0) {
+                        css += `  <span class="value">0%, 100%</span> { transform: rotate(<span class="value">${rot}deg</span>); }\n`;
+                    } else if (idx === n - 1) {
+                        css += `  <span class="value">50%</span> { transform: rotate(<span class="value">${rot}deg</span>); }\n`;
+                    } else {
+                        css += `  <span class="value">${forwardPct}%, ${backwardPct}%</span> { transform: rotate(<span class="value">${rot}deg</span>); }\n`;
+                    }
+                });
+            } else {
+                // Sequence or Loop: 0% → 100% forward only
+                keyframes.forEach((kf, idx) => {
+                    const s = kf.state.find(st => st.id === seg.id);
+                    // Rotations are already RELATIVE in keyframe state
+                    const rot = s ? Math.round(s.rotation) : 0;
+                    const pct = Math.round((idx / (n - 1)) * 100);
+                    css += `  <span class="value">${pct}%</span> { transform: rotate(<span class="value">${rot}deg</span>); }\n`;
+                });
+            }
+
+            css += `}\n\n`;
+        }
+    });
+
+    // Animation properties based on mode
+    const iterationCount = mode === 'sequence' ? '1' : 'infinite';
+    const fillMode = mode === 'sequence' ? ' forwards' : '';
+    const animDuration = mode === 'ping-pong' ? totalDuration * 2 : totalDuration;
+
+    css += `<span class="comment">/* Mode: ${mode} | Duration: ${animDuration}s | ${keyframes.length} keyframes */</span>\n\n`;
+
+    // Output complete segment styles including dimensions and positions
+    css += `<span class="comment">/* Segment styles (dimensions & positions): */</span>\n`;
+    const firstKf = keyframes[0];
+    segments.filter(s => s.shape !== 'membrane').forEach(seg => {
+        const name = seg.name.toLowerCase().replace(/\s+/g, '-');
+        const state = firstKf.state.find(st => st.id === seg.id) || seg;
+        const parent = seg.parentId ? segments.find(s => s.id === seg.parentId) : null;
+        const parentState = parent ? (firstKf.state.find(st => st.id === parent.id) || parent) : null;
+
+        // Calculate position relative to parent
+        let positionStyle = '';
+        if (seg.snapped && parentState) {
+            positionStyle = `left: <span class="value">${parentState.width}px</span>;`;
+        }
+
+        css += `.${name} {\n`;
+        css += `  position: absolute;\n`;
+        css += `  width: <span class="value">${state.width}px</span>;\n`;
+        css += `  height: <span class="value">${state.height}px</span>;\n`;
+        if (positionStyle) css += `  ${positionStyle}\n`;
+        css += `  transform-origin: left center;\n`;
+        css += `  animation: ${name}-anim <span class="value">${animDuration}s</span> ${easing} ${iterationCount}${fillMode};\n`;
+        css += `}\n`;
+    });
+
+    output.innerHTML = css;
+
+    // HTML structure
+    let html = '<span class="comment">&lt;!-- Nested structure: --&gt;</span>\n';
+    const bones = segments.filter(s => s.shape !== 'membrane');
+    const roots = bones.filter(s => !s.parentId);
+
+    function buildHtml(seg, indent = 0) {
+        if (seg.shape === 'membrane') return;
+        const pad = '  '.repeat(indent);
+        const name = seg.name.toLowerCase().replace(/\s+/g, '-');
+        html += `${pad}&lt;div class="${name}"&gt;\n`;
+        bones.filter(s => s.parentId === seg.id).forEach(child => buildHtml(child, indent + 1));
+        html += `${pad}&lt;/div&gt;\n`;
+    }
+
+    roots.forEach(seg => buildHtml(seg));
+
+    // Add membrane note if any exist
+    const membranes = segments.filter(s => s.shape === 'membrane');
+    if (membranes.length > 0) {
+        html += `\n<span class="comment">&lt;!-- Membranes (use SVG): --&gt;</span>\n`;
+        membranes.forEach(m => {
+            html += `&lt;svg class="${m.name.toLowerCase()}"&gt;&lt;polygon points="..."/&gt;&lt;/svg&gt;\n`;
+        });
+    }
+
+    htmlOutput.innerHTML = html;
+
+    // Generate complete paste-ready code
+    generateCompleteCode(animDuration, easing, iterationCount, fillMode, mode);
+}
+
+function generateCompleteCode(duration, easing, iterationCount, fillMode, mode) {
+    const completeOutput = document.getElementById('completeOutput');
+    const bones = segments.filter(s => s.shape !== 'membrane');
+    const roots = bones.filter(s => !s.parentId);
+    const firstKf = keyframes[0];
+    const n = keyframes.length;
+
+    // Generate plain CSS keyframes (no HTML spans)
+    let keyframesCss = '';
+    bones.forEach(seg => {
+        const name = seg.name.toLowerCase().replace(/\s+/g, '-');
+        const rotations = keyframes.map(kf => {
+            const s = kf.state.find(st => st.id === seg.id);
+            return s ? s.rotation : 0;
+        });
+        const hasRotation = rotations.some((r, i, arr) => i > 0 && r !== arr[0]);
+
+        if (hasRotation) {
+            keyframesCss += `@keyframes ${name}-anim {\n`;
+
+            if (mode === 'ping-pong') {
+                keyframes.forEach((kf, idx) => {
+                    const s = kf.state.find(st => st.id === seg.id);
+                    // Rotations are already RELATIVE in keyframe state
+                    const rot = s ? Math.round(s.rotation) : 0;
+                    const forwardPct = Math.round((idx / (n - 1)) * 50);
+                    const backwardPct = 100 - forwardPct;
+
+                    if (idx === 0) {
+                        keyframesCss += `  0%, 100% { transform: rotate(${rot}deg); }\n`;
+                    } else if (idx === n - 1) {
+                        keyframesCss += `  50% { transform: rotate(${rot}deg); }\n`;
+                    } else {
+                        keyframesCss += `  ${forwardPct}%, ${backwardPct}% { transform: rotate(${rot}deg); }\n`;
+                    }
+                });
+            } else {
+                keyframes.forEach((kf, idx) => {
+                    const s = kf.state.find(st => st.id === seg.id);
+                    // Rotations are already RELATIVE in keyframe state
+                    const rot = s ? Math.round(s.rotation) : 0;
+                    const pct = Math.round((idx / (n - 1)) * 100);
+                    keyframesCss += `  ${pct}% { transform: rotate(${rot}deg); }\n`;
+                });
+            }
+            keyframesCss += `}\n`;
+        }
+    });
+
+    // Build nested HTML with full inline styles
+    function buildCompleteHtml(seg, indent = 0) {
+        const pad = '  '.repeat(indent);
+        const name = seg.name.toLowerCase().replace(/\s+/g, '-');
+        const color = COLORS[seg.colorIndex];
+        const state = firstKf ? (firstKf.state.find(st => st.id === seg.id) || seg) : seg;
+        const parent = seg.parentId ? segments.find(s => s.id === seg.parentId) : null;
+        const parentState = parent && firstKf ? (firstKf.state.find(st => st.id === parent.id) || parent) : parent;
+
+        // Rotation is already RELATIVE in keyframe state
+        const relativeRot = state.rotation;
+
+        // Build inline style
+        let style = `position:absolute;`;
+        style += `width:${state.width}px;`;
+        style += `height:${state.height}px;`;
+
+        // Position: if snapped to parent, use left offset
+        if (seg.snapped && parentState) {
+            style += `left:${parentState.width}px;`;
+        }
+
+        style += `transform-origin:left center;`;
+
+        // Check if this segment has animation
+        const rotations = keyframes.map(kf => {
+            const s = kf.state.find(st => st.id === seg.id);
+            return s ? s.rotation : 0;
+        });
+        const hasRotation = rotations.some((r, i, arr) => i > 0 && r !== arr[0]);
+
+        if (hasRotation) {
+            style += `animation:${name}-anim ${duration}s ${easing} ${iterationCount}${fillMode};`;
+        } else {
+            // No animation, just set the rotation
+            style += `transform:rotate(${relativeRot}deg);`;
+        }
+
+        // Add visual styling based on shape
+        if (seg.shape === 'bone' || seg.shape === 'line') {
+            style += `background:linear-gradient(180deg, ${color.bg} 0%, ${darken(color.bg)} 100%);`;
+            style += `border:2px solid ${color.border};`;
+            style += `border-radius:${state.height/2}px;`;
+        } else if (seg.shape === 'circle' || seg.shape === 'oval') {
+            style += `background:radial-gradient(circle at 30% 30%, ${color.bg}, ${darken(color.bg)});`;
+            style += `border:2px solid ${color.border};`;
+            style += `border-radius:50%;`;
+        } else {
+            style += `background:${color.bg};`;
+            style += `border:2px solid ${color.border};`;
+            style += `border-radius:4px;`;
+        }
+
+        let result = `${pad}&lt;div style="${style}"&gt;\n`;
+
+        // Add children
+        const children = bones.filter(s => s.parentId === seg.id);
+        children.forEach(child => {
+            result += buildCompleteHtml(child, indent + 1);
+        });
+
+        result += `${pad}&lt;/div&gt;\n`;
+        return result;
+    }
+
+    // Build the complete output
+    let complete = '&lt;!-- PASTE THIS COMPLETE CODE --&gt;\n\n';
+    complete += '&lt;style&gt;\n';
+    complete += keyframesCss;
+    complete += '&lt;/style&gt;\n\n';
+
+    // Add membranes info
+    const membranes = segments.filter(s => s.shape === 'membrane');
+    if (membranes.length > 0) {
+        complete += '&lt;!-- MEMBRANES (SVG polygons that connect bone segments): --&gt;\n';
+        membranes.forEach((mem, idx) => {
+            const color = COLORS[mem.colorIndex];
+            if (mem.vertices && mem.vertices.length >= 3) {
+                // Calculate initial polygon points from first keyframe
+                const points = mem.vertices.map(v => {
+                    const seg = firstKf ? firstKf.state.find(s => s.id === v.segId) : segments.find(s => s.id === v.segId);
+                    if (!seg) return null;
+                    if (v.point === 'start') {
+                        return { x: seg.x, y: seg.y };
+                    } else {
+                        const rad = seg.rotation * Math.PI / 180;
+                        return { x: seg.x + Math.cos(rad) * seg.width, y: seg.y + Math.sin(rad) * seg.width };
+                    }
+                }).filter(p => p);
+
+                if (points.length >= 3) {
+                    const pointsStr = points.map(p => `${Math.round(p.x)},${Math.round(p.y)}`).join(' ');
+                    complete += `&lt;svg style="position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:${10 + idx};"&gt;\n`;
+                    complete += `  &lt;polygon points="${pointsStr}" fill="${color.bg}" fill-opacity="0.7" stroke="${color.border}" stroke-width="2"/&gt;\n`;
+                    complete += `&lt;/svg&gt;\n`;
+                    complete += `&lt;!-- Membrane ${idx + 1} connects: ${mem.vertices.map(v => {
+                        const seg = segments.find(s => s.id === v.segId);
+                        return seg ? `${seg.name}(${v.point})` : '?';
+                    }).join(' → ')} --&gt;\n\n`;
+                }
+            }
+        });
+    }
+
+    complete += '&lt;!-- Wing structure (paste inside creature container): --&gt;\n';
+    complete += '&lt;div style="position:absolute;top:___px;left:___px;z-index:18;"&gt;\n';
+    roots.forEach(seg => {
+        complete += buildCompleteHtml(seg, 1);
+    });
+    complete += '&lt;/div&gt;\n';
+
+    if (membranes.length > 0) {
+        complete += '\n&lt;!-- NOTE: Membrane SVGs show initial position. For animated membranes,\n';
+        complete += '     you need JavaScript to update polygon points as bones move. --&gt;\n';
+    }
+
+    completeOutput.innerHTML = complete;
+}
+
+function copyCode() {
+    navigator.clipboard.writeText(document.getElementById('codeOutput').innerText);
+}
+
+function copyHtml() {
+    navigator.clipboard.writeText(document.getElementById('htmlOutput').innerText.replace(/&lt;/g, '<').replace(/&gt;/g, '>'));
+}
+
+function copyComplete() {
+    navigator.clipboard.writeText(document.getElementById('completeOutput').innerText.replace(/&lt;/g, '<').replace(/&gt;/g, '>'));
+}
+
+function darken(hex) {
+    const num = parseInt(hex.slice(1), 16);
+    const r = Math.max(0, (num >> 16) - 30);
+    const g = Math.max(0, ((num >> 8) & 0xFF) - 30);
+    const b = Math.max(0, (num & 0xFF) - 30);
+    return `#${(1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1)}`;
+}
+init();
+</script>
+
+</body>
+</html>

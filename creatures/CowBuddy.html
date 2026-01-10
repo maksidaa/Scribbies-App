@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Cow Buddy - Mammal Variant 14</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root {
+    --c-body: #f5f5f5;
+    --c-body-light: #ffffff;
+    --c-body-dark: #e8e8e8;
+    --c-body-darkest: #d8d8d8;
+    --c-spots: #3a3a3a;
+    --c-spots-dark: #2a2a2a;
+    --c-muzzle: #ffd0cc;
+    --c-muzzle-light: #ffe4e1;
+    --c-muzzle-dark: #ffbeb8;
+    --c-nostril: #a06060;
+    --c-horn: #d4c4a8;
+    --c-horn-light: #f5e6d3;
+    --c-horn-dark: #b8a888;
+    --c-ear-inner: #ffb6c1;
+    --c-udder: #ffb6c8;
+    --c-hoof: #2d2323;
+    --c-hoof-light: #4a4040;
+    --c-outline: #888888;
+    --c-straw: #daa520;
+    --c-straw-dark: #b8860b;
+}
+
+body {
+    background-color: #f0fdf4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* Container: 240x285 (matches horse) */
+.cow-creature {
+    position: relative;
+    width: 240px;
+    height: 285px;
+    animation: cow-graze 3s ease-in-out infinite;
+}
+
+/* Z-INDEX LAYERING:
+   tail: 5 (behind body, attachment hidden)
+   back-legs: 15
+   body: 20
+   neck: 21
+   front-legs: 25
+   ears: 30 (inside head div)
+   horns: 45 (inside head div)
+   head: 40
+*/
+
+@keyframes cow-graze{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-8px) rotate(-1deg)}}
+@keyframes cow-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes cow-tail-swish{0%,100%{transform:rotate(5deg)}50%{transform:rotate(-20deg)}}
+/* Random-feeling chew pattern with pauses */
+@keyframes cow-chew{0%,8%{transform:translateX(0)}10%{transform:translateX(4px)}14%{transform:translateX(-2px)}18%{transform:translateX(3px)}22%,30%{transform:translateX(0)}33%{transform:translateX(-4px)}37%{transform:translateX(2px)}41%{transform:translateX(-3px)}45%,55%{transform:translateX(0)}58%{transform:translateX(3px)}62%{transform:translateX(-4px)}66%{transform:translateX(2px)}70%,80%{transform:translateX(0)}83%{transform:translateX(-3px)}87%{transform:translateX(4px)}91%{transform:translateX(-2px)}95%,100%{transform:translateX(0)}}
+</style>
+</head>
+<body>
+
+<div class="bg-white p-16 rounded-[100px] shadow-2xl flex flex-col items-center">
+    <div class="cow-creature">
+        <!-- TAIL (z-index 5) - positioned to overlap with body, behind it -->
+        <div style="position:absolute;width:12px;height:70px;background:radial-gradient(ellipse at 50% 30%, #f0f0f0, #d8d8d8);border:2px solid var(--c-outline);border-radius:5px;top:130px;left:155px;z-index:5;transform-origin:top center;animation:cow-tail-swish 2.5s ease-in-out infinite;">
+          <!-- Black tuft at end -->
+          <div style="position:absolute;width:18px;height:22px;background:radial-gradient(ellipse at 50% 60%, var(--c-spots), var(--c-spots-dark));border:2px solid #1a1a1a;border-radius:40% 40% 50% 50%;bottom:-10px;left:50%;transform:translateX(-50%);box-shadow:inset 2px 2px 4px rgba(80,80,80,0.3);"></div>
+        </div>
+
+        <!-- BACK LEGS (z-index 15) -->
+        <div style="position:absolute;width:30px;height:60px;background:radial-gradient(ellipse at 50% 30%, #e0e0e0, #c8c8c8);border:3px solid var(--c-outline);border-radius:8px 8px 10px 10px;top:173px;left:86px;z-index:15;filter:brightness(0.9);box-shadow:inset 2px 2px 6px rgba(255,255,255,0.4),inset -2px -2px 4px rgba(100,100,100,0.25);">
+          <div style="position:absolute;bottom:-2px;width:100%;height:17px;background:radial-gradient(ellipse at 50% 40%, var(--c-hoof-light), var(--c-hoof));border-radius:0 0 8px 8px;box-shadow:inset 1px 1px 3px rgba(80,70,70,0.3);"></div>
+        </div>
+        <div style="position:absolute;width:30px;height:60px;background:radial-gradient(ellipse at 50% 30%, #e0e0e0, #c8c8c8);border:3px solid var(--c-outline);border-radius:8px 8px 10px 10px;top:173px;left:154px;z-index:15;filter:brightness(0.9);box-shadow:inset 2px 2px 6px rgba(255,255,255,0.4),inset -2px -2px 4px rgba(100,100,100,0.25);">
+          <div style="position:absolute;bottom:-2px;width:100%;height:17px;background:radial-gradient(ellipse at 50% 40%, var(--c-hoof-light), var(--c-hoof));border-radius:0 0 8px 8px;box-shadow:inset 1px 1px 3px rgba(80,70,70,0.3);"></div>
+        </div>
+
+        <!-- NECK (z-index 21) -->
+        <div style="position:absolute;width:49px;height:68px;background:radial-gradient(ellipse at 35% 30%, var(--c-body-light) 0%, #f0f0f0 40%, #e0e0e0 100%);border-left:4px solid var(--c-outline);border-right:4px solid var(--c-outline);clip-path:polygon(15% 0%, 85% 0%, 100% 100%, 0% 100%);top:79px;left:86px;z-index:21;box-shadow:inset 5px 5px 12px rgba(255,255,255,0.6),inset -4px -4px 10px rgba(150,150,150,0.25);">
+          <div style="position:absolute;width:8px;height:40px;background:rgba(255,255,255,0.2);border-radius:50%;top:10px;left:8px;filter:blur(3px);"></div>
+        </div>
+
+        <!-- BODY (z-index 20) -->
+        <div style="position:absolute;width:135px;height:105px;background:radial-gradient(ellipse at 38% 28%, var(--c-body-light) 0%, var(--c-body) 35%, var(--c-body-dark) 70%, var(--c-body-darkest) 100%);border:4px solid var(--c-outline);border-radius:60px 75px 60px 60px;top:113px;left:45px;z-index:20;box-shadow:inset 10px 10px 25px rgba(255,255,255,0.8),inset -6px -6px 15px rgba(150,150,150,0.3);">
+          <!-- Body highlight -->
+          <div style="position:absolute;width:45px;height:30px;background:rgba(255,255,255,0.6);border-radius:50%;top:10px;left:18px;filter:blur(6px);"></div>
+          <!-- Black spots on body -->
+          <div style="position:absolute;width:35px;height:28px;background:radial-gradient(ellipse, var(--c-spots), var(--c-spots-dark));border-radius:50% 60% 40% 55%;top:15px;right:18px;transform:rotate(-10deg);"></div>
+          <div style="position:absolute;width:28px;height:22px;background:radial-gradient(ellipse, var(--c-spots), var(--c-spots-dark));border-radius:45% 55% 50% 45%;top:50px;left:22px;transform:rotate(15deg);"></div>
+          <div style="position:absolute;width:20px;height:18px;background:radial-gradient(ellipse, var(--c-spots), var(--c-spots-dark));border-radius:50%;bottom:22px;right:35px;"></div>
+          <!-- Udder -->
+          <div style="position:absolute;width:32px;height:20px;background:radial-gradient(ellipse at 50% 30%, #ffccdd, var(--c-udder), #ff9cb0);border:2px solid #e898a8;border-radius:50% 50% 50% 50% / 40% 40% 60% 60%;bottom:-6px;left:50%;transform:translateX(-50%);box-shadow:inset 2px 2px 5px rgba(255,220,230,0.6);"></div>
+        </div>
+
+        <!-- FRONT LEGS (z-index 25) -->
+        <div style="position:absolute;width:30px;height:60px;background:radial-gradient(ellipse at 40% 30%, var(--c-body-light), #f0f0f0, var(--c-body-darkest));border:3px solid var(--c-outline);border-radius:8px 8px 10px 10px;top:180px;left:56px;z-index:25;box-shadow:inset 3px 3px 8px rgba(255,255,255,0.6),inset -2px -2px 5px rgba(120,120,120,0.25);">
+          <div style="position:absolute;width:3px;height:25px;background:rgba(255,255,255,0.25);border-radius:2px;top:8px;left:6px;filter:blur(1px);"></div>
+          <!-- Black spot on leg -->
+          <div style="position:absolute;width:14px;height:12px;background:radial-gradient(ellipse, var(--c-spots), var(--c-spots-dark));border-radius:50%;top:10px;right:4px;"></div>
+          <div style="position:absolute;bottom:-2px;width:100%;height:17px;background:radial-gradient(ellipse at 50% 40%, var(--c-hoof-light), var(--c-hoof));border-radius:0 0 8px 8px;box-shadow:inset 2px 2px 4px rgba(80,70,70,0.3);"></div>
+        </div>
+        <div style="position:absolute;width:30px;height:60px;background:radial-gradient(ellipse at 40% 30%, var(--c-body-light), #f0f0f0, var(--c-body-darkest));border:3px solid var(--c-outline);border-radius:8px 8px 10px 10px;top:180px;left:135px;z-index:25;box-shadow:inset 3px 3px 8px rgba(255,255,255,0.6),inset -2px -2px 5px rgba(120,120,120,0.25);">
+          <div style="position:absolute;width:3px;height:25px;background:rgba(255,255,255,0.25);border-radius:2px;top:8px;left:6px;filter:blur(1px);"></div>
+          <div style="position:absolute;bottom:-2px;width:100%;height:17px;background:radial-gradient(ellipse at 50% 40%, var(--c-hoof-light), var(--c-hoof));border-radius:0 0 8px 8px;box-shadow:inset 2px 2px 4px rgba(80,70,70,0.3);"></div>
+        </div>
+
+        <!-- HEAD (z-index 40) with ears, horns INSIDE -->
+        <div style="position:absolute;width:98px;height:120px;background:radial-gradient(ellipse at 38% 28%, var(--c-body-light) 0%, var(--c-body) 35%, var(--c-body-dark) 70%, var(--c-body-darkest) 100%);border:4px solid var(--c-outline);border-radius:50% 50% 45% 45% / 40% 40% 60% 60%;top:12px;left:64px;z-index:40;box-shadow:inset 8px 8px 20px rgba(255,255,255,0.7),inset -5px -5px 12px rgba(150,150,150,0.3);overflow:visible;">
+          <!-- EARS (floppy, on sides of head) -->
+          <div style="position:absolute;width:28px;height:22px;background:radial-gradient(ellipse at 50% 40%, #f8f8f8, #e8e8e8, #d0d0d0);border:3px solid var(--c-outline);border-radius:50% 50% 40% 40% / 60% 60% 40% 40%;top:8px;left:-18px;transform:rotate(-30deg);z-index:30;box-shadow:inset 2px 2px 5px rgba(255,255,255,0.7),inset -1px -1px 3px rgba(100,100,100,0.2);">
+            <div style="position:absolute;width:14px;height:11px;background:radial-gradient(ellipse, var(--c-ear-inner), #ff9caa);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.6;"></div>
+          </div>
+          <div style="position:absolute;width:28px;height:22px;background:radial-gradient(ellipse at 50% 40%, #f8f8f8, #e8e8e8, #d0d0d0);border:3px solid var(--c-outline);border-radius:50% 50% 40% 40% / 60% 60% 40% 40%;top:8px;right:-18px;transform:rotate(30deg);z-index:30;box-shadow:inset 2px 2px 5px rgba(255,255,255,0.7),inset -1px -1px 3px rgba(100,100,100,0.2);">
+            <div style="position:absolute;width:14px;height:11px;background:radial-gradient(ellipse, var(--c-ear-inner), #ff9caa);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.6;"></div>
+          </div>
+          <!-- HORNS (on top of head) -->
+          <div style="position:absolute;width:10px;height:22px;background:radial-gradient(ellipse at 40% 30%, var(--c-horn-light), var(--c-horn), var(--c-horn-dark));border:2px solid #a09070;border-radius:40% 40% 20% 20%;top:-12px;left:18px;transform:rotate(-15deg);z-index:45;box-shadow:inset 2px 2px 4px rgba(255,250,240,0.6),inset -1px -1px 3px rgba(140,120,90,0.3);"></div>
+          <div style="position:absolute;width:10px;height:22px;background:radial-gradient(ellipse at 60% 30%, var(--c-horn-light), var(--c-horn), var(--c-horn-dark));border:2px solid #a09070;border-radius:40% 40% 20% 20%;top:-12px;right:18px;transform:rotate(15deg);z-index:45;box-shadow:inset 2px 2px 4px rgba(255,250,240,0.6),inset -1px -1px 3px rgba(140,120,90,0.3);"></div>
+          <!-- Head highlight -->
+          <div style="position:absolute;width:30px;height:22px;background:rgba(255,255,255,0.6);border-radius:50%;top:18px;left:14px;filter:blur(5px);"></div>
+          <!-- Black spot on head -->
+          <div style="position:absolute;width:30px;height:24px;background:radial-gradient(ellipse, var(--c-spots), var(--c-spots-dark));border-radius:50% 45% 55% 50%;top:12px;right:10px;transform:rotate(10deg);"></div>
+          <!-- Eyes -->
+          <div style="display:flex;gap:34px;margin-top:40px;justify-content:center;">
+            <div style="width:15px;height:18px;background:radial-gradient(circle at 35% 35%, #4a3a30, #1a1a1a);border-radius:50%;position:relative;animation:cow-blink 4s infinite;box-shadow:inset 1px 1px 2px rgba(80,60,50,0.3);">
+              <div style="position:absolute;width:5px;height:5px;background:white;border-radius:50%;top:3px;left:3px;"></div>
+              <div style="position:absolute;width:2px;height:2px;background:white;border-radius:50%;bottom:4px;right:3px;opacity:0.5;"></div>
+            </div>
+            <div style="width:15px;height:18px;background:radial-gradient(circle at 35% 35%, #4a3a30, #1a1a1a);border-radius:50%;position:relative;animation:cow-blink 4s infinite;box-shadow:inset 1px 1px 2px rgba(80,60,50,0.3);">
+              <div style="position:absolute;width:5px;height:5px;background:white;border-radius:50%;top:3px;left:3px;"></div>
+              <div style="position:absolute;width:2px;height:2px;background:white;border-radius:50%;bottom:4px;right:3px;opacity:0.5;"></div>
+            </div>
+          </div>
+          <!-- Muzzle with overflow visible for straw -->
+          <div style="position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);width:75px;height:50px;background:radial-gradient(ellipse at 50% 40%, var(--c-muzzle-light), var(--c-muzzle), var(--c-muzzle-dark));border:3px solid #dda0a0;border-radius:45%;box-shadow:inset 4px 4px 10px rgba(255,240,235,0.7),inset -3px -3px 8px rgba(200,150,140,0.25);overflow:visible;">
+            <!-- Nostrils (fixed, don't move) -->
+            <div style="position:absolute;width:10px;height:12px;background:radial-gradient(ellipse, #c08080, var(--c-nostril));border-radius:50%;top:12px;left:14px;transform:rotate(10deg);"></div>
+            <div style="position:absolute;width:10px;height:12px;background:radial-gradient(ellipse, #c08080, var(--c-nostril));border-radius:50%;top:12px;right:14px;transform:rotate(-10deg);"></div>
+            <!-- Lower jaw (slides side to side randomly) -->
+            <div style="position:absolute;bottom:0;left:0;width:100%;height:22px;animation:cow-chew 4s ease-in-out infinite;overflow:visible;">
+              <!-- Mouth line -->
+              <div style="position:absolute;top:1px;left:50%;transform:translateX(-50%);width:28px;height:6px;border-bottom:3px solid #c09090;border-radius:50%;"></div>
+              <!-- Straw sticking out of corner of mouth -->
+              <div style="position:absolute;top:0;left:12px;width:2.5px;height:26px;background:linear-gradient(to bottom, var(--c-straw), var(--c-straw-dark));border-radius:1px;transform:rotate(-20deg);transform-origin:top center;"></div>
+              <div style="position:absolute;top:0;left:18px;width:2px;height:18px;background:linear-gradient(to bottom, #d4a634, #a67c00);border-radius:1px;transform:rotate(-8deg);transform-origin:top center;"></div>
+            </div>
+          </div>
+          <!-- Blush -->
+          <div style="position:absolute;top:72px;width:100%;display:flex;justify-content:space-around;padding:0 12px;">
+            <div style="width:18px;height:9px;background:radial-gradient(ellipse, var(--c-ear-inner), transparent);border-radius:50%;opacity:0.3;filter:blur(1px);"></div>
+            <div style="width:18px;height:9px;background:radial-gradient(ellipse, var(--c-ear-inner), transparent);border-radius:50%;opacity:0.3;filter:blur(1px);"></div>
+          </div>
+        </div>
+    </div>
+
+    <h3 class="mt-12 text-5xl font-black text-gray-800 tracking-tighter uppercase italic">Cow Buddy!</h3>
+</div>
+
+</body>
+</html>
