@@ -310,11 +310,13 @@
     #xp-sparkles{position:fixed;pointer-events:none;z-index:9999}
     .xp-sparkle{position:absolute;font-size:24px;animation:collectXP 0.8s ease-in forwards}
 
-    /* Sleeping/snoring animations */
-    @keyframes sleep-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
+    /* Sleeping/snoring animations - ONLY gentle breathing, no other movement */
+    @keyframes sleep-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.015)}}
     @keyframes float-z{0%{opacity:0;transform:translate(0,0) scale(0.5)}20%{opacity:1}80%{opacity:1}100%{opacity:0;transform:translate(20px,-40px) scale(1.2)}}
     @keyframes float-z-delayed{0%{opacity:0;transform:translate(0,0) scale(0.5)}20%{opacity:1}80%{opacity:1}100%{opacity:0;transform:translate(25px,-50px) scale(1.3)}}
-    .sleeping{animation:sleep-breathe 3s ease-in-out infinite !important}
+    .sleeping{animation:sleep-breathe 4s ease-in-out infinite !important}
+    /* Stop creature part animations when sleeping - creature should be completely still except breathing */
+    .sleeping div:not(.sleeping-zs):not(.sleeping-z){animation:none !important}
     .sleeping-zs{position:absolute;top:-10px;right:-20px;font-size:24px;pointer-events:none;z-index:100}
     .sleeping-z{position:absolute;font-weight:bold;color:#a78bfa;text-shadow:0 0 4px rgba(167,139,250,0.5)}
 
@@ -339,12 +341,12 @@
     .sleeping-z:nth-child(1){animation:float-z 2s ease-out infinite;font-size:16px}
     .sleeping-z:nth-child(2){animation:float-z-delayed 2s ease-out infinite 0.6s;font-size:20px;left:8px}
     .sleeping-z:nth-child(3){animation:float-z 2s ease-out infinite 1.2s;font-size:14px;left:16px}
-    /* Closed eyes when sleeping - squish eyes to lines */
-    .sleeping .bl-eye{transform:scaleY(0.15) !important;animation:none !important}
-    .sleeping .s-eye{transform:scaleY(0.15) !important;animation:none !important}
-    .sleeping .f-eye{transform:scaleY(0.15) !important;animation:none !important}
-    .sleeping .tn-eye{transform:scaleY(0.15) !important;animation:none !important}
-    .sleeping .dr-eye{transform:scaleY(0.15) !important;animation:none !important}
+    /* Closed eyes when sleeping - completely flat line */
+    .sleeping .bl-eye{transform:scaleY(0.05) !important;animation:none !important;border-radius:50% !important}
+    .sleeping .s-eye{transform:scaleY(0.05) !important;animation:none !important;border-radius:50% !important}
+    .sleeping .f-eye{transform:scaleY(0.05) !important;animation:none !important;border-radius:50% !important}
+    .sleeping .tn-eye{transform:scaleY(0.05) !important;animation:none !important;border-radius:50% !important}
+    .sleeping .dr-eye{transform:scaleY(0.05) !important;animation:none !important;border-radius:50% !important}
 
     /* XP State Animations */
     /* 10-25%: Drowsy - slow sway, half-closed eyes */
@@ -907,6 +909,118 @@
 <div id="app"></div>
 <script>
 const TAGS=['Faith','Hope','Charity','Courage','Prayer','Repentance','Gratitude','Family','Service','Obedience','Worship','Jesus Christ','Trials','Peace','Wisdom','Love','Patience'];
+
+// LDS Doctrine Mastery / Scripture Mastery verses (100 passages for Seminary)
+const LDS_DOCTRINE_MASTERY=[
+  // Old Testament (25 verses)
+  {b:'Moses',c:1,v:'39',t:'For behold, this is my work and my glory—to bring to pass the immortality and eternal life of man.',dm:true},
+  {b:'Moses',c:7,v:'18',t:'And the Lord called his people Zion, because they were of one heart and one mind, and dwelt in righteousness; and there was no poor among them.',dm:true},
+  {b:'Abraham',c:3,v:'22-23',t:'Now the Lord had shown unto me, Abraham, the intelligences that were organized before the world was... And God saw these souls that they were good.',dm:true},
+  {b:'Genesis',c:1,v:'26-27',t:'And God said, Let us make man in our image, after our likeness... So God created man in his own image.',dm:true},
+  {b:'Genesis',c:2,v:'24',t:'Therefore shall a man leave his father and his mother, and shall cleave unto his wife: and they shall be one flesh.',dm:true},
+  {b:'Genesis',c:39,v:'9',t:'How then can I do this great wickedness, and sin against God?',dm:true},
+  {b:'Exodus',c:20,v:'3-17',t:'Thou shalt have no other gods before me... Thou shalt not kill. Thou shalt not commit adultery. Thou shalt not steal.',dm:true},
+  {b:'Exodus',c:33,v:'11',t:'And the Lord spake unto Moses face to face, as a man speaketh unto his friend.',dm:true},
+  {b:'Leviticus',c:19,v:'18',t:'Thou shalt love thy neighbour as thyself: I am the Lord.',dm:true},
+  {b:'Joshua',c:1,v:'8',t:'This book of the law shall not depart out of thy mouth; but thou shalt meditate therein day and night.',dm:true},
+  {b:'Joshua',c:24,v:'15',t:'Choose you this day whom ye will serve... but as for me and my house, we will serve the Lord.',dm:true},
+  {b:'1 Samuel',c:16,v:'7',t:'The Lord seeth not as man seeth; for man looketh on the outward appearance, but the Lord looketh on the heart.',dm:true},
+  {b:'Job',c:19,v:'25-26',t:'For I know that my redeemer liveth, and that he shall stand at the latter day upon the earth.',dm:true},
+  {b:'Psalm',c:24,v:'3-4',t:'Who shall ascend into the hill of the Lord? He that hath clean hands, and a pure heart.',dm:true},
+  {b:'Psalm',c:119,v:'105',t:'Thy word is a lamp unto my feet, and a light unto my path.',dm:true},
+  {b:'Proverbs',c:3,v:'5-6',t:'Trust in the Lord with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths.',dm:true},
+  {b:'Isaiah',c:1,v:'18',t:'Come now, and let us reason together, saith the Lord: though your sins be as scarlet, they shall be as white as snow.',dm:true},
+  {b:'Isaiah',c:29,v:'13-14',t:'This people draw near me with their mouth... therefore I will proceed to do a marvellous work among this people.',dm:true},
+  {b:'Isaiah',c:53,v:'3-5',t:'He is despised and rejected of men; a man of sorrows... he was wounded for our transgressions.',dm:true},
+  {b:'Isaiah',c:55,v:'8-9',t:'For my thoughts are not your thoughts, neither are your ways my ways, saith the Lord.',dm:true},
+  {b:'Jeremiah',c:1,v:'4-5',t:'Before I formed thee in the belly I knew thee; and before thou camest forth out of the womb I sanctified thee.',dm:true},
+  {b:'Ezekiel',c:37,v:'15-17',t:'Take thee one stick, and write upon it, For Judah... then take another stick, and write upon it, For Joseph.',dm:true},
+  {b:'Amos',c:3,v:'7',t:'Surely the Lord God will do nothing, but he revealeth his secret unto his servants the prophets.',dm:true},
+  {b:'Malachi',c:3,v:'8-10',t:'Will a man rob God? Yet ye have robbed me. But ye say, Wherein have we robbed thee? In tithes and offerings.',dm:true},
+  {b:'Malachi',c:4,v:'5-6',t:'Behold, I will send you Elijah the prophet before the coming of the great and dreadful day of the Lord.',dm:true},
+  // New Testament (25 verses)
+  {b:'Matthew',c:5,v:'14-16',t:'Ye are the light of the world. A city that is set on an hill cannot be hid... Let your light so shine before men.',dm:true},
+  {b:'Matthew',c:6,v:'24',t:'No man can serve two masters... Ye cannot serve God and mammon.',dm:true},
+  {b:'Matthew',c:11,v:'28-30',t:'Come unto me, all ye that labour and are heavy laden, and I will give you rest. Take my yoke upon you.',dm:true},
+  {b:'Matthew',c:16,v:'15-19',t:'He saith unto them, But whom say ye that I am? And Simon Peter answered... Thou art the Christ.',dm:true},
+  {b:'Matthew',c:25,v:'40',t:'Inasmuch as ye have done it unto one of the least of these my brethren, ye have done it unto me.',dm:true},
+  {b:'Matthew',c:28,v:'19-20',t:'Go ye therefore, and teach all nations, baptizing them in the name of the Father, and of the Son, and of the Holy Ghost.',dm:true},
+  {b:'Luke',c:2,v:'40',t:'And the child grew, and waxed strong in spirit, filled with wisdom: and the grace of God was upon him.',dm:true},
+  {b:'Luke',c:22,v:'39-46',t:'And he came out, and went, as he was wont, to the mount of Olives... And being in an agony he prayed more earnestly.',dm:true},
+  {b:'John',c:3,v:'5',t:'Except a man be born of water and of the Spirit, he cannot enter into the kingdom of God.',dm:true},
+  {b:'John',c:7,v:'17',t:'If any man will do his will, he shall know of the doctrine, whether it be of God.',dm:true},
+  {b:'John',c:10,v:'16',t:'And other sheep I have, which are not of this fold: them also I must bring... and there shall be one fold, and one shepherd.',dm:true},
+  {b:'John',c:14,v:'6',t:'I am the way, the truth, and the life: no man cometh unto the Father, but by me.',dm:true},
+  {b:'John',c:14,v:'15',t:'If ye love me, keep my commandments.',dm:true},
+  {b:'John',c:15,v:'16',t:'Ye have not chosen me, but I have chosen you, and ordained you, that ye should go and bring forth fruit.',dm:true},
+  {b:'John',c:17,v:'3',t:'And this is life eternal, that they might know thee the only true God, and Jesus Christ, whom thou hast sent.',dm:true},
+  {b:'Acts',c:2,v:'36-38',t:'Therefore let all the house of Israel know assuredly, that God hath made that same Jesus... both Lord and Christ.',dm:true},
+  {b:'Romans',c:1,v:'16',t:'For I am not ashamed of the gospel of Christ: for it is the power of God unto salvation.',dm:true},
+  {b:'1 Corinthians',c:6,v:'19-20',t:'Know ye not that your body is the temple of the Holy Ghost which is in you?',dm:true},
+  {b:'1 Corinthians',c:15,v:'20-22',t:'But now is Christ risen from the dead, and become the firstfruits of them that slept.',dm:true},
+  {b:'1 Corinthians',c:15,v:'40-42',t:'There are also celestial bodies, and bodies terrestrial... So also is the resurrection of the dead.',dm:true},
+  {b:'Ephesians',c:4,v:'11-14',t:'And he gave some, apostles; and some, prophets; and some, evangelists; and some, pastors and teachers.',dm:true},
+  {b:'2 Timothy',c:3,v:'15-17',t:'And that from a child thou hast known the holy scriptures, which are able to make thee wise unto salvation.',dm:true},
+  {b:'Hebrews',c:5,v:'4',t:'And no man taketh this honour unto himself, but he that is called of God, as was Aaron.',dm:true},
+  {b:'James',c:1,v:'5-6',t:'If any of you lack wisdom, let him ask of God, that giveth to all men liberally... and it shall be given him.',dm:true},
+  {b:'James',c:2,v:'17-18',t:'Even so faith, if it hath not works, is dead, being alone.',dm:true},
+  // Book of Mormon (25 verses)
+  {b:'1 Nephi',c:3,v:'7',t:'I will go and do the things which the Lord hath commanded, for I know that the Lord giveth no commandments unto the children of men, save he shall prepare a way.',dm:true},
+  {b:'1 Nephi',c:19,v:'23',t:'I did liken all scriptures unto us, that it might be for our profit and learning.',dm:true},
+  {b:'2 Nephi',c:2,v:'25',t:'Adam fell that men might be; and men are, that they might have joy.',dm:true},
+  {b:'2 Nephi',c:2,v:'27',t:'Wherefore, men are free according to the flesh... they are free to choose liberty and eternal life, through the great Mediator.',dm:true},
+  {b:'2 Nephi',c:9,v:'28-29',t:'O that cunning plan of the evil one! O the vainness, and the frailties, and the foolishness of men!',dm:true},
+  {b:'2 Nephi',c:28,v:'7-9',t:'Yea, and there shall be many which shall say: Eat, drink, and be merry... for tomorrow we die.',dm:true},
+  {b:'2 Nephi',c:31,v:'19-20',t:'After ye have gotten into this strait and narrow path, I would ask if all is done? Behold, I say unto you, Nay.',dm:true},
+  {b:'2 Nephi',c:32,v:'3',t:'Feast upon the words of Christ; for behold, the words of Christ will tell you all things what ye should do.',dm:true},
+  {b:'2 Nephi',c:32,v:'8-9',t:'And now, my beloved brethren, I perceive that ye ponder still in your hearts... ye must pray always.',dm:true},
+  {b:'Jacob',c:2,v:'18-19',t:'But before ye seek for riches, seek ye for the kingdom of God.',dm:true},
+  {b:'Mosiah',c:2,v:'17',t:'When ye are in the service of your fellow beings ye are only in the service of your God.',dm:true},
+  {b:'Mosiah',c:3,v:'19',t:'For the natural man is an enemy to God, and has been from the fall of Adam, and will be, forever and ever, unless he yields to the enticings of the Holy Spirit.',dm:true},
+  {b:'Mosiah',c:4,v:'30',t:'But this much I can tell you, that if ye do not watch yourselves, and your thoughts, and your words, and your deeds, and observe the commandments of God.',dm:true},
+  {b:'Alma',c:7,v:'11-13',t:'And he shall go forth, suffering pains and afflictions and temptations of every kind... that he may know according to the flesh how to succor his people.',dm:true},
+  {b:'Alma',c:32,v:'21',t:'Faith is not to have a perfect knowledge of things; therefore if ye have faith ye hope for things which are not seen, which are true.',dm:true},
+  {b:'Alma',c:34,v:'32-34',t:'This life is the time for men to prepare to meet God; yea, behold the day of this life is the day for men to perform their labors.',dm:true},
+  {b:'Alma',c:37,v:'6-7',t:'Now ye may suppose that this is foolishness in me; but behold I say unto you, that by small and simple things are great things brought to pass.',dm:true},
+  {b:'Alma',c:37,v:'35',t:'O, remember, my son, and learn wisdom in thy youth; yea, learn in thy youth to keep the commandments of God.',dm:true},
+  {b:'Alma',c:41,v:'10',t:'Wickedness never was happiness.',dm:true},
+  {b:'Helaman',c:5,v:'12',t:'And now, my sons, remember, remember that it is upon the rock of our Redeemer, who is Christ, the Son of God, that ye must build your foundation.',dm:true},
+  {b:'3 Nephi',c:11,v:'29',t:'For verily, verily I say unto you, he that hath the spirit of contention is not of me, but is of the devil.',dm:true},
+  {b:'3 Nephi',c:12,v:'48',t:'Therefore I would that ye should be perfect even as I, or your Father who is in heaven is perfect.',dm:true},
+  {b:'3 Nephi',c:27,v:'27',t:'Therefore, what manner of men ought ye to be? Verily I say unto you, even as I am.',dm:true},
+  {b:'Ether',c:12,v:'6',t:'Faith is things which are hoped for and not seen; wherefore, dispute not because ye see not, for ye receive no witness until after the trial of your faith.',dm:true},
+  {b:'Ether',c:12,v:'27',t:'If men come unto me I will show unto them their weakness... for if they humble themselves before me, and have faith in me, then will I make weak things become strong.',dm:true},
+  {b:'Moroni',c:7,v:'16-17',t:'For behold, the Spirit of Christ is given to every man, that he may know good from evil.',dm:true},
+  {b:'Moroni',c:7,v:'45',t:'And charity suffereth long, and is kind, and envieth not, and is not puffed up.',dm:true},
+  {b:'Moroni',c:10,v:'4-5',t:'And when ye shall receive these things, I would exhort you that ye would ask God, the Eternal Father, in the name of Christ, if these things are not true.',dm:true},
+  // Doctrine and Covenants (25 verses)
+  {b:'D&C',c:1,v:'37-38',t:'Search these commandments, for they are true and faithful, and the prophecies and promises which are in them shall all be fulfilled.',dm:true},
+  {b:'D&C',c:6,v:'36',t:'Look unto me in every thought; doubt not, fear not.',dm:true},
+  {b:'D&C',c:8,v:'2-3',t:'Yea, behold, I will tell you in your mind and in your heart, by the Holy Ghost, which shall come upon you and which shall dwell in your heart.',dm:true},
+  {b:'D&C',c:10,v:'5',t:'Pray always, that you may come off conqueror; yea, that you may conquer Satan, and that you may escape the hands of the servants of Satan.',dm:true},
+  {b:'D&C',c:13,v:'1',t:'Upon you my fellow servants, in the name of Messiah I confer the Priesthood of Aaron, which holds the keys of the ministering of angels.',dm:true},
+  {b:'D&C',c:14,v:'7',t:'And, if you keep my commandments and endure to the end you shall have eternal life, which gift is the greatest of all the gifts of God.',dm:true},
+  {b:'D&C',c:18,v:'10-11',t:'Remember the worth of souls is great in the sight of God.',dm:true},
+  {b:'D&C',c:18,v:'15-16',t:'And if it so be that you should labor all your days in crying repentance unto this people, and bring, save it be one soul unto me, how great shall be your joy.',dm:true},
+  {b:'D&C',c:19,v:'16-19',t:'For behold, I, God, have suffered these things for all, that they might not suffer if they would repent.',dm:true},
+  {b:'D&C',c:25,v:'13',t:'Wherefore, lift up thy heart and rejoice, and cleave unto the covenants which thou hast made.',dm:true},
+  {b:'D&C',c:46,v:'33',t:'And ye must practice virtue and holiness before me continually.',dm:true},
+  {b:'D&C',c:58,v:'26-27',t:'For behold, it is not meet that I should command in all things; for he that is compelled in all things, the same is a slothful and not a wise servant.',dm:true},
+  {b:'D&C',c:58,v:'42-43',t:'Behold, he who has repented of his sins, the same is forgiven, and I, the Lord, remember them no more.',dm:true},
+  {b:'D&C',c:64,v:'9-11',t:'Wherefore, I say unto you, that ye ought to forgive one another; for he that forgiveth not his brother his trespasses standeth condemned.',dm:true},
+  {b:'D&C',c:76,v:'22-24',t:'And now, after the many testimonies which have been given of him, this is the testimony, last of all, which we give of him: That he lives!',dm:true},
+  {b:'D&C',c:78,v:'19',t:'And he who receiveth all things with thankfulness shall be made glorious; and the things of this earth shall be added unto him.',dm:true},
+  {b:'D&C',c:82,v:'10',t:'I, the Lord, am bound when ye do what I say; but when ye do not what I say, ye have no promise.',dm:true},
+  {b:'D&C',c:84,v:'33-39',t:'For whoso is faithful unto the obtaining these two priesthoods of which I have spoken, and the magnifying their calling... they become the sons of Moses and of Aaron.',dm:true},
+  {b:'D&C',c:88,v:'124',t:'Cease to be idle; cease to be unclean; cease to find fault one with another; cease to sleep longer than is needful.',dm:true},
+  {b:'D&C',c:89,v:'18-21',t:'And all saints who remember to keep and do these sayings, walking in obedience to the commandments, shall receive health in their navel.',dm:true},
+  {b:'D&C',c:121,v:'34-36',t:'Behold, there are many called, but few are chosen... because their hearts are set so much upon the things of this world.',dm:true},
+  {b:'D&C',c:121,v:'41-42',t:'No power or influence can or ought to be maintained by virtue of the priesthood, only by persuasion, by long-suffering, by gentleness and meekness.',dm:true},
+  {b:'D&C',c:130,v:'18-19',t:'Whatever principle of intelligence we attain unto in this life, it will rise with us in the resurrection.',dm:true},
+  {b:'D&C',c:130,v:'22-23',t:'The Father has a body of flesh and bones as tangible as man\'s; the Son also; but the Holy Ghost has not a body of flesh and bones.',dm:true},
+  {b:'D&C',c:131,v:'1-4',t:'In the celestial glory there are three heavens or degrees; And in order to obtain the highest, a man must enter into this order of the priesthood.',dm:true}
+];
+
 const STARTER=[
   {t:'scripture',r:'Proverbs 3:5-6',x:'Trust in the Lord with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths.',g:['Faith','Wisdom']},
   {t:'scripture',r:'Philippians 4:13',x:'I can do all things through Christ which strengtheneth me.',g:['Courage','Faith']},
@@ -953,16 +1067,6 @@ const CREATURE_CATEGORIES={
     teenNames:['Scaleling I','Scaleling II','Scaleling III','Scaleling IV','Scaleling V','Scaleling VI','Scaleling VII','Scaleling VIII','Scaleling IX','Scaleling X','Scaleling XI','Scaleling XII','Scaleling XIII','Scaleling XIV'],
     adultVariants:['🦎','🐸','🐢','🐍','🐍','🐍','🐍','🐍','🐍','🐍','🐍','🐍','🐍','🦎'],  // Adult reptiles - full body (14 variants)
     adultNames:['Gecko','Frog','Turtle','Cobra','Emerald Python','Purple Snake','Pygmy Rattlesnake','Coiled Rattlesnake','Rainbow Snake','Purple Cobra','Flaming Cobra','Ice Cobra','King Cobra','Golden Gecko']
-  },
-  dragons:{
-    eggType:'speckled',
-    blobEmoji:'blob',  // Uses renderBlob() - cute creature with eyes
-    babyEmoji:'baby',   // Uses renderBaby() - cute baby dragon 🐲
-    teenEmoji:'teen',   // Uses renderTeen() - 3 progressive designs
-    teenVariants:['🐉','🐉','🐉','🐉','🐲','🐲','🐲','🐲','🦕','🦖'],  // Young dragons (for reference)
-    teenNames:['Wyrmling I','Wyrmling II','Wyrmling III','Wyrmling IV','Wyrmling V','Wyrmling VI','Wyrmling VII','Wyrmling VIII','Wyrmling IX','Wyrmling X'],
-    adultVariants:['🐉','🐉','🦕','🦖','🐉','🐉','🐉','🐉','🦕','🦖'],  // Ancient dragons - all full body
-    adultNames:['Ancient Dragon','Elder Dragon','Dragon Lord','Tyrant Dragon','Fire Dragon','Ice Dragon','Storm Dragon','Chaos Dragon','Dragon Titan','Dino Dragon']
   },
   insects:{
     eggType:'small',
@@ -1029,9 +1133,98 @@ const CREATURE_CATEGORIES={
 // Array of category keys for random selection
 const CATEGORY_KEYS=Object.keys(CREATURE_CATEGORIES);
 
+// Cute creature blurbs for trading cards (Pokédex-style descriptions)
+const CREATURE_BLURBS={
+  // Stage-based blurbs (shared across categories)
+  stages:{
+    egg:'A mysterious egg filled with potential! What adorable creature waits inside?',
+    blob:'A freshly hatched blob of pure cuteness! Still learning about the world with those big curious eyes.',
+    baby:'Growing stronger every day! This little one loves to explore and make new friends.',
+    teen:'Almost fully grown! Developing unique traits and showing off its personality.',
+    adult:'A magnificent fully-grown Scribby! Raised with love and scripture practice.'
+  },
+  // Category-specific adult blurbs by variant index
+  birds:{
+    0:'This friendly duck loves splashing in puddles and making everyone smile with its cheerful quacks!',
+    1:'A gentle dove that brings peace wherever it flies. Known for its soft cooing and kind nature.',
+    2:'A majestic eagle with sharp eyes and a brave heart. Loves soaring high above the clouds!',
+    3:'This colorful mallard is always ready for adventure, especially if there are breadcrumbs involved.',
+    4:'A wise owl who stays up late reading and shares knowledge with anyone who asks.',
+    5:'This stunning peacock loves to show off its beautiful feathers at every opportunity!',
+    6:'A chatty parrot that can learn any phrase! Loves crackers and making silly jokes.',
+    7:'An elegant swan gliding gracefully across calm waters. Known for its beauty and poise.',
+    8:'This fabulous flamingo stands on one leg for hours, perfecting its balance and grace.',
+    default:'A beautiful feathered friend raised with love and dedication!'
+  },
+  aquatic:{
+    0:'A gentle giant of the sea! This whale sings beautiful songs that echo across the ocean.',
+    1:'A playful dolphin that loves doing tricks and making new friends. Always smiling!',
+    2:'A cuddly seal that enjoys basking in the sun and clapping for snacks.',
+    3:'A misunderstood shark who is actually very friendly. Just wants to give hugs!',
+    4:'This clever octopus can solve puzzles and open jars. Has eight arms for eight hugs!',
+    5:'A graceful squid that changes colors with its mood. Loves deep-sea exploration!',
+    default:'A wonderful sea creature from the depths of the ocean!'
+  },
+  reptiles:{
+    0:'A speedy gecko that can climb any wall! Loves catching bugs and doing parkour.',
+    1:'A cheerful frog that sings the best songs on rainy days. Ribbiting personality!',
+    2:'A wise turtle taking life one slow step at a time. Carries its home everywhere!',
+    3:'A sleek cobra with hypnotic eyes. Actually quite friendly once you get to know it!',
+    default:'A cool-blooded friend with scales and a warm heart!'
+  },
+  mammals:{
+    0:'A fluffy bunny with the softest fur! Loves nibbling on carrots and hopping around.',
+    1:'An adorable kitty that purrs like a tiny motor. Expert at finding sunny spots.',
+    2:'A cuddly koala that gives the best hugs and loves eucalyptus-flavored everything.',
+    3:'A clever fox with a bushy tail. Known for being both smart and friendly!',
+    4:'A tiny mouse with big dreams! Can squeeze into the smallest spaces.',
+    5:'A mischievous raccoon that collects shiny things. Has the cutest little hands!',
+    6:'A red panda with the fluffiest tail! Loves bamboo and afternoon naps.',
+    7:'A sleepy sloth that takes everything nice and slow. Champion napper!',
+    default:'A furry friend with four paws and a heart of gold!'
+  },
+  mystical:{
+    0:'A magical fairy spreading sparkles and joy wherever it flutters!',
+    1:'A mysterious dark fairy with powers over shadows. Still very friendly though!',
+    2:'A graceful merperson from an underwater kingdom. Can hold their breath forever!',
+    3:'A powerful sea witch brewing potions from ocean ingredients.',
+    4:'A wish-granting genie with a heart of gold! Just dont ask for more wishes.',
+    5:'The royal ruler of pumpkin patch! Glows warmly on autumn nights.',
+    default:'A creature of legend and wonder, straight from fairy tales!'
+  },
+  prehistoric:{
+    0:'A fearsome T-Rex with tiny arms but a huge heart! Loves giving high-fives.',
+    1:'A gentle Bronto munching on treetops. The friendliest giant around!',
+    2:'A Stego with cool back plates that change color with its mood!',
+    default:'A prehistoric pal from millions of years ago!'
+  },
+  alien:{
+    0:'A cosmic friend from a distant galaxy! Communicates through colorful light patterns.',
+    1:'A neon visitor with glowing antennae. Collects earth souvenirs!',
+    2:'A space buddy learning human customs. Thinks handshakes are hilarious!',
+    default:'An out-of-this-world friend from beyond the stars!'
+  },
+  insects:{
+    default:'A tiny but mighty bug friend with the biggest personality!'
+  },
+  fantasy:{
+    default:'A magical creature from the realm of imagination!'
+  }
+};
+
+// Get creature blurb based on category, stage, and variant
+function getCreatureBlurb(categoryKey,stage,variantIdx=0){
+  if(stage!=='adult'){
+    return CREATURE_BLURBS.stages[stage]||CREATURE_BLURBS.stages.blob;
+  }
+  const categoryBlurbs=CREATURE_BLURBS[categoryKey];
+  if(!categoryBlurbs)return CREATURE_BLURBS.stages.adult;
+  return categoryBlurbs[variantIdx]||categoryBlurbs.default||CREATURE_BLURBS.stages.adult;
+}
+
 // Categories with fully designed CSS creatures (egg → adult)
 // All categories now enabled for testing/development
-const FULLY_DESIGNED_CATEGORIES=['birds','aquatic','reptiles','dragons','insects','mammals','fantasy','prehistoric','alien','mystical'];
+const FULLY_DESIGNED_CATEGORIES=['birds','aquatic','reptiles','insects','mammals','fantasy','prehistoric','alien','mystical'];
 
 // Initialize state with random creature category for first egg (only fully designed ones)
 const initialCategory=FULLY_DESIGNED_CATEGORIES[Math.floor(Math.random()*FULLY_DESIGNED_CATEGORIES.length)];
@@ -3463,6 +3656,34 @@ function renderGuideIcon(size=26){
   <!-- Text lines right -->
   <div style="position:absolute;top:${s*0.25}px;right:${s*0.16}px;width:${s*0.22}px;height:${s*0.05}px;background:#d97706;opacity:0.4;border-radius:1px;"></div>
   <div style="position:absolute;top:${s*0.36}px;right:${s*0.16}px;width:${s*0.18}px;height:${s*0.05}px;background:#d97706;opacity:0.4;border-radius:1px;"></div>
+</div>`;
+}
+
+// Check if a verse is a Doctrine Mastery verse
+function isDoctrineMastery(verse){
+  if(!verse)return false;
+  // Check if dm flag is already set
+  if(verse.dm)return true;
+  // Check against LDS_DOCTRINE_MASTERY array by reference
+  const ref=verse.ref||`${verse.b||verse.book} ${verse.c||verse.chapter}:${verse.v||verse.verse}`;
+  return LDS_DOCTRINE_MASTERY.some(dm=>{
+    const dmRef=`${dm.b} ${dm.c}:${dm.v}`;
+    return ref.includes(dm.b)&&ref.includes(dm.c+':')&&ref.includes(dm.v);
+  });
+}
+
+// Render doctrine mastery icon - open book with star (for LDS Seminary scripture mastery)
+function renderDoctrineMasteryIcon(size=16){
+  const s=size;
+  return`<div style="display:inline-flex;align-items:center;justify-content:center;width:${s}px;height:${s}px;background:linear-gradient(145deg,#818cf8,#6366f1);border-radius:${s*0.25}px;box-shadow:0 1px 2px rgba(0,0,0,0.2);" title="Doctrine Mastery">
+  <svg width="${s*0.7}" height="${s*0.7}" viewBox="0 0 16 16" fill="none">
+    <!-- Open book shape -->
+    <path d="M2 4 L8 3 L14 4 L14 13 L8 12 L2 13 Z" fill="#fef3c7" stroke="#eab308" stroke-width="0.8"/>
+    <!-- Spine -->
+    <path d="M8 3 L8 12" stroke="#ca8a04" stroke-width="1"/>
+    <!-- Star on book -->
+    <path d="M8 5 L8.6 6.8 L10.5 6.8 L9 7.9 L9.5 9.7 L8 8.5 L6.5 9.7 L7 7.9 L5.5 6.8 L7.4 6.8 Z" fill="#fbbf24" stroke="#d97706" stroke-width="0.3"/>
+  </svg>
 </div>`;
 }
 
@@ -10706,7 +10927,8 @@ const COLLECTION_STORAGE_KEYS={
   'Doctrine and Covenants':'lib-dc',
   'Pearl of Great Price':'lib-pogp',
   'Quran':'lib-quran',
-  'Torah & Tanakh':'lib-torah'
+  'Torah & Tanakh':'lib-torah',
+  'LDS Doctrine Mastery':'lib-dm'
 };
 
 const COLLECTION_URLS={
@@ -10716,7 +10938,8 @@ const COLLECTION_URLS={
   'Doctrine and Covenants':'https://raw.githubusercontent.com/bcbooks/scriptures-json/master/doctrine-and-covenants.json',
   'Pearl of Great Price':'https://raw.githubusercontent.com/bcbooks/scriptures-json/master/pearl-of-great-price.json',
   'Quran':'https://api.alquran.cloud/v1/quran/en.yusufali',
-  'Torah & Tanakh':'https://bolls.life/static/translations/YLT.json'
+  'Torah & Tanakh':'https://bolls.life/static/translations/YLT.json',
+  'LDS Doctrine Mastery':'embedded' // Special: uses embedded LDS_DOCTRINE_MASTERY array
 };
 
 // Map onboarding pack IDs to collection names for full download
@@ -10777,6 +11000,21 @@ const downloadCollection=async(collectionName)=>{
   const url=COLLECTION_URLS[collectionName];
   if(!url){
     alert('Collection not found!');
+    return;
+  }
+
+  // Special case: LDS Doctrine Mastery is embedded, no download needed
+  if(url==='embedded'&&collectionName==='LDS Doctrine Mastery'){
+    downloadProgress={current:0,total:1,status:'downloading',currentBook:collectionName};
+    render();
+    // Small delay to show progress
+    await new Promise(r=>setTimeout(r,300));
+    // Save the embedded verses directly
+    const storageKey=COLLECTION_STORAGE_KEYS[collectionName];
+    localStorage.setItem(storageKey,JSON.stringify(LDS_DOCTRINE_MASTERY));
+    downloadProgress=null;
+    alert(`Downloaded ${LDS_DOCTRINE_MASTERY.length} Doctrine Mastery verses!`);
+    render();
     return;
   }
 
@@ -11913,14 +12151,14 @@ function render(){
           <span>Graduate ${S.buddyName||'Buddy'}</span>
         </button>
       </div>`:''}
-      ${S.verses.length?`<div class="space-y-3 ${stage==='adult'?'mt-3':''}">
-        <button onclick="quickPractice()" class="w-full bg-gradient-to-r from-yellow-400 to-amber-500 text-white font-bold py-4 rounded-2xl flex items-center justify-center gap-3 shadow-lg">
-          ${renderQuickPracticeIcon(36)}
-          <span>Quick Practice</span>
+      ${S.verses.length?`<div class="grid grid-cols-2 gap-2 ${stage==='adult'?'mt-3':''}">
+        <button onclick="quickPractice()" class="bg-gradient-to-r from-yellow-400 to-amber-500 text-white font-bold py-3 px-2 rounded-2xl flex flex-col items-center justify-center gap-1 shadow-lg">
+          ${renderQuickPracticeIcon(28)}
+          <span class="text-sm">Quick Practice</span>
         </button>
-        <button onclick="setScreen('practice')" class="w-full bg-gradient-to-r from-orange-400 to-orange-500 text-white font-bold py-4 rounded-2xl flex items-center justify-center gap-3 shadow-lg">
-          ${renderChoosePracticeIcon(36)}
-          <span>Choose Practice</span>
+        <button onclick="setScreen('practice')" class="bg-gradient-to-r from-orange-400 to-orange-500 text-white font-bold py-3 px-2 rounded-2xl flex flex-col items-center justify-center gap-1 shadow-lg">
+          ${renderChoosePracticeIcon(28)}
+          <span class="text-sm">Choose Practice</span>
         </button>
       </div>`:''}
     </div>`;
@@ -12526,7 +12764,7 @@ function render(){
               const alreadyAdded=userVerseRefs.includes(v.ref);
               return`<div class="bg-white rounded-2xl p-4 mb-3">
                 <div class="flex justify-between items-start mb-2">
-                  <p class="font-bold text-purple-800">${v.ref}</p>
+                  <p class="font-bold text-purple-800 flex items-center gap-1.5">${isDoctrineMastery(v)?renderDoctrineMasteryIcon(14):''}${v.ref}</p>
                   ${alreadyAdded?`<span class="text-xs text-green-600 font-semibold">✓ Added</span>`:`<button onclick="addLibraryVerseByRef('${v.ref.replace(/'/g,"\\'")}',${JSON.stringify(v).replace(/"/g,'&quot;')})" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-xs font-bold px-3 py-1 rounded-full">+ Add</button>`}
                 </div>
                 <p class="text-purple-700 text-sm">${v.text}</p>
@@ -12688,7 +12926,7 @@ function render(){
           const alreadyAdded=userVerseRefs.includes(v.ref);
           return`<div class="bg-white rounded-2xl p-4 mb-3">
             <div class="flex justify-between items-start mb-2">
-              <p class="font-bold text-purple-800">${v.ref}</p>
+              <p class="font-bold text-purple-800 flex items-center gap-1.5">${isDoctrineMastery(v)?renderDoctrineMasteryIcon(14):''}${v.ref}</p>
               ${alreadyAdded?`<span class="text-xs text-green-600 font-semibold flex items-center gap-1">✓ Added</span>`:`<button onclick="addLibraryVerseByRef('${v.ref.replace(/'/g,"\\'")}',${JSON.stringify(v).replace(/"/g,'&quot;')})" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-xs font-bold px-3 py-1 rounded-full flex-shrink-0">+ Add</button>`}
             </div>
             <p class="text-purple-700 text-sm">${v.text}</p>
@@ -12770,7 +13008,7 @@ function render(){
         const alreadyAdded=userVerseRefs.includes(v.ref);
         return`<div class="bg-white rounded-2xl p-4 mb-3">
           <div class="flex justify-between items-start mb-2">
-            <p class="font-bold text-purple-800">${v.ref}</p>
+            <p class="font-bold text-purple-800 flex items-center gap-1.5">${isDoctrineMastery(v)?renderDoctrineMasteryIcon(14):''}${v.ref}</p>
             ${alreadyAdded?`<span class="text-xs text-green-600 font-semibold flex items-center gap-1">✓ Added</span>`:`<button onclick="addLibraryVerseByRef('${v.ref.replace(/'/g,"\\'")}',${JSON.stringify(v).replace(/"/g,'&quot;')})" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-xs font-bold px-3 py-1 rounded-full flex-shrink-0">+ Add</button>`}
           </div>
           <p class="text-purple-700 text-sm">${v.text}</p>
@@ -13173,6 +13411,7 @@ function render(){
           <button onclick="addTestFurniture()" class="bg-blue-100 text-blue-700 font-semibold py-2 rounded-xl text-sm">+ Furniture</button>
         </div>
         <button onclick="addTestCoins()" class="w-full bg-yellow-100 text-yellow-700 font-semibold py-2 rounded-xl mb-2">+ 500 Coins</button>
+        <button onclick="showEvolutionPreview()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-semibold py-2 rounded-xl mb-2">🎉 Preview Evolution Screens</button>
         <p class="text-purple-400 text-xs text-center">Your UID: ${window.currentUser?.uid||'Not signed in'}</p>
       </div>
       `:''}
@@ -13264,8 +13503,8 @@ function render(){
 
     const isHatching=evoType==='hatched';
 
-    h=`<div class="p-5 min-h-screen flex items-center justify-center" style="background:linear-gradient(135deg,#1e1b4b,#312e81,#4c1d95);">
-      <div class="text-center max-w-md w-full relative overflow-hidden" style="min-height:500px;">
+    h=`<div class="p-5 min-h-screen flex items-center justify-center" style="background:linear-gradient(135deg,#1e1b4b,#312e81,#4c1d95);overflow:hidden;">
+      <div class="text-center max-w-md w-full relative" style="min-height:500px;">
         ${confetti}${burstEffects}
 
         ${phase==='collect'?`
@@ -13289,14 +13528,16 @@ function render(){
         `:''}
 
         ${phase==='reveal'?`
-          <!-- Phase 3: New Form Revealed! Minimal text -->
+          <!-- Phase 3: New Form Revealed! Cute announcement -->
           <div class="pt-8">
+            <p class="text-2xl font-bold text-yellow-300 mb-4">${isHatching?'🎉 Congratulations! 🎉':'✨ Amazing! ✨'}</p>
             <div class="hatch-creature-pop inline-block mb-6">
               <div style="transform:scale(0.8);transform-origin:center;">
                 ${renderNewForm()}
               </div>
             </div>
-            <p class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-pink-300 to-purple-300 mb-8">${categoryName} ${newStageName}!</p>
+            <p class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-pink-300 to-purple-300 mb-2">${isHatching?'Your egg hatched!':'Your buddy evolved!'}</p>
+            <p class="text-xl text-white/90 mb-6">Say hello to your adorable <span class="font-bold text-pink-300">${categoryName} ${newStageName}</span>!</p>
           </div>
           ${isHatching&&!S.buddyName?`
             <button onclick="pState.evolvePhase='naming';render()" class="bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold py-4 px-10 rounded-2xl text-lg shadow-lg">
@@ -14195,7 +14436,7 @@ function closeCreaturePreview(){
   modal.classList.remove('flex');
 }
 
-// Scribby info card for collection
+// Scribby info card for collection - Trading Card Style!
 function showScribbyCard(categoryKey,variantIdx,buddyId,stage='adult'){
   const buddy=S.graduatedBuddies.find(b=>b.id===buddyId);
   if(!buddy)return;
@@ -14205,11 +14446,11 @@ function showScribbyCard(categoryKey,variantIdx,buddyId,stage='adult'){
   const creatureName=stage==='teen'?category.teenNames[variantIdx]:category.adultNames[variantIdx];
 
   let creatureHTML='';
-  let creatureScale=0.7;
+  let creatureScale=0.65;
 
   if(stage==='teen'){
     creatureHTML=renderTeen(categoryKey,variantIdx);
-    creatureScale=0.6;
+    creatureScale=0.55;
   }else if(categoryKey==='birds'){
     creatureHTML=renderAdultBird(variantIdx);
   }else if(categoryKey==='reptiles'){
@@ -14231,58 +14472,109 @@ function showScribbyCard(categoryKey,variantIdx,buddyId,stage='adult'){
   const hatchDate=buddy.hatchDate?new Date(buddy.hatchDate).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'Unknown';
   const gradDate=buddy.graduatedDate?new Date(buddy.graduatedDate).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'Unknown';
 
+  // Get the cute blurb for this creature
+  const blurb=getCreatureBlurb(categoryKey,stage,variantIdx);
+
+  // Calculate a "power level" based on stats for fun
+  const powerLevel=Math.min(100,Math.round((buddy.happiness||50)*.4+(buddy.health||50)*.4+(buddy.daysRaised||1)*2));
+
+  // Determine rarity based on category
+  const rarities={birds:'Common',aquatic:'Uncommon',reptiles:'Common',mammals:'Common',mystical:'Rare',prehistoric:'Epic',alien:'Legendary',insects:'Uncommon',fantasy:'Rare'};
+  const rarity=rarities[categoryKey]||'Common';
+  const rarityColors={Common:'from-gray-400 to-gray-500',Uncommon:'from-green-400 to-emerald-500',Rare:'from-blue-400 to-indigo-500',Epic:'from-purple-400 to-violet-600',Legendary:'from-yellow-400 to-orange-500'};
+
   const modal=document.getElementById('scribbyCardModal');
   const content=document.getElementById('scribbyCardContent');
 
   content.innerHTML=`
-    <div class="flex justify-between items-start mb-4">
-      <div>
-        <h2 class="text-2xl font-bold text-white">${buddy.name||creatureName}</h2>
-        <p class="text-white/80 text-sm">${creatureName} • ${categoryName}</p>
+    <!-- Trading Card Frame -->
+    <div class="relative" style="background:linear-gradient(145deg,#2d1f4e,#1a1035);border-radius:16px;padding:4px;">
+      <div style="background:linear-gradient(145deg,#f5f0ff,#e8dff5);border-radius:14px;padding:3px;">
+        <div style="background:linear-gradient(180deg,#6b46c1,#553c9a);border-radius:12px;overflow:hidden;">
+
+          <!-- Card Header -->
+          <div class="flex justify-between items-center px-3 py-2" style="background:linear-gradient(90deg,rgba(255,255,255,0.1),transparent);">
+            <div>
+              <h2 class="text-lg font-black text-white tracking-tight">${buddy.name||creatureName}</h2>
+              <p class="text-white/70 text-xs">${creatureName}</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-gradient-to-r ${rarityColors[rarity]} text-white">${rarity}</span>
+              <button onclick="closeScribbyCard()" class="bg-white/20 text-white font-bold w-8 h-8 rounded-full flex items-center justify-center text-sm hover:bg-white/30">×</button>
+            </div>
+          </div>
+
+          <!-- Creature Display Area -->
+          <div class="mx-2 rounded-xl overflow-hidden" style="background:linear-gradient(180deg,#a78bfa,#8b5cf6);border:3px solid #c4b5fd;">
+            <div class="relative flex items-center justify-center py-4" style="min-height:140px;background:radial-gradient(ellipse at center,rgba(255,255,255,0.3) 0%,transparent 70%);">
+              <div style="transform:scale(${creatureScale});transform-origin:center;">${creatureHTML}</div>
+              <!-- Sparkle effects -->
+              <div class="absolute top-2 left-3 text-yellow-300 text-sm animate-pulse">✨</div>
+              <div class="absolute bottom-3 right-4 text-pink-300 text-sm animate-pulse" style="animation-delay:0.5s;">✨</div>
+            </div>
+          </div>
+
+          <!-- Type Badge -->
+          <div class="flex justify-center -mt-3 relative z-10">
+            <span class="bg-gradient-to-r from-amber-400 to-yellow-500 text-amber-900 text-xs font-bold px-4 py-1 rounded-full border-2 border-amber-300 shadow-lg">
+              ${categoryName} Type
+            </span>
+          </div>
+
+          <!-- Blurb Section -->
+          <div class="mx-3 mt-2 mb-2 p-2 rounded-lg" style="background:rgba(255,255,255,0.1);">
+            <p class="text-white/90 text-xs italic leading-relaxed">"${blurb}"</p>
+          </div>
+
+          <!-- Stats Section - Pokemon Style -->
+          <div class="mx-3 mb-2 p-2 rounded-lg" style="background:rgba(0,0,0,0.2);">
+            <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+              <div class="flex justify-between text-white/80">
+                <span>HP</span>
+                <span class="font-bold text-red-300">${buddy.health||100}</span>
+              </div>
+              <div class="flex justify-between text-white/80">
+                <span>JOY</span>
+                <span class="font-bold text-yellow-300">${buddy.happiness||100}</span>
+              </div>
+              <div class="flex justify-between text-white/80">
+                <span>DAYS</span>
+                <span class="font-bold text-cyan-300">${buddy.daysRaised||'?'}</span>
+              </div>
+              <div class="flex justify-between text-white/80">
+                <span>PWR</span>
+                <span class="font-bold text-purple-300">${powerLevel}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dates Footer -->
+          <div class="mx-3 mb-2 flex justify-between text-[10px] text-white/50">
+            <span>Hatched: ${hatchDate}</span>
+            <span>Graduated: ${gradDate}</span>
+          </div>
+
+          <!-- Card Number / ID -->
+          <div class="text-center pb-2">
+            <span class="text-[9px] text-white/30 font-mono">#${String(buddyId).padStart(4,'0')} • SCRIBBIES</span>
+          </div>
+
+        </div>
       </div>
-      <button onclick="closeScribbyCard()" class="bg-white/20 text-white font-bold w-10 h-10 rounded-xl flex items-center justify-center text-xl">×</button>
     </div>
-    <div class="bg-white/20 rounded-2xl p-6 flex items-center justify-center mb-4" style="min-height:180px;">
-      <div style="transform:scale(${creatureScale});transform-origin:center;">${creatureHTML}</div>
-    </div>
-    ${stage==='teen'?`
-    <div class="bg-white/10 rounded-xl p-4 mb-3">
-      <p class="text-white/90 text-sm">The teen stage before evolving to adult. This is what ${buddy.name||creatureName} looked like while growing up!</p>
-    </div>
-    `:''}
-    <div class="bg-white/10 rounded-xl p-4 space-y-2">
-      <div class="flex justify-between text-white">
-        <span class="text-white/70">🐣 Hatched</span>
-        <span class="font-semibold">${hatchDate}</span>
-      </div>
-      <div class="flex justify-between text-white">
-        <span class="text-white/70">🎓 Graduated</span>
-        <span class="font-semibold">${gradDate}</span>
-      </div>
-      <div class="flex justify-between text-white">
-        <span class="text-white/70">⏰ Days Raised</span>
-        <span class="font-semibold">${buddy.daysRaised||'?'} days</span>
-      </div>
-      <div class="flex justify-between text-white">
-        <span class="text-white/70">😊 Final Happiness</span>
-        <span class="font-semibold">${buddy.happiness}/100</span>
-      </div>
-      <div class="flex justify-between text-white">
-        <span class="text-white/70">❤️ Final Health</span>
-        <span class="font-semibold">${buddy.health}/100</span>
-      </div>
-    </div>
+
+    <!-- Action Buttons Below Card -->
     ${stage!=='teen'?`
-    <button onclick="showTradeTerms(${buddy.id})" class="w-full mt-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2">
+    <button onclick="showTradeTerms(${buddy.id})" class="w-full mt-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold py-2.5 rounded-xl flex items-center justify-center gap-2 shadow-lg">
       <span>🎁</span>
       <span>Share This Scribby</span>
     </button>
     `:`
-    <div class="w-full mt-4 bg-white/10 text-white/50 font-semibold py-3 rounded-xl text-center text-sm">
+    <div class="w-full mt-3 bg-white/10 text-white/50 font-semibold py-2.5 rounded-xl text-center text-sm">
       Only adult Scribbies can be traded
     </div>
     `}
-    <p class="text-white/50 text-xs text-center mt-3">Tap outside to close</p>
+    <p class="text-white/40 text-xs text-center mt-2">Tap outside to close</p>
   `;
 
   modal.classList.remove('hidden');
@@ -14295,43 +14587,96 @@ function closeScribbyCard(){
   modal.classList.remove('flex');
 }
 
-// Show info card for blob/baby stages (shared across all variants in a category)
+// Show info card for blob/baby stages (shared across all variants in a category) - Trading Card Style!
 function showCollectionStageCard(stage,categoryKey){
   const category=CREATURE_CATEGORIES[categoryKey];
   const categoryName=categoryKey.charAt(0).toUpperCase()+categoryKey.slice(1);
 
   let creatureHTML='';
   let stageName='';
-  let stageDesc='';
+  let creatureScale=1.0;
 
   if(stage==='blob'){
     creatureHTML=renderBlob(categoryKey);
-    stageName='Blob';
-    stageDesc='The first evolution stage after hatching from an egg. A cute, simple creature with big expressive eyes!';
+    stageName=`${categoryName} Blob`;
+    creatureScale=1.1;
   }else if(stage==='baby'){
     creatureHTML=renderBaby(categoryKey);
     stageName=`${categoryName} Baby`;
-    stageDesc=`A baby ${categoryName.toLowerCase()} developing its unique features. Still small but growing stronger every day!`;
+    creatureScale=0.9;
   }
+
+  // Get the cute blurb for this stage
+  const blurb=getCreatureBlurb(categoryKey,stage==='baby'?'baby':'blob',0);
+
+  // Stage evolution info
+  const stageInfo={
+    blob:{level:1,xpNeeded:75,nextStage:'Baby'},
+    baby:{level:2,xpNeeded:100,nextStage:'Teen'}
+  };
+  const info=stageInfo[stage]||stageInfo.blob;
 
   const modal=document.getElementById('scribbyCardModal');
   const content=document.getElementById('scribbyCardContent');
 
   content.innerHTML=`
-    <div class="flex justify-between items-start mb-4">
-      <div>
-        <h2 class="text-2xl font-bold text-white">${stageName}</h2>
-        <p class="text-white/80 text-sm">${categoryName} Category</p>
+    <!-- Trading Card Frame -->
+    <div class="relative" style="background:linear-gradient(145deg,#1e3a5f,#0f2744);border-radius:16px;padding:4px;">
+      <div style="background:linear-gradient(145deg,#e0f4ff,#c7e8ff);border-radius:14px;padding:3px;">
+        <div style="background:linear-gradient(180deg,#3b82f6,#2563eb);border-radius:12px;overflow:hidden;">
+
+          <!-- Card Header -->
+          <div class="flex justify-between items-center px-3 py-2" style="background:linear-gradient(90deg,rgba(255,255,255,0.1),transparent);">
+            <div>
+              <h2 class="text-lg font-black text-white tracking-tight">${stageName}</h2>
+              <p class="text-white/70 text-xs">Stage ${info.level} Evolution</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 text-white">Lv.${info.level}</span>
+              <button onclick="closeScribbyCard()" class="bg-white/20 text-white font-bold w-8 h-8 rounded-full flex items-center justify-center text-sm hover:bg-white/30">×</button>
+            </div>
+          </div>
+
+          <!-- Creature Display Area -->
+          <div class="mx-2 rounded-xl overflow-hidden" style="background:linear-gradient(180deg,#60a5fa,#3b82f6);border:3px solid #93c5fd;">
+            <div class="relative flex items-center justify-center py-6" style="min-height:150px;background:radial-gradient(ellipse at center,rgba(255,255,255,0.3) 0%,transparent 70%);">
+              <div style="transform:scale(${creatureScale});transform-origin:center;">${creatureHTML}</div>
+              <!-- Sparkle effects -->
+              <div class="absolute top-3 left-4 text-cyan-300 text-sm animate-pulse">✨</div>
+              <div class="absolute bottom-4 right-5 text-blue-200 text-sm animate-pulse" style="animation-delay:0.5s;">✨</div>
+            </div>
+          </div>
+
+          <!-- Type Badge -->
+          <div class="flex justify-center -mt-3 relative z-10">
+            <span class="bg-gradient-to-r from-cyan-400 to-blue-500 text-white text-xs font-bold px-4 py-1 rounded-full border-2 border-cyan-300 shadow-lg">
+              ${categoryName} Type
+            </span>
+          </div>
+
+          <!-- Blurb Section -->
+          <div class="mx-3 mt-2 mb-2 p-3 rounded-lg" style="background:rgba(255,255,255,0.1);">
+            <p class="text-white/90 text-xs italic leading-relaxed">"${blurb}"</p>
+          </div>
+
+          <!-- Evolution Info -->
+          <div class="mx-3 mb-2 p-2 rounded-lg" style="background:rgba(0,0,0,0.2);">
+            <div class="flex items-center justify-between text-xs text-white/80">
+              <span>Next Evolution:</span>
+              <span class="font-bold text-cyan-300">${info.nextStage} (${info.xpNeeded} XP)</span>
+            </div>
+          </div>
+
+          <!-- Card Footer -->
+          <div class="text-center pb-2">
+            <span class="text-[9px] text-white/30 font-mono">STAGE ${info.level} • SCRIBBIES</span>
+          </div>
+
+        </div>
       </div>
-      <button onclick="closeScribbyCard()" class="bg-white/20 text-white font-bold w-10 h-10 rounded-xl flex items-center justify-center text-xl">×</button>
     </div>
-    <div class="bg-white/20 rounded-2xl p-6 flex items-center justify-center mb-4" style="min-height:180px;">
-      <div style="transform:scale(${stage==='blob'?1.2:1.0});transform-origin:center;">${creatureHTML}</div>
-    </div>
-    <div class="bg-white/10 rounded-xl p-4">
-      <p class="text-white/90 text-sm">${stageDesc}</p>
-    </div>
-    <p class="text-white/50 text-xs text-center mt-4">Tap outside to close</p>
+
+    <p class="text-white/40 text-xs text-center mt-3">Tap outside to close</p>
   `;
 
   modal.classList.remove('hidden');
@@ -14416,6 +14761,87 @@ function addTestCoins(){
   S.coins=(S.coins||0)+500;
   save();
   alert('Added 500 coins!');
+  render();
+}
+
+// Debug: Preview evolution screens
+let evoPreviewState={active:false,category:'birds',fromStage:'egg',toStage:'blob',phase:'collect'};
+function showEvolutionPreview(){
+  // Open a modal to select which evolution to preview
+  const modal=document.getElementById('scribbyCardModal');
+  const content=document.getElementById('scribbyCardContent');
+
+  const evolutions=[
+    {from:'egg',to:'blob',label:'Egg → Blob (Hatching)'},
+    {from:'blob',to:'child',label:'Blob → Baby'},
+    {from:'child',to:'teen',label:'Baby → Teen'},
+    {from:'teen',to:'adult',label:'Teen → Adult'}
+  ];
+
+  content.innerHTML=`
+    <div class="bg-gradient-to-br from-purple-600 via-pink-600 to-violet-700 rounded-2xl p-5">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold text-white">🎉 Evolution Preview</h2>
+        <button onclick="closeScribbyCard()" class="bg-white/20 text-white font-bold w-8 h-8 rounded-full">×</button>
+      </div>
+      <p class="text-white/80 text-sm mb-4">Select a category and evolution to preview:</p>
+
+      <div class="mb-4">
+        <label class="text-white/70 text-xs mb-1 block">Category:</label>
+        <select id="evo-category" class="w-full p-2 rounded-lg bg-white/20 text-white border border-white/30">
+          ${FULLY_DESIGNED_CATEGORIES.map(c=>`<option value="${c}" class="text-gray-800">${c.charAt(0).toUpperCase()+c.slice(1)}</option>`).join('')}
+        </select>
+      </div>
+
+      <div class="space-y-2 mb-4">
+        ${evolutions.map((e,i)=>`
+          <button onclick="triggerEvolutionPreview('${e.from}','${e.to}')" class="w-full bg-white/10 hover:bg-white/20 text-white font-semibold py-3 rounded-xl flex items-center justify-between px-4 transition-colors">
+            <span>${e.label}</span>
+            <span class="text-white/50">→</span>
+          </button>
+        `).join('')}
+      </div>
+
+      <p class="text-white/50 text-xs text-center">Click an evolution to see the celebration!</p>
+    </div>
+  `;
+
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+}
+
+function triggerEvolutionPreview(fromStage,toStage){
+  closeScribbyCard();
+
+  const categorySelect=document.getElementById('evo-category');
+  const category=categorySelect?categorySelect.value:'birds';
+
+  // Save current state
+  const savedCategory=S.creatureCategory;
+  const savedStage=S.buddyStage;
+  const savedVariant=S.creatureVariant;
+
+  // Set up for preview
+  S.creatureCategory=category;
+  S.buddyStage=toStage;
+  S.creatureVariant=0;
+
+  // Set up pState for evolution
+  pState.evolving=true;
+  pState.evolvePhase='collect';
+  pState.evolveType=fromStage==='egg'?'hatched':'grew';
+  pState.prevStage=fromStage;
+  pState.xpEarned=25;
+  pState.celebration=false;
+
+  // Store original state for restoration
+  evoPreviewState={
+    active:true,
+    savedCategory,
+    savedStage,
+    savedVariant
+  };
+
   render();
 }
 
@@ -15618,8 +16044,8 @@ render();
 </script>
 
 <!-- Scribby Info Card Modal -->
-<div id="scribbyCardModal" class="hidden fixed inset-0 z-50 items-center justify-center bg-black/70 backdrop-blur-sm" onclick="closeScribbyCard()">
-  <div id="scribbyCardContent" class="bg-gradient-to-br from-purple-500 via-pink-500 to-violet-600 rounded-3xl p-5 max-w-sm mx-4 shadow-2xl" onclick="event.stopPropagation()">
+<div id="scribbyCardModal" class="hidden fixed inset-0 z-50 items-center justify-center bg-black/80 backdrop-blur-sm" onclick="closeScribbyCard()">
+  <div id="scribbyCardContent" class="max-w-xs mx-4" onclick="event.stopPropagation()">
   </div>
 </div>
 
