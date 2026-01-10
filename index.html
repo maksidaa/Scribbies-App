@@ -809,6 +809,7 @@
     @keyframes egg-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
     @keyframes lava-pulse{0%,100%{opacity:0.7;filter:blur(4px)}50%{opacity:1;filter:blur(6px)}}
     @keyframes sparkle-twinkle{0%,100%{opacity:0.5;transform:scale(0.8)}50%{opacity:1;transform:scale(1.2)}}
+    @keyframes card-shine{0%{left:-100%}50%{left:150%}100%{left:150%}}
     @keyframes alien-glow{0%,100%{box-shadow:0 0 15px rgba(34,211,238,0.4)}50%{box-shadow:0 0 25px rgba(34,211,238,0.7)}}
     @keyframes bunny-blink{0%,90%,100%{transform:scaleY(1)}95%{transform:scaleY(0)}}
     @keyframes bunny-ear-wiggle{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(-20deg)}}
@@ -1068,6 +1069,68 @@ const RARITY_COLORS={
   'Legendary':'from-yellow-400 to-orange-500',
   'Mythic':'from-pink-400 via-rose-500 to-red-500'
 };
+
+// Rarity card frame styles (border and glow effects)
+const RARITY_FRAMES={
+  'Common':{border:'#9ca3af',glow:'none',shine:false,sparkles:0},
+  'Uncommon':{border:'#22c55e',glow:'0 0 10px rgba(34,197,94,0.3)',shine:false,sparkles:0},
+  'Rare':{border:'#3b82f6',glow:'0 0 15px rgba(59,130,246,0.4)',shine:true,sparkles:3},
+  'Epic':{border:'#a855f7',glow:'0 0 20px rgba(168,85,247,0.5)',shine:true,sparkles:5},
+  'Legendary':{border:'#f59e0b',glow:'0 0 25px rgba(245,158,11,0.6),0 0 40px rgba(245,158,11,0.3)',shine:true,sparkles:8},
+  'Mythic':{border:'linear-gradient(135deg,#ec4899,#f59e0b,#22c55e,#3b82f6,#a855f7)',glow:'0 0 30px rgba(236,72,153,0.5),0 0 50px rgba(168,85,247,0.3)',shine:true,sparkles:12,rainbow:true}
+};
+
+// Category background themes for cards
+const CATEGORY_CARD_THEMES={
+  birds:{bg:'linear-gradient(180deg,#bae6fd,#7dd3fc,#38bdf8)',accent:'#0ea5e9',particles:'clouds'},
+  reptiles:{bg:'linear-gradient(180deg,#bbf7d0,#86efac,#4ade80)',accent:'#22c55e',particles:'leaves'},
+  mammals:{bg:'linear-gradient(180deg,#fed7aa,#fdba74,#fb923c)',accent:'#f97316',particles:'hearts'},
+  dragons:{bg:'linear-gradient(180deg,#fecaca,#f87171,#ef4444)',accent:'#dc2626',particles:'embers'},
+  mystical:{bg:'linear-gradient(180deg,#f5d0fe,#e879f9,#d946ef)',accent:'#a855f7',particles:'stars'},
+  aquatic:{bg:'linear-gradient(180deg,#a5f3fc,#67e8f9,#22d3ee)',accent:'#06b6d4',particles:'bubbles'},
+  insects:{bg:'linear-gradient(180deg,#fef08a,#fde047,#facc15)',accent:'#eab308',particles:'sparkles'},
+  prehistoric:{bg:'linear-gradient(180deg,#d6d3d1,#a8a29e,#78716c)',accent:'#57534e',particles:'dust'},
+  alien:{bg:'linear-gradient(180deg,#c4b5fd,#a78bfa,#8b5cf6)',accent:'#7c3aed',particles:'energy'},
+  fantasy:{bg:'linear-gradient(180deg,#fbcfe8,#f9a8d4,#f472b6)',accent:'#ec4899',particles:'magic'}
+};
+
+// Generate particle HTML for card backgrounds
+function generateCardParticles(type,count=6){
+  const particles=[];
+  for(let i=0;i<count;i++){
+    const left=10+Math.random()*80;
+    const top=10+Math.random()*80;
+    const delay=(Math.random()*2).toFixed(1);
+    const size=3+Math.random()*4;
+    let emoji='✨';
+    let extraStyle='';
+    if(type==='bubbles'){emoji='○';extraStyle='color:rgba(255,255,255,0.5);';}
+    else if(type==='stars'){emoji='✦';extraStyle='color:rgba(255,255,255,0.8);';}
+    else if(type==='clouds'){emoji='☁';extraStyle='color:rgba(255,255,255,0.4);font-size:'+(size+4)+'px;';}
+    else if(type==='hearts'){emoji='♥';extraStyle='color:rgba(255,200,200,0.5);';}
+    else if(type==='embers'){emoji='●';extraStyle='color:rgba(255,180,50,0.6);';}
+    else if(type==='leaves'){emoji='🍃';extraStyle='font-size:'+(size+2)+'px;opacity:0.4;';}
+    else if(type==='dust'){emoji='•';extraStyle='color:rgba(120,113,108,0.4);';}
+    else if(type==='energy'){emoji='⚡';extraStyle='color:rgba(167,139,250,0.5);font-size:'+(size+2)+'px;';}
+    else if(type==='magic'){emoji='✧';extraStyle='color:rgba(255,255,255,0.7);';}
+    particles.push(`<div style="position:absolute;left:${left}%;top:${top}%;font-size:${size}px;animation:sparkle-twinkle ${1.5+Math.random()}s ease-in-out infinite;animation-delay:${delay}s;pointer-events:none;${extraStyle}">${emoji}</div>`);
+  }
+  return particles.join('');
+}
+
+// Generate sparkle effects for rare+ cards
+function generateRaritySparkles(count){
+  if(count<=0)return'';
+  const sparkles=[];
+  for(let i=0;i<count;i++){
+    const left=5+Math.random()*90;
+    const top=5+Math.random()*90;
+    const delay=(Math.random()*3).toFixed(1);
+    const size=4+Math.random()*6;
+    sparkles.push(`<div style="position:absolute;left:${left}%;top:${top}%;width:${size}px;height:${size}px;background:#fff;border-radius:50%;box-shadow:0 0 ${size*2}px #fef08a,0 0 ${size*3}px #fbbf24;animation:sparkle-twinkle ${1+Math.random()}s ease-in-out infinite;animation-delay:${delay}s;pointer-events:none;z-index:100;"></div>`);
+  }
+  return sparkles.join('');
+}
 
 // Select a random variant index based on rarity weights
 function selectVariantByRarity(category){
@@ -14958,36 +15021,79 @@ function showCreaturePreview(stage,categoryKey,variantIdx=0){
     }
   }
 
-  const modal=document.getElementById('creaturePreviewModal');
-  const content=document.getElementById('creaturePreviewContent');
-  const name=document.getElementById('creaturePreviewName');
-  const info=document.getElementById('creaturePreviewInfo');
+  // Get theme and rarity info
+  const theme=CATEGORY_CARD_THEMES[categoryKey]||CATEGORY_CARD_THEMES.mammals;
+  const rarity=stage==='adult'&&category.adultRarities?category.adultRarities[variantIdx]:'Common';
+  const rarityFrame=RARITY_FRAMES[rarity]||RARITY_FRAMES['Common'];
 
-  content.innerHTML=creatureHTML;
-  name.textContent=creatureName;
+  // Generate frame border style
+  const frameBorder=rarityFrame.rainbow?
+    `background:${rarityFrame.border};padding:4px;`:`border:4px solid ${rarityFrame.border};`;
+  const frameGlow=rarityFrame.glow!=='none'?`box-shadow:${rarityFrame.glow};`:'';
+  const shineEffect=rarityFrame.shine?`<div style="position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);animation:card-shine 3s ease-in-out infinite;pointer-events:none;z-index:50;"></div>`:'';
+  const raritySparkles=generateRaritySparkles(rarityFrame.sparkles);
+  const categoryParticles=generateCardParticles(theme.particles,6);
 
-  // Show rarity for adult stage with editing for devs
+  // Dev rarity editor for adult stage
+  const isDev=isDevUser();
+  let rarityHTML='';
   if(stage==='adult'&&category.adultRarities){
-    const currentRarity=category.adultRarities[variantIdx]||'Common';
-    const isDev=isDevUser();
     if(isDev){
-      // Dev can edit rarity
       const rarityOptions=Object.keys(RARITY_WEIGHTS).map(r=>
-        `<option value="${r}" ${r===currentRarity?'selected':''} class="text-gray-800">${r}</option>`
+        `<option value="${r}" ${r===rarity?'selected':''} class="text-gray-800">${r}</option>`
       ).join('');
-      info.innerHTML=`${categoryName} - ${stageName}<br>
-        <span class="text-xs">Rarity:</span>
-        <select onchange="updateCreatureRarity('${categoryKey}',${variantIdx},this.value)"
-          class="ml-1 px-2 py-0.5 rounded text-xs bg-gradient-to-r ${RARITY_COLORS[currentRarity]} text-white border-none cursor-pointer">
-          ${rarityOptions}
-        </select>`;
+      rarityHTML=`<select onchange="updateCreatureRarity('${categoryKey}',${variantIdx},this.value)"
+        class="px-2 py-0.5 rounded text-xs bg-gradient-to-r ${RARITY_COLORS[rarity]} text-white border-none cursor-pointer shadow-lg">
+        ${rarityOptions}
+      </select>`;
     }else{
-      info.innerHTML=`${categoryName} - ${stageName}<br>
-        <span class="text-xs font-bold px-2 py-0.5 rounded bg-gradient-to-r ${RARITY_COLORS[currentRarity]} text-white">${currentRarity}</span>`;
+      rarityHTML=`<span class="text-xs font-bold px-2 py-0.5 rounded-full bg-gradient-to-r ${RARITY_COLORS[rarity]} text-white shadow-lg">${rarity}</span>`;
     }
-  }else{
-    info.textContent=`${categoryName} - ${stageName}`;
   }
+
+  const modal=document.getElementById('creaturePreviewModal');
+  const card=document.getElementById('creaturePreviewCard');
+
+  card.innerHTML=`
+    <!-- TCG Card Frame -->
+    <div class="relative" style="${frameBorder}border-radius:16px;${frameGlow}overflow:hidden;">
+      ${shineEffect}
+      ${raritySparkles}
+      <div style="background:linear-gradient(145deg,#1a1035,#0f0a1f);border-radius:12px;overflow:hidden;">
+
+        <!-- Card Header -->
+        <div class="flex justify-between items-center px-3 py-2" style="background:linear-gradient(90deg,${theme.accent}40,transparent);">
+          <div>
+            <h2 class="text-lg font-black text-white tracking-tight" style="text-shadow:0 2px 4px rgba(0,0,0,0.3);">${creatureName}</h2>
+            <p class="text-white/70 text-xs">${stageName}</p>
+          </div>
+          <div class="flex items-center gap-2">
+            ${rarityHTML}
+            <button onclick="closeCreaturePreview()" class="bg-white/20 text-white font-bold w-8 h-8 rounded-full flex items-center justify-center text-sm hover:bg-white/30 transition-colors">×</button>
+          </div>
+        </div>
+
+        <!-- Creature Display -->
+        <div class="mx-2 rounded-xl overflow-hidden" style="border:3px solid ${theme.accent}80;">
+          <div class="relative flex items-center justify-center py-6" style="min-height:180px;background:${theme.bg};">
+            ${categoryParticles}
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(255,255,255,0.35) 0%,transparent 60%);pointer-events:none;"></div>
+            <div style="transform:scale(0.5);transform-origin:center;position:relative;z-index:10;">${creatureHTML}</div>
+          </div>
+        </div>
+
+        <!-- Type Badge -->
+        <div class="flex justify-center -mt-3 relative z-10">
+          <span style="background:linear-gradient(135deg,${theme.accent},${theme.accent}dd);border:2px solid rgba(255,255,255,0.3);box-shadow:0 4px 12px rgba(0,0,0,0.3);" class="text-white text-xs font-bold px-4 py-1 rounded-full">
+            ${categoryName} Scribby
+          </span>
+        </div>
+
+        <!-- Footer -->
+        <p class="text-white/40 text-xs text-center py-3">Tap outside to close</p>
+      </div>
+    </div>
+  `;
 
   modal.classList.remove('hidden');
   modal.classList.add('flex');
@@ -15055,44 +15161,57 @@ function showScribbyCard(categoryKey,variantIdx,buddyId,stage='adult'){
 
   // Get rarity from the variant's adultRarities (individual creature rarity)
   const rarity=category.adultRarities&&category.adultRarities[variantIdx]?category.adultRarities[variantIdx]:'Common';
+  const rarityFrame=RARITY_FRAMES[rarity]||RARITY_FRAMES['Common'];
+  const theme=CATEGORY_CARD_THEMES[categoryKey]||CATEGORY_CARD_THEMES.mammals;
+
+  // Generate frame border style
+  const frameBorder=rarityFrame.rainbow?
+    `background:${rarityFrame.border};padding:4px;`:`border:4px solid ${rarityFrame.border};`;
+  const frameGlow=rarityFrame.glow!=='none'?`box-shadow:${rarityFrame.glow};`:'';
+  const shineEffect=rarityFrame.shine?`<div style="position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);animation:card-shine 3s ease-in-out infinite;pointer-events:none;z-index:50;"></div>`:'';
+  const raritySparkles=generateRaritySparkles(rarityFrame.sparkles);
+  const categoryParticles=generateCardParticles(theme.particles,6);
 
   const modal=document.getElementById('scribbyCardModal');
   const content=document.getElementById('scribbyCardContent');
 
   content.innerHTML=`
-    <!-- Trading Card Frame -->
-    <div class="relative" style="background:linear-gradient(145deg,#2d1f4e,#1a1035);border-radius:16px;padding:4px;">
-      <div style="background:linear-gradient(145deg,#f5f0ff,#e8dff5);border-radius:14px;padding:3px;">
-        <div style="background:linear-gradient(180deg,#6b46c1,#553c9a);border-radius:12px;overflow:hidden;">
+    <!-- Trading Card Frame with Rarity Border -->
+    <div class="relative" style="${frameBorder}border-radius:16px;${frameGlow}overflow:hidden;">
+      ${shineEffect}
+      ${raritySparkles}
+      <div style="background:linear-gradient(145deg,#1a1035,#0f0a1f);border-radius:12px;overflow:hidden;">
 
-          <!-- Card Header -->
-          <div class="flex justify-between items-center px-3 py-2" style="background:linear-gradient(90deg,rgba(255,255,255,0.1),transparent);">
-            <div>
-              <h2 class="text-lg font-black text-white tracking-tight">${buddy.name||creatureName}</h2>
-              <p class="text-white/70 text-xs">${creatureName}</p>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-gradient-to-r ${RARITY_COLORS[rarity]} text-white">${rarity}</span>
-              <button onclick="closeScribbyCard()" class="bg-white/20 text-white font-bold w-8 h-8 rounded-full flex items-center justify-center text-sm hover:bg-white/30">×</button>
-            </div>
+        <!-- Card Header with Category Color -->
+        <div class="flex justify-between items-center px-3 py-2" style="background:linear-gradient(90deg,${theme.accent}40,transparent);">
+          <div>
+            <h2 class="text-lg font-black text-white tracking-tight" style="text-shadow:0 2px 4px rgba(0,0,0,0.3);">${buddy.name||creatureName}</h2>
+            <p class="text-white/70 text-xs">${creatureName}</p>
           </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-gradient-to-r ${RARITY_COLORS[rarity]} text-white shadow-lg">${rarity}</span>
+            <button onclick="closeScribbyCard()" class="bg-white/20 text-white font-bold w-8 h-8 rounded-full flex items-center justify-center text-sm hover:bg-white/30 transition-colors">×</button>
+          </div>
+        </div>
 
-          <!-- Creature Display Area -->
-          <div class="mx-2 rounded-xl overflow-hidden" style="background:linear-gradient(180deg,#a78bfa,#8b5cf6);border:3px solid #c4b5fd;">
-            <div class="relative flex items-center justify-center py-4" style="min-height:140px;background:radial-gradient(ellipse at center,rgba(255,255,255,0.3) 0%,transparent 70%);">
-              <div style="transform:scale(${creatureScale});transform-origin:center;">${creatureHTML}</div>
-              <!-- Sparkle effects -->
-              <div class="absolute top-2 left-3 text-yellow-300 text-sm animate-pulse">✨</div>
-              <div class="absolute bottom-3 right-4 text-pink-300 text-sm animate-pulse" style="animation-delay:0.5s;">✨</div>
-            </div>
+        <!-- Creature Display Area with Category Theme -->
+        <div class="mx-2 rounded-xl overflow-hidden" style="border:3px solid ${theme.accent}80;">
+          <div class="relative flex items-center justify-center py-4" style="min-height:160px;background:${theme.bg};">
+            <!-- Category particles -->
+            ${categoryParticles}
+            <!-- Radial highlight -->
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(255,255,255,0.35) 0%,transparent 60%);pointer-events:none;"></div>
+            <!-- Creature -->
+            <div style="transform:scale(${creatureScale});transform-origin:center;position:relative;z-index:10;">${creatureHTML}</div>
           </div>
+        </div>
 
-          <!-- Type Badge -->
-          <div class="flex justify-center -mt-3 relative z-10">
-            <span class="bg-gradient-to-r from-amber-400 to-yellow-500 text-amber-900 text-xs font-bold px-4 py-1 rounded-full border-2 border-amber-300 shadow-lg">
-              ${categoryName} Type
-            </span>
-          </div>
+        <!-- Type Badge -->
+        <div class="flex justify-center -mt-3 relative z-10">
+          <span style="background:linear-gradient(135deg,${theme.accent},${theme.accent}dd);border:2px solid rgba(255,255,255,0.3);box-shadow:0 4px 12px rgba(0,0,0,0.3);" class="text-white text-xs font-bold px-4 py-1 rounded-full">
+            ${categoryName} Scribby
+          </span>
+        </div>
 
           <!-- Blurb Section -->
           <div class="mx-3 mt-2 mb-2 p-2 rounded-lg" style="background:rgba(255,255,255,0.1);">
@@ -16626,20 +16745,9 @@ render();
   </div>
 </div>
 
-<!-- Creature Preview Modal -->
-<div id="creaturePreviewModal" class="hidden fixed inset-0 items-center justify-center bg-black/70 backdrop-blur-sm" style="z-index:200;" onclick="closeCreaturePreview()">
-  <div class="bg-gradient-to-br from-purple-400 via-pink-400 to-blue-400 rounded-3xl p-6 max-w-sm mx-4 shadow-2xl" onclick="event.stopPropagation()">
-    <div class="flex justify-between items-center mb-4">
-      <div>
-        <h2 id="creaturePreviewName" class="text-2xl font-bold text-white"></h2>
-        <p id="creaturePreviewInfo" class="text-white/80 text-sm"></p>
-      </div>
-      <button onclick="closeCreaturePreview()" class="bg-white/20 text-white font-bold w-10 h-10 rounded-xl flex items-center justify-center text-xl">×</button>
-    </div>
-    <div class="bg-white/20 rounded-2xl p-8 flex items-center justify-center min-h-[200px]">
-      <div id="creaturePreviewContent" style="transform-origin:center;"></div>
-    </div>
-    <p class="text-white/60 text-xs text-center mt-4">Click outside to close</p>
+<!-- Creature Preview Modal - TCG Style -->
+<div id="creaturePreviewModal" class="hidden fixed inset-0 items-center justify-center bg-black/80 backdrop-blur-sm" style="z-index:200;" onclick="closeCreaturePreview()">
+  <div id="creaturePreviewCard" class="max-w-xs mx-4" onclick="event.stopPropagation()">
   </div>
 </div>
 
