@@ -646,7 +646,7 @@
     @keyframes evo-star-explode{0%{opacity:1;transform:translate(0,0) scale(1) rotate(0deg)}100%{opacity:0;transform:translate(var(--ex),var(--ey)) scale(0.3) rotate(360deg)}}
     @keyframes evo-ring-expand{0%{opacity:0.8;transform:translate(-50%,-50%) scale(0.5)}100%{opacity:0;transform:translate(-50%,-50%) scale(3)}}
     @keyframes evo-flash{0%{opacity:0}50%{opacity:1}100%{opacity:0}}
-    .evo-spin-buildup{animation:evo-spin-fast 0.4s linear infinite,evo-shake-intense 0.15s linear infinite,evo-glow-buildup 2s ease-in forwards}
+    .evo-spin-buildup{animation:evo-spin-fast 0.4s linear infinite,evo-shake-intense 0.15s linear infinite,evo-glow-buildup 2s ease-in forwards;border-radius:50%}
 
     /* 3D Floating Buddy Card */
     @keyframes buddy-levitate{
@@ -10047,9 +10047,10 @@ function renderAdultMystical(variantIndex, level = 1){
     // Fiery unicorn engulfed in flames with ember mane and glowing hooves
     11:`
       <div style="position:relative;width:240px;height:305px;animation:unicorn-float 2.8s ease-in-out infinite;filter:drop-shadow(0 0 15px rgba(234,88,12,0.7)) drop-shadow(0 0 40px rgba(255,165,0,0.5));">
-        <!-- Flame aura layers -->
-        <div style="position:absolute;left:50%;top:50px;transform:translateX(-50%) rotate(45deg);width:280px;height:280px;border-radius:0 50% 50% 50%;background:radial-gradient(circle at 75% 75%, #fde047 5%, #fb923c 30%, #c2410c 70%, transparent 90%);box-shadow:0 0 50px #fb923c;pointer-events:none;mix-blend-mode:screen;z-index:1;opacity:0.5;animation:fcobra-flicker 2.5s infinite alternate ease-in-out;"></div>
-        <div style="position:absolute;left:50%;top:70px;transform:translateX(-50%) rotate(45deg);width:250px;height:250px;border-radius:0 50% 50% 50%;background:radial-gradient(circle at 75% 75%, #fde047 5%, #fb923c 30%, #c2410c 70%, transparent 90%);box-shadow:0 0 40px #fb923c;pointer-events:none;mix-blend-mode:screen;z-index:2;opacity:0.6;animation:fcobra-flicker 2s infinite alternate-reverse ease-in-out 0.3s;"></div>
+        <!-- Flame aura layers - rising high above the head -->
+        <div style="position:absolute;left:50%;top:-60px;transform:translateX(-50%) rotate(45deg);width:320px;height:320px;border-radius:0 50% 50% 50%;background:radial-gradient(circle at 75% 75%, #fde047 5%, #fb923c 30%, #c2410c 70%, transparent 90%);box-shadow:0 0 60px #fb923c;pointer-events:none;mix-blend-mode:screen;z-index:1;opacity:0.5;animation:fcobra-flicker 2.5s infinite alternate ease-in-out;"></div>
+        <div style="position:absolute;left:50%;top:-30px;transform:translateX(-50%) rotate(45deg);width:280px;height:280px;border-radius:0 50% 50% 50%;background:radial-gradient(circle at 75% 75%, #fde047 5%, #fb923c 30%, #c2410c 70%, transparent 90%);box-shadow:0 0 50px #fb923c;pointer-events:none;mix-blend-mode:screen;z-index:2;opacity:0.6;animation:fcobra-flicker 2s infinite alternate-reverse ease-in-out 0.3s;"></div>
+        <div style="position:absolute;left:50%;top:20px;transform:translateX(-50%) rotate(45deg);width:240px;height:240px;border-radius:0 50% 50% 50%;background:radial-gradient(circle at 75% 75%, #fef08a 5%, #fbbf24 30%, #f97316 70%, transparent 90%);box-shadow:0 0 40px #fbbf24;pointer-events:none;mix-blend-mode:screen;z-index:3;opacity:0.4;animation:fcobra-flicker 1.8s infinite alternate ease-in-out 0.6s;"></div>
 
         <!-- Fire ember particles floating around -->
         <div style="position:absolute;width:8px;height:8px;background:rgba(255,200,50,0.95);border-radius:50%;top:30px;left:30px;box-shadow:0 0 12px rgba(255,165,0,0.9);animation:star-rise 2.5s ease-in-out infinite;"></div>
@@ -10072,9 +10073,11 @@ function renderAdultMystical(variantIndex, level = 1){
           <div style="position:absolute;width:14px;height:26px;background:radial-gradient(ellipse, #fde047, #fbbf24);border-radius:50% 50% 20% 20%;bottom:4px;left:50%;transform:translateX(-50%);opacity:0.8;"></div>
         </div>
 
-        <!-- TAIL (flame-colored, flowing fire) -->
-        <div style="position:absolute;width:38px;height:100px;background:linear-gradient(180deg, #fde047 0%, #fbbf24 20%, #fb923c 45%, #ea580c 70%, #c2410c 100%);border:3px solid #7c2d12;border-radius:15px 50px 50px 50px;top:125px;right:48px;z-index:5;transform-origin:top center;animation:unicorn-tail-swish 1.8s ease-in-out infinite;box-shadow:inset 3px 3px 10px rgba(255,255,200,0.5),inset -2px -2px 8px rgba(124,45,18,0.3),0 0 20px rgba(234,88,12,0.5);">
-          <div style="position:absolute;width:14px;height:50px;background:rgba(255,255,200,0.4);border-radius:50%;top:10px;left:8px;filter:blur(3px);"></div>
+        <!-- TAIL (flaming rainbow - fire colors with magical hues) -->
+        <div style="position:absolute;width:40px;height:110px;background:linear-gradient(180deg, #fef08a 0%, #fbbf24 12%, #f97316 25%, #ef4444 38%, #ec4899 50%, #a855f7 65%, #6366f1 78%, #3b82f6 90%, #22d3ee 100%);border:3px solid #7c2d12;border-radius:15px 50px 50px 50px;top:120px;right:46px;z-index:5;transform-origin:top center;animation:unicorn-tail-swish 1.8s ease-in-out infinite;box-shadow:inset 3px 3px 10px rgba(255,255,200,0.5),inset -2px -2px 8px rgba(124,45,18,0.3),0 0 25px rgba(234,88,12,0.6),0 0 15px rgba(168,85,247,0.4);">
+          <div style="position:absolute;width:14px;height:55px;background:rgba(255,255,200,0.4);border-radius:50%;top:10px;left:8px;filter:blur(3px);"></div>
+          <!-- Flame wisps extending from tail -->
+          <div style="position:absolute;width:25px;height:70px;background:linear-gradient(180deg, rgba(254,240,138,0.6), rgba(251,191,36,0.5), rgba(236,72,153,0.4), rgba(168,85,247,0.3), transparent);border-radius:50%;bottom:-15px;left:5px;filter:blur(4px);animation:mane-flow 1.5s ease-in-out infinite;"></div>
         </div>
 
         <!-- BACK LEGS (fiery orange, with glowing hooves) -->
@@ -10085,13 +10088,13 @@ function renderAdultMystical(variantIndex, level = 1){
           <div style="position:absolute;bottom:-2px;width:100%;height:20px;background:linear-gradient(180deg, #ff6600 0%, #ff4400 50%, #cc2200 100%);border-radius:0 0 8px 8px;box-shadow:inset 2px 2px 4px rgba(255,200,100,0.5),0 0 15px rgba(255,100,0,0.6);"></div>
         </div>
 
-        <!-- NECK with flowing fire mane (z-index 21) -->
+        <!-- NECK with flowing flaming rainbow mane (z-index 21) -->
         <div style="position:absolute;width:49px;height:68px;background:radial-gradient(ellipse at 35% 30%, #fb923c 0%, #ea580c 40%, #c2410c 100%);border-left:4px solid #7c2d12;border-right:4px solid #7c2d12;clip-path:polygon(15% 0%, 85% 0%, 100% 100%, 0% 100%);top:79px;left:86px;z-index:21;box-shadow:inset 5px 5px 12px rgba(255,200,100,0.5),inset -4px -4px 10px rgba(124,45,18,0.3);overflow:visible;">
           <div style="position:absolute;width:8px;height:40px;background:rgba(255,255,200,0.3);border-radius:50%;top:10px;left:8px;filter:blur(3px);"></div>
-          <!-- Flowing fire mane strands down neck -->
-          <div style="position:absolute;left:-12px;top:5px;width:18px;height:55px;background:linear-gradient(180deg, #fde047, #fbbf24, #fb923c, #ea580c, #c2410c);border-radius:40% 10% 60% 40%;z-index:22;animation:mane-flow 1.5s ease-in-out infinite;box-shadow:inset 2px 2px 5px rgba(255,255,200,0.4),0 0 10px rgba(234,88,12,0.5);"></div>
-          <div style="position:absolute;left:-8px;top:15px;width:14px;height:45px;background:linear-gradient(180deg, #fbbf24, #fb923c, #ea580c, #c2410c, #7c2d12);border-radius:40% 10% 60% 40%;z-index:23;animation:mane-flow 1.7s ease-in-out infinite 0.2s;box-shadow:inset 2px 2px 5px rgba(255,255,200,0.4),0 0 10px rgba(234,88,12,0.5);"></div>
-          <div style="position:absolute;left:-4px;top:25px;width:12px;height:38px;background:linear-gradient(180deg, #fb923c, #ea580c, #c2410c, #7c2d12, #451a03);border-radius:40% 10% 60% 40%;z-index:24;animation:mane-flow 1.3s ease-in-out infinite 0.4s;box-shadow:inset 2px 2px 5px rgba(255,255,200,0.4),0 0 10px rgba(234,88,12,0.5);"></div>
+          <!-- Flowing flaming rainbow mane strands -->
+          <div style="position:absolute;left:-14px;top:0px;width:20px;height:60px;background:linear-gradient(180deg, #fef08a, #fbbf24, #f97316, #ef4444, #ec4899, #a855f7);border-radius:40% 10% 60% 40%;z-index:22;animation:mane-flow 1.5s ease-in-out infinite;box-shadow:inset 2px 2px 5px rgba(255,255,200,0.4),0 0 12px rgba(234,88,12,0.5),0 0 8px rgba(168,85,247,0.3);"></div>
+          <div style="position:absolute;left:-10px;top:10px;width:16px;height:50px;background:linear-gradient(180deg, #fbbf24, #f97316, #ef4444, #ec4899, #a855f7, #6366f1);border-radius:40% 10% 60% 40%;z-index:23;animation:mane-flow 1.7s ease-in-out infinite 0.2s;box-shadow:inset 2px 2px 5px rgba(255,255,200,0.4),0 0 10px rgba(234,88,12,0.5),0 0 6px rgba(99,102,241,0.3);"></div>
+          <div style="position:absolute;left:-6px;top:20px;width:14px;height:42px;background:linear-gradient(180deg, #f97316, #ef4444, #ec4899, #a855f7, #6366f1, #3b82f6);border-radius:40% 10% 60% 40%;z-index:24;animation:mane-flow 1.3s ease-in-out infinite 0.4s;box-shadow:inset 2px 2px 5px rgba(255,255,200,0.4),0 0 8px rgba(234,88,12,0.5),0 0 5px rgba(59,130,246,0.3);"></div>
         </div>
 
         <!-- BODY with fire shimmer (z-index 20) -->
@@ -10143,8 +10146,8 @@ function renderAdultMystical(variantIndex, level = 1){
             </div>
           </div>
 
-          <!-- Fire mane tuft (larger) -->
-          <div style="position:absolute;width:55px;height:40px;background:linear-gradient(180deg, #fde047 0%, #fbbf24 25%, #fb923c 50%, #ea580c 75%, #c2410c 100%);border:2px solid #7c2d12;border-radius:50% 50% 30% 30%;top:-12px;left:50%;transform:translateX(-50%);z-index:45;box-shadow:inset 2px 2px 8px rgba(255,255,200,0.5),0 0 15px rgba(234,88,12,0.5);animation:mane-flow 1.5s ease-in-out infinite;"></div>
+          <!-- Flaming rainbow mane tuft -->
+          <div style="position:absolute;width:60px;height:45px;background:linear-gradient(180deg, #fef08a 0%, #fbbf24 15%, #f97316 30%, #ef4444 45%, #ec4899 60%, #a855f7 75%, #6366f1 90%, #3b82f6 100%);border:2px solid #7c2d12;border-radius:50% 50% 30% 30%;top:-15px;left:50%;transform:translateX(-50%);z-index:45;box-shadow:inset 2px 2px 8px rgba(255,255,200,0.5),0 0 18px rgba(234,88,12,0.6),0 0 12px rgba(168,85,247,0.4);animation:mane-flow 1.5s ease-in-out infinite;"></div>
 
           <!-- Eyes (fiery orange/red) -->
           <div style="display:flex;gap:34px;margin-top:34px;justify-content:center;">
@@ -10197,7 +10200,7 @@ function renderAdultMystical(variantIndex, level = 1){
         <div style="position:absolute;width:4px;height:4px;background:rgba(255,255,255,0.9);border-radius:50%;bottom:80px;left:60px;box-shadow:0 0 6px rgba(180,200,255,0.7);animation:star-rise 3.8s ease-in-out infinite 0.8s;"></div>
 
         <!-- LEFT WING (large feathered wing with flap animation) -->
-        <div style="position:absolute;top:65px;left:-15px;z-index:8;transform-origin:right center;animation:pegasus-wing-left 1.2s ease-in-out infinite;">
+        <div style="position:absolute;top:95px;left:30px;z-index:8;transform-origin:right center;animation:pegasus-wing-left 1.2s ease-in-out infinite;">
           <!-- Primary feathers (longest, bottom layer) -->
           <div style="position:absolute;width:95px;height:130px;z-index:1;">
             <div style="position:absolute;width:18px;height:75px;background:linear-gradient(180deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);border:2px solid #94a3b8;border-radius:8px 8px 50% 50%;left:0;top:55px;transform:rotate(-25deg);transform-origin:top center;box-shadow:inset 3px 3px 8px rgba(255,255,255,0.8),inset -2px -2px 5px rgba(100,116,139,0.2);"></div>
@@ -10215,7 +10218,7 @@ function renderAdultMystical(variantIndex, level = 1){
         </div>
 
         <!-- RIGHT WING (large feathered wing with flap animation) -->
-        <div style="position:absolute;top:65px;right:-15px;z-index:8;transform-origin:left center;animation:pegasus-wing-right 1.2s ease-in-out infinite;">
+        <div style="position:absolute;top:95px;right:30px;z-index:8;transform-origin:left center;animation:pegasus-wing-right 1.2s ease-in-out infinite;">
           <!-- Primary feathers (longest, bottom layer) -->
           <div style="position:absolute;width:95px;height:130px;z-index:1;">
             <div style="position:absolute;width:18px;height:75px;background:linear-gradient(180deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);border:2px solid #94a3b8;border-radius:8px 8px 50% 50%;right:0;top:55px;transform:rotate(25deg);transform-origin:top center;box-shadow:inset -3px 3px 8px rgba(255,255,255,0.8),inset 2px -2px 5px rgba(100,116,139,0.2);"></div>
@@ -13945,8 +13948,8 @@ function render(){
 
     const isHatching=evoType==='hatched';
 
-    h=`<div class="p-5 min-h-screen flex items-center justify-center" style="background:linear-gradient(135deg,#1e1b4b,#312e81,#4c1d95);overflow:hidden;">
-      <div class="text-center max-w-md w-full relative" style="min-height:500px;">
+    h=`<div class="p-5 min-h-screen flex items-center justify-center" style="background:linear-gradient(135deg,#1e1b4b,#312e81,#4c1d95);">
+      <div class="text-center max-w-md w-full relative" style="min-height:500px;overflow:visible;">
         ${confetti}${burstEffects}
 
         ${phase==='collect'?`
@@ -13978,8 +13981,8 @@ function render(){
                 ${renderNewForm()}
               </div>
             </div>
-            <p class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-pink-300 to-purple-300 mb-2">${isHatching?'Your egg hatched!':'Your buddy evolved!'}</p>
-            <p class="text-xl text-white/90 mb-6">Say hello to your adorable <span class="font-bold text-pink-300">${categoryName} ${newStageName}</span>!</p>
+            <p class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-pink-300 to-purple-300 mb-2">${isHatching?'You hatched a '+newStageName+'!':(S.buddyName?S.buddyName+' grew!':'Your buddy evolved!')}</p>
+            <p class="text-xl text-white/90 mb-6">${isHatching?'Say hello to your adorable':'Meet your amazing'} <span class="font-bold text-pink-300">${categoryName} ${newStageName}</span>!</p>
           </div>
           ${isHatching&&!S.buddyName?`
             <button onclick="pState.evolvePhase='naming';render()" class="bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold py-4 px-10 rounded-2xl text-lg shadow-lg">
