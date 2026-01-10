@@ -310,11 +310,13 @@
     #xp-sparkles{position:fixed;pointer-events:none;z-index:9999}
     .xp-sparkle{position:absolute;font-size:24px;animation:collectXP 0.8s ease-in forwards}
 
-    /* Sleeping/snoring animations */
-    @keyframes sleep-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
+    /* Sleeping/snoring animations - ONLY gentle breathing, no other movement */
+    @keyframes sleep-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.015)}}
     @keyframes float-z{0%{opacity:0;transform:translate(0,0) scale(0.5)}20%{opacity:1}80%{opacity:1}100%{opacity:0;transform:translate(20px,-40px) scale(1.2)}}
     @keyframes float-z-delayed{0%{opacity:0;transform:translate(0,0) scale(0.5)}20%{opacity:1}80%{opacity:1}100%{opacity:0;transform:translate(25px,-50px) scale(1.3)}}
-    .sleeping{animation:sleep-breathe 3s ease-in-out infinite !important}
+    .sleeping{animation:sleep-breathe 4s ease-in-out infinite !important}
+    /* Stop creature part animations when sleeping - creature should be completely still except breathing */
+    .sleeping div:not(.sleeping-zs):not(.sleeping-z){animation:none !important}
     .sleeping-zs{position:absolute;top:-10px;right:-20px;font-size:24px;pointer-events:none;z-index:100}
     .sleeping-z{position:absolute;font-weight:bold;color:#a78bfa;text-shadow:0 0 4px rgba(167,139,250,0.5)}
 
@@ -339,12 +341,12 @@
     .sleeping-z:nth-child(1){animation:float-z 2s ease-out infinite;font-size:16px}
     .sleeping-z:nth-child(2){animation:float-z-delayed 2s ease-out infinite 0.6s;font-size:20px;left:8px}
     .sleeping-z:nth-child(3){animation:float-z 2s ease-out infinite 1.2s;font-size:14px;left:16px}
-    /* Closed eyes when sleeping - squish eyes to lines */
-    .sleeping .bl-eye{transform:scaleY(0.15) !important;animation:none !important}
-    .sleeping .s-eye{transform:scaleY(0.15) !important;animation:none !important}
-    .sleeping .f-eye{transform:scaleY(0.15) !important;animation:none !important}
-    .sleeping .tn-eye{transform:scaleY(0.15) !important;animation:none !important}
-    .sleeping .dr-eye{transform:scaleY(0.15) !important;animation:none !important}
+    /* Closed eyes when sleeping - completely flat line */
+    .sleeping .bl-eye{transform:scaleY(0.05) !important;animation:none !important;border-radius:50% !important}
+    .sleeping .s-eye{transform:scaleY(0.05) !important;animation:none !important;border-radius:50% !important}
+    .sleeping .f-eye{transform:scaleY(0.05) !important;animation:none !important;border-radius:50% !important}
+    .sleeping .tn-eye{transform:scaleY(0.05) !important;animation:none !important;border-radius:50% !important}
+    .sleeping .dr-eye{transform:scaleY(0.05) !important;animation:none !important;border-radius:50% !important}
 
     /* XP State Animations */
     /* 10-25%: Drowsy - slow sway, half-closed eyes */
@@ -1028,6 +1030,98 @@ const CREATURE_CATEGORIES={
 
 // Array of category keys for random selection
 const CATEGORY_KEYS=Object.keys(CREATURE_CATEGORIES);
+
+// Cute creature blurbs for trading cards (Pokédex-style descriptions)
+const CREATURE_BLURBS={
+  // Stage-based blurbs (shared across categories)
+  stages:{
+    egg:'A mysterious egg filled with potential! What adorable creature waits inside?',
+    blob:'A freshly hatched blob of pure cuteness! Still learning about the world with those big curious eyes.',
+    baby:'Growing stronger every day! This little one loves to explore and make new friends.',
+    teen:'Almost fully grown! Developing unique traits and showing off its personality.',
+    adult:'A magnificent fully-grown Scribby! Raised with love and scripture practice.'
+  },
+  // Category-specific adult blurbs by variant index
+  birds:{
+    0:'This friendly duck loves splashing in puddles and making everyone smile with its cheerful quacks!',
+    1:'A gentle dove that brings peace wherever it flies. Known for its soft cooing and kind nature.',
+    2:'A majestic eagle with sharp eyes and a brave heart. Loves soaring high above the clouds!',
+    3:'This colorful mallard is always ready for adventure, especially if there are breadcrumbs involved.',
+    4:'A wise owl who stays up late reading and shares knowledge with anyone who asks.',
+    5:'This stunning peacock loves to show off its beautiful feathers at every opportunity!',
+    6:'A chatty parrot that can learn any phrase! Loves crackers and making silly jokes.',
+    7:'An elegant swan gliding gracefully across calm waters. Known for its beauty and poise.',
+    8:'This fabulous flamingo stands on one leg for hours, perfecting its balance and grace.',
+    default:'A beautiful feathered friend raised with love and dedication!'
+  },
+  aquatic:{
+    0:'A gentle giant of the sea! This whale sings beautiful songs that echo across the ocean.',
+    1:'A playful dolphin that loves doing tricks and making new friends. Always smiling!',
+    2:'A cuddly seal that enjoys basking in the sun and clapping for snacks.',
+    3:'A misunderstood shark who is actually very friendly. Just wants to give hugs!',
+    4:'This clever octopus can solve puzzles and open jars. Has eight arms for eight hugs!',
+    5:'A graceful squid that changes colors with its mood. Loves deep-sea exploration!',
+    default:'A wonderful sea creature from the depths of the ocean!'
+  },
+  reptiles:{
+    0:'A speedy gecko that can climb any wall! Loves catching bugs and doing parkour.',
+    1:'A cheerful frog that sings the best songs on rainy days. Ribbiting personality!',
+    2:'A wise turtle taking life one slow step at a time. Carries its home everywhere!',
+    3:'A sleek cobra with hypnotic eyes. Actually quite friendly once you get to know it!',
+    default:'A cool-blooded friend with scales and a warm heart!'
+  },
+  mammals:{
+    0:'A fluffy bunny with the softest fur! Loves nibbling on carrots and hopping around.',
+    1:'An adorable kitty that purrs like a tiny motor. Expert at finding sunny spots.',
+    2:'A cuddly koala that gives the best hugs and loves eucalyptus-flavored everything.',
+    3:'A clever fox with a bushy tail. Known for being both smart and friendly!',
+    4:'A tiny mouse with big dreams! Can squeeze into the smallest spaces.',
+    5:'A mischievous raccoon that collects shiny things. Has the cutest little hands!',
+    6:'A red panda with the fluffiest tail! Loves bamboo and afternoon naps.',
+    7:'A sleepy sloth that takes everything nice and slow. Champion napper!',
+    default:'A furry friend with four paws and a heart of gold!'
+  },
+  mystical:{
+    0:'A magical fairy spreading sparkles and joy wherever it flutters!',
+    1:'A mysterious dark fairy with powers over shadows. Still very friendly though!',
+    2:'A graceful merperson from an underwater kingdom. Can hold their breath forever!',
+    3:'A powerful sea witch brewing potions from ocean ingredients.',
+    4:'A wish-granting genie with a heart of gold! Just dont ask for more wishes.',
+    5:'The royal ruler of pumpkin patch! Glows warmly on autumn nights.',
+    default:'A creature of legend and wonder, straight from fairy tales!'
+  },
+  prehistoric:{
+    0:'A fearsome T-Rex with tiny arms but a huge heart! Loves giving high-fives.',
+    1:'A gentle Bronto munching on treetops. The friendliest giant around!',
+    2:'A Stego with cool back plates that change color with its mood!',
+    default:'A prehistoric pal from millions of years ago!'
+  },
+  alien:{
+    0:'A cosmic friend from a distant galaxy! Communicates through colorful light patterns.',
+    1:'A neon visitor with glowing antennae. Collects earth souvenirs!',
+    2:'A space buddy learning human customs. Thinks handshakes are hilarious!',
+    default:'An out-of-this-world friend from beyond the stars!'
+  },
+  dragons:{
+    default:'A magnificent dragon with scales that shimmer in the light!'
+  },
+  insects:{
+    default:'A tiny but mighty bug friend with the biggest personality!'
+  },
+  fantasy:{
+    default:'A magical creature from the realm of imagination!'
+  }
+};
+
+// Get creature blurb based on category, stage, and variant
+function getCreatureBlurb(categoryKey,stage,variantIdx=0){
+  if(stage!=='adult'){
+    return CREATURE_BLURBS.stages[stage]||CREATURE_BLURBS.stages.blob;
+  }
+  const categoryBlurbs=CREATURE_BLURBS[categoryKey];
+  if(!categoryBlurbs)return CREATURE_BLURBS.stages.adult;
+  return categoryBlurbs[variantIdx]||categoryBlurbs.default||CREATURE_BLURBS.stages.adult;
+}
 
 // Categories with fully designed CSS creatures (egg → adult)
 // All categories now enabled for testing/development
@@ -13173,6 +13267,7 @@ function render(){
           <button onclick="addTestFurniture()" class="bg-blue-100 text-blue-700 font-semibold py-2 rounded-xl text-sm">+ Furniture</button>
         </div>
         <button onclick="addTestCoins()" class="w-full bg-yellow-100 text-yellow-700 font-semibold py-2 rounded-xl mb-2">+ 500 Coins</button>
+        <button onclick="showEvolutionPreview()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-semibold py-2 rounded-xl mb-2">🎉 Preview Evolution Screens</button>
         <p class="text-purple-400 text-xs text-center">Your UID: ${window.currentUser?.uid||'Not signed in'}</p>
       </div>
       `:''}
@@ -13264,8 +13359,8 @@ function render(){
 
     const isHatching=evoType==='hatched';
 
-    h=`<div class="p-5 min-h-screen flex items-center justify-center" style="background:linear-gradient(135deg,#1e1b4b,#312e81,#4c1d95);">
-      <div class="text-center max-w-md w-full relative overflow-hidden" style="min-height:500px;">
+    h=`<div class="p-5 min-h-screen flex items-center justify-center" style="background:linear-gradient(135deg,#1e1b4b,#312e81,#4c1d95);overflow:hidden;">
+      <div class="text-center max-w-md w-full relative" style="min-height:500px;">
         ${confetti}${burstEffects}
 
         ${phase==='collect'?`
@@ -13289,14 +13384,16 @@ function render(){
         `:''}
 
         ${phase==='reveal'?`
-          <!-- Phase 3: New Form Revealed! Minimal text -->
+          <!-- Phase 3: New Form Revealed! Cute announcement -->
           <div class="pt-8">
+            <p class="text-2xl font-bold text-yellow-300 mb-4">${isHatching?'🎉 Congratulations! 🎉':'✨ Amazing! ✨'}</p>
             <div class="hatch-creature-pop inline-block mb-6">
               <div style="transform:scale(0.8);transform-origin:center;">
                 ${renderNewForm()}
               </div>
             </div>
-            <p class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-pink-300 to-purple-300 mb-8">${categoryName} ${newStageName}!</p>
+            <p class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-pink-300 to-purple-300 mb-2">${isHatching?'Your egg hatched!':'Your buddy evolved!'}</p>
+            <p class="text-xl text-white/90 mb-6">Say hello to your adorable <span class="font-bold text-pink-300">${categoryName} ${newStageName}</span>!</p>
           </div>
           ${isHatching&&!S.buddyName?`
             <button onclick="pState.evolvePhase='naming';render()" class="bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold py-4 px-10 rounded-2xl text-lg shadow-lg">
@@ -14195,7 +14292,7 @@ function closeCreaturePreview(){
   modal.classList.remove('flex');
 }
 
-// Scribby info card for collection
+// Scribby info card for collection - Trading Card Style!
 function showScribbyCard(categoryKey,variantIdx,buddyId,stage='adult'){
   const buddy=S.graduatedBuddies.find(b=>b.id===buddyId);
   if(!buddy)return;
@@ -14205,11 +14302,11 @@ function showScribbyCard(categoryKey,variantIdx,buddyId,stage='adult'){
   const creatureName=stage==='teen'?category.teenNames[variantIdx]:category.adultNames[variantIdx];
 
   let creatureHTML='';
-  let creatureScale=0.7;
+  let creatureScale=0.65;
 
   if(stage==='teen'){
     creatureHTML=renderTeen(categoryKey,variantIdx);
-    creatureScale=0.6;
+    creatureScale=0.55;
   }else if(categoryKey==='birds'){
     creatureHTML=renderAdultBird(variantIdx);
   }else if(categoryKey==='reptiles'){
@@ -14231,58 +14328,109 @@ function showScribbyCard(categoryKey,variantIdx,buddyId,stage='adult'){
   const hatchDate=buddy.hatchDate?new Date(buddy.hatchDate).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'Unknown';
   const gradDate=buddy.graduatedDate?new Date(buddy.graduatedDate).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'Unknown';
 
+  // Get the cute blurb for this creature
+  const blurb=getCreatureBlurb(categoryKey,stage,variantIdx);
+
+  // Calculate a "power level" based on stats for fun
+  const powerLevel=Math.min(100,Math.round((buddy.happiness||50)*.4+(buddy.health||50)*.4+(buddy.daysRaised||1)*2));
+
+  // Determine rarity based on category
+  const rarities={birds:'Common',aquatic:'Uncommon',reptiles:'Common',mammals:'Common',mystical:'Rare',prehistoric:'Epic',alien:'Legendary',dragons:'Epic',insects:'Uncommon',fantasy:'Rare'};
+  const rarity=rarities[categoryKey]||'Common';
+  const rarityColors={Common:'from-gray-400 to-gray-500',Uncommon:'from-green-400 to-emerald-500',Rare:'from-blue-400 to-indigo-500',Epic:'from-purple-400 to-violet-600',Legendary:'from-yellow-400 to-orange-500'};
+
   const modal=document.getElementById('scribbyCardModal');
   const content=document.getElementById('scribbyCardContent');
 
   content.innerHTML=`
-    <div class="flex justify-between items-start mb-4">
-      <div>
-        <h2 class="text-2xl font-bold text-white">${buddy.name||creatureName}</h2>
-        <p class="text-white/80 text-sm">${creatureName} • ${categoryName}</p>
+    <!-- Trading Card Frame -->
+    <div class="relative" style="background:linear-gradient(145deg,#2d1f4e,#1a1035);border-radius:16px;padding:4px;">
+      <div style="background:linear-gradient(145deg,#f5f0ff,#e8dff5);border-radius:14px;padding:3px;">
+        <div style="background:linear-gradient(180deg,#6b46c1,#553c9a);border-radius:12px;overflow:hidden;">
+
+          <!-- Card Header -->
+          <div class="flex justify-between items-center px-3 py-2" style="background:linear-gradient(90deg,rgba(255,255,255,0.1),transparent);">
+            <div>
+              <h2 class="text-lg font-black text-white tracking-tight">${buddy.name||creatureName}</h2>
+              <p class="text-white/70 text-xs">${creatureName}</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-gradient-to-r ${rarityColors[rarity]} text-white">${rarity}</span>
+              <button onclick="closeScribbyCard()" class="bg-white/20 text-white font-bold w-8 h-8 rounded-full flex items-center justify-center text-sm hover:bg-white/30">×</button>
+            </div>
+          </div>
+
+          <!-- Creature Display Area -->
+          <div class="mx-2 rounded-xl overflow-hidden" style="background:linear-gradient(180deg,#a78bfa,#8b5cf6);border:3px solid #c4b5fd;">
+            <div class="relative flex items-center justify-center py-4" style="min-height:140px;background:radial-gradient(ellipse at center,rgba(255,255,255,0.3) 0%,transparent 70%);">
+              <div style="transform:scale(${creatureScale});transform-origin:center;">${creatureHTML}</div>
+              <!-- Sparkle effects -->
+              <div class="absolute top-2 left-3 text-yellow-300 text-sm animate-pulse">✨</div>
+              <div class="absolute bottom-3 right-4 text-pink-300 text-sm animate-pulse" style="animation-delay:0.5s;">✨</div>
+            </div>
+          </div>
+
+          <!-- Type Badge -->
+          <div class="flex justify-center -mt-3 relative z-10">
+            <span class="bg-gradient-to-r from-amber-400 to-yellow-500 text-amber-900 text-xs font-bold px-4 py-1 rounded-full border-2 border-amber-300 shadow-lg">
+              ${categoryName} Type
+            </span>
+          </div>
+
+          <!-- Blurb Section -->
+          <div class="mx-3 mt-2 mb-2 p-2 rounded-lg" style="background:rgba(255,255,255,0.1);">
+            <p class="text-white/90 text-xs italic leading-relaxed">"${blurb}"</p>
+          </div>
+
+          <!-- Stats Section - Pokemon Style -->
+          <div class="mx-3 mb-2 p-2 rounded-lg" style="background:rgba(0,0,0,0.2);">
+            <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+              <div class="flex justify-between text-white/80">
+                <span>HP</span>
+                <span class="font-bold text-red-300">${buddy.health||100}</span>
+              </div>
+              <div class="flex justify-between text-white/80">
+                <span>JOY</span>
+                <span class="font-bold text-yellow-300">${buddy.happiness||100}</span>
+              </div>
+              <div class="flex justify-between text-white/80">
+                <span>DAYS</span>
+                <span class="font-bold text-cyan-300">${buddy.daysRaised||'?'}</span>
+              </div>
+              <div class="flex justify-between text-white/80">
+                <span>PWR</span>
+                <span class="font-bold text-purple-300">${powerLevel}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dates Footer -->
+          <div class="mx-3 mb-2 flex justify-between text-[10px] text-white/50">
+            <span>Hatched: ${hatchDate}</span>
+            <span>Graduated: ${gradDate}</span>
+          </div>
+
+          <!-- Card Number / ID -->
+          <div class="text-center pb-2">
+            <span class="text-[9px] text-white/30 font-mono">#${String(buddyId).padStart(4,'0')} • SCRIBBIES</span>
+          </div>
+
+        </div>
       </div>
-      <button onclick="closeScribbyCard()" class="bg-white/20 text-white font-bold w-10 h-10 rounded-xl flex items-center justify-center text-xl">×</button>
     </div>
-    <div class="bg-white/20 rounded-2xl p-6 flex items-center justify-center mb-4" style="min-height:180px;">
-      <div style="transform:scale(${creatureScale});transform-origin:center;">${creatureHTML}</div>
-    </div>
-    ${stage==='teen'?`
-    <div class="bg-white/10 rounded-xl p-4 mb-3">
-      <p class="text-white/90 text-sm">The teen stage before evolving to adult. This is what ${buddy.name||creatureName} looked like while growing up!</p>
-    </div>
-    `:''}
-    <div class="bg-white/10 rounded-xl p-4 space-y-2">
-      <div class="flex justify-between text-white">
-        <span class="text-white/70">🐣 Hatched</span>
-        <span class="font-semibold">${hatchDate}</span>
-      </div>
-      <div class="flex justify-between text-white">
-        <span class="text-white/70">🎓 Graduated</span>
-        <span class="font-semibold">${gradDate}</span>
-      </div>
-      <div class="flex justify-between text-white">
-        <span class="text-white/70">⏰ Days Raised</span>
-        <span class="font-semibold">${buddy.daysRaised||'?'} days</span>
-      </div>
-      <div class="flex justify-between text-white">
-        <span class="text-white/70">😊 Final Happiness</span>
-        <span class="font-semibold">${buddy.happiness}/100</span>
-      </div>
-      <div class="flex justify-between text-white">
-        <span class="text-white/70">❤️ Final Health</span>
-        <span class="font-semibold">${buddy.health}/100</span>
-      </div>
-    </div>
+
+    <!-- Action Buttons Below Card -->
     ${stage!=='teen'?`
-    <button onclick="showTradeTerms(${buddy.id})" class="w-full mt-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2">
+    <button onclick="showTradeTerms(${buddy.id})" class="w-full mt-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold py-2.5 rounded-xl flex items-center justify-center gap-2 shadow-lg">
       <span>🎁</span>
       <span>Share This Scribby</span>
     </button>
     `:`
-    <div class="w-full mt-4 bg-white/10 text-white/50 font-semibold py-3 rounded-xl text-center text-sm">
+    <div class="w-full mt-3 bg-white/10 text-white/50 font-semibold py-2.5 rounded-xl text-center text-sm">
       Only adult Scribbies can be traded
     </div>
     `}
-    <p class="text-white/50 text-xs text-center mt-3">Tap outside to close</p>
+    <p class="text-white/40 text-xs text-center mt-2">Tap outside to close</p>
   `;
 
   modal.classList.remove('hidden');
@@ -14295,43 +14443,96 @@ function closeScribbyCard(){
   modal.classList.remove('flex');
 }
 
-// Show info card for blob/baby stages (shared across all variants in a category)
+// Show info card for blob/baby stages (shared across all variants in a category) - Trading Card Style!
 function showCollectionStageCard(stage,categoryKey){
   const category=CREATURE_CATEGORIES[categoryKey];
   const categoryName=categoryKey.charAt(0).toUpperCase()+categoryKey.slice(1);
 
   let creatureHTML='';
   let stageName='';
-  let stageDesc='';
+  let creatureScale=1.0;
 
   if(stage==='blob'){
     creatureHTML=renderBlob(categoryKey);
-    stageName='Blob';
-    stageDesc='The first evolution stage after hatching from an egg. A cute, simple creature with big expressive eyes!';
+    stageName=`${categoryName} Blob`;
+    creatureScale=1.1;
   }else if(stage==='baby'){
     creatureHTML=renderBaby(categoryKey);
     stageName=`${categoryName} Baby`;
-    stageDesc=`A baby ${categoryName.toLowerCase()} developing its unique features. Still small but growing stronger every day!`;
+    creatureScale=0.9;
   }
+
+  // Get the cute blurb for this stage
+  const blurb=getCreatureBlurb(categoryKey,stage==='baby'?'baby':'blob',0);
+
+  // Stage evolution info
+  const stageInfo={
+    blob:{level:1,xpNeeded:75,nextStage:'Baby'},
+    baby:{level:2,xpNeeded:100,nextStage:'Teen'}
+  };
+  const info=stageInfo[stage]||stageInfo.blob;
 
   const modal=document.getElementById('scribbyCardModal');
   const content=document.getElementById('scribbyCardContent');
 
   content.innerHTML=`
-    <div class="flex justify-between items-start mb-4">
-      <div>
-        <h2 class="text-2xl font-bold text-white">${stageName}</h2>
-        <p class="text-white/80 text-sm">${categoryName} Category</p>
+    <!-- Trading Card Frame -->
+    <div class="relative" style="background:linear-gradient(145deg,#1e3a5f,#0f2744);border-radius:16px;padding:4px;">
+      <div style="background:linear-gradient(145deg,#e0f4ff,#c7e8ff);border-radius:14px;padding:3px;">
+        <div style="background:linear-gradient(180deg,#3b82f6,#2563eb);border-radius:12px;overflow:hidden;">
+
+          <!-- Card Header -->
+          <div class="flex justify-between items-center px-3 py-2" style="background:linear-gradient(90deg,rgba(255,255,255,0.1),transparent);">
+            <div>
+              <h2 class="text-lg font-black text-white tracking-tight">${stageName}</h2>
+              <p class="text-white/70 text-xs">Stage ${info.level} Evolution</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 text-white">Lv.${info.level}</span>
+              <button onclick="closeScribbyCard()" class="bg-white/20 text-white font-bold w-8 h-8 rounded-full flex items-center justify-center text-sm hover:bg-white/30">×</button>
+            </div>
+          </div>
+
+          <!-- Creature Display Area -->
+          <div class="mx-2 rounded-xl overflow-hidden" style="background:linear-gradient(180deg,#60a5fa,#3b82f6);border:3px solid #93c5fd;">
+            <div class="relative flex items-center justify-center py-6" style="min-height:150px;background:radial-gradient(ellipse at center,rgba(255,255,255,0.3) 0%,transparent 70%);">
+              <div style="transform:scale(${creatureScale});transform-origin:center;">${creatureHTML}</div>
+              <!-- Sparkle effects -->
+              <div class="absolute top-3 left-4 text-cyan-300 text-sm animate-pulse">✨</div>
+              <div class="absolute bottom-4 right-5 text-blue-200 text-sm animate-pulse" style="animation-delay:0.5s;">✨</div>
+            </div>
+          </div>
+
+          <!-- Type Badge -->
+          <div class="flex justify-center -mt-3 relative z-10">
+            <span class="bg-gradient-to-r from-cyan-400 to-blue-500 text-white text-xs font-bold px-4 py-1 rounded-full border-2 border-cyan-300 shadow-lg">
+              ${categoryName} Type
+            </span>
+          </div>
+
+          <!-- Blurb Section -->
+          <div class="mx-3 mt-2 mb-2 p-3 rounded-lg" style="background:rgba(255,255,255,0.1);">
+            <p class="text-white/90 text-xs italic leading-relaxed">"${blurb}"</p>
+          </div>
+
+          <!-- Evolution Info -->
+          <div class="mx-3 mb-2 p-2 rounded-lg" style="background:rgba(0,0,0,0.2);">
+            <div class="flex items-center justify-between text-xs text-white/80">
+              <span>Next Evolution:</span>
+              <span class="font-bold text-cyan-300">${info.nextStage} (${info.xpNeeded} XP)</span>
+            </div>
+          </div>
+
+          <!-- Card Footer -->
+          <div class="text-center pb-2">
+            <span class="text-[9px] text-white/30 font-mono">STAGE ${info.level} • SCRIBBIES</span>
+          </div>
+
+        </div>
       </div>
-      <button onclick="closeScribbyCard()" class="bg-white/20 text-white font-bold w-10 h-10 rounded-xl flex items-center justify-center text-xl">×</button>
     </div>
-    <div class="bg-white/20 rounded-2xl p-6 flex items-center justify-center mb-4" style="min-height:180px;">
-      <div style="transform:scale(${stage==='blob'?1.2:1.0});transform-origin:center;">${creatureHTML}</div>
-    </div>
-    <div class="bg-white/10 rounded-xl p-4">
-      <p class="text-white/90 text-sm">${stageDesc}</p>
-    </div>
-    <p class="text-white/50 text-xs text-center mt-4">Tap outside to close</p>
+
+    <p class="text-white/40 text-xs text-center mt-3">Tap outside to close</p>
   `;
 
   modal.classList.remove('hidden');
@@ -14416,6 +14617,87 @@ function addTestCoins(){
   S.coins=(S.coins||0)+500;
   save();
   alert('Added 500 coins!');
+  render();
+}
+
+// Debug: Preview evolution screens
+let evoPreviewState={active:false,category:'birds',fromStage:'egg',toStage:'blob',phase:'collect'};
+function showEvolutionPreview(){
+  // Open a modal to select which evolution to preview
+  const modal=document.getElementById('scribbyCardModal');
+  const content=document.getElementById('scribbyCardContent');
+
+  const evolutions=[
+    {from:'egg',to:'blob',label:'Egg → Blob (Hatching)'},
+    {from:'blob',to:'child',label:'Blob → Baby'},
+    {from:'child',to:'teen',label:'Baby → Teen'},
+    {from:'teen',to:'adult',label:'Teen → Adult'}
+  ];
+
+  content.innerHTML=`
+    <div class="bg-gradient-to-br from-purple-600 via-pink-600 to-violet-700 rounded-2xl p-5">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold text-white">🎉 Evolution Preview</h2>
+        <button onclick="closeScribbyCard()" class="bg-white/20 text-white font-bold w-8 h-8 rounded-full">×</button>
+      </div>
+      <p class="text-white/80 text-sm mb-4">Select a category and evolution to preview:</p>
+
+      <div class="mb-4">
+        <label class="text-white/70 text-xs mb-1 block">Category:</label>
+        <select id="evo-category" class="w-full p-2 rounded-lg bg-white/20 text-white border border-white/30">
+          ${FULLY_DESIGNED_CATEGORIES.map(c=>`<option value="${c}" class="text-gray-800">${c.charAt(0).toUpperCase()+c.slice(1)}</option>`).join('')}
+        </select>
+      </div>
+
+      <div class="space-y-2 mb-4">
+        ${evolutions.map((e,i)=>`
+          <button onclick="triggerEvolutionPreview('${e.from}','${e.to}')" class="w-full bg-white/10 hover:bg-white/20 text-white font-semibold py-3 rounded-xl flex items-center justify-between px-4 transition-colors">
+            <span>${e.label}</span>
+            <span class="text-white/50">→</span>
+          </button>
+        `).join('')}
+      </div>
+
+      <p class="text-white/50 text-xs text-center">Click an evolution to see the celebration!</p>
+    </div>
+  `;
+
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+}
+
+function triggerEvolutionPreview(fromStage,toStage){
+  closeScribbyCard();
+
+  const categorySelect=document.getElementById('evo-category');
+  const category=categorySelect?categorySelect.value:'birds';
+
+  // Save current state
+  const savedCategory=S.creatureCategory;
+  const savedStage=S.buddyStage;
+  const savedVariant=S.creatureVariant;
+
+  // Set up for preview
+  S.creatureCategory=category;
+  S.buddyStage=toStage;
+  S.creatureVariant=0;
+
+  // Set up pState for evolution
+  pState.evolving=true;
+  pState.evolvePhase='collect';
+  pState.evolveType=fromStage==='egg'?'hatched':'grew';
+  pState.prevStage=fromStage;
+  pState.xpEarned=25;
+  pState.celebration=false;
+
+  // Store original state for restoration
+  evoPreviewState={
+    active:true,
+    savedCategory,
+    savedStage,
+    savedVariant
+  };
+
   render();
 }
 
@@ -15618,8 +15900,8 @@ render();
 </script>
 
 <!-- Scribby Info Card Modal -->
-<div id="scribbyCardModal" class="hidden fixed inset-0 z-50 items-center justify-center bg-black/70 backdrop-blur-sm" onclick="closeScribbyCard()">
-  <div id="scribbyCardContent" class="bg-gradient-to-br from-purple-500 via-pink-500 to-violet-600 rounded-3xl p-5 max-w-sm mx-4 shadow-2xl" onclick="event.stopPropagation()">
+<div id="scribbyCardModal" class="hidden fixed inset-0 z-50 items-center justify-center bg-black/80 backdrop-blur-sm" onclick="closeScribbyCard()">
+  <div id="scribbyCardContent" class="max-w-xs mx-4" onclick="event.stopPropagation()">
   </div>
 </div>
 
