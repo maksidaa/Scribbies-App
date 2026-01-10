@@ -14811,10 +14811,11 @@ function showEvolutionPreview(){
 }
 
 function triggerEvolutionPreview(fromStage,toStage){
-  closeScribbyCard();
-
+  // Get category BEFORE closing modal (element will be gone after close)
   const categorySelect=document.getElementById('evo-category');
   const category=categorySelect?categorySelect.value:'birds';
+
+  closeScribbyCard();
 
   // Save current state
   const savedCategory=S.creatureCategory;
