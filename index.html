@@ -13954,9 +13954,9 @@ function render(){
 
         ${phase==='collect'?`
           <!-- Phase 1: Show creature + XP + Collect button -->
-          <div class="mb-8 pt-8">
-            <div class="evo-spin-buildup inline-block" style="transform-origin:center;">
-              <div style="transform:scale(0.8);transform-origin:center;">
+          <div class="mb-8 pt-8" style="overflow:visible;">
+            <div class="evo-spin-buildup inline-block" style="transform-origin:center;overflow:visible;">
+              <div style="transform:scale(0.8);transform-origin:center;overflow:visible;">
                 ${renderPrevForm()}
               </div>
             </div>
@@ -13974,10 +13974,10 @@ function render(){
 
         ${phase==='reveal'?`
           <!-- Phase 3: New Form Revealed! Cute announcement -->
-          <div class="pt-8">
+          <div class="pt-8" style="overflow:visible;">
             <p class="text-2xl font-bold text-yellow-300 mb-4">${isHatching?'🎉 Congratulations! 🎉':'✨ Amazing! ✨'}</p>
-            <div class="hatch-creature-pop inline-block mb-6">
-              <div style="transform:scale(0.8);transform-origin:center;">
+            <div class="hatch-creature-pop inline-block mb-6" style="overflow:visible;">
+              <div style="transform:scale(0.8);transform-origin:center;overflow:visible;">
                 ${renderNewForm()}
               </div>
             </div>
@@ -13997,9 +13997,9 @@ function render(){
 
         ${phase==='naming'?`
           <!-- Phase 4: Name Your Friend (only for hatching) -->
-          <div class="pt-6 mb-6">
-            <div class="inline-block mb-4">
-              <div style="transform:scale(0.7);transform-origin:center;">
+          <div class="pt-6 mb-6" style="overflow:visible;">
+            <div class="inline-block mb-4" style="overflow:visible;">
+              <div style="transform:scale(0.7);transform-origin:center;overflow:visible;">
                 ${renderNewForm()}
               </div>
             </div>
