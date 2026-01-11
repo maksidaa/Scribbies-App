@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Mythical Tanuki - Final Restoration</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root {
+--t-fur: #ecdcb0;    /* Sandy tan */
+--t-fur-dark: #3d2b1f; 
+--t-tummy: #fff9e6;  
+--t-leaf: #4ade80;  
+--t-magic: #60a5fa;  
+--t-hat: #bc997d;
+--t-outline: #2d1a0e;
+--t-string: #991b1b; /* Red tie color */
+}
+
+body { background-color: #0f172a; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; overflow: hidden; }
+
+.tanuki-creature {
+position: relative;
+width: 300px;
+height: 320px;
+animation: tanuki-bounce 3s ease-in-out infinite;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+/* 1. HAT BACKDROP - Layer 5 */
+.hat-backdrop {
+    position: absolute;
+    width: 260px; height: 260px;
+    background: var(--t-hat);
+    border: 6px solid var(--t-outline);
+    border-radius: 50%;
+    top: 5px; left: 20px;
+    z-index: 5;
+}
+.hat-line { position: absolute; background: var(--t-outline); width: 6px; height: 22px; border-radius: 3px; }
+.hl-1 { top: 0; left: 50%; transform: translateX(-50%); }
+.hl-2 { top: 60px; right: 8px; transform: rotate(45deg); }
+.hl-3 { top: 130px; left: -2px; transform: rotate(-90deg); }
+
+/* 2. EARS - Layer 10 */
+.ear {
+    position: absolute;
+    width: 58px; height: 52px;
+    background: #44403c; 
+    border: 5px solid var(--t-outline);
+    border-radius: 50% 50% 10% 10%;
+    z-index: 10;
+    top: 25px; 
+}
+.ear-l { left: 75px; transform: rotate(-15deg); }
+.ear-r { right: 75px; transform: rotate(15deg); }
+
+/* 3. MYTHICAL EFFECTS */
+.wisp {
+    position: absolute;
+    width: 12px; height: 12px;
+    background: var(--t-magic);
+    border-radius: 50%;
+    filter: blur(4px);
+    box-shadow: 0 0 15px var(--t-magic);
+    opacity: 0;
+    z-index: 15;
+}
+.wisp-1 { top: 20%; left: -20px; animation: wisp-float 4s infinite 1s; }
+.wisp-2 { top: 50%; right: -30px; animation: wisp-float 5s infinite 2s; }
+
+.leaf {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 34px; height: 20px;
+    background: var(--t-leaf);
+    border: 2px solid #064e3b;
+    border-radius: 0 100% 0 100%;
+    z-index: 100;
+    box-shadow: 0 0 10px var(--t-leaf);
+    animation: leaf-glow 2s ease-in-out infinite;
+}
+
+/* 4. HEAD - Layer 40 */
+.tanuki-head {
+    position: absolute;
+    width: 165px; height: 135px;
+    background: var(--t-fur);
+    border: 6px solid var(--t-outline);
+    border-radius: 50% 50% 45% 45%;
+    top: 45px;
+    z-index: 40;
+}
+
+.mask {
+    position: absolute;
+    width: 50px; height: 40px;
+    background: var(--t-fur-dark);
+    border-radius: 50%;
+    top: 38px;
+}
+.mask-l { left: 12px; transform: rotate(-12deg); }
+.mask-r { right: 12px; transform: rotate(12deg); }
+
+.eye {
+    position: absolute;
+    width: 24px; height: 24px;
+    background: #000;
+    border-radius: 50%;
+    top: 6px; left: 14px;
+    animation: tanuki-blink 4s infinite;
+}
+.eye::after {
+    content: ''; position: absolute;
+    width: 10px; height: 10px;
+    background: white; border-radius: 50%;
+    top: 3px; left: 4px; box-shadow: 0 0 5px white;
+}
+
+/* 5. HAT STRING & KNOT - Layer 45 */
+.neck-tie {
+    position: absolute;
+    top: 183px;
+    width: 100%;
+    height: 40px;
+    z-index: 45;
+    display: flex;
+    justify-content: center;
+}
+.tie-string {
+    position: absolute;
+    width: 130px; height: 40px;
+    border: 5px solid var(--t-string);
+    border-top: none;
+    border-radius: 0 0 70px 70px;
+    top: -25px;
+}
+.tie-knot {
+    position: absolute;
+    width: 18px; height: 18px;
+    background: var(--t-string);
+    border: 3px solid var(--t-outline);
+    border-radius: 50%;
+    top: 5px;
+}
+.tie-end {
+    position: absolute;
+    width: 5px; height: 14px;
+    background: var(--t-string);
+    border: 1px solid var(--t-outline);
+    top: 15px;
+}
+.te-l { left: 2px; transform: rotate(20deg); }
+.te-r { right: 2px; transform: rotate(-20deg); }
+
+/* 6. BODY & TUMMY - Layer 20 */
+.tanuki-body {
+    position: absolute;
+    width: 200px; height: 160px;
+    background: var(--t-fur);
+    border: 6px solid var(--t-outline);
+    border-radius: 50%;
+    top: 130px;
+    z-index: 20;
+    overflow: hidden;
+}
+.tummy-dome {
+    position: absolute;
+    width: 240px; height: 180px;
+    background: var(--t-tummy);
+    border: 6px solid var(--t-outline);
+    bottom: -50px; left: 50%;
+    transform: translateX(-50%);
+    border-radius: 50%;
+}
+
+/* 7. DRUMMING PAWS - Layer 60 */
+.paw-drum {
+    position: absolute;
+    width: 42px; height: 34px;
+    background: var(--t-fur-dark);
+    border: 4px solid var(--t-outline);
+    border-radius: 14px;
+    z-index: 60;
+    top: 175px;
+    display: flex;
+    justify-content: center;
+    gap: 2px;
+}
+.finger { width: 10px; height: 10px; background: var(--t-fur-dark); border: 2px solid var(--t-outline); border-radius: 50%; margin-top: -6px; }
+.paw-l { left: 45px; animation: drum-left 1s ease-in-out infinite; }
+.paw-r { right: 45px; animation: drum-right 1s ease-in-out infinite; }
+
+/* 8. TAIL - Horizontal Stripes */
+.striped-tail {
+    position: absolute;
+    width: 95px; height: 70px;
+    background: repeating-linear-gradient(to right, var(--t-fur-dark), var(--t-fur-dark) 20px, var(--t-tummy) 20px, var(--t-tummy) 40px);
+    border: 6px solid var(--t-outline);
+    border-radius: 25px 50% 50% 25%;
+    right: -35px; bottom: 85px;
+    z-index: 10;
+    transform: rotate(25deg);
+    animation: tail-wag 2.5s ease-in-out infinite;
+}
+
+/* ANIMATIONS */
+@keyframes drum-left { 0%, 100% { transform: rotate(-15deg) translate(0, 0); } 50% { transform: rotate(10deg) translate(30px, -15px); } }
+@keyframes drum-right { 0%, 100% { transform: rotate(15deg) translate(0, 0); } 50% { transform: rotate(-10deg) translate(-30px, -15px); } }
+@keyframes wisp-float { 0% { transform: translateY(0) scale(1); opacity: 0; } 50% { opacity: 0.7; } 100% { transform: translateY(-100px) scale(0.5); opacity: 0; } }
+@keyframes leaf-glow { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.3); box-shadow: 0 0 20px var(--t-leaf); } }
+@keyframes tanuki-blink { 0%, 90%, 100% { transform: scaleY(1); } 93%, 97% { transform: scaleY(0.1); } }
+@keyframes tanuki-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes tail-wag { 0%, 100% { transform: rotate(25deg); } 50% { transform: rotate(35deg); } }
+
+</style>
+</head>
+<body>
+
+<div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-1/4 left-1/3 w-1 h-1 bg-white rounded-full animate-pulse"></div>
+    <div class="absolute top-1/2 right-1/4 w-1.5 h-1.5 bg-blue-300 rounded-full animate-ping"></div>
+    <div class="absolute top-2/3 left-10 w-1 h-1 bg-white rounded-full animate-pulse"></div>
+</div>
+
+<div class="bg-slate-900/50 p-20 rounded-[100px] shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10 flex flex-col items-center">
+    <div class="tanuki-creature">
+        
+        <div class="wisp wisp-1"></div>
+        <div class="wisp wisp-2"></div>
+        <div class="leaf"></div>
+
+        <div class="ear ear-l"></div>
+        <div class="ear ear-r"></div>
+
+        <div class="hat-backdrop">
+            <div class="hat-line hl-1"></div><div class="hat-line hl-2"></div><div class="hat-line hl-3"></div>
+        </div>
+
+        <div class="striped-tail"></div>
+
+        <div class="tanuki-head">
+            <div class="mask mask-l"><div class="eye"></div></div>
+            <div class="mask mask-r"><div class="eye"></div></div>
+            <div class="absolute top-[75px] left-1/2 -translate-x-1/2 w-5 h-4 bg-stone-950 rounded-full z-50"></div>
+            <div class="absolute top-[84px] left-1/2 -translate-x-1/2 flex opacity-60">
+                <div class="w-4 h-3 border-b-2 border-stone-900 rounded-full"></div>
+                <div class="w-4 h-3 border-b-2 border-stone-900 rounded-full"></div>
+            </div>
+        </div>
+
+        <div class="neck-tie">
+            <div class="tie-string"></div>
+            <div class="tie-knot">
+                <div class="tie-end te-l"></div>
+                <div class="tie-end te-r"></div>
+            </div>
+        </div>
+
+        <div class="tanuki-body">
+            <div class="tummy-dome"></div>
+        </div>
+
+        <div class="paw-drum paw-l"><div class="finger"></div><div class="finger"></div><div class="finger"></div></div>
+        <div class="paw-drum paw-r"><div class="finger"></div><div class="finger"></div><div class="finger"></div></div>
+
+        <div class="absolute bottom-[35px] left-[85px] w-16 h-10 bg-stone-900 rounded-full border-4 border-black z-30"></div>
+        <div class="absolute bottom-[35px] right-[85px] w-16 h-10 bg-stone-900 rounded-full border-4 border-black z-30"></div>
+
+    </div>
+    <h3 class="mt-12 text-4xl font-black text-blue-400 tracking-widest uppercase italic drop-shadow-[0_0_10px_rgba(96,165,250,0.5)]">Magical Tanuki</h3>
+</div>
+
+</body>
+</html>

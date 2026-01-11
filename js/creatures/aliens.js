@@ -6,6 +6,11 @@ function renderAdultAlien(variantIndex){
   if(variant === 10){
     const flyingEyeDesign = `
 <!-- FLYING EYE (OPHANIM) - Biblical Creature with Orbital Eye Rings -->
+<style>
+@keyframes ring-seesaw1{0%,100%{transform:rotateX(70deg) rotateY(-8deg)}50%{transform:rotateX(70deg) rotateY(8deg)}}
+@keyframes ring-seesaw2{0%,100%{transform:rotateX(60deg) rotateZ(45deg) rotateY(10deg)}50%{transform:rotateX(60deg) rotateZ(45deg) rotateY(-10deg)}}
+@keyframes ring-seesaw3{0%,100%{transform:rotateX(65deg) rotateZ(-30deg) rotateY(-6deg)}50%{transform:rotateX(65deg) rotateZ(-30deg) rotateY(6deg)}}
+</style>
 <div data-part="container" style="position:relative;width:240px;height:285px;animation:flying-eye-float 3s ease-in-out infinite;">
 
   <!-- Flame effects behind creature -->
@@ -18,27 +23,39 @@ function renderAdultAlien(variantIndex){
     <div style="position:absolute;width:25px;height:40px;top:100px;right:5px;background:linear-gradient(to top,rgba(255,200,100,0),rgba(255,150,50,0.3));border-radius:50%;filter:blur(5px);animation:flame-flicker 1.8s ease-in-out infinite 0.5s;"></div>
   </div>
 
-  <!-- Outer orbital ring (largest) - tilted back -->
-  <div style="position:absolute;width:220px;height:80px;top:90px;left:10px;z-index:5;transform:rotateX(70deg);animation:orbit-spin 12s linear infinite;">
-    <!-- Ring structure -->
+  <!-- Outer orbital ring - BACK HALF (behind eye) -->
+  <div style="position:absolute;width:220px;height:80px;top:90px;left:10px;z-index:5;animation:ring-seesaw1 4s ease-in-out infinite;clip-path:inset(0 0 50% 0);">
     <div style="position:absolute;width:100%;height:100%;border:12px solid transparent;border-radius:50%;background:linear-gradient(90deg,#d97706,#f59e0b,#fbbf24,#f59e0b,#d97706) border-box;-webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;box-shadow:0 0 15px rgba(245,158,11,0.5),inset 0 0 10px rgba(251,191,36,0.3);"></div>
-    <!-- Eyes on outer ring (12 eyes) -->
     ${[...Array(12)].map((_,i)=>{const angle=(i*30)*Math.PI/180;const x=100+95*Math.cos(angle);const y=40+35*Math.sin(angle);return`<div style="position:absolute;width:14px;height:14px;left:${x}px;top:${y}px;transform:translate(-50%,-50%) rotateX(-70deg);"><div style="width:100%;height:100%;background:radial-gradient(circle at 40% 40%,#fff,#e0e7ff);border:2px solid #b45309;border-radius:50%;box-shadow:0 0 6px rgba(59,130,246,0.5);"><div style="position:absolute;width:6px;height:6px;background:radial-gradient(circle,#3b82f6,#1d4ed8);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);"><div style="position:absolute;width:2px;height:2px;background:#000;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);"></div></div></div></div>`;}).join('')}
   </div>
 
-  <!-- Middle orbital ring - tilted left -->
-  <div style="position:absolute;width:180px;height:70px;top:95px;left:30px;z-index:10;transform:rotateX(60deg) rotateZ(45deg);animation:orbit-spin 10s linear infinite reverse;">
-    <!-- Ring structure -->
+  <!-- Outer orbital ring - FRONT HALF (in front of eye) -->
+  <div style="position:absolute;width:220px;height:80px;top:90px;left:10px;z-index:50;animation:ring-seesaw1 4s ease-in-out infinite;clip-path:inset(50% 0 0 0);">
+    <div style="position:absolute;width:100%;height:100%;border:12px solid transparent;border-radius:50%;background:linear-gradient(90deg,#d97706,#f59e0b,#fbbf24,#f59e0b,#d97706) border-box;-webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;box-shadow:0 0 15px rgba(245,158,11,0.5),inset 0 0 10px rgba(251,191,36,0.3);"></div>
+    ${[...Array(12)].map((_,i)=>{const angle=(i*30)*Math.PI/180;const x=100+95*Math.cos(angle);const y=40+35*Math.sin(angle);return`<div style="position:absolute;width:14px;height:14px;left:${x}px;top:${y}px;transform:translate(-50%,-50%) rotateX(-70deg);"><div style="width:100%;height:100%;background:radial-gradient(circle at 40% 40%,#fff,#e0e7ff);border:2px solid #b45309;border-radius:50%;box-shadow:0 0 6px rgba(59,130,246,0.5);"><div style="position:absolute;width:6px;height:6px;background:radial-gradient(circle,#3b82f6,#1d4ed8);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);"><div style="position:absolute;width:2px;height:2px;background:#000;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);"></div></div></div></div>`;}).join('')}
+  </div>
+
+  <!-- Middle orbital ring - BACK HALF (behind eye) -->
+  <div style="position:absolute;width:180px;height:70px;top:95px;left:30px;z-index:10;animation:ring-seesaw2 5s ease-in-out infinite;clip-path:inset(0 0 50% 0);">
     <div style="position:absolute;width:100%;height:100%;border:10px solid transparent;border-radius:50%;background:linear-gradient(90deg,#b45309,#d97706,#f59e0b,#d97706,#b45309) border-box;-webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;box-shadow:0 0 12px rgba(217,119,6,0.5),inset 0 0 8px rgba(245,158,11,0.3);"></div>
-    <!-- Eyes on middle ring (10 eyes) -->
     ${[...Array(10)].map((_,i)=>{const angle=(i*36)*Math.PI/180;const x=85+75*Math.cos(angle);const y=35+28*Math.sin(angle);return`<div style="position:absolute;width:12px;height:12px;left:${x}px;top:${y}px;transform:translate(-50%,-50%) rotateZ(-45deg) rotateX(-60deg);"><div style="width:100%;height:100%;background:radial-gradient(circle at 40% 40%,#fff,#e0e7ff);border:2px solid #92400e;border-radius:50%;box-shadow:0 0 5px rgba(59,130,246,0.4);"><div style="position:absolute;width:5px;height:5px;background:radial-gradient(circle,#3b82f6,#1d4ed8);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);"><div style="position:absolute;width:2px;height:2px;background:#000;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);"></div></div></div></div>`;}).join('')}
   </div>
 
-  <!-- Inner orbital ring - tilted right -->
-  <div style="position:absolute;width:160px;height:60px;top:100px;left:40px;z-index:15;transform:rotateX(65deg) rotateZ(-30deg);animation:orbit-spin 8s linear infinite;">
-    <!-- Ring structure -->
+  <!-- Middle orbital ring - FRONT HALF (in front of eye) -->
+  <div style="position:absolute;width:180px;height:70px;top:95px;left:30px;z-index:50;animation:ring-seesaw2 5s ease-in-out infinite;clip-path:inset(50% 0 0 0);">
+    <div style="position:absolute;width:100%;height:100%;border:10px solid transparent;border-radius:50%;background:linear-gradient(90deg,#b45309,#d97706,#f59e0b,#d97706,#b45309) border-box;-webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;box-shadow:0 0 12px rgba(217,119,6,0.5),inset 0 0 8px rgba(245,158,11,0.3);"></div>
+    ${[...Array(10)].map((_,i)=>{const angle=(i*36)*Math.PI/180;const x=85+75*Math.cos(angle);const y=35+28*Math.sin(angle);return`<div style="position:absolute;width:12px;height:12px;left:${x}px;top:${y}px;transform:translate(-50%,-50%) rotateZ(-45deg) rotateX(-60deg);"><div style="width:100%;height:100%;background:radial-gradient(circle at 40% 40%,#fff,#e0e7ff);border:2px solid #92400e;border-radius:50%;box-shadow:0 0 5px rgba(59,130,246,0.4);"><div style="position:absolute;width:5px;height:5px;background:radial-gradient(circle,#3b82f6,#1d4ed8);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);"><div style="position:absolute;width:2px;height:2px;background:#000;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);"></div></div></div></div>`;}).join('')}
+  </div>
+
+  <!-- Inner orbital ring - BACK HALF (behind eye) -->
+  <div style="position:absolute;width:160px;height:60px;top:100px;left:40px;z-index:15;animation:ring-seesaw3 3.5s ease-in-out infinite;clip-path:inset(0 0 50% 0);">
     <div style="position:absolute;width:100%;height:100%;border:8px solid transparent;border-radius:50%;background:linear-gradient(90deg,#92400e,#b45309,#d97706,#b45309,#92400e) border-box;-webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;box-shadow:0 0 10px rgba(180,83,9,0.5),inset 0 0 6px rgba(217,119,6,0.3);"></div>
-    <!-- Eyes on inner ring (8 eyes) -->
+    ${[...Array(8)].map((_,i)=>{const angle=(i*45)*Math.PI/180;const x=76+65*Math.cos(angle);const y=30+22*Math.sin(angle);return`<div style="position:absolute;width:10px;height:10px;left:${x}px;top:${y}px;transform:translate(-50%,-50%) rotateZ(30deg) rotateX(-65deg);"><div style="width:100%;height:100%;background:radial-gradient(circle at 40% 40%,#fff,#e0e7ff);border:2px solid #78350f;border-radius:50%;box-shadow:0 0 4px rgba(59,130,246,0.3);"><div style="position:absolute;width:4px;height:4px;background:radial-gradient(circle,#3b82f6,#1d4ed8);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);"><div style="position:absolute;width:1px;height:1px;background:#000;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);"></div></div></div></div>`;}).join('')}
+  </div>
+
+  <!-- Inner orbital ring - FRONT HALF (in front of eye) -->
+  <div style="position:absolute;width:160px;height:60px;top:100px;left:40px;z-index:55;animation:ring-seesaw3 3.5s ease-in-out infinite;clip-path:inset(50% 0 0 0);">
+    <div style="position:absolute;width:100%;height:100%;border:8px solid transparent;border-radius:50%;background:linear-gradient(90deg,#92400e,#b45309,#d97706,#b45309,#92400e) border-box;-webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;box-shadow:0 0 10px rgba(180,83,9,0.5),inset 0 0 6px rgba(217,119,6,0.3);"></div>
     ${[...Array(8)].map((_,i)=>{const angle=(i*45)*Math.PI/180;const x=76+65*Math.cos(angle);const y=30+22*Math.sin(angle);return`<div style="position:absolute;width:10px;height:10px;left:${x}px;top:${y}px;transform:translate(-50%,-50%) rotateZ(30deg) rotateX(-65deg);"><div style="width:100%;height:100%;background:radial-gradient(circle at 40% 40%,#fff,#e0e7ff);border:2px solid #78350f;border-radius:50%;box-shadow:0 0 4px rgba(59,130,246,0.3);"><div style="position:absolute;width:4px;height:4px;background:radial-gradient(circle,#3b82f6,#1d4ed8);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);"><div style="position:absolute;width:1px;height:1px;background:#000;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);"></div></div></div></div>`;}).join('')}
   </div>
 

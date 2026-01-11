@@ -88,6 +88,87 @@ function renderAdultPrehistoric(variantIndex, level = 1){
           </div>
         </div>
       </div>
+    `,
+
+    // ===== CAVEMAN - Prehistoric Variant 4 =====
+    4:`
+      <style>
+        @keyframes caveman-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+        @keyframes caveman-blink{0%,90%,100%{transform:scaleY(1)}95%{transform:scaleY(0.1)}}
+        @keyframes club-raise{0%,70%{transform:rotate(-10deg)}80%{transform:rotate(-60deg)}90%,100%{transform:rotate(-10deg)}}
+        @keyframes stomp-left{0%,45%,55%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-12px) rotate(-5deg)}}
+        @keyframes stomp-right{0%,20%,30%,75%,85%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-12px) rotate(5deg)}80%{transform:translateY(-12px) rotate(5deg)}}
+        @keyframes eye-wander{0%,20%{top:50%;left:50%}25%,35%{top:40%;left:70%}40%,50%{top:60%;left:40%}55%,65%{top:45%;left:30%}70%,80%{top:55%;left:65%}85%,100%{top:50%;left:50%}}
+        @keyframes mouth-talk{0%,15%,30%,45%,60%,75%,100%{height:14px;top:100px}10%,25%,40%,55%,70%{height:24px;top:95px}}
+        @keyframes tooth-chomp{0%,15%,30%,45%,60%,75%,100%{top:94px}10%,25%,40%,55%,70%{top:104px}}
+      </style>
+      <div style="position:relative;width:240px;height:310px;animation:caveman-bounce 3s ease-in-out infinite;">
+        <!-- Ears (scaled 2x) -->
+        <div style="position:absolute;width:20px;height:28px;background:#fdd0b1;border:4px solid #000;border-radius:50%;top:70px;left:27px;z-index:15;transform:scale(2);"></div>
+        <div style="position:absolute;width:20px;height:28px;background:#fdd0b1;border:4px solid #000;border-radius:50%;top:71px;left:194px;z-index:15;transform:scale(2);"></div>
+
+        <!-- Head -->
+        <div style="position:absolute;width:165px;height:138px;background:#fdd0b1;border:4px solid #000;border-radius:50% 50% 45% 45%;top:14px;left:38px;z-index:20;overflow:hidden;">
+          <!-- Beard -->
+          <div style="position:absolute;width:100%;height:76px;background:#a89f94;bottom:0;border-top:4px solid #000;"></div>
+        </div>
+
+        <!-- Nose -->
+        <div style="position:absolute;width:62px;height:48px;background:#ffb6c1;border:4px solid #000;border-radius:50%;top:48px;left:50%;transform:translateX(-50%);z-index:25;"></div>
+
+        <!-- Mouth (animated open/close) -->
+        <div style="position:absolute;width:69px;height:14px;background:#8b0000;border:4px solid #000;border-radius:50%;top:100px;left:50%;transform:translateX(-50%);z-index:24;animation:mouth-talk 2s ease-in-out infinite;overflow:hidden;">
+          <div style="position:absolute;width:100%;height:50%;background:#fdd0b1;top:0;"></div>
+        </div>
+
+        <!-- Tooth (moves with mouth) -->
+        <div style="position:absolute;width:17px;height:17px;background:white;border:3px solid #000;border-radius:4px;top:94px;left:90px;z-index:26;animation:tooth-chomp 2s ease-in-out infinite;"></div>
+
+        <!-- Eyes with wandering pupils -->
+        <div style="position:absolute;width:31px;height:31px;background:white;border:3px solid #000;border-radius:50%;top:28px;left:80px;z-index:30;animation:caveman-blink 4s infinite;overflow:hidden;">
+          <div style="position:absolute;width:10px;height:10px;background:black;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);animation:eye-wander 6s ease-in-out infinite;"></div>
+        </div>
+        <div style="position:absolute;width:31px;height:31px;background:white;border:3px solid #000;border-radius:50%;top:28px;right:80px;z-index:30;animation:caveman-blink 4s infinite;overflow:hidden;">
+          <div style="position:absolute;width:10px;height:10px;background:black;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);animation:eye-wander 6s ease-in-out infinite;"></div>
+        </div>
+
+        <!-- Eyebrows -->
+        <div style="position:absolute;width:45px;height:14px;background:black;border-radius:7px;top:17px;left:72px;transform:rotate(-10deg);z-index:35;"></div>
+        <div style="position:absolute;width:45px;height:14px;background:black;border-radius:7px;top:17px;right:72px;transform:rotate(10deg);z-index:35;"></div>
+
+        <!-- Body -->
+        <div style="position:absolute;width:193px;height:152px;background:#fdd0b1;border:4px solid #000;border-radius:50%;top:110px;left:24px;z-index:10;overflow:hidden;">
+          <!-- Tunic -->
+          <div style="position:absolute;bottom:0;width:100%;height:83px;background:#ff7f50;border-top:4px solid #000;clip-path:polygon(0 0,100% 0,95% 100%,85% 90%,75% 100%,65% 90%,55% 100%,45% 90%,35% 100%,25% 90%,15% 100%,5% 90%,0 100%);">
+            <!-- Spots -->
+            <div style="position:absolute;width:21px;height:14px;background:black;border-radius:50%;top:14px;left:21px;"></div>
+            <div style="position:absolute;width:17px;height:17px;background:black;border-radius:50%;top:35px;right:28px;"></div>
+            <div style="position:absolute;width:28px;height:21px;background:black;border-radius:50%;bottom:7px;left:55px;"></div>
+          </div>
+        </div>
+
+        <!-- Hands -->
+        <div style="position:absolute;width:35px;height:35px;background:#fdd0b1;border:4px solid #000;border-radius:50%;top:138px;left:4px;z-index:12;"></div>
+        <div style="position:absolute;width:35px;height:35px;background:#fdd0b1;border:4px solid #000;border-radius:50%;top:138px;right:4px;z-index:12;"></div>
+
+        <!-- Club (raises up and down) -->
+        <div style="position:absolute;width:28px;height:97px;background:#8b4513;border:4px solid #000;border-radius:7px 7px 14px 14px;top:72px;right:7px;z-index:20;transform-origin:bottom center;animation:club-raise 2s ease-in-out infinite;">
+          <div style="position:absolute;width:7px;height:14px;background:#5c2e0e;border-radius:50%;opacity:0.6;top:21px;left:7px;"></div>
+          <div style="position:absolute;width:7px;height:14px;background:#5c2e0e;border-radius:50%;opacity:0.6;top:55px;right:4px;"></div>
+        </div>
+
+        <!-- Feet (alternating stomps) -->
+        <div style="position:absolute;width:69px;height:48px;background:#fdd0b1;border:4px solid #000;border-radius:40% 40% 30% 30%;bottom:30px;left:53px;z-index:10;transform-origin:center bottom;animation:stomp-left 2s ease-in-out infinite;">
+          <div style="position:absolute;width:17px;height:17px;background:#fdd0b1;border:3px solid #000;border-radius:50%;bottom:-7px;left:4px;"></div>
+          <div style="position:absolute;width:17px;height:17px;background:#fdd0b1;border:3px solid #000;border-radius:50%;bottom:-7px;left:24px;"></div>
+          <div style="position:absolute;width:17px;height:17px;background:#fdd0b1;border:3px solid #000;border-radius:50%;bottom:-7px;right:4px;"></div>
+        </div>
+        <div style="position:absolute;width:69px;height:48px;background:#fdd0b1;border:4px solid #000;border-radius:40% 40% 30% 30%;bottom:28px;left:122px;z-index:13;transform-origin:center bottom;animation:stomp-right 2s ease-in-out infinite;">
+          <div style="position:absolute;width:17px;height:17px;background:#fdd0b1;border:3px solid #000;border-radius:50%;bottom:-7px;left:4px;"></div>
+          <div style="position:absolute;width:17px;height:17px;background:#fdd0b1;border:3px solid #000;border-radius:50%;bottom:-7px;left:24px;"></div>
+          <div style="position:absolute;width:17px;height:17px;background:#fdd0b1;border:3px solid #000;border-radius:50%;bottom:-7px;right:4px;"></div>
+        </div>
+      </div>
     `
   };
 

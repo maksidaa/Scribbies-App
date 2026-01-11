@@ -929,7 +929,7 @@
 <script src="js/creatures/mammals.js"></script>
 <script src="js/creatures/birds.js"></script>
 <script src="js/creatures/reptiles.js"></script>
-<script src="js/creatures/prehistoric.js"></script>
+<script src="js/creatures/prehistoric.js?v=5"></script>
 <script src="js/creatures/aquatic.js"></script>
 <script src="js/creatures/aliens.js"></script>
 <script src="js/creatures/eggs.js"></script>
@@ -1225,9 +1225,9 @@ const CREATURE_CATEGORIES={
     teenEmoji:'teen',   // Uses renderTeen() - 3 progressive designs
     teenVariants:['🦖','🦕','🦖'],  // Young prehistoric (for reference)
     teenNames:['Triceratops','Velociraptor','T-Rex'],
-    adultVariants:['🦖','🦕','🦖','🦖'],  // Adult prehistoric (renders used instead)
-    adultNames:['T-Rex','Bronto','Stego','Lil T-Rex'],
-    adultRarities:['Uncommon','Common','Rare','Mythic']
+    adultVariants:['🦖','🦕','🦖','🦖','🧔'],  // Adult prehistoric (renders used instead)
+    adultNames:['T-Rex','Bronto','Stego','Lil T-Rex','Caveman'],
+    adultRarities:['Uncommon','Common','Rare','Mythic','Epic']
   },
   alien:{
     eggType:'blue',
@@ -1247,9 +1247,9 @@ const CREATURE_CATEGORIES={
     teenEmoji:'teen',   // Uses renderTeen() - 5 progressive designs (spirit, celestial, divine, unicorn, phoenix)
     teenVariants:['🧙','🧚','🧛','🧜','🧞','🧝','🦄','🦄','🔥','🔥'],  // Young mystical (for reference)
     teenNames:['Spirit I','Spirit II','Celestial I','Celestial II','Divine I','Divine II','Unicorn I','Unicorn II','Phoenix I','Phoenix II'],
-    adultVariants:['🧚','🧚','🧜','🧜','🧞','🎃','🎃','👻','🦇','🦇','🦄','🦄','🐴','🦊'],  // Ancient mystical - full body
-    adultNames:['Fairy','Dark Fairy','Merperson','Sea Witch','Genie','Pumpkin King','Jack-o-Lantern','Ghost','Vampire Bat','Bat','Unicorn','Flaming Unicorn','Pegasus','Kitsune'],
-    adultRarities:['Common','Epic','Uncommon','Rare','Legendary','Common','Rare','Uncommon','Common','Uncommon','Mythic','Legendary','Epic','Legendary']
+    adultVariants:['🦄','🦄','🐴','🦊','🐱','🦝'],  // Ancient mystical - full body
+    adultNames:['Unicorn','Flaming Unicorn','Pegasus','Kitsune','Maneki-neko','Tanuki'],
+    adultRarities:['Mythic','Legendary','Epic','Legendary','Rare','Epic']
   }
 };
 
@@ -1308,21 +1308,20 @@ const CREATURE_BLURBS={
     default:'A furry friend with four paws and a heart of gold!'
   },
   mystical:{
-    0:'A magical fairy spreading sparkles and joy wherever it flutters!',
-    1:'A mysterious dark fairy with powers over shadows. Still very friendly though!',
-    2:'A graceful merperson from an underwater kingdom. Can hold their breath forever!',
-    3:'A powerful sea witch brewing potions from ocean ingredients.',
-    4:'A wish-granting genie with a heart of gold! Just dont ask for more wishes.',
-    5:'The royal ruler of pumpkin patch! Glows warmly on autumn nights.',
-    10:'A majestic unicorn with a rainbow mane and a magical golden horn. Its magic brings hope and wonder to all!',
-    11:'A legendary flaming unicorn engulfed in eternal fire! Its flames never burn, only warm the hearts of those nearby.',
-    12:'A magnificent winged horse that soars through the clouds! Its silver wings carry hopes and dreams across the sky.',
+    0:'A majestic unicorn with a rainbow mane and a magical golden horn. Its magic brings hope and wonder to all!',
+    1:'A legendary flaming unicorn engulfed in eternal fire! Its flames never burn, only warm the hearts of those nearby.',
+    2:'A magnificent winged horse that soars through the clouds! Its silver wings carry hopes and dreams across the sky.',
+    3:'A mystical nine-tailed fox spirit with magical blue flames. Wise, playful, and full of ancient secrets!',
+    4:'A lucky beckoning cat that brings fortune and prosperity! Its waving paw attracts good luck to all nearby.',
+    5:'A magical tanuki with a leaf on its head for shapeshifting! Loves drumming on its belly and playing tricks.',
     default:'A creature of legend and wonder, straight from fairy tales!'
   },
   prehistoric:{
     0:'A fearsome T-Rex with tiny arms but a huge heart! Loves giving high-fives.',
     1:'A gentle Bronto munching on treetops. The friendliest giant around!',
     2:'A Stego with cool back plates that change color with its mood!',
+    3:'A tiny but fierce T-Rex! Small in size, huge in attitude and roar!',
+    4:'A friendly caveman with a trusty club! Inventor of fire, wheels, and really bad jokes.',
     default:'A prehistoric pal from millions of years ago!'
   },
   alien:{
