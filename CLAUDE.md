@@ -15,7 +15,7 @@ git add . && git commit -m "Description of changes" && git push
 ```
 
 ## Key Files
-- `index.html` - Main app (~10k lines)
+- `index.html` - Main app (~9.9k lines)
 - `js/creatures/` - Modular creature renderers:
   - `mystical.js` - Fairy, Unicorn, Pegasus, Kitsune
   - `mammals.js` - Bunny, Kitty, Horse, etc.
@@ -27,6 +27,7 @@ git add . && git commit -m "Description of changes" && git push
   - `eggs.js` - Egg stage renderer
   - `babies.js` - Blob + Baby stage renderers
   - `teens.js` - Teen stage renderer
+  - `game.js` - Game mechanics (happiness, health, growth, feeding)
 - `Scripture Buddies/` - Individual creature HTML designs (reference files)
 - `creatures/` - Workshop and documentation
 - `css/styles.css` - Extracted CSS (reference)
