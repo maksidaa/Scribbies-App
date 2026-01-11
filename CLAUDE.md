@@ -1,7 +1,7 @@
 # Scribbies App - Claude Instructions
 
 ## Project Overview
-Scribbies is a virtual pet web app where users raise "Scribbies" (cute creatures) by reading scriptures. Single HTML file app with CSS-only creature and furniture designs.
+Scribbies is a virtual pet web app where users raise "Scribbies" (cute creatures) by reading scriptures. Modular architecture with CSS-only creature and furniture designs.
 
 ## GitHub Repository
 - **Repo:** https://github.com/maksidaa/Scribbies-App
@@ -15,9 +15,20 @@ git add . && git commit -m "Description of changes" && git push
 ```
 
 ## Key Files
-- `index.html` - Main app (all HTML, CSS, JS in one file - 14k+ lines)
+- `index.html` - Main app (~10k lines)
+- `js/creatures/` - Modular creature renderers:
+  - `mystical.js` - Fairy, Unicorn, Pegasus, Kitsune
+  - `mammals.js` - Bunny, Kitty, Horse, etc.
+  - `birds.js` - All bird variants
+  - `reptiles.js` - Snakes, Turtles, Geckos, etc.
+  - `prehistoric.js` - T-Rex, Bronto, Stego
+  - `aquatic.js` - Fish, Dolphins, Whales
+  - `aliens.js` - Alien variants
+  - `eggs.js` - Egg stage renderer
+  - `babies.js` - Blob + Baby stage renderers
+  - `teens.js` - Teen stage renderer
 - `Scripture Buddies/` - Individual creature HTML designs (reference files)
-- `creatures/` - New creature files, workshop, and documentation
+- `creatures/` - Workshop and documentation
 - `css/styles.css` - Extracted CSS (reference)
 
 ## Design Principles
@@ -99,8 +110,8 @@ Before saying "done" on any creature:
 ---
 
 ## File Size Warning
-`index.html` is 14,500+ lines. For creature work:
-- DON'T read entire file
-- DO read specific sections (grep for function names)
-- DO use standalone creature files for reference
-- DO edit workshop.html for iteration
+`index.html` is ~10,300 lines. Creature renderers are now in `js/creatures/`:
+- For adult creature edits: Edit the specific js file (e.g., `js/creatures/mammals.js`)
+- For life stage edits: Edit `eggs.js`, `babies.js`, or `teens.js`
+- For new creature work: Use `creatures/workshop.html` for iteration
+- DON'T read entire index.html - grep for specific functions
