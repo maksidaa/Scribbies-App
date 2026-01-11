@@ -1,0 +1,518 @@
+    @keyframes bounce-slow{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    @keyframes shake{0%,100%{transform:translateX(0)}25%,75%{transform:translateX(-5px)}50%{transform:translateX(5px)}}
+    @keyframes wiggle{0%,100%{transform:rotate(0deg)}25%{transform:rotate(-8deg) translateY(-2px)}75%{transform:rotate(8deg) translateY(-2px)}}
+    @keyframes baby-arm-wave{0%,100%{transform:rotate(-15deg)}25%{transform:rotate(-25deg) translateY(-3px)}50%{transform:rotate(-10deg)}75%{transform:rotate(-20deg) translateY(-2px)}}
+    @keyframes baby-leg-kick{0%,100%{transform:rotate(0deg)}20%{transform:rotate(-12deg)}40%{transform:rotate(8deg)}60%{transform:rotate(-8deg)}80%{transform:rotate(10deg)}}
+    @keyframes glow{0%,100%{filter:drop-shadow(0 0 5px rgba(168,85,247,0.5))}50%{filter:drop-shadow(0 0 15px rgba(168,85,247,0.8))}}
+    @keyframes sparkle{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.7;transform:scale(1.1)}}
+    @keyframes collectXP{0%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-80vh) scale(0.5);opacity:0}}
+    @keyframes pop-in{0%{transform:scale(0);opacity:0}50%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}
+    @keyframes pulse-grow{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+    @keyframes food-fly{0%{transform:translateY(150px) scale(1);opacity:1}60%{transform:translateY(20px) scale(0.8);opacity:1}100%{transform:translateY(0) scale(0);opacity:0}}
+    @keyframes reaction-pop{0%{transform:translate(-50%,-50%) scale(0);opacity:0}50%{transform:translate(-50%,-50%) scale(1.3);opacity:1}100%{transform:translate(-50%,-50%) scale(1);opacity:1}}
+    @keyframes message-slide{0%{transform:translateY(20px);opacity:0}100%{transform:translateY(0);opacity:1}}
+    /* Teen reptile animations */
+    @keyframes teen-tail-sway{0%,100%{transform:translateY(-50%) rotate(0deg)}30%{transform:translateY(-50%) rotate(-8deg)}70%{transform:translateY(-50%) rotate(6deg)}}
+    @keyframes teen-body-breathe{0%,100%{transform:translateY(-50%) scale(1)}50%{transform:translateY(-50%) scale(1.02,0.98)}}
+    @keyframes teen-leg-walk{0%,100%{transform:rotate(0deg)}25%{transform:rotate(8deg)}75%{transform:rotate(-6deg)}}
+    @keyframes teen-arm-wave{0%,100%{transform:rotate(45deg)}50%{transform:rotate(60deg)}}
+    @keyframes teen-snake-slither{0%,100%{transform:translateY(-50%) skewX(0deg)}30%{transform:translateY(-50%) skewX(3deg)}70%{transform:translateY(-50%) skewX(-3deg)}}
+    @keyframes teen-snake-writhe{0%,100%{transform:scaleX(1) skewY(0deg)}25%{transform:scaleX(1.03) skewY(1.5deg)}50%{transform:scaleX(0.98) skewY(-1deg)}75%{transform:scaleX(1.02) skewY(-1.5deg)}}
+    .bounce-slow{animation:bounce-slow 2s ease-in-out infinite}
+    .shake{animation:shake 0.3s}
+    .wiggle{animation:wiggle 1s ease-in-out infinite}
+    .glow{animation:glow 2s ease-in-out infinite}
+    .sparkle{animation:sparkle 1.5s ease-in-out infinite}
+    .collect-xp{animation:collectXP 0.8s ease-in forwards}
+    .pop-in{animation:pop-in 0.5s ease-out}
+    .pulse-grow{animation:pulse-grow 1.5s ease-in-out infinite}
+    #xp-sparkles{position:fixed;pointer-events:none;z-index:9999}
+    .xp-sparkle{position:absolute;font-size:24px;animation:collectXP 0.8s ease-in forwards}
+
+    /* Sleeping/snoring animations */
+    @keyframes sleep-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
+    @keyframes float-z{0%{opacity:0;transform:translate(0,0) scale(0.5)}20%{opacity:1}80%{opacity:1}100%{opacity:0;transform:translate(20px,-40px) scale(1.2)}}
+    @keyframes float-z-delayed{0%{opacity:0;transform:translate(0,0) scale(0.5)}20%{opacity:1}80%{opacity:1}100%{opacity:0;transform:translate(25px,-50px) scale(1.3)}}
+    .sleeping{animation:sleep-breathe 3s ease-in-out infinite !important}
+    .sleeping-zs{position:absolute;top:-10px;right:-20px;font-size:24px;pointer-events:none;z-index:100}
+    .sleeping-z{position:absolute;font-weight:bold;color:#a78bfa;text-shadow:0 0 4px rgba(167,139,250,0.5)}
+
+    /* Tutorial popup animation */
+    @keyframes bounce-in{0%{transform:scale(0.3);opacity:0}50%{transform:scale(1.05)}70%{transform:scale(0.95)}100%{transform:scale(1);opacity:1}}
+    .animate-bounce-in{animation:bounce-in 0.4s ease-out forwards}
+    .sleeping-z:nth-child(1){animation:float-z 2s ease-out infinite;font-size:16px}
+    .sleeping-z:nth-child(2){animation:float-z-delayed 2s ease-out infinite 0.6s;font-size:20px;left:8px}
+    .sleeping-z:nth-child(3){animation:float-z 2s ease-out infinite 1.2s;font-size:14px;left:16px}
+    /* Closed eyes when sleeping - squish eyes to lines */
+    .sleeping .bl-eye{transform:scaleY(0.15) !important;animation:none !important}
+    .sleeping .s-eye{transform:scaleY(0.15) !important;animation:none !important}
+    .sleeping .f-eye{transform:scaleY(0.15) !important;animation:none !important}
+    .sleeping .tn-eye{transform:scaleY(0.15) !important;animation:none !important}
+    .sleeping .dr-eye{transform:scaleY(0.15) !important;animation:none !important}
+
+    /* XP State Animations */
+    /* 10-25%: Drowsy - slow sway, half-closed eyes */
+    @keyframes drowsy-sway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+    .drowsy{animation:drowsy-sway 4s ease-in-out infinite !important}
+    .drowsy .bl-eye,.drowsy .s-eye,.drowsy .f-eye,.drowsy .tn-eye,.drowsy .dr-eye{transform:scaleY(0.6) !important}
+
+    /* 25-50%: Awake - normal idle, looking around */
+    @keyframes awake-idle{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+    .awake{animation:awake-idle 2s ease-in-out infinite !important}
+
+    /* 50-75%: Happy - faster bounce, sparkles */
+    @keyframes happy-bounce{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-8px) scale(1.02)}}
+    .happy{animation:happy-bounce 1.2s ease-in-out infinite !important}
+    .happy::after{content:'✨';position:absolute;top:-15px;right:-10px;font-size:16px;animation:sparkle-float 2s ease-in-out infinite;pointer-events:none}
+    @keyframes sparkle-float{0%,100%{opacity:0.5;transform:translateY(0) scale(0.8)}50%{opacity:1;transform:translateY(-5px) scale(1.1)}}
+
+    /* 75-90%: Excited - energetic bounce, glow, hearts/stars */
+    @keyframes excited-bounce{0%,100%{transform:translateY(0) scale(1)}25%{transform:translateY(-12px) scale(1.05)}50%{transform:translateY(-2px) scale(0.98)}75%{transform:translateY(-10px) scale(1.03)}}
+    .excited{animation:excited-bounce 0.8s ease-in-out infinite !important;filter:drop-shadow(0 0 8px rgba(168,85,247,0.5))}
+    .excited-particles{position:absolute;top:-20px;left:50%;transform:translateX(-50%);pointer-events:none;font-size:14px}
+    .excited-particles span{position:absolute;animation:particle-burst 1.5s ease-out infinite}
+    .excited-particles span:nth-child(1){animation-delay:0s;left:-20px}
+    .excited-particles span:nth-child(2){animation-delay:0.5s;left:0}
+    .excited-particles span:nth-child(3){animation-delay:1s;left:20px}
+    @keyframes particle-burst{0%{opacity:0;transform:translateY(10px) scale(0.5)}30%{opacity:1;transform:translateY(-15px) scale(1)}100%{opacity:0;transform:translateY(-30px) scale(0.7)}}
+
+    /* 90-100%: Ready to evolve - intense glow, shake, rainbow pulse */
+    @keyframes ready-shake{0%,100%{transform:translateX(0) scale(1)}10%{transform:translateX(-3px) scale(1.02)}20%{transform:translateX(3px) scale(1.02)}30%{transform:translateX(-3px) scale(1.01)}40%{transform:translateX(3px) scale(1.01)}50%{transform:translateX(0) translateY(-5px) scale(1.03)}60%{transform:translateX(-2px)}70%{transform:translateX(2px)}80%{transform:translateX(-2px)}90%{transform:translateX(2px)}}
+    @keyframes rainbow-glow{0%{filter:drop-shadow(0 0 12px rgba(255,100,100,0.7))}25%{filter:drop-shadow(0 0 15px rgba(255,200,100,0.7))}50%{filter:drop-shadow(0 0 12px rgba(100,255,150,0.7))}75%{filter:drop-shadow(0 0 15px rgba(150,100,255,0.7))}100%{filter:drop-shadow(0 0 12px rgba(255,100,100,0.7))}}
+    .ready-evolve{animation:ready-shake 0.6s ease-in-out infinite,rainbow-glow 2s linear infinite !important}
+    .ready-sparkles{position:absolute;top:-25px;left:50%;transform:translateX(-50%);pointer-events:none}
+    .ready-sparkles span{position:absolute;font-size:18px;animation:rainbow-sparkle 1s ease-out infinite}
+    .ready-sparkles span:nth-child(1){left:-30px;animation-delay:0s}
+    .ready-sparkles span:nth-child(2){left:-10px;animation-delay:0.2s}
+    .ready-sparkles span:nth-child(3){left:10px;animation-delay:0.4s}
+    .ready-sparkles span:nth-child(4){left:30px;animation-delay:0.6s}
+    @keyframes rainbow-sparkle{0%{opacity:0;transform:translateY(20px) rotate(0deg) scale(0.3)}50%{opacity:1;transform:translateY(-10px) rotate(180deg) scale(1.2)}100%{opacity:0;transform:translateY(-30px) rotate(360deg) scale(0.5)}}
+
+    /* Milestone confetti burst */
+    .confetti-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;overflow:hidden}
+    .confetti{position:absolute;width:10px;height:10px;opacity:0;animation:confetti-fall 3s ease-out forwards}
+    @keyframes confetti-fall{0%{opacity:1;transform:translateY(0) rotate(0deg) scale(1)}100%{opacity:0;transform:translateY(100vh) rotate(720deg) scale(0.5)}}
+
+    /* Egg crack overlays */
+    .egg-container{position:relative;display:inline-block;transition:none !important}
+    .egg-crack-1{position:absolute;top:30%;left:50%;width:2px;height:40%;background:linear-gradient(to bottom,rgba(0,0,0,0.4),rgba(0,0,0,0.6));transform:translateX(-50%) rotate(-15deg)}
+    .egg-crack-2{position:absolute;top:25%;left:60%;width:1.5px;height:35%;background:linear-gradient(to bottom,rgba(0,0,0,0.3),rgba(0,0,0,0.5));transform:rotate(10deg)}
+    .egg-crack-3{position:absolute;top:40%;left:40%;width:1.5px;height:30%;background:linear-gradient(to bottom,rgba(0,0,0,0.35),rgba(0,0,0,0.55));transform:rotate(-25deg)}
+    .egg-crack-4{position:absolute;top:50%;left:55%;width:2px;height:25%;background:linear-gradient(to bottom,rgba(0,0,0,0.4),rgba(0,0,0,0.6));transform:rotate(5deg)}
+
+    /* Fluff ball creature - PREFIX: bl- */
+    .bl-creature{position:relative;width:90px;height:90px;display:inline-block;animation:bl-float 2.5s ease-in-out infinite}
+    .bl-body{width:70px;height:70px;background:radial-gradient(circle at 40% 35%,rgba(255,255,255,0.95),rgba(236,72,153,0.85),rgba(168,85,247,0.9));border-radius:50%;position:absolute;top:10px;left:10px;box-shadow:0 0 0 3px rgba(255,255,255,0.4),0 0 0 6px rgba(236,72,153,0.3),0 0 0 9px rgba(168,85,247,0.2),0 4px 12px rgba(124,58,237,0.4);animation:bl-fluff-pulse 2s ease-in-out infinite}
+    .bl-eyes{position:absolute;top:28px;left:50%;transform:translateX(-50%);display:flex;gap:14px;z-index:2}
+    .bl-eye{width:16px;height:16px;background:rgba(0,0,0,0.95);border-radius:50%;position:relative;animation:bl-blink 4s ease-in-out infinite}
+    .bl-eye-shine{position:absolute;top:3px;left:4px;width:5px;height:5px;background:white;border-radius:50%;opacity:1}
+    .bl-arm{position:absolute;width:18px;height:12px;background:radial-gradient(ellipse at center,rgba(255,255,255,0.9),rgba(236,72,153,0.7));border-radius:50% 50% 60% 60%;top:38px;box-shadow:0 0 3px rgba(168,85,247,0.3);animation:bl-arm-wiggle 1.5s ease-in-out infinite}
+    .bl-arm-left{left:-8px;transform:rotate(-20deg)}
+    .bl-arm-right{right:-8px;transform:rotate(20deg)}
+    .bl-leg{position:absolute;width:16px;height:14px;background:radial-gradient(ellipse at center,rgba(255,255,255,0.9),rgba(236,72,153,0.7));border-radius:50% 50% 70% 70%;bottom:2px;box-shadow:0 0 3px rgba(168,85,247,0.3);animation:bl-leg-wiggle 2s ease-in-out infinite}
+    .bl-leg-left{left:16px}
+    .bl-leg-right{right:16px}
+
+    /* Teen creature styling - PREFIX: tn- */
+    .tn-creature{position:relative;display:inline-block;animation:tn-float 3s ease-in-out infinite}
+    .tn-glow{position:absolute;inset:-15px;background:radial-gradient(circle,var(--tn-glow-color,rgba(168,85,247,0.2)),transparent 60%);border-radius:50%;animation:tn-glow-pulse 3s ease-in-out infinite;pointer-events:none}
+    .tn-shadow{position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);width:80%;height:20px;background:radial-gradient(ellipse,rgba(0,0,0,0.25),transparent 70%);border-radius:50%;filter:blur(6px);animation:tn-shadow-pulse 3s ease-in-out infinite}
+    .tn-body{position:relative;border-radius:30px;box-shadow:0 8px 32px rgba(0,0,0,0.15),0 0 0 3px rgba(255,255,255,0.2),inset 0 -8px 20px rgba(0,0,0,0.1)}
+    @keyframes tn-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+    @keyframes tn-glow-pulse{0%,100%{opacity:0.6;transform:scale(1)}50%{opacity:1;transform:scale(1.05)}}
+    @keyframes tn-shadow-pulse{0%,100%{opacity:0.4;transform:translateX(-50%) scale(1)}50%{opacity:0.25;transform:translateX(-50%) scale(0.85)}}
+
+    /* Adult creature ground shadow - closer to body since they're bigger */
+    .adult-shadow{position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);width:70%;height:18px;background:radial-gradient(ellipse,rgba(0,0,0,0.2),transparent 70%);border-radius:50%;filter:blur(5px);animation:adult-shadow-pulse 3s ease-in-out infinite;pointer-events:none;z-index:1}
+    @keyframes adult-shadow-pulse{0%,100%{opacity:0.35;transform:translateX(-50%) scale(1)}50%{opacity:0.2;transform:translateX(-50%) scale(0.9)}}
+
+    /* Egg ground shadow - replaces ground effects */
+    .egg-shadow{position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);width:65%;height:15px;background:radial-gradient(ellipse,rgba(0,0,0,0.18),transparent 70%);border-radius:50%;filter:blur(4px);animation:egg-shadow-pulse 3s ease-in-out infinite;pointer-events:none;z-index:0}
+    @keyframes egg-shadow-pulse{0%,100%{opacity:0.3;transform:translateX(-50%) scale(1)}50%{opacity:0.15;transform:translateX(-50%) scale(0.85)}}
+
+    /* Blob creature animations - PREFIX: bl- */
+    @keyframes bl-float{0%,100%{transform:translateY(0px)}50%{transform:translateY(-6px)}}
+    @keyframes bl-fluff-pulse{0%,100%{box-shadow:0 0 0 3px rgba(255,255,255,0.4),0 0 0 6px rgba(236,72,153,0.3),0 0 0 9px rgba(168,85,247,0.2),0 4px 12px rgba(124,58,237,0.4)}50%{box-shadow:0 0 0 4px rgba(255,255,255,0.5),0 0 0 8px rgba(236,72,153,0.4),0 0 0 12px rgba(168,85,247,0.3),0 4px 12px rgba(124,58,237,0.5)}}
+    @keyframes bl-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes bl-arm-wiggle{0%,100%{transform:rotate(-25deg) translateY(0)}25%{transform:rotate(-10deg) translateY(-3px)}50%{transform:rotate(-20deg) translateY(-1px)}75%{transform:rotate(-5deg) translateY(-4px)}}
+    @keyframes bl-leg-wiggle{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-4px) rotate(-5deg)}50%{transform:translateY(-2px) rotate(0deg)}75%{transform:translateY(-5px) rotate(5deg)}}
+    @keyframes flapLeft{0%,100%{transform:translateY(-50%) rotate(0deg)}50%{transform:translateY(-50%) rotate(-25deg)}}
+    @keyframes flapRight{0%,100%{transform:translateY(-50%) rotate(0deg)}50%{transform:translateY(-50%) rotate(25deg)}}
+
+    /* Adult bird animations */
+    @keyframes wing-flap-left{0%,100%{transform:translateY(-50%) rotate(-5deg) scaleY(1)}50%{transform:translateY(-50%) rotate(-35deg) scaleY(1.1)}}
+    @keyframes wing-flap-right{0%,100%{transform:translateY(-50%) rotate(5deg) scaleY(1)}50%{transform:translateY(-50%) rotate(35deg) scaleY(1.1)}}
+    @keyframes tail-sway{0%,100%{transform:rotate(0deg) translateX(0)}50%{transform:rotate(-8deg) translateX(-2px)}}
+    @keyframes head-bob{0%,100%{transform:translateY(0) translateX(-50%)}50%{transform:translateY(-3px) translateX(-50%)}}
+    @keyframes neck-sway{0%,100%{transform:rotate(15deg)}50%{transform:rotate(18deg)}}
+    @keyframes peacock-fan{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.05)}}
+    @keyframes flamingo-stand{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+
+    /* Reptile animations (gecko, etc) */
+    @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
+    @keyframes snake-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes gecko-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
+    @keyframes gecko-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes gecko-tail-sway{0%,100%{transform:rotate(0deg) translateX(0)}50%{transform:rotate(-8deg) translateX(-2px)}}
+    @keyframes gecko-eye-look{0%,45%,100%{transform:translateX(0)}50%,95%{transform:translateX(5px)}}
+    @keyframes gecko-tongue-extend{0%,88%,100%{clip-path:inset(100% 0 0 0)}90%,96%{clip-path:inset(0 0 0 0)}}
+    @keyframes gecko-tongue-lick{0%,88%,100%{transform:rotate(0deg)}91%{transform:rotate(-8deg)}93%{transform:rotate(8deg)}95%{transform:rotate(-5deg)}97%{transform:rotate(0deg)}}
+    @keyframes gecko-mouth-open{0%,86%,100%{transform:translateX(-50%) rotate(-2deg) scaleY(1)}88%,99%{transform:translateX(-50%) rotate(-2deg) scaleY(2.5)}}
+    @keyframes gecko-mouth-inside{0%,86%,100%{opacity:0;transform:translateX(-50%) scaleY(0)}88%,99%{opacity:1;transform:translateX(-50%) scaleY(1)}}
+    @keyframes gecko-leg-burst{0%,70%,100%{transform:rotate(var(--leg-rest))}72%,74%,76%,78%{transform:rotate(var(--leg-run1))}73%,75%,77%,79%{transform:rotate(var(--leg-run2))}}
+    /* Frog animations */
+    @keyframes frog-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+    @keyframes frog-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes frog-paw-wiggle{0%,40%,60%,100%{transform:scale(1)}50%{transform:scale(1.1) rotate(15deg)}}
+    @keyframes frog-croak{0%,80%,100%{transform:translateX(-50%) scale(1)}90%{transform:translateX(-50%) scale(1.3)}}
+    @keyframes frog-fly-buzz{0%{transform:translate(-80px,0) scale(1) rotate(0deg)}6%{transform:translate(-40px,-10px) scale(1) rotate(10deg)}14%{transform:translate(20px,-25px) scale(1) rotate(-5deg)}22%{transform:translate(60px,-15px) scale(1) rotate(15deg)}30%{transform:translate(80px,5px) scale(1) rotate(-10deg)}38%{transform:translate(50px,20px) scale(1) rotate(20deg)}46%{transform:translate(20px,0px) scale(1) rotate(-15deg)}54%{transform:translate(40px,-20px) scale(1) rotate(10deg)}62%{transform:translate(70px,10px) scale(1) rotate(-5deg)}70%{transform:translate(55px,25px) scale(1) rotate(15deg)}78%{transform:translate(60px,15px) scale(1) rotate(0deg)}80%{transform:translate(60px,15px) scale(0) rotate(0deg)}95%{transform:translate(60px,15px) scale(0) rotate(0deg)}95.1%{transform:translate(-80px,0) scale(0) rotate(0deg)}98%{transform:translate(-80px,0) scale(1) rotate(0deg)}100%{transform:translate(-80px,0) scale(1) rotate(0deg)}}
+    @keyframes frog-fly-wings{0%,100%{transform:scaleY(1)}50%{transform:scaleY(0.3)}}
+    @keyframes frog-tongue-shoot{0%,75%{transform:translateY(0) scaleY(0);opacity:0}76%{transform:translateY(0) scaleY(0);opacity:1}77%{transform:translateY(0) scaleY(0.4);opacity:1}79%{transform:translateY(0) scaleY(1);opacity:1}83%{transform:translateY(-10px) scaleY(1.1);opacity:1}87%{transform:translateY(0) scaleY(0.6);opacity:1}90%{transform:translateY(0) scaleY(0);opacity:0}100%{transform:translateY(0) scaleY(0);opacity:0}}
+    @keyframes frog-eye-track{0%{transform:translate(-6px,0)}6%{transform:translate(-4px,-1px)}14%{transform:translate(2px,-3px)}22%{transform:translate(5px,-2px)}30%{transform:translate(6px,0)}38%{transform:translate(4px,2px)}46%{transform:translate(2px,0)}54%{transform:translate(3px,-2px)}62%{transform:translate(5px,1px)}70%{transform:translate(4px,2px)}78%{transform:translate(5px,2px)}80%{transform:translate(5px,2px)}85%{transform:translate(0,0)}90%{transform:translate(-6px,0)}100%{transform:translate(-6px,0)}}
+    @keyframes frog-mouth-open{0%,74%,93%,100%{transform:translateX(-50%) scaleY(1)}76%,90%{transform:translateX(-50%) scaleY(2.5)}}
+    @keyframes frog-mouth-inside{0%,74%,93%,100%{opacity:0;transform:translateX(-50%) scaleY(0)}76%,90%{opacity:1;transform:translateX(-50%) scaleY(1)}}
+    @keyframes frog-hop{0%,70%,100%{transform:translateY(0) scale(1)}76%{transform:translateY(-25px) scale(1.05,0.95)}82%{transform:translateY(-30px) scale(0.95,1.05)}88%{transform:translateY(-10px) scale(1.02,0.98)}}
+    @keyframes frog-leg-jump{0%,70%,100%{transform:translateY(0)}76%{transform:translateY(25px)}82%{transform:translateY(30px)}84%{transform:translateY(15px)}86%{transform:translateY(0)}88%,92%{transform:translateY(0)}}
+    /* Turtle animations */
+    @keyframes turtle-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+    @keyframes turtle-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes turtle-tail-wiggle{0%,100%{transform:rotate(-20deg)}50%{transform:rotate(20deg)}}
+    @keyframes turtle-walk-left{0%,100%{transform:rotate(-15deg)}50%{transform:rotate(10deg)}}
+    @keyframes turtle-walk-right{0%,100%{transform:rotate(15deg)}50%{transform:rotate(-10deg)}}
+    @keyframes turtle-head-tuck{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+    @keyframes cobra-sway{0%{transform:rotate(-2deg) translateY(0)}100%{transform:rotate(2deg) translateY(-5px)}}
+    @keyframes cobra-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes cobra-tail-wag{0%{transform:rotate(-10deg)}100%{transform:rotate(-35deg)}}
+    @keyframes cobra-tongue{0%,70%{transform:scaleY(0)}75%{transform:scaleY(1.2) rotate(5deg)}80%{transform:scaleY(1.1) rotate(-5deg)}85%{transform:scaleY(1) rotate(0deg)}90%,100%{transform:scaleY(0)}}
+    @keyframes emerald-sway{0%{transform:rotate(-2deg) translateY(0)}100%{transform:rotate(2deg) translateY(-5px)}}
+    @keyframes emerald-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes emerald-tail-wag{0%{transform:rotate(-10deg)}100%{transform:rotate(-35deg)}}
+    @keyframes emerald-tongue{0%,70%{transform:scaleY(0)}75%{transform:scaleY(1.2) rotate(5deg)}80%{transform:scaleY(1.1) rotate(-5deg)}85%{transform:scaleY(1) rotate(0deg)}90%,100%{transform:scaleY(0)}}
+    @keyframes snake-eye-look{0%,40%{transform:translateX(0)}45%,85%{transform:translateX(2px)}90%,100%{transform:translateX(0)}}
+    @keyframes purple-sway{0%{transform:rotate(-2deg) translateY(0)}100%{transform:rotate(2deg) translateY(-5px)}}
+    @keyframes purple-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes purple-tail-wag{0%{transform:rotate(-10deg)}100%{transform:rotate(-35deg)}}
+    @keyframes purple-tongue{0%,70%{transform:scaleY(0)}75%{transform:scaleY(1.2) rotate(5deg)}80%{transform:scaleY(1.1) rotate(-5deg)}85%{transform:scaleY(1) rotate(0deg)}90%,100%{transform:scaleY(0)}}
+    @keyframes rattle-buzz{0%,100%{transform:rotate(0deg)}50%{transform:rotate(25deg)}}
+    @keyframes rattle-slither{0%,100%{transform:scaleX(1) skewY(0deg)}25%{transform:scaleX(1.03) skewY(1.5deg)}50%{transform:scaleX(0.98) skewY(-1deg)}75%{transform:scaleX(1.02) skewY(1deg)}}
+    @keyframes rattle-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    @keyframes rattle-tongue{0%,80%,100%{transform:translateX(-50%) scaleY(0)}85%,92%,98%{transform:translateX(-50%) scaleY(1)}}
+    @keyframes rattle-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes coiled-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+    @keyframes coiled-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes coiled-tongue{0%,70%{transform:scaleY(0)}75%{transform:scaleY(1.2)}85%{transform:scaleY(1)}90%{transform:scaleY(0)}}
+    @keyframes coiled-rattle{0%{transform:rotate(0deg)}100%{transform:rotate(15deg)}}
+    @keyframes rainbow-bounce{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-15px) rotate(1deg)}}
+    @keyframes rainbow-wiggle{0%,100%{transform:scaleX(1) skewY(0deg)}25%{transform:scaleX(1.05) skewY(2deg)}75%{transform:scaleX(0.95) skewY(-2deg)}}
+    @keyframes rainbow-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes rainbow-tongue{0%,80%,100%{transform:translateX(-50%) scaleY(0)}85%,92%,98%{transform:translateX(-50%) scaleY(1)}}
+    @keyframes pcobra-sway{0%{transform:rotate(-2deg) translateY(0)}100%{transform:rotate(2deg) translateY(-5px)}}
+    @keyframes pcobra-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes pcobra-tail{0%{transform:rotate(-10deg)}100%{transform:rotate(-35deg)}}
+    @keyframes pcobra-tongue{0%,70%{transform:scaleY(0)}75%{transform:scaleY(1.2) rotate(5deg)}80%{transform:scaleY(1.1) rotate(-5deg)}85%{transform:scaleY(1) rotate(0deg)}90%,100%{transform:scaleY(0)}}
+    @keyframes fcobra-sway{0%{transform:rotate(-2deg) translateY(0)}100%{transform:rotate(2deg) translateY(-5px)}}
+    @keyframes fcobra-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes fcobra-tail{0%{transform:rotate(-10deg)}100%{transform:rotate(-35deg)}}
+    @keyframes fcobra-tongue{0%,70%{transform:scaleY(0)}75%{transform:scaleY(1.2) rotate(5deg)}80%{transform:scaleY(1.1) rotate(-5deg)}85%{transform:scaleY(1) rotate(0deg)}90%,100%{transform:scaleY(0)}}
+    @keyframes fcobra-flicker{0%{transform:translateX(-50%) rotate(45deg) scale(1);filter:brightness(1)}50%{transform:translateX(-50%) rotate(45deg) scale(0.95,1.05)}100%{transform:translateX(-50%) rotate(45deg) scale(1.02);filter:brightness(1.2)}}
+    @keyframes icobra-sway{0%{transform:rotate(-2deg) translateY(0)}100%{transform:rotate(2deg) translateY(-5px)}}
+    @keyframes icobra-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes icobra-tail{0%{transform:rotate(-10deg)}100%{transform:rotate(-35deg)}}
+    @keyframes icobra-tongue{0%,70%{transform:scaleY(0)}75%{transform:scaleY(1.2) rotate(5deg)}80%{transform:scaleY(1.1) rotate(-5deg)}85%{transform:scaleY(1) rotate(0deg)}90%,100%{transform:scaleY(0)}}
+    @keyframes icobra-snow{0%,100%{transform:translateY(0) rotate(0deg);opacity:0.6}50%{transform:translateY(-8px) rotate(30deg);opacity:1}}
+    @keyframes icobra-mist{0%,100%{opacity:0.4;transform:translateX(-50%) scale(1)}50%{opacity:0.7;transform:translateX(-50%) scale(1.1)}}
+
+    /* New snake animations */
+    @keyframes cobra-hood-flare{0%,100%{transform:scaleX(1) scaleY(1)}15%{transform:scaleX(1.08) scaleY(1.03)}30%{transform:scaleX(1.12) scaleY(1.05)}50%{transform:scaleX(1.08) scaleY(1.03)}70%{transform:scaleX(1) scaleY(1)}}
+    @keyframes cobra-hypnotic-rise{0%,100%{transform:translateY(0)}25%{transform:translateY(-8px)}50%{transform:translateY(-4px)}75%{transform:translateY(-10px)}}
+    @keyframes cobra-head-sway{0%,100%{transform:rotate(0deg) translateX(0)}20%{transform:rotate(-4deg) translateX(-3px)}40%{transform:rotate(2deg) translateX(2px)}60%{transform:rotate(-3deg) translateX(-2px)}80%{transform:rotate(3deg) translateX(2px)}}
+    @keyframes cobra-neck-sway{0%,100%{transform:rotate(0deg)}20%{transform:rotate(-3deg)}40%{transform:rotate(1.5deg)}60%{transform:rotate(-2deg)}80%{transform:rotate(2deg)}}
+    @keyframes python-pulse{0%,100%{transform:scale(1)}30%{transform:scale(1.02)}50%{transform:scale(0.98)}80%{transform:scale(1.01)}}
+    @keyframes python-head-sway{0%,100%{transform:rotate(0deg) translateX(0)}20%{transform:rotate(-3deg) translateX(-2px)}50%{transform:rotate(2deg) translateX(2px)}80%{transform:rotate(-1deg) translateX(-1px)}}
+    @keyframes snake-head-tilt{0%,30%{transform:rotate(0deg)}35%{transform:rotate(-8deg)}40%,70%{transform:rotate(0deg)}75%{transform:rotate(6deg)}80%,100%{transform:rotate(0deg)}}
+
+    /* Egg animations */
+    @keyframes egg-hatch-wiggle{0%,100%{transform:rotate(0deg) translateX(0)}10%{transform:rotate(-8deg) translateX(-2px)}30%{transform:rotate(8deg) translateX(2px)}50%{transform:rotate(-6deg) translateX(-1px)}70%{transform:rotate(6deg) translateX(1px)}90%{transform:rotate(-3deg) translateX(-0.5px)}}
+    @keyframes egg-wiggle{0%,100%{transform:rotate(0deg) translateX(0)}20%{transform:rotate(-5deg) translateX(-1px)}60%{transform:rotate(5deg) translateX(1px)}}
+    @keyframes egg-rock{0%,100%{transform:rotate(0deg)}25%{transform:rotate(-3deg)}75%{transform:rotate(3deg)}}
+    @keyframes egg-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.003)}}
+    .egg-hatch-wiggle{animation:egg-hatch-wiggle 0.8s ease-in-out infinite}
+    .egg-wiggle{animation:egg-wiggle 1.2s ease-in-out infinite}
+    .egg-rock{animation:egg-rock 2s ease-in-out infinite}
+    .egg-pulse{animation:egg-pulse 7s ease-in-out infinite}
+
+    /* Progressive egg particle effects */
+    @keyframes star-float{0%{transform:translateY(0) scale(1) rotate(0deg);opacity:1}50%{transform:translateY(-30px) scale(1.2) rotate(180deg);opacity:0.8}100%{transform:translateY(-60px) scale(0.5) rotate(360deg);opacity:0}}
+    @keyframes music-float{0%{transform:translateY(0) translateX(0) scale(1);opacity:0.9}50%{transform:translateY(-25px) translateX(10px) scale(1.1);opacity:0.7}100%{transform:translateY(-50px) translateX(-5px) scale(0.8);opacity:0}}
+    @keyframes spark-burst{0%{transform:scale(0) rotate(0deg);opacity:1}50%{transform:scale(1.5) rotate(180deg);opacity:0.8}100%{transform:scale(0.3) rotate(360deg);opacity:0}}
+    @keyframes smoke-rise{0%{transform:translateY(0) scale(1);opacity:0.4}50%{transform:translateY(-40px) scale(1.5);opacity:0.25}100%{transform:translateY(-80px) scale(2);opacity:0}}
+    @keyframes mystical-swirl{0%{transform:rotate(0deg) scale(1);opacity:0.3}50%{transform:rotate(180deg) scale(1.2);opacity:0.5}100%{transform:rotate(360deg) scale(1);opacity:0.3}}
+    @keyframes heart-pop{0%{transform:scale(0) translateY(0);opacity:1}30%{transform:scale(1.3) translateY(-10px);opacity:0.9}100%{transform:scale(0.6) translateY(-40px);opacity:0}}
+    @keyframes crack-glow{0%,100%{opacity:0.3;filter:brightness(1)}50%{opacity:0.8;filter:brightness(1.5)}}
+    @keyframes energy-pulse{0%{transform:scale(0.8);opacity:0.2}50%{transform:scale(1.3);opacity:0.5}100%{transform:scale(0.8);opacity:0.2}}
+    .egg-particles{position:absolute;width:100%;height:100%;top:0;left:0;pointer-events:none;overflow:visible}
+    .egg-particle{position:absolute;animation-fill-mode:forwards;animation-iteration-count:infinite}
+
+    /* Hatching celebration animations */
+    @keyframes hatch-shake{0%,100%{transform:rotate(0deg) translateX(0)}5%{transform:rotate(-12deg) translateX(-8px)}10%{transform:rotate(12deg) translateX(8px)}15%{transform:rotate(-10deg) translateX(-6px)}20%{transform:rotate(10deg) translateX(6px)}25%{transform:rotate(-8deg) translateX(-4px)}30%{transform:rotate(8deg) translateX(4px)}35%,65%{transform:rotate(0deg) translateX(0)}70%{transform:rotate(-15deg) translateX(-10px)}75%{transform:rotate(15deg) translateX(10px)}80%{transform:rotate(-12deg) translateX(-8px)}85%{transform:rotate(12deg) translateX(8px)}90%{transform:rotate(-8deg) translateX(-5px)}95%{transform:rotate(8deg) translateX(5px)}}
+    @keyframes hatch-crack-appear{0%{opacity:0;transform:scaleY(0)}100%{opacity:1;transform:scaleY(1)}}
+    @keyframes hatch-light-burst{0%{opacity:0;transform:scale(0.5)}50%{opacity:1;transform:scale(1.5)}100%{opacity:0;transform:scale(3)}}
+    @keyframes hatch-shell-fly{0%{opacity:1;transform:translate(0,0) rotate(0deg)}100%{opacity:0;transform:translate(var(--fly-x),var(--fly-y)) rotate(var(--fly-rot))}}
+    @keyframes hatch-creature-pop{0%{opacity:0;transform:scale(0) translateY(50px)}60%{opacity:1;transform:scale(1.2) translateY(-20px)}80%{transform:scale(0.9) translateY(5px)}100%{transform:scale(1) translateY(0)}}
+    @keyframes hatch-confetti{0%{opacity:1;transform:translateY(0) rotate(0deg)}100%{opacity:0;transform:translateY(200px) rotate(720deg)}}
+    @keyframes hatch-glow-pulse{0%,100%{box-shadow:0 0 30px rgba(251,191,36,0.5),0 0 60px rgba(251,191,36,0.3)}50%{box-shadow:0 0 50px rgba(251,191,36,0.8),0 0 100px rgba(251,191,36,0.5)}}
+    @keyframes hatch-text-pop{0%{opacity:0;transform:scale(0.5) translateY(20px)}50%{transform:scale(1.1) translateY(-5px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+    .hatch-shake{animation:hatch-shake 1.5s ease-in-out infinite}
+    .hatch-creature-pop{animation:hatch-creature-pop 0.8s ease-out forwards}
+    .hatch-text-pop{animation:hatch-text-pop 0.6s ease-out forwards}
+
+    /* Evolution burst animations */
+    @keyframes evo-spin-fast{0%{transform:rotate(0deg) scale(1)}25%{transform:rotate(180deg) scale(1.05)}50%{transform:rotate(360deg) scale(0.95)}75%{transform:rotate(540deg) scale(1.1)}100%{transform:rotate(720deg) scale(1)}}
+    @keyframes evo-shake-intense{0%,100%{transform:translateX(0) translateY(0)}10%{transform:translateX(-8px) translateY(-3px)}20%{transform:translateX(8px) translateY(3px)}30%{transform:translateX(-6px) translateY(-5px)}40%{transform:translateX(6px) translateY(5px)}50%{transform:translateX(-10px) translateY(-2px)}60%{transform:translateX(10px) translateY(2px)}70%{transform:translateX(-5px) translateY(-4px)}80%{transform:translateX(5px) translateY(4px)}90%{transform:translateX(-3px) translateY(-1px)}}
+    @keyframes evo-glow-buildup{0%{box-shadow:0 0 10px rgba(251,191,36,0.3)}50%{box-shadow:0 0 40px rgba(251,191,36,0.6),0 0 80px rgba(168,85,247,0.4)}100%{box-shadow:0 0 80px rgba(251,191,36,1),0 0 120px rgba(168,85,247,0.8),0 0 160px rgba(236,72,153,0.6)}}
+    @keyframes evo-smoke-burst{0%{opacity:0;transform:scale(0.3)}30%{opacity:0.8;transform:scale(1.2)}100%{opacity:0;transform:scale(2.5)}}
+    @keyframes evo-lightning{0%,100%{opacity:0}10%,30%{opacity:1}20%,40%{opacity:0}50%{opacity:1}60%,80%{opacity:0}70%,90%{opacity:1}}
+    @keyframes evo-star-explode{0%{opacity:1;transform:translate(0,0) scale(1) rotate(0deg)}100%{opacity:0;transform:translate(var(--ex),var(--ey)) scale(0.3) rotate(360deg)}}
+    @keyframes evo-ring-expand{0%{opacity:0.8;transform:translate(-50%,-50%) scale(0.5)}100%{opacity:0;transform:translate(-50%,-50%) scale(3)}}
+    @keyframes evo-flash{0%{opacity:0}50%{opacity:1}100%{opacity:0}}
+    .evo-spin-buildup{animation:evo-spin-fast 0.4s linear infinite,evo-shake-intense 0.15s linear infinite,evo-glow-buildup 2s ease-in forwards}
+
+    /* 3D Floating Buddy Card */
+    @keyframes buddy-levitate{
+      0%,100%{transform:translateY(0) rotateX(2deg) rotateY(-1deg)}
+      25%{transform:translateY(-8px) rotateX(1deg) rotateY(1deg)}
+      50%{transform:translateY(-12px) rotateX(-1deg) rotateY(2deg)}
+      75%{transform:translateY(-6px) rotateX(0deg) rotateY(-2deg)}
+    }
+    @keyframes shadow-float{
+      0%,100%{transform:translateX(-50%) scale(1);opacity:0.3}
+      25%{transform:translateX(-50%) scale(0.92);opacity:0.25}
+      50%{transform:translateX(-50%) scale(0.85);opacity:0.2}
+      75%{transform:translateX(-50%) scale(0.9);opacity:0.22}
+    }
+    @keyframes aura-pulse{
+      0%,100%{transform:translate(-50%,-50%) scale(1);opacity:0.15}
+      50%{transform:translate(-50%,-50%) scale(1.1);opacity:0.25}
+    }
+    .buddy-stage-3d{
+      perspective:800px;
+      transform-style:preserve-3d;
+    }
+    .buddy-float-container{
+      animation:buddy-levitate 6s ease-in-out infinite;
+      transform-style:preserve-3d;
+      position:relative;
+    }
+    .buddy-shadow{
+      position:absolute;
+      bottom:-30px;
+      left:50%;
+      width:120px;
+      height:30px;
+      background:radial-gradient(ellipse,rgba(139,92,246,0.4),transparent 70%);
+      border-radius:50%;
+      animation:shadow-float 6s ease-in-out infinite;
+      filter:blur(8px);
+      z-index:-1;
+    }
+    .buddy-aura{
+      position:absolute;
+      top:50%;
+      left:50%;
+      width:200px;
+      height:200px;
+      background:radial-gradient(circle,rgba(236,72,153,0.15),rgba(168,85,247,0.1),transparent 60%);
+      border-radius:50%;
+      animation:aura-pulse 4s ease-in-out infinite;
+      z-index:-2;
+      pointer-events:none;
+    }
+
+    /* Egg type varieties */
+    .egg-white{filter:none}
+    .egg-brown{filter:sepia(0.4) brightness(0.9) saturate(1.3)}
+    .egg-spotted{background:radial-gradient(circle at 30% 40%, rgba(139,69,19,0.3) 2px, transparent 3px),
+                  radial-gradient(circle at 70% 30%, rgba(139,69,19,0.3) 2px, transparent 3px),
+                  radial-gradient(circle at 50% 70%, rgba(139,69,19,0.3) 1.5px, transparent 2.5px),
+                  radial-gradient(circle at 35% 65%, rgba(139,69,19,0.3) 2px, transparent 3px);
+                  border-radius:50%;padding:5px}
+    .egg-speckled{background:radial-gradient(circle at 25% 35%, rgba(101,67,33,0.4) 1px, transparent 2px),
+                   radial-gradient(circle at 60% 25%, rgba(101,67,33,0.4) 1px, transparent 2px),
+                   radial-gradient(circle at 75% 55%, rgba(101,67,33,0.4) 1px, transparent 2px),
+                   radial-gradient(circle at 40% 75%, rgba(101,67,33,0.4) 1px, transparent 2px),
+                   radial-gradient(circle at 55% 80%, rgba(101,67,33,0.4) 1px, transparent 2px);
+                   border-radius:50%;padding:5px}
+    .egg-blue{filter:hue-rotate(180deg) saturate(0.8) brightness(1.1)}
+    .egg-large{transform:scale(1.15)}
+    .egg-small{transform:scale(0.85)}
+
+    /* Bird animations (child, teen, adult) */
+    @keyframes bird-hop{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-12px)}
+    }
+    .bird-hop{animation:bird-hop 1.8s ease-in-out infinite;display:inline-block}
+
+    /* Happiness visual effects */
+    .happiness-very-happy{animation:bounce-slow 1.5s ease-in-out infinite,sparkle 1.5s ease-in-out infinite}
+    .happiness-happy{animation:bounce-slow 2s ease-in-out infinite}
+    .happiness-sad{filter:grayscale(0.3) brightness(0.9)}
+    .happiness-very-sad{filter:grayscale(0.6) brightness(0.8)}
+
+    /* Health visual effects */
+    .health-sick{filter:saturate(0.7) brightness(0.95)}
+    .health-very-sick{filter:saturate(0.4) brightness(0.9)}
+
+    /* Combined state effects */
+    .buddy-thriving{animation:bounce-slow 1.2s ease-in-out infinite,sparkle 1.2s ease-in-out infinite;filter:drop-shadow(0 0 10px rgba(236,72,153,0.6))}
+    .buddy-crisis{filter:grayscale(0.8) brightness(0.7);opacity:0.85}
+
+    /* Status overlays */
+    .status-overlay{position:absolute;top:-15px;right:-15px;font-size:32px;animation:float-indicator 2s ease-in-out infinite;z-index:15}
+    .status-overlay-left{position:absolute;top:-15px;left:-15px;font-size:32px;animation:float-indicator 2s ease-in-out infinite;animation-delay:0.5s;z-index:15}
+
+    /* Mood indicator */
+    .mood-indicator{position:absolute;top:-10px;right:-10px;font-size:24px;animation:float-indicator 2s ease-in-out infinite}
+    @keyframes float-indicator{0%,100%{transform:translateY(0px)}50%{transform:translateY(-5px)}}
+
+    /* Pause all animations when happiness is very low */
+    .paused-animation,.paused-animation *{animation-play-state:paused!important}
+
+    /* Accessory positioning */
+    .buddy-scene-wrapper{position:relative;display:flex;align-items:center;justify-content:center;flex:1;width:100%}
+    .static-furniture-layer{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+    .static-furniture-layer .furniture-item{position:absolute;pointer-events:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2))}
+    .buddy-float-container{position:relative;z-index:1}
+    .stats-bar-container{position:relative;z-index:50;width:100%;max-width:420px;margin:0 auto;padding-bottom:0.5rem;pointer-events:auto}
+    .buddy-card-container{position:relative;display:inline-block}
+    .buddy-with-accessories{position:relative;display:inline-block}
+    .customize-mode .static-furniture-layer{pointer-events:auto}
+    .customize-mode .static-furniture-layer .furniture-item{pointer-events:auto;cursor:move}
+    .accessory-hat{position:absolute;top:-15%;left:50%;transform:translateX(-50%);font-size:0.6em;z-index:10}
+    .accessory-eyes{position:absolute;top:30%;left:50%;transform:translateX(-50%);font-size:0.4em;z-index:5}
+    .accessory-held{position:absolute;bottom:10%;right:-10%;font-size:0.5em;z-index:5}
+    .accessory-back{position:absolute;top:20%;left:-15%;font-size:0.7em;z-index:1}
+    .accessory-effect{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:1.2em;z-index:0;opacity:0.8}
+    .furniture-item{position:absolute;z-index:1;pointer-events:auto;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2))}
+
+    /* Feeding animation */
+    .feeding-container{position:relative;display:inline-block}
+    .feeding-food{position:absolute;bottom:0;left:50%;transform:translateX(-50%);font-size:4rem;z-index:20;animation:food-fly 1s ease-out forwards}
+    .feeding-message{animation:message-slide 0.5s ease-out forwards;animation-delay:1.2s;opacity:0}
+
+    /* Buddy reaction animations */
+    .buddy-happy-bounce{animation:happy-bounce 0.4s ease-in-out 3;animation-delay:0.8s}
+    .buddy-reject-shake{animation:reject-shake 0.5s ease-in-out 2;animation-delay:0.8s}
+    @keyframes happy-bounce{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-15px) scale(1.05)}}
+    @keyframes reject-shake{0%,100%{transform:translateX(0) rotate(0deg)}10%{transform:translateX(-8px) rotate(-3deg)}30%{transform:translateX(8px) rotate(3deg)}50%{transform:translateX(-6px) rotate(-2deg)}70%{transform:translateX(6px) rotate(2deg)}90%{transform:translateX(-3px) rotate(-1deg)}}
+    @keyframes snake-wave{0%,100%{transform:translateY(0)}25%{transform:translateY(-3px)}75%{transform:translateY(3px)}}
+    @keyframes rattle-shake{0%,100%{transform:rotate(0deg)}10%{transform:rotate(-8deg)}30%{transform:rotate(8deg)}50%{transform:rotate(-6deg)}70%{transform:rotate(6deg)}90%{transform:rotate(-4deg)}}
+    @keyframes tongue-flick{0%,100%{transform:translateY(0) scaleY(0.3)}15%{transform:translateY(0) scaleY(1)}30%,70%{transform:translateY(0) scaleY(1)}85%{transform:translateY(0) scaleY(0.3)}}
+    @keyframes ear-wiggle-l{0%,90%,100%{transform:rotate(-25deg)}92%{transform:rotate(-35deg)}94%{transform:rotate(-20deg)}96%{transform:rotate(-30deg)}}
+    @keyframes ear-wiggle-r{0%,92%,100%{transform:rotate(25deg)}94%{transform:rotate(35deg)}96%{transform:rotate(15deg)}98%{transform:rotate(30deg)}}
+    @keyframes tail-swish{0%,100%{transform:rotate(-15deg)}50%{transform:rotate(0deg)}}
+    @keyframes fox-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    @keyframes fox-blink-l{0%,90%,100%{transform:rotate(-12deg) scaleY(1)}93%,97%{transform:rotate(-12deg) scaleY(0.1)}}
+    @keyframes fox-blink-r{0%,90%,100%{transform:scaleX(-1) rotate(-12deg) scaleY(1)}93%,97%{transform:scaleX(-1) rotate(-12deg) scaleY(0.1)}}
+    /* Horse animations */
+    @keyframes horse-bounce{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-12px) rotate(1deg)}}
+    @keyframes horse-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes horse-tail-swish{0%,100%{transform:rotate(10deg)}50%{transform:rotate(-25deg)}}
+    @keyframes horse-leg-kick{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+    @keyframes horse-ear-twitch{0%,85%,100%{transform:rotate(-15deg)}90%{transform:rotate(-5deg)}}
+    @keyframes cow-graze{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-8px) rotate(-1deg)}}
+    @keyframes cow-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes cow-tail-swish{0%,100%{transform:rotate(5deg)}50%{transform:rotate(-20deg)}}
+    @keyframes cow-chew{0%,8%{transform:translateX(0)}10%{transform:translateX(4px)}14%{transform:translateX(-2px)}18%{transform:translateX(3px)}22%,30%{transform:translateX(0)}33%{transform:translateX(-4px)}37%{transform:translateX(2px)}41%{transform:translateX(-3px)}45%,55%{transform:translateX(0)}58%{transform:translateX(3px)}62%{transform:translateX(-4px)}66%{transform:translateX(2px)}70%,80%{transform:translateX(0)}83%{transform:translateX(-3px)}87%{transform:translateX(4px)}91%{transform:translateX(-2px)}95%,100%{transform:translateX(0)}}
+    @keyframes grass-wiggle{0%,100%{transform:rotate(-5deg)}25%{transform:rotate(8deg)}50%{transform:rotate(-3deg)}75%{transform:rotate(10deg)}}
+    @keyframes hand-wave-l{0%,100%{transform:rotate(-35deg)}50%{transform:rotate(5deg) translateY(-2px)}}
+    @keyframes hand-wave-r{0%,100%{transform:rotate(35deg)}50%{transform:rotate(-5deg) translateY(-2px)}}
+    @keyframes bunny-hop{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+    @keyframes egg-wobble{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+    @keyframes egg-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+    @keyframes egg-glow{0%,100%{filter:brightness(1)}50%{filter:brightness(1.1)}}
+    @keyframes egg-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+    @keyframes lava-pulse{0%,100%{opacity:0.7;filter:blur(4px)}50%{opacity:1;filter:blur(6px)}}
+    @keyframes sparkle-twinkle{0%,100%{opacity:0.5;transform:scale(0.8)}50%{opacity:1;transform:scale(1.2)}}
+    @keyframes alien-glow{0%,100%{box-shadow:0 0 15px rgba(34,211,238,0.4)}50%{box-shadow:0 0 25px rgba(34,211,238,0.7)}}
+    @keyframes bunny-blink{0%,90%,100%{transform:scaleY(1)}95%{transform:scaleY(0)}}
+    @keyframes bunny-ear-wiggle{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(-20deg)}}
+    @keyframes tail-wiggle{0%,100%{transform:scale(1)}50%{transform:scale(1.1) rotate(5deg)}}
+    @keyframes kitty-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes kitty-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+    @keyframes paw-step{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+    @keyframes koala-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+    @keyframes koala-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes koala-ear-wiggle-l{0%,90%,100%{transform:rotate(0deg)}92%{transform:rotate(-10deg)}95%{transform:rotate(5deg)}}
+    @keyframes koala-ear-wiggle-r{0%,92%,100%{transform:rotate(0deg)}94%{transform:rotate(10deg)}97%{transform:rotate(-5deg)}}
+    @keyframes sniff{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.05)}}
+    @keyframes joyful-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+    @keyframes tail-wag{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+    @keyframes tail-wag-diagonal{0%,100%{transform:rotate(-35deg)}50%{transform:rotate(-15deg)}}
+    @keyframes puppy-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+    @keyframes puppy-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes panting{0%,100%{height:12px}50%{height:18px}}
+    @keyframes puppy-ear-l{0%,100%{transform:rotate(20deg)}50%{transform:rotate(10deg)}}
+    @keyframes puppy-ear-r{0%,100%{transform:rotate(-20deg)}50%{transform:rotate(-10deg)}}
+    @keyframes mouse-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes raccoon-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    @keyframes raccoon-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes red-panda-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+    @keyframes red-panda-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes sloth-hang{0%,100%{transform:translateY(0) rotate(-0.5deg)}50%{transform:translateY(-12px) rotate(0.5deg)}}
+    @keyframes sloth-blink{0%,95%,100%{transform:scaleY(1)}97%{transform:scaleY(0.1)}}
+    @keyframes arm-sway-l{0%,100%{transform:rotate(30deg)}50%{transform:rotate(38deg)}}
+    @keyframes arm-sway-r{0%,100%{transform:rotate(-30deg)}50%{transform:rotate(-38deg)}}
+    @keyframes leg-wiggle-bl{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(-10deg)}}
+    @keyframes leg-wiggle-br{0%,100%{transform:rotate(6deg)}50%{transform:rotate(10deg)}}
+    @keyframes hand-wave-l-horiz{0%,100%{transform:rotate(-90deg)}50%{transform:rotate(-75deg)}}
+    @keyframes hand-wave-r-horiz{0%,100%{transform:rotate(90deg)}50%{transform:rotate(75deg)}}
+    @keyframes panda-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    @keyframes panda-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes arm-wave{0%,100%{transform:rotate(80deg)}50%{transform:rotate(20deg)}}
+    @keyframes squirrel-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    @keyframes bear-bounce{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-8px) rotate(1deg)}}
+    @keyframes bear-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes bear-wave-l{0%,100%{transform:rotate(15deg)}50%{transform:rotate(25deg)}}
+    @keyframes bear-wave-r{0%,100%{transform:rotate(-15deg)}50%{transform:rotate(-25deg)}}
+    @keyframes bear-tail-wiggle{0%,100%{transform:rotate(0deg)}50%{transform:rotate(8deg)}}
+    @keyframes bear-ear-l{0%,100%{transform:rotate(0deg)}30%{transform:rotate(-8deg)}60%{transform:rotate(3deg)}}
+    @keyframes bear-ear-r{0%,100%{transform:rotate(0deg)}30%{transform:rotate(8deg)}60%{transform:rotate(-3deg)}}
+    @keyframes bear-paw-l{0%,100%{transform:rotate(-8deg)}25%{transform:rotate(-12deg)}50%{transform:rotate(-5deg)}75%{transform:rotate(-10deg)}}
+    @keyframes bear-paw-r{0%,100%{transform:rotate(8deg)}25%{transform:rotate(12deg)}50%{transform:rotate(5deg)}75%{transform:rotate(10deg)}}
+    @keyframes squirrel-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes squirrel-tail-swish{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+    @keyframes squirrel-ear-l{0%,100%{transform:rotate(-15deg)}50%{transform:rotate(-25deg)}}
+    @keyframes squirrel-ear-r{0%,100%{transform:rotate(15deg)}50%{transform:rotate(25deg)}}
+    @keyframes fairy-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+    @keyframes fairy-wing-left{0%,100%{transform:rotate(-15deg)}50%{transform:rotate(-30deg)}}
+    @keyframes fairy-wing-right{0%,100%{transform:rotate(15deg)}50%{transform:rotate(30deg)}}
+    @keyframes fairy-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes star-rise{0%{transform:translateY(0);opacity:0}20%{opacity:1}80%{opacity:1}100%{transform:translateY(-120px);opacity:0}}
+    /* Dinosaur animations */
+    @keyframes trex-stomp{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+    @keyframes trex-roar{0%,70%,100%{transform:translateY(0) rotate(0deg)}75%,85%{transform:translateY(8px) rotate(3deg)}80%{transform:translateY(2px) rotate(1deg)}}
+    @keyframes trex-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes trex-eye-look{0%,100%{transform:translate(0,0)}15%{transform:translate(4px,0)}30%{transform:translate(4px,3px)}45%{transform:translate(-2px,2px)}60%{transform:translate(-3px,-2px)}75%{transform:translate(2px,-2px)}90%{transform:translate(0,0)}}
+    @keyframes trex-arm-wave{0%{transform:rotate(15deg)}100%{transform:rotate(50deg)}}
+    @keyframes trex-arm-wave-reverse{0%{transform:rotate(-15deg)}100%{transform:rotate(-50deg)}}
+    @keyframes trex-tail-sway{0%,100%{transform:rotate(5deg)}50%{transform:rotate(-12deg)}}
+    @keyframes bronto-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    @keyframes bronto-neck{0%,100%{transform:rotate(0deg)}50%{transform:rotate(8deg)}}
+    @keyframes stego-stomp{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+    @keyframes stego-tail{0%,100%{transform:rotate(0deg)}50%{transform:rotate(12deg)}}
+
+    /* ========================================
+       CREATURE STYLES MOVED TO creatures.css
+
+       All creature CSS is now in: creatures.css
+       This keeps index.html clean and fast!
+
+       TO ADD NEW CREATURES:
+       User: "Add [filename].html"
+       Me: "Which category?"
+       I auto-assign next variant & update everything!
+
+       Categories support 100+ variants each!
+       ======================================== */

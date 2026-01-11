@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Narwhal Buddy - Forehead Tusk & Large Tail</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root {
+    --n-skin: #64748b; 
+    --n-skin-dark: #334155; 
+    --n-skin-light: #94a3b8;
+    --n-belly: #f1f5f9; 
+    --n-tusk: #fde68a; 
+    --n-tusk-dark: #f59e0b;
+}
+
+body { background-color: #f0f9ff; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+
+.narwhal-creature {
+    position: relative;
+    width: 320px;
+    height: 360px;
+    animation: narwhal-bob 4s ease-in-out infinite;
+    z-index: 1;
+}
+
+/* --- LARGE FORKED TAIL - Positioned behind body --- */
+.tail-container {
+    position: absolute;
+    width: 160px; /* Enlarged from 120px */
+    height: 80px;
+    bottom: 50px; 
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10; /* Behind the narwhal-body (z-20) */
+    transform-origin: top center;
+    animation: tail-flip-behind 1.5s ease-in-out infinite;
+}
+.fluke-shape { fill: var(--n-skin); stroke: var(--n-skin-dark); stroke-width: 3.5; }
+
+/* --- BODY & PATTERN --- */
+.narwhal-body {
+    position: absolute;
+    width: 200px; height: 160px;
+    background-color: var(--n-skin);
+    background-image: 
+        radial-gradient(circle at 20% 30%, var(--n-skin-light) 0%, var(--n-skin-light) 8%, transparent 12%),
+        radial-gradient(circle at 40% 15%, var(--n-skin-light) 0%, var(--n-skin-light) 6%, transparent 10%),
+        radial-gradient(circle at 75% 25%, var(--n-skin-light) 0%, var(--n-skin-light) 7%, transparent 11%);
+    border: 4px solid var(--n-skin-dark);
+    border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+    top: 90px; left: 60px;
+    z-index: 20;
+    overflow: hidden;
+}
+
+.narwhal-tummy {
+    position: absolute;
+    width: 140px; height: 90px;
+    background: var(--p-belly); /* Standard light belly logic */
+    background-color: var(--n-belly);
+    border-radius: 50%;
+    bottom: -25px; left: 50%;
+    transform: translateX(-50%);
+}
+
+/* --- FOREHEAD TUSK --- */
+.narwhal-tusk {
+    position: absolute;
+    width: 14px; height: 100px;
+    background: repeating-linear-gradient(45deg, var(--n-tusk), var(--n-tusk) 10px, var(--n-tusk-dark) 10px, var(--n-tusk-dark) 20px);
+    border: 3px solid var(--n-skin-dark);
+    border-radius: 50% 50% 20% 20% / 100% 100% 0% 0%;
+    top: 12px; /* Moved down to emerge from forehead */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 30; /* Sits in front of the head */
+    transform-origin: bottom center;
+    animation: tusk-wobble 4s ease-in-out infinite;
+}
+
+/* --- FLIPPERS --- */
+.flipper {
+    position: absolute;
+    width: 45px; height: 35px;
+    background: var(--n-skin);
+    border: 3.5px solid var(--n-skin-dark);
+    border-radius: 50%;
+    z-index: 25;
+    top: 170px;
+}
+.flipper-l { left: 45px; transform: rotate(25deg); animation: flip-wave-l 3s ease-in-out infinite; }
+.flipper-r { right: 45px; transform: rotate(-25deg); animation: flip-wave-r 3s ease-in-out infinite; }
+
+/* --- FACE --- */
+.face-container {
+    position: absolute;
+    width: 200px; height: 100px;
+    top: 110px; left: 60px;
+    z-index: 45;
+    display: flex; flex-direction: column; align-items: center;
+}
+
+.eye-group { display: flex; gap: 45px; margin-top: 25px; }
+
+.n-eye {
+    width: 20px; height: 20px;
+    background: #1e293b;
+    border-radius: 50%;
+    position: relative;
+    animation: n-blink 5s infinite;
+}
+.n-eye::after {
+    content: ''; position: absolute;
+    width: 7px; height: 7px;
+    background: white; border-radius: 50%;
+    top: 3px; left: 3px;
+}
+
+.n-mouth {
+    width: 36px; height: 16px;
+    border-bottom: 3.5px solid var(--n-skin-dark);
+    border-radius: 50%;
+    margin-top: 2px;
+}
+
+/* --- ANIMATIONS --- */
+@keyframes narwhal-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+
+/* Tail flip that moves it UP behind the body to "disappear" */
+@keyframes tail-flip-behind {
+    0%, 100% { transform: translateX(-50%) translateY(0) scaleY(1); }
+    50% { transform: translateX(-50%) translateY(-40px) scaleY(0.7); opacity: 0.8; }
+}
+
+@keyframes tusk-wobble { 0%, 100% { transform: translateX(-50%) rotate(-2deg); } 50% { transform: translateX(-50%) rotate(2deg); } }
+@keyframes n-blink { 0%, 90%, 100% { transform: scaleY(1); } 93%, 97% { transform: scaleY(0.1); } }
+@keyframes flip-wave-l { 0%, 100% { transform: rotate(25deg); } 50% { transform: rotate(40deg); } }
+@keyframes flip-wave-r { 0%, 100% { transform: rotate(-25deg); } 50% { transform: rotate(-40deg); } }
+
+</style>
+</head>
+<body>
+
+<div class="bg-white p-16 rounded-[80px] shadow-2xl flex flex-col items-center">
+    <div class="narwhal-creature">
+        
+        <div class="narwhal-tusk"></div>
+
+        <div class="tail-container">
+            <svg viewBox="0 0 160 80">
+                <path class="fluke-shape" d="M 80,15 Q 40,0 5,50 Q 40,65 80,35 Q 120,65 155,50 Q 120,0 80,15 Z" />
+            </svg>
+        </div>
+
+        <div class="flipper flipper-l"></div>
+        <div class="flipper flipper-r"></div>
+
+        <div class="narwhal-body">
+            <div class="narwhal-tummy"></div>
+        </div>
+
+        <div class="face-container">
+            <div class="eye-group">
+                <div class="n-eye"></div>
+                <div class="n-eye"></div>
+            </div>
+            <div class="n-mouth"></div>
+            <div class="absolute top-[48px] w-full flex justify-center gap-[75px]">
+                <div class="w-5 h-2 bg-rose-200 rounded-full opacity-40 blur-[1px]"></div>
+                <div class="w-5 h-2 bg-rose-200 rounded-full opacity-40 blur-[1px]"></div>
+            </div>
+        </div>
+
+    </div>
+    
+    <h3 class="mt-12 text-4xl font-black text-slate-700 tracking-tighter uppercase italic">Narwhal Buddy!</h3>
+</div>
+
+</body>
+</html>
