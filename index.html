@@ -927,7 +927,7 @@
 <div id="app"></div>
 <script src="js/creatures/mystical.js"></script>
 <script src="js/creatures/mammals.js"></script>
-<script src="js/creatures/birds.js"></script>
+<script src="js/creatures/birds.js?v=2"></script>
 <script src="js/creatures/reptiles.js"></script>
 <script src="js/creatures/prehistoric.js?v=5"></script>
 <script src="js/creatures/aquatic.js"></script>
@@ -1430,10 +1430,12 @@ if(S.growthXP>100&&S.buddyStage!=='egg'&&S.buddyStage!=='adult'){
   S.growthXP=99;
   save();
 }
+// Migrate verses to have status field (active vs saved-for-later)
+S.verses.forEach(v=>{if(v.status===undefined)v.status='active';});
 // Owner email - only this account can see the Guide button
 const OWNER_EMAIL = 'adgoodwin82@gmail.com';
 
-let screen='home',modal=null,editV=null,form={type:'scripture',ref:'',text:'',tags:[]};
+let screen='home',modal=null,editV=null,form={type:'scripture',ref:'',text:'',tags:[],startPracticing:true};
 let pMode=null,pVerse=null,pState={},selectedVerse=null,filterTag=null;
 let onboardingSelections={}; // Track selected packs during onboarding
 let feedingState=null; // {food: foodObj, accepted: bool, growing: bool}
@@ -1441,6 +1443,17 @@ let feedTab='buy'; // 'buy' or 'myFood'
 let downloadProgress=null; // {current: n, total: n, status: 'downloading'|'processing'|'complete'}
 let tutorialStep=0; // Current tutorial step (0 = not showing)
 let foodPopup=null; // {foodIdx: number, qty: number} - food detail popup state
+let verseFilter='active'; // 'active' or 'saved' - which verses to show on practice screen
+
+// Toggle verse status between active and saved
+function toggleVerseStatus(verseId){
+  const verse=S.verses.find(v=>v.id===verseId);
+  if(verse){
+    verse.status=verse.status==='active'?'saved':'active';
+    save();
+    render();
+  }
+}
 
 // Open food detail popup
 function openFoodPopup(foodIdx){
@@ -1763,10 +1776,12 @@ function needsReview(verse){
 
 // Smart recommendations
 function getRecommendations(){
-  if(!S.verses.length)return{verses:[],modes:{}};
+  // Only consider active verses (not saved-for-later)
+  const activeVerses=S.verses.filter(v=>v.status==='active');
+  if(!activeVerses.length)return{verses:[],modes:{}};
 
   // Score verses based on multiple factors
-  const scored=S.verses.map(v=>{
+  const scored=activeVerses.map(v=>{
     let score=0;
     const daysSince=v.lastPracticed?Math.floor((Date.now()-new Date(v.lastPracticed).getTime())/(1000*60*60*24)):999;
 
@@ -2853,7 +2868,8 @@ async function completeOnboarding(){
             tags:item.tags||[],
             mastery:0,
             modeUsage:{predict:0,blanks:0,jumble:0,first:0,recall:0},
-            lastPracticed:null
+            lastPracticed:null,
+            status:'active'
           });
         }
       }
@@ -4576,13 +4592,13 @@ function checkLogin(){
 checkLogin();
 
 const setScreen=s=>{screen=s;pMode=null;feedingState=null;if(s!=='practice')selectedVerse=null;render()};
-const openModal=(m,v)=>{modal=m;editV=v||null;form=v?{type:v.type,ref:v.ref,text:v.text,tags:v.tags.slice()}:{type:'scripture',ref:'',text:'',tags:[]};if(m==='feed')feedTab='buy';if(m==='add'){addTab='library';libraryView={collection:null,book:null,chapter:null};searchQuery='';}render()};
+const openModal=(m,v)=>{modal=m;editV=v||null;form=v?{type:v.type,ref:v.ref,text:v.text,tags:v.tags.slice(),startPracticing:true}:{type:'scripture',ref:'',text:'',tags:[],startPracticing:true};if(m==='feed')feedTab='buy';if(m==='add'){addTab='library';libraryView={collection:null,book:null,chapter:null};searchQuery='';}render()};
 const closeModal=()=>{modal=null;editV=null;render()};
 const toggleTag=t=>{const i=form.tags.indexOf(t);if(i>=0)form.tags.splice(i,1);else if(form.tags.length<3)form.tags.push(t);render()};
 const saveVerse=()=>{
   if(!form.text.trim()||!form.ref.trim())return;
   if(editV){const v=S.verses.find(x=>x.id===editV.id);if(v){v.type=form.type;v.ref=form.ref;v.text=form.text;v.tags=form.tags.slice()}}
-  else{S.verses.push({id:S.nextId++,type:form.type,ref:form.ref,text:form.text,tags:form.tags.slice(),mastery:0,userAdded:true});S.xp+=5}
+  else{S.verses.push({id:S.nextId++,type:form.type,ref:form.ref,text:form.text,tags:form.tags.slice(),mastery:0,userAdded:true,status:form.startPracticing?'active':'saved'});S.xp+=5}
   save();closeModal();
 };
 const deleteVerse=id=>{S.verses=S.verses.filter(v=>v.id!==id);save();closeModal()};
@@ -4603,7 +4619,8 @@ const addLibraryVerse=idx=>{
     tags:libVerse.tags.slice(),
     mastery:0,
     modeUsage:{predict:0,blanks:0,jumble:0,first:0,recall:0,hangman:0},
-    lastPracticed:null
+    lastPracticed:null,
+    status:'active'
   });
   S.xp+=5; // Reward for adding a verse
   save();
@@ -4624,7 +4641,8 @@ const addLibraryVerseByRef=(ref,verseObj)=>{
     tags:verseObj.tags&&verseObj.tags.length?verseObj.tags.slice():['Faith'],
     mastery:0,
     modeUsage:{predict:0,blanks:0,jumble:0,first:0,recall:0,hangman:0},
-    lastPracticed:null
+    lastPracticed:null,
+    status:'active'
   });
   S.xp+=5; // Reward for adding a verse
   save();
@@ -6376,34 +6394,55 @@ function render(){
   }
 
   else if(screen==='verses'&&!pMode){
-    const filteredVerses=filterTag?S.verses.filter(v=>v.tags.includes(filterTag)):S.verses;
-    const usedTags=[...new Set(S.verses.flatMap(v=>v.tags))].sort();
-    const list=filteredVerses.map(v=>`<div class="bg-white rounded-2xl p-4 mb-3 flex gap-3">
-      <div class="flex-1${v.userAdded?' cursor-pointer':''}" ${v.userAdded?`onclick="openModal('edit',${JSON.stringify(v).replace(/"/g,'&quot;')})"`:''}>
-        <div class="flex justify-between mb-1">
-          <p class="font-bold text-purple-800">${v.ref}</p>
-          <div class="text-right">
-            <div class="text-sm mb-0.5">${getStars(v.mastery)}</div>
-            <div class="text-xs text-purple-500 font-semibold">${v.mastery.toFixed(1)} / 5</div>
+    const activeVerses=S.verses.filter(v=>v.status==='active');
+    const storedVerses=S.verses.filter(v=>v.status==='saved');
+    const statusFiltered=verseFilter==='active'?activeVerses:storedVerses;
+    const filteredVerses=filterTag?statusFiltered.filter(v=>v.tags.includes(filterTag)):statusFiltered;
+    const usedTags=[...new Set(statusFiltered.flatMap(v=>v.tags))].sort();
+    const list=filteredVerses.map(v=>{
+      const isActive=v.status==='active';
+      return`<div class="bg-white rounded-2xl p-4 mb-3">
+      <div class="flex gap-3">
+        <div class="flex-1${v.userAdded?' cursor-pointer':''}" ${v.userAdded?`onclick="openModal('edit',${JSON.stringify(v).replace(/"/g,'&quot;')})"`:''}>
+          <div class="flex justify-between mb-1">
+            <p class="font-bold text-purple-800">${v.ref}</p>
+            <div class="text-right">
+              <div class="text-sm mb-0.5">${getStars(v.mastery)}</div>
+              <div class="text-xs text-purple-500 font-semibold">${v.mastery.toFixed(1)} / 5</div>
+            </div>
           </div>
+          <div class="h-1.5 bg-purple-100 rounded-full mb-2">
+            <div class="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all" style="width:${v.mastery/5*100}%"></div>
+          </div>
+          <p class="text-purple-700 text-sm line-clamp-2">${v.text}</p>
+          <div class="flex flex-wrap gap-1 mt-2">${v.tags.map(t=>`<span class="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-600">${t}</span>`).join('')}</div>
         </div>
-        <div class="h-1.5 bg-purple-100 rounded-full mb-2">
-          <div class="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all" style="width:${v.mastery/5*100}%"></div>
+        <div class="flex flex-col gap-2">
+          <button onclick="selectedVerse=${v.id};setScreen('practice')" class="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl flex items-center justify-center text-xl" title="Practice this verse">▶️</button>
+          <button onclick="if(confirm('Delete this verse?'))deleteVerse(${v.id})" class="flex-shrink-0 w-12 h-10 bg-red-100 text-red-500 rounded-xl flex items-center justify-center text-lg" title="Delete verse">🗑️</button>
         </div>
-        <p class="text-purple-700 text-sm line-clamp-2">${v.text}</p>
-        <div class="flex flex-wrap gap-1 mt-2">${v.tags.map(t=>`<span class="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-600">${t}</span>`).join('')}</div>
       </div>
-      <div class="flex flex-col gap-2">
-        <button onclick="selectedVerse=${v.id};setScreen('practice')" class="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl flex items-center justify-center text-xl" title="Practice this verse">▶️</button>
-        <button onclick="if(confirm('Delete this verse?'))deleteVerse(${v.id})" class="flex-shrink-0 w-12 h-10 bg-red-100 text-red-500 rounded-xl flex items-center justify-center text-lg" title="Delete verse">🗑️</button>
+      <div class="flex justify-end mt-2 pt-2 border-t border-purple-100">
+        <button onclick="toggleVerseStatus(${v.id})" class="text-xs px-3 py-1.5 rounded-lg ${isActive?'bg-gray-100 text-gray-600 hover:bg-gray-200':'bg-green-100 text-green-700 hover:bg-green-200'} font-medium">
+          ${isActive?'Store for later':'Practice now'}
+        </button>
       </div>
-    </div>`).join('');
+    </div>`}).join('');
+    const statusTabs=`<div class="flex gap-2 mb-3">
+      <button onclick="verseFilter='active';filterTag=null;render()" class="flex-1 py-2 px-3 rounded-xl font-semibold text-sm ${verseFilter==='active'?'bg-white text-purple-700':'bg-white/20 text-white'}">
+        Practice Now (${activeVerses.length})
+      </button>
+      <button onclick="verseFilter='saved';filterTag=null;render()" class="flex-1 py-2 px-3 rounded-xl font-semibold text-sm ${verseFilter==='saved'?'bg-white text-purple-700':'bg-white/20 text-white'}">
+        Stored (${storedVerses.length})
+      </button>
+    </div>`;
     h=`<div class="p-5 pb-6">
       <div class="flex justify-between items-center mb-4">
         <button onclick="setScreen('home')" class="bg-white/20 text-white font-bold w-10 h-10 rounded-xl flex items-center justify-center text-xl">←</button>
         <h1 class="text-2xl font-bold text-white">My Verses</h1>
         <button onclick="openModal('add')" class="bg-white/20 text-white font-bold py-2 px-4 rounded-xl">+ Add</button>
       </div>
+      ${S.verses.length?statusTabs:''}
       ${usedTags.length?`<div class="mb-4">
         <p class="text-white/80 text-xs mb-2">Filter by tag:</p>
         <div class="flex flex-wrap gap-2">
@@ -6411,7 +6450,7 @@ function render(){
           ${usedTags.map(t=>`<button onclick="filterTag='${t}';render()" class="text-xs px-3 py-1.5 rounded-full ${filterTag===t?'bg-white text-purple-700':'bg-white/20 text-white'}">${t}</button>`).join('')}
         </div>
       </div>`:''}
-      ${S.verses.length?filteredVerses.length?list:'<div class="bg-white/95 rounded-3xl p-8 text-center"><p class="text-4xl mb-4">🔍</p><p class="text-purple-800">No verses with "${filterTag}" tag</p><button onclick="filterTag=null;render()" class="mt-3 text-purple-600 font-semibold">Show All</button></div>':'<div class="bg-white/95 rounded-3xl p-8 text-center"><p class="text-4xl mb-4">📖</p><p class="text-purple-800">No verses yet!</p></div>'}
+      ${S.verses.length?filteredVerses.length?list:`<div class="bg-white/95 rounded-3xl p-8 text-center"><p class="text-4xl mb-4">${filterTag?'🔍':'📚'}</p><p class="text-purple-800">${filterTag?`No verses with "${filterTag}" tag`:verseFilter==='active'?'No verses to practice. Check "Stored" or add new ones!':'No stored verses yet.'}</p>${filterTag?`<button onclick="filterTag=null;render()" class="mt-3 text-purple-600 font-semibold">Show All</button>`:''}</div>`:'<div class="bg-white/95 rounded-3xl p-8 text-center"><p class="text-4xl mb-4">📖</p><p class="text-purple-800">No verses yet!</p></div>'}
     </div>`;
   }
 
@@ -6780,28 +6819,49 @@ function render(){
 
     if(!selectedVerse){
       // Verse selection screen
-      const reviewList=S.verses.filter(needsReview);
+      const activeVerses=S.verses.filter(v=>v.status==='active');
+      const savedVerses=S.verses.filter(v=>v.status==='saved');
+      const reviewList=activeVerses.filter(needsReview);
+      const filteredVerses=verseFilter==='active'?activeVerses:savedVerses;
 
-      const verseList=S.verses.map(v=>{
+      const verseList=filteredVerses.map(v=>{
         const bonus=v.mastery>=5?getReviewBonus(v):0;
         const daysSince=v.lastPracticed?Math.floor((Date.now()-new Date(v.lastPracticed).getTime())/(1000*60*60*24)):null;
-        return`<button onclick="selectVerse(${v.id})" class="w-full bg-white rounded-2xl p-4 mb-3 text-left">
-          <div class="flex justify-between mb-1">
-            <p class="font-bold text-purple-800">${v.ref}</p>
-            <div class="flex gap-2 items-center">
-              ${bonus>0?`<span class="text-xs px-2 py-1 rounded-full bg-green-500 text-white">+${bonus} XP</span>`:''}
-              <div class="text-right">
-                <div class="text-sm">${getStars(v.mastery)}</div>
-                <div class="text-xs text-purple-500 font-semibold">${v.mastery.toFixed(1)}/5</div>
+        const isActive=v.status==='active';
+        return`<div class="w-full bg-white rounded-2xl p-4 mb-3 text-left">
+          <button onclick="selectVerse(${v.id})" class="w-full text-left">
+            <div class="flex justify-between mb-1">
+              <p class="font-bold text-purple-800">${v.ref}</p>
+              <div class="flex gap-2 items-center">
+                ${bonus>0?`<span class="text-xs px-2 py-1 rounded-full bg-green-500 text-white">+${bonus} XP</span>`:''}
+                <div class="text-right">
+                  <div class="text-sm">${getStars(v.mastery)}</div>
+                  <div class="text-xs text-purple-500 font-semibold">${v.mastery.toFixed(1)}/5</div>
+                </div>
               </div>
             </div>
+            <div class="h-1.5 bg-purple-100 rounded-full mb-2">
+              <div class="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all" style="width:${v.mastery/5*100}%"></div>
+            </div>
+            <p class="text-purple-700 text-sm line-clamp-2">${v.text}</p>
+            ${daysSince!==null?`<p class="text-purple-400 text-xs mt-1">Last practiced ${daysSince} day${daysSince!==1?'s':''} ago</p>`:''}
+          </button>
+          <div class="flex justify-end mt-2 pt-2 border-t border-purple-100">
+            <button onclick="event.stopPropagation();toggleVerseStatus(${v.id})" class="text-xs px-3 py-1.5 rounded-lg ${isActive?'bg-gray-100 text-gray-600 hover:bg-gray-200':'bg-green-100 text-green-700 hover:bg-green-200'} font-medium">
+              ${isActive?'Store for later':'Practice now'}
+            </button>
           </div>
-          <div class="h-1.5 bg-purple-100 rounded-full mb-2">
-            <div class="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all" style="width:${v.mastery/5*100}%"></div>
-          </div>
-          <p class="text-purple-700 text-sm line-clamp-2">${v.text}</p>
-          ${daysSince!==null?`<p class="text-purple-400 text-xs mt-1">Last practiced ${daysSince} day${daysSince!==1?'s':''} ago</p>`:''}
-        </button>`}).join('');
+        </div>`}).join('');
+
+      const filterTabs=`<div class="flex gap-2 mb-3">
+        <button onclick="verseFilter='active';render()" class="flex-1 py-2 px-3 rounded-xl font-semibold text-sm ${verseFilter==='active'?'bg-white text-purple-700':'bg-white/20 text-white'}">
+          Practice Now (${activeVerses.length})
+        </button>
+        <button onclick="verseFilter='saved';render()" class="flex-1 py-2 px-3 rounded-xl font-semibold text-sm ${verseFilter==='saved'?'bg-white text-purple-700':'bg-white/20 text-white'}">
+          Stored (${savedVerses.length})
+        </button>
+      </div>`;
+
       h=`<div class="p-5 pb-6">
         ${buddyStatus}
         <div class="flex items-center gap-3 mb-4">
@@ -6812,15 +6872,15 @@ function render(){
           </button>
         </div>
         ${S.verses.length?`
-          ${reviewList.length?`<button onclick="selectVerse('review')" class="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-2xl p-4 mb-4 font-bold flex items-center justify-center gap-2">
+          ${verseFilter==='active'&&reviewList.length?`<button onclick="selectVerse('review')" class="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-2xl p-4 mb-4 font-bold flex items-center justify-center gap-2">
             <span class="text-2xl">📚</span>
             <div class="flex-1 text-left">
               <div>Review Mode</div>
               <div class="text-sm font-normal opacity-90">${reviewList.length} verse${reviewList.length!==1?'s':''} need${reviewList.length===1?'s':''} review</div>
             </div>
           </button>`:''}
-          <p class="text-white/80 text-sm mb-3 text-center">Your verses:</p>
-          ${verseList}`:'<div class="bg-white/95 rounded-3xl p-8 text-center"><p class="text-purple-800">Add verses first!</p></div>'}
+          ${filterTabs}
+          ${filteredVerses.length?verseList:`<div class="bg-white/95 rounded-2xl p-6 text-center"><p class="text-purple-600">${verseFilter==='active'?'No verses to practice. Check "Stored" or add new ones!':'No stored verses yet. Tap "Store for later" on any verse.'}</p></div>`}`:'<div class="bg-white/95 rounded-3xl p-8 text-center"><p class="text-purple-800">Add verses first!</p></div>'}
       </div>`;
     }else{
       // Mode selection screen
@@ -7966,6 +8026,17 @@ function render(){
           <textarea onchange="form.text=this.value" placeholder="Text..." class="w-full border border-purple-200 rounded-xl px-4 py-2 mb-3 h-24 text-sm">${form.text}</textarea>
           <p class="text-xs text-purple-500 mb-2">Tags (up to 3):</p>
           <div class="flex flex-wrap gap-1 mb-4">${TAGS.map(t=>`<button onclick="toggleTag('${t}')" class="text-xs px-2 py-1 rounded-full ${form.tags.includes(t)?'bg-violet-500 text-white':'bg-purple-100 text-purple-600'}">${t}</button>`).join('')}</div>
+          ${isAdd?`<div class="mb-4">
+            <p class="text-xs text-purple-500 mb-2">Add to:</p>
+            <div class="flex gap-2">
+              <button onclick="form.startPracticing=true;render()" class="flex-1 py-2 px-3 rounded-xl text-sm font-medium ${form.startPracticing?'bg-green-100 text-green-700 ring-2 ring-green-400':'bg-gray-100 text-gray-600'}">
+                Practice now
+              </button>
+              <button onclick="form.startPracticing=false;render()" class="flex-1 py-2 px-3 rounded-xl text-sm font-medium ${!form.startPracticing?'bg-amber-100 text-amber-700 ring-2 ring-amber-400':'bg-gray-100 text-gray-600'}">
+                Store for later
+              </button>
+            </div>
+          </div>`:''}
           <div class="flex gap-2">
             ${isEdit?`<button onclick="deleteVerse(${editV?.id})" class="flex-1 py-3 rounded-xl bg-red-100 text-red-600 font-semibold">Delete</button>`:''}
             <button onclick="saveVerse()" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-semibold">${isEdit?'Save':'Add'}</button>
