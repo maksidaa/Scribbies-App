@@ -289,155 +289,9 @@ function renderAdultMystical(variantIndex, level = 1){
       </div>
     `,
 
-    // ===== PEGASUS - Mystical Variant 2 =====
-    // Majestic white winged horse with flowing mane and feathered wings
-    2:`
-      <div style="position:relative;width:280px;height:320px;overflow:visible;animation:pegasus-float 3.5s ease-in-out infinite;">
-        <!-- Cloud wisps at the bottom -->
-        <div style="position:absolute;bottom:10px;left:20px;width:240px;height:50px;z-index:1;">
-          <div style="position:absolute;width:80px;height:35px;background:radial-gradient(ellipse at 50% 60%, rgba(255,255,255,0.9), rgba(230,240,255,0.6), transparent);border-radius:50%;left:0;bottom:0;filter:blur(6px);animation:cloud-drift 4s ease-in-out infinite;"></div>
-          <div style="position:absolute;width:100px;height:40px;background:radial-gradient(ellipse at 50% 60%, rgba(255,255,255,0.85), rgba(220,235,255,0.5), transparent);border-radius:50%;left:70px;bottom:5px;filter:blur(8px);animation:cloud-drift 5s ease-in-out infinite 0.5s;"></div>
-          <div style="position:absolute;width:70px;height:30px;background:radial-gradient(ellipse at 50% 60%, rgba(255,255,255,0.8), rgba(210,230,255,0.4), transparent);border-radius:50%;right:10px;bottom:0;filter:blur(5px);animation:cloud-drift 4.5s ease-in-out infinite 1s;"></div>
-        </div>
-
-        <!-- Ambient sparkles floating around -->
-        <div style="position:absolute;width:6px;height:6px;background:rgba(255,255,255,0.95);border-radius:50%;top:20px;left:50px;box-shadow:0 0 10px rgba(200,220,255,0.9),0 0 20px rgba(180,200,255,0.5);animation:star-rise 3s ease-in-out infinite;"></div>
-        <div style="position:absolute;width:5px;height:5px;background:rgba(220,235,255,0.9);border-radius:50%;top:60px;right:40px;box-shadow:0 0 8px rgba(180,200,255,0.8);animation:star-rise 3.5s ease-in-out infinite 0.5s;"></div>
-        <div style="position:absolute;width:4px;height:4px;background:rgba(200,215,255,0.9);border-radius:50%;top:100px;left:30px;box-shadow:0 0 6px rgba(170,190,255,0.7);animation:star-rise 4s ease-in-out infinite 1s;"></div>
-        <div style="position:absolute;width:5px;height:5px;background:rgba(230,240,255,0.9);border-radius:50%;top:40px;right:60px;box-shadow:0 0 8px rgba(200,220,255,0.8);animation:star-rise 3.2s ease-in-out infinite 0.3s;"></div>
-        <div style="position:absolute;width:4px;height:4px;background:rgba(255,255,255,0.9);border-radius:50%;bottom:80px;left:60px;box-shadow:0 0 6px rgba(180,200,255,0.7);animation:star-rise 3.8s ease-in-out infinite 0.8s;"></div>
-
-        <!-- LEFT WING (spread horizontally like eagle) -->
-        <div style="position:absolute;top:90px;left:-85px;z-index:8;transform-origin:right center;animation:pegasus-wing-left 1.8s ease-in-out infinite;">
-          <!-- Wing structure using CSS divs for horizontal spread -->
-          <div style="position:relative;width:100px;height:80px;">
-            <!-- Primary feathers (longest, at wing tip) - fanning outward -->
-            <div style="position:absolute;width:50px;height:10px;background:linear-gradient(to left, #f8fafc, #e2e8f0, #cbd5e1);border:1.5px solid #94a3b8;border-radius:3px 0 0 3px;top:40px;left:0;transform:rotate(-25deg);transform-origin:right center;box-shadow:inset 2px 1px 3px rgba(255,255,255,0.6);"></div>
-            <div style="position:absolute;width:55px;height:11px;background:linear-gradient(to left, #f8fafc, #e2e8f0, #cbd5e1);border:1.5px solid #94a3b8;border-radius:3px 0 0 3px;top:35px;left:5px;transform:rotate(-18deg);transform-origin:right center;box-shadow:inset 2px 1px 3px rgba(255,255,255,0.6);"></div>
-            <div style="position:absolute;width:60px;height:12px;background:linear-gradient(to left, #ffffff, #f1f5f9, #e2e8f0);border:1.5px solid #94a3b8;border-radius:3px 0 0 3px;top:30px;left:10px;transform:rotate(-10deg);transform-origin:right center;box-shadow:inset 2px 1px 3px rgba(255,255,255,0.6);"></div>
-            <div style="position:absolute;width:62px;height:12px;background:linear-gradient(to left, #ffffff, #f1f5f9, #e2e8f0);border:1.5px solid #94a3b8;border-radius:3px 0 0 3px;top:26px;left:12px;transform:rotate(-3deg);transform-origin:right center;box-shadow:inset 2px 1px 3px rgba(255,255,255,0.6);"></div>
-            <div style="position:absolute;width:60px;height:11px;background:linear-gradient(to left, #ffffff, #f1f5f9, #e2e8f0);border:1.5px solid #94a3b8;border-radius:3px 0 0 3px;top:24px;left:14px;transform:rotate(5deg);transform-origin:right center;box-shadow:inset 2px 1px 3px rgba(255,255,255,0.6);"></div>
-            <div style="position:absolute;width:55px;height:10px;background:linear-gradient(to left, #f8fafc, #e2e8f0, #cbd5e1);border:1.5px solid #94a3b8;border-radius:3px 0 0 3px;top:23px;left:18px;transform:rotate(12deg);transform-origin:right center;box-shadow:inset 2px 1px 3px rgba(255,255,255,0.6);"></div>
-            <div style="position:absolute;width:48px;height:9px;background:linear-gradient(to left, #f8fafc, #e2e8f0, #cbd5e1);border:1.5px solid #94a3b8;border-radius:3px 0 0 3px;top:24px;left:22px;transform:rotate(18deg);transform-origin:right center;box-shadow:inset 2px 1px 3px rgba(255,255,255,0.6);"></div>
-            <!-- Secondary feathers (shorter, near body) -->
-            <div style="position:absolute;width:35px;height:28px;background:radial-gradient(ellipse at 70% 50%, #ffffff, #f1f5f9, #e2e8f0);border:2px solid #94a3b8;border-radius:40% 10% 10% 40%;top:22px;right:0;box-shadow:inset 3px 3px 6px rgba(255,255,255,0.7);"></div>
-            <!-- Highlight -->
-            <div style="position:absolute;width:20px;height:12px;background:rgba(255,255,255,0.5);border-radius:50%;top:28px;right:8px;filter:blur(3px);"></div>
-          </div>
-        </div>
-
-        <!-- RIGHT WING (spread horizontally like eagle, mirrored) -->
-        <div style="position:absolute;top:90px;right:-85px;z-index:8;transform-origin:left center;animation:pegasus-wing-right 1.8s ease-in-out infinite;">
-          <!-- Wing structure using CSS divs for horizontal spread -->
-          <div style="position:relative;width:100px;height:80px;">
-            <!-- Primary feathers (longest, at wing tip) - fanning outward -->
-            <div style="position:absolute;width:50px;height:10px;background:linear-gradient(to right, #f8fafc, #e2e8f0, #cbd5e1);border:1.5px solid #94a3b8;border-radius:0 3px 3px 0;top:40px;right:0;transform:rotate(25deg);transform-origin:left center;box-shadow:inset -2px 1px 3px rgba(255,255,255,0.6);"></div>
-            <div style="position:absolute;width:55px;height:11px;background:linear-gradient(to right, #f8fafc, #e2e8f0, #cbd5e1);border:1.5px solid #94a3b8;border-radius:0 3px 3px 0;top:35px;right:5px;transform:rotate(18deg);transform-origin:left center;box-shadow:inset -2px 1px 3px rgba(255,255,255,0.6);"></div>
-            <div style="position:absolute;width:60px;height:12px;background:linear-gradient(to right, #ffffff, #f1f5f9, #e2e8f0);border:1.5px solid #94a3b8;border-radius:0 3px 3px 0;top:30px;right:10px;transform:rotate(10deg);transform-origin:left center;box-shadow:inset -2px 1px 3px rgba(255,255,255,0.6);"></div>
-            <div style="position:absolute;width:62px;height:12px;background:linear-gradient(to right, #ffffff, #f1f5f9, #e2e8f0);border:1.5px solid #94a3b8;border-radius:0 3px 3px 0;top:26px;right:12px;transform:rotate(3deg);transform-origin:left center;box-shadow:inset -2px 1px 3px rgba(255,255,255,0.6);"></div>
-            <div style="position:absolute;width:60px;height:11px;background:linear-gradient(to right, #ffffff, #f1f5f9, #e2e8f0);border:1.5px solid #94a3b8;border-radius:0 3px 3px 0;top:24px;right:14px;transform:rotate(-5deg);transform-origin:left center;box-shadow:inset -2px 1px 3px rgba(255,255,255,0.6);"></div>
-            <div style="position:absolute;width:55px;height:10px;background:linear-gradient(to right, #f8fafc, #e2e8f0, #cbd5e1);border:1.5px solid #94a3b8;border-radius:0 3px 3px 0;top:23px;right:18px;transform:rotate(-12deg);transform-origin:left center;box-shadow:inset -2px 1px 3px rgba(255,255,255,0.6);"></div>
-            <div style="position:absolute;width:48px;height:9px;background:linear-gradient(to right, #f8fafc, #e2e8f0, #cbd5e1);border:1.5px solid #94a3b8;border-radius:0 3px 3px 0;top:24px;right:22px;transform:rotate(-18deg);transform-origin:left center;box-shadow:inset -2px 1px 3px rgba(255,255,255,0.6);"></div>
-            <!-- Secondary feathers (shorter, near body) -->
-            <div style="position:absolute;width:35px;height:28px;background:radial-gradient(ellipse at 30% 50%, #ffffff, #f1f5f9, #e2e8f0);border:2px solid #94a3b8;border-radius:10% 40% 40% 10%;top:22px;left:0;box-shadow:inset -3px 3px 6px rgba(255,255,255,0.7);"></div>
-            <!-- Highlight -->
-            <div style="position:absolute;width:20px;height:12px;background:rgba(255,255,255,0.5);border-radius:50%;top:28px;left:8px;filter:blur(3px);"></div>
-          </div>
-        </div>
-
-        <!-- EARS (z-index 30) -->
-        <div style="position:absolute;width:22px;height:36px;background:radial-gradient(ellipse at 40% 30%, #ffffff, #f8fafc, #f1f5f9);border:3px solid #cbd5e1;border-radius:50% 50% 10% 10% / 80% 80% 20% 20%;top:8px;left:102px;z-index:30;box-shadow:inset 3px 3px 8px rgba(255,255,255,0.9),inset -2px -2px 5px rgba(148,163,184,0.2);animation:ear-twitch-l 4s ease-in-out infinite;transform-origin:bottom center;">
-          <div style="position:absolute;width:10px;height:20px;background:radial-gradient(ellipse, #fce7f3, #fbcfe8);border-radius:50% 50% 20% 20%;bottom:4px;left:50%;transform:translateX(-50%);opacity:0.6;"></div>
-        </div>
-        <div style="position:absolute;width:22px;height:36px;background:radial-gradient(ellipse at 60% 30%, #ffffff, #f8fafc, #f1f5f9);border:3px solid #cbd5e1;border-radius:50% 50% 10% 10% / 80% 80% 20% 20%;top:8px;right:102px;z-index:30;box-shadow:inset 3px 3px 8px rgba(255,255,255,0.9),inset -2px -2px 5px rgba(148,163,184,0.2);animation:ear-twitch-r 4.5s ease-in-out infinite;transform-origin:bottom center;">
-          <div style="position:absolute;width:10px;height:20px;background:radial-gradient(ellipse, #fce7f3, #fbcfe8);border-radius:50% 50% 20% 20%;bottom:4px;left:50%;transform:translateX(-50%);opacity:0.6;"></div>
-        </div>
-
-        <!-- TAIL (flowing silver-blue mane) -->
-        <div style="position:absolute;width:35px;height:90px;background:linear-gradient(180deg, #e2e8f0 0%, #cbd5e1 30%, #a5b4c4 60%, #94a3b8 100%);border:3px solid #64748b;border-radius:15px 50px 50px 50px;top:145px;right:55px;z-index:5;transform-origin:top center;animation:pegasus-tail-flow 2.5s ease-in-out infinite;box-shadow:inset 3px 3px 10px rgba(255,255,255,0.6),inset -2px -2px 8px rgba(100,116,139,0.2);">
-          <div style="position:absolute;width:12px;height:45px;background:rgba(255,255,255,0.4);border-radius:50%;top:10px;left:8px;filter:blur(3px);"></div>
-        </div>
-        <!-- Extra tail wisps -->
-        <div style="position:absolute;width:20px;height:70px;background:linear-gradient(180deg, #cbd5e1 0%, #94a3b8 100%);border:2px solid #64748b;border-radius:10px 40px 40px 40px;top:160px;right:45px;z-index:4;transform-origin:top center;animation:pegasus-tail-flow 2.8s ease-in-out infinite 0.2s;opacity:0.8;"></div>
-
-        <!-- BACK LEGS (z-index 15) -->
-        <div style="position:absolute;width:26px;height:70px;background:radial-gradient(ellipse at 50% 30%, #f8fafc, #f1f5f9);border:3px solid #cbd5e1;border-radius:8px 8px 10px 10px;top:188px;left:108px;z-index:15;box-shadow:inset 2px 2px 6px rgba(255,255,255,0.7),inset -2px -2px 4px rgba(148,163,184,0.2);">
-          <div style="position:absolute;bottom:-2px;width:100%;height:18px;background:linear-gradient(180deg, #e2e8f0 0%, #cbd5e1 50%, #94a3b8 100%);border-radius:0 0 8px 8px;box-shadow:inset 2px 2px 4px rgba(255,255,255,0.5);"></div>
-        </div>
-        <div style="position:absolute;width:26px;height:70px;background:radial-gradient(ellipse at 50% 30%, #f8fafc, #f1f5f9);border:3px solid #cbd5e1;border-radius:8px 8px 10px 10px;top:188px;left:168px;z-index:15;box-shadow:inset 2px 2px 6px rgba(255,255,255,0.7),inset -2px -2px 4px rgba(148,163,184,0.2);">
-          <div style="position:absolute;bottom:-2px;width:100%;height:18px;background:linear-gradient(180deg, #e2e8f0 0%, #cbd5e1 50%, #94a3b8 100%);border-radius:0 0 8px 8px;box-shadow:inset 2px 2px 4px rgba(255,255,255,0.5);"></div>
-        </div>
-
-        <!-- NECK with flowing mane (z-index 21) -->
-        <div style="position:absolute;width:45px;height:60px;background:radial-gradient(ellipse at 35% 30%, #ffffff 0%, #f8fafc 40%, #f1f5f9 100%);border-left:4px solid #cbd5e1;border-right:4px solid #cbd5e1;clip-path:polygon(15% 0%, 85% 0%, 100% 100%, 0% 100%);top:95px;left:118px;z-index:21;box-shadow:inset 5px 5px 12px rgba(255,255,255,0.8),inset -4px -4px 10px rgba(148,163,184,0.2);overflow:visible;">
-          <div style="position:absolute;width:8px;height:35px;background:rgba(255,255,255,0.4);border-radius:50%;top:10px;left:8px;filter:blur(3px);"></div>
-          <!-- Flowing silver mane strands down neck -->
-          <div style="position:absolute;left:-10px;top:5px;width:16px;height:50px;background:linear-gradient(180deg, #e2e8f0, #cbd5e1, #a5b4c4, #94a3b8);border-radius:40% 10% 60% 40%;z-index:22;animation:mane-flow 2s ease-in-out infinite;box-shadow:inset 2px 2px 5px rgba(255,255,255,0.5);"></div>
-          <div style="position:absolute;left:-6px;top:12px;width:12px;height:42px;background:linear-gradient(180deg, #cbd5e1, #a5b4c4, #94a3b8, #64748b);border-radius:40% 10% 60% 40%;z-index:23;animation:mane-flow 2.2s ease-in-out infinite 0.2s;box-shadow:inset 2px 2px 5px rgba(255,255,255,0.5);"></div>
-          <div style="position:absolute;left:-2px;top:20px;width:10px;height:35px;background:linear-gradient(180deg, #a5b4c4, #94a3b8, #64748b, #475569);border-radius:40% 10% 60% 40%;z-index:24;animation:mane-flow 1.8s ease-in-out infinite 0.4s;box-shadow:inset 2px 2px 5px rgba(255,255,255,0.5);"></div>
-        </div>
-
-        <!-- BODY with iridescent shimmer (z-index 20) -->
-        <div style="position:absolute;width:125px;height:95px;background:radial-gradient(ellipse at 38% 28%, #ffffff 0%, #fafafa 35%, #f5f5f5 70%, #f1f5f9 100%);border:4px solid #cbd5e1;border-radius:60px 70px 55px 55px;top:130px;left:78px;z-index:20;box-shadow:inset 10px 10px 25px rgba(255,255,255,0.9),inset -6px -6px 15px rgba(148,163,184,0.2);overflow:hidden;">
-          <div style="position:absolute;width:40px;height:28px;background:rgba(255,255,255,0.7);border-radius:50%;top:10px;left:18px;filter:blur(6px);"></div>
-          <div style="position:absolute;width:20px;height:14px;background:rgba(255,255,255,0.5);border-radius:50%;top:25px;right:22px;filter:blur(4px);"></div>
-          <!-- Iridescent shimmer overlay -->
-          <div style="position:absolute;top:0;left:-100%;width:300%;height:100%;background:linear-gradient(90deg, transparent 0%, rgba(200,220,255,0.15) 20%, rgba(220,200,255,0.15) 40%, rgba(200,255,220,0.1) 60%, rgba(255,220,200,0.1) 80%, transparent 100%);animation:iridescent-shimmer 4s ease-in-out infinite;"></div>
-        </div>
-
-        <!-- FRONT LEGS (z-index 25) -->
-        <div style="position:absolute;width:26px;height:70px;background:radial-gradient(ellipse at 40% 30%, #ffffff, #f8fafc, #f1f5f9);border:3px solid #cbd5e1;border-radius:8px 8px 10px 10px;top:195px;left:88px;z-index:25;box-shadow:inset 3px 3px 8px rgba(255,255,255,0.8),inset -2px -2px 5px rgba(148,163,184,0.2);animation:pegasus-prance-left 1.5s ease-in-out infinite;">
-          <div style="position:absolute;width:3px;height:28px;background:rgba(255,255,255,0.4);border-radius:2px;top:8px;left:6px;filter:blur(1px);"></div>
-          <div style="position:absolute;bottom:-2px;width:100%;height:18px;background:linear-gradient(180deg, #e2e8f0 0%, #cbd5e1 50%, #94a3b8 100%);border-radius:0 0 8px 8px;box-shadow:inset 2px 2px 4px rgba(255,255,255,0.5);"></div>
-        </div>
-        <div style="position:absolute;width:26px;height:70px;background:radial-gradient(ellipse at 40% 30%, #ffffff, #f8fafc, #f1f5f9);border:3px solid #cbd5e1;border-radius:8px 8px 10px 10px;top:195px;left:158px;z-index:25;box-shadow:inset 3px 3px 8px rgba(255,255,255,0.8),inset -2px -2px 5px rgba(148,163,184,0.2);animation:pegasus-prance-right 1.5s ease-in-out infinite;">
-          <div style="position:absolute;width:3px;height:28px;background:rgba(255,255,255,0.4);border-radius:2px;top:8px;left:6px;filter:blur(1px);"></div>
-          <div style="position:absolute;bottom:-2px;width:100%;height:18px;background:linear-gradient(180deg, #e2e8f0 0%, #cbd5e1 50%, #94a3b8 100%);border-radius:0 0 8px 8px;box-shadow:inset 2px 2px 4px rgba(255,255,255,0.5);"></div>
-        </div>
-
-        <!-- HEAD (z-index 40) -->
-        <div style="position:absolute;width:90px;height:105px;background:radial-gradient(ellipse at 38% 28%, #ffffff 0%, #fafafa 35%, #f5f5f5 70%, #f1f5f9 100%);border:4px solid #cbd5e1;border-radius:50% 50% 45% 45% / 40% 40% 60% 60%;top:18px;left:95px;z-index:40;box-shadow:inset 8px 8px 20px rgba(255,255,255,0.9),inset -5px -5px 12px rgba(148,163,184,0.2);overflow:visible;">
-          <!-- Head highlight -->
-          <div style="position:absolute;width:28px;height:20px;background:rgba(255,255,255,0.7);border-radius:50%;top:8px;left:14px;filter:blur(5px);"></div>
-
-          <!-- Silver mane tuft (no horn - this is Pegasus not unicorn) -->
-          <div style="position:absolute;width:50px;height:35px;background:linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 30%, #cbd5e1 60%, #94a3b8 100%);border:2px solid #64748b;border-radius:50% 50% 30% 30%;top:-10px;left:50%;transform:translateX(-50%);z-index:45;box-shadow:inset 2px 2px 8px rgba(255,255,255,0.6);animation:mane-flow 2s ease-in-out infinite;"></div>
-
-          <!-- Eyes with gentle expression -->
-          <div style="display:flex;gap:30px;margin-top:30px;justify-content:center;">
-            <div style="width:15px;height:18px;background:radial-gradient(circle at 35% 35%, #60a5fa, #3b82f6, #1d4ed8);border-radius:50%;position:relative;animation:pegasus-blink 4s infinite;box-shadow:0 0 12px rgba(59,130,246,0.4),0 0 20px rgba(59,130,246,0.2);">
-              <div style="position:absolute;width:9px;height:11px;background:radial-gradient(circle at 40% 40%, #1e40af, #1e3a8a);border-radius:50%;top:4px;left:3px;animation:eye-look 6s ease-in-out infinite;"></div>
-              <div style="position:absolute;width:5px;height:5px;background:white;border-radius:50%;top:3px;left:3px;animation:eye-sparkle 2s ease-in-out infinite;"></div>
-              <div style="position:absolute;width:3px;height:3px;background:white;border-radius:50%;bottom:4px;right:3px;opacity:0.7;"></div>
-            </div>
-            <div style="width:15px;height:18px;background:radial-gradient(circle at 35% 35%, #60a5fa, #3b82f6, #1d4ed8);border-radius:50%;position:relative;animation:pegasus-blink 4s infinite;box-shadow:0 0 12px rgba(59,130,246,0.4),0 0 20px rgba(59,130,246,0.2);">
-              <div style="position:absolute;width:9px;height:11px;background:radial-gradient(circle at 40% 40%, #1e40af, #1e3a8a);border-radius:50%;top:4px;left:3px;animation:eye-look 6s ease-in-out infinite;"></div>
-              <div style="position:absolute;width:5px;height:5px;background:white;border-radius:50%;top:3px;left:3px;animation:eye-sparkle 2s ease-in-out infinite;"></div>
-              <div style="position:absolute;width:3px;height:3px;background:white;border-radius:50%;bottom:4px;right:3px;opacity:0.7;"></div>
-            </div>
-          </div>
-
-          <!-- Muzzle -->
-          <div style="position:absolute;bottom:0;width:100%;height:50px;background:radial-gradient(ellipse at 50% 40%, #ffffff, #fafafa, #f5f5f5);border-top:3px solid #cbd5e1;border-radius:0 0 50% 50% / 0 0 80% 80%;box-shadow:inset 4px 4px 10px rgba(255,255,255,0.7),inset -3px -3px 8px rgba(148,163,184,0.15);">
-            <!-- Nostrils -->
-            <div style="position:absolute;width:8px;height:10px;background:radial-gradient(ellipse, #e2e8f0, #cbd5e1);border-radius:50%;bottom:22px;left:24px;transform:rotate(15deg);opacity:0.5;"></div>
-            <div style="position:absolute;width:8px;height:10px;background:radial-gradient(ellipse, #e2e8f0, #cbd5e1);border-radius:50%;bottom:22px;right:24px;transform:rotate(-15deg);opacity:0.5;"></div>
-            <!-- Mouth -->
-            <div style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);width:28px;height:7px;border-bottom:3px solid #cbd5e1;border-radius:50%;"></div>
-          </div>
-
-          <!-- Blush -->
-          <div style="position:absolute;top:62px;width:100%;display:flex;justify-content:space-around;padding:0 12px;">
-            <div style="width:18px;height:9px;background:radial-gradient(ellipse, #fce7f3, transparent);border-radius:50%;opacity:0.5;filter:blur(1px);"></div>
-            <div style="width:18px;height:9px;background:radial-gradient(ellipse, #fce7f3, transparent);border-radius:50%;opacity:0.5;filter:blur(1px);"></div>
-          </div>
-        </div>
-      </div>
-    `,
-
-    // ===== KITSUNE - Mystical Variant 3 =====
+    // ===== KITSUNE - Mystical Variant 2 =====
     // Blue/white mystical fox with 9 large fluffy blue/white magical tails
-    3:`
+    2:`
       <style>
       @keyframes kitsune-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
       @keyframes kitsune-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
@@ -588,8 +442,8 @@ function renderAdultMystical(variantIndex, level = 1){
       </div>
     `,
 
-    // ===== MANEKI-NEKO (Lucky Cat) - Mystical Variant 4 =====
-    4:`
+    // ===== MANEKI-NEKO (Lucky Cat) - Mystical Variant 3 =====
+    3:`
       <style>
         @keyframes maneki-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
         @keyframes maneki-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
@@ -657,8 +511,8 @@ function renderAdultMystical(variantIndex, level = 1){
       </div>
     `,
 
-    // ===== TANUKI - Mystical Variant 5 =====
-    5:`
+    // ===== TANUKI - Mystical Variant 4 =====
+    4:`
       <style>
         @keyframes tanuki-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
         @keyframes tanuki-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}

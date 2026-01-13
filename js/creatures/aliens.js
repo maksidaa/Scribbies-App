@@ -2,8 +2,8 @@ function renderAdultAlien(variantIndex){
   const variant = variantIndex !== undefined ? variantIndex : (S.creatureVariant || 0);
   const shadowHTML = '<div class="adult-shadow"></div>';
 
-  // Flying Eye (Ophanim) - variant 10
-  if(variant === 10){
+  // Flying Eye (Ophanim) - variant 1
+  if(variant === 1){
     const flyingEyeDesign = `
 <!-- FLYING EYE (OPHANIM) - Biblical Creature with Orbital Eye Rings -->
 <style>
@@ -98,6 +98,234 @@ function renderAdultAlien(variantIndex){
 </div>
     `;
     return '<div style="position:relative;">' + flyingEyeDesign + shadowHTML + '</div>';
+  }
+
+  // Chimera Alien - variant 2 (insect/reptile hybrid)
+  if(variant === 2){
+    const chimeraDesign = `
+<!-- CHIMERA ALIEN - Wild Insect/Reptile Hybrid -->
+<div data-part="container" style="position:relative;width:240px;height:285px;animation:chimera-hover 2s ease-in-out infinite;">
+
+  <!-- DRAGONFLY WINGS (behind body) -->
+  <!-- Left wing pair -->
+  <div style="position:absolute;top:60px;left:15px;z-index:5;transform-origin:right center;animation:chimera-wing-left 0.15s ease-in-out infinite;">
+    <div style="width:70px;height:25px;background:linear-gradient(135deg,rgba(100,200,255,0.4),rgba(150,255,200,0.3),rgba(200,150,255,0.4));border:2px solid rgba(100,180,200,0.6);border-radius:50% 10% 50% 10%;box-shadow:0 0 10px rgba(100,200,255,0.4);backdrop-filter:blur(1px);">
+      <div style="position:absolute;width:90%;height:1px;background:rgba(100,200,200,0.5);top:50%;left:5%;"></div>
+      <div style="position:absolute;width:1px;height:80%;background:rgba(100,200,200,0.4);top:10%;left:30%;"></div>
+      <div style="position:absolute;width:1px;height:80%;background:rgba(100,200,200,0.4);top:10%;left:60%;"></div>
+    </div>
+  </div>
+  <div style="position:absolute;top:80px;left:20px;z-index:4;transform-origin:right center;animation:chimera-wing-left 0.15s ease-in-out infinite 0.05s;">
+    <div style="width:60px;height:20px;background:linear-gradient(135deg,rgba(150,255,200,0.35),rgba(100,200,255,0.3));border:2px solid rgba(100,180,200,0.5);border-radius:50% 10% 50% 10%;box-shadow:0 0 8px rgba(150,255,200,0.3);"></div>
+  </div>
+  <!-- Right wing pair -->
+  <div style="position:absolute;top:60px;right:15px;z-index:5;transform-origin:left center;animation:chimera-wing-right 0.15s ease-in-out infinite;">
+    <div style="width:70px;height:25px;background:linear-gradient(225deg,rgba(100,200,255,0.4),rgba(150,255,200,0.3),rgba(200,150,255,0.4));border:2px solid rgba(100,180,200,0.6);border-radius:10% 50% 10% 50%;box-shadow:0 0 10px rgba(100,200,255,0.4);backdrop-filter:blur(1px);">
+      <div style="position:absolute;width:90%;height:1px;background:rgba(100,200,200,0.5);top:50%;left:5%;"></div>
+      <div style="position:absolute;width:1px;height:80%;background:rgba(100,200,200,0.4);top:10%;left:40%;"></div>
+      <div style="position:absolute;width:1px;height:80%;background:rgba(100,200,200,0.4);top:10%;left:70%;"></div>
+    </div>
+  </div>
+  <div style="position:absolute;top:80px;right:20px;z-index:4;transform-origin:left center;animation:chimera-wing-right 0.15s ease-in-out infinite 0.05s;">
+    <div style="width:60px;height:20px;background:linear-gradient(225deg,rgba(150,255,200,0.35),rgba(100,200,255,0.3));border:2px solid rgba(100,180,200,0.5);border-radius:10% 50% 10% 50%;box-shadow:0 0 8px rgba(150,255,200,0.3);"></div>
+  </div>
+
+  <!-- SNAKE TAIL with rattle -->
+  <div style="position:absolute;top:135px;left:-10px;z-index:8;transform-origin:right center;animation:chimera-tail 3s ease-in-out infinite;">
+    <!-- Tail segments -->
+    <svg width="80" height="50" viewBox="0 0 100 60" style="overflow:visible;">
+      <path d="M 95,40 Q 60,20 30,35 Q 10,45 -5,30" fill="none" stroke="url(#tailGrad)" stroke-width="18" stroke-linecap="round"/>
+      <defs>
+        <linearGradient id="tailGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#10b981"/>
+          <stop offset="50%" style="stop-color:#059669"/>
+          <stop offset="100%" style="stop-color:#047857"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <!-- Scale pattern overlay -->
+    <div style="position:absolute;top:17px;left:10px;width:60px;height:20px;background:repeating-linear-gradient(90deg,rgba(0,0,0,0.1) 0px,rgba(0,0,0,0.1) 5px,transparent 5px,transparent 10px);border-radius:10px;"></div>
+    <!-- Rattle -->
+    <div style="position:absolute;top:15px;left:-15px;transform-origin:right center;animation:chimera-rattle 2s ease-in-out infinite;">
+      <div style="width:12px;height:10px;background:linear-gradient(#fbbf24,#d97706);border:2px solid #92400e;border-radius:3px;"></div>
+      <div style="width:10px;height:8px;background:linear-gradient(#fcd34d,#f59e0b);border:2px solid #b45309;border-radius:3px;position:absolute;left:-8px;top:1px;"></div>
+      <div style="width:8px;height:6px;background:linear-gradient(#fde68a,#fbbf24);border:2px solid #d97706;border-radius:3px;position:absolute;left:-14px;top:2px;"></div>
+    </div>
+  </div>
+
+  <!-- BEETLE SHELL/CARAPACE (body) -->
+  <div style="position:absolute;width:100px;height:80px;top:85px;left:70px;z-index:20;animation:chimera-shell-shimmer 4s ease-in-out infinite;">
+    <!-- Main shell -->
+    <div style="width:100%;height:100%;background:radial-gradient(ellipse at 35% 25%,#6ee7b7,#10b981 30%,#059669 60%,#047857);border:4px solid #065f46;border-radius:50% 50% 40% 40% / 60% 60% 40% 40%;box-shadow:inset 8px 8px 20px rgba(167,243,208,0.4),inset -5px -5px 15px rgba(4,120,87,0.4),0 0 20px rgba(16,185,129,0.3);">
+      <!-- Shell segments -->
+      <div style="position:absolute;width:2px;height:70%;background:linear-gradient(to bottom,transparent,rgba(0,0,0,0.2),transparent);top:15%;left:50%;"></div>
+      <!-- Iridescent spots -->
+      <div style="position:absolute;width:15px;height:12px;background:radial-gradient(ellipse,rgba(147,51,234,0.6),rgba(59,130,246,0.4));border-radius:50%;top:15px;left:15px;box-shadow:0 0 8px rgba(147,51,234,0.5);"></div>
+      <div style="position:absolute;width:12px;height:10px;background:radial-gradient(ellipse,rgba(59,130,246,0.6),rgba(16,185,129,0.4));border-radius:50%;top:20px;right:18px;box-shadow:0 0 6px rgba(59,130,246,0.5);"></div>
+      <div style="position:absolute;width:18px;height:14px;background:radial-gradient(ellipse,rgba(236,72,153,0.5),rgba(147,51,234,0.3));border-radius:50%;top:40px;left:25px;box-shadow:0 0 10px rgba(236,72,153,0.4);"></div>
+      <div style="position:absolute;width:10px;height:8px;background:radial-gradient(ellipse,rgba(14,165,233,0.6),rgba(6,182,212,0.4));border-radius:50%;top:45px;right:25px;box-shadow:0 0 6px rgba(14,165,233,0.5);"></div>
+    </div>
+    <!-- Belly -->
+    <div style="position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);width:70px;height:35px;background:radial-gradient(ellipse,#fef3c7,#fde68a);border:3px solid #d97706;border-radius:50%;z-index:19;"></div>
+  </div>
+
+  <!-- MANTIS FOREARMS -->
+  <!-- Left mantis arm -->
+  <div style="position:absolute;top:100px;left:45px;z-index:25;transform-origin:top right;animation:chimera-mantis-left 3s ease-in-out infinite;">
+    <!-- Upper arm -->
+    <div style="width:35px;height:14px;background:linear-gradient(to bottom,#34d399,#10b981,#059669);border:3px solid #065f46;border-radius:8px;transform:rotate(20deg);">
+      <!-- Spikes -->
+      <div style="position:absolute;width:4px;height:6px;background:#047857;clip-path:polygon(50% 0%,0% 100%,100% 100%);top:-5px;left:8px;"></div>
+      <div style="position:absolute;width:4px;height:6px;background:#047857;clip-path:polygon(50% 0%,0% 100%,100% 100%);top:-5px;left:18px;"></div>
+    </div>
+    <!-- Claw segment -->
+    <div style="position:absolute;top:8px;left:-20px;width:25px;height:10px;background:linear-gradient(to bottom,#6ee7b7,#34d399);border:2px solid #065f46;border-radius:5px;transform:rotate(-40deg);">
+      <!-- Hook claw -->
+      <div style="position:absolute;left:-8px;top:0;width:12px;height:8px;background:#059669;border:2px solid #065f46;clip-path:polygon(100% 0%,100% 100%,0% 50%);"></div>
+    </div>
+  </div>
+  <!-- Right mantis arm -->
+  <div style="position:absolute;top:100px;right:45px;z-index:25;transform-origin:top left;animation:chimera-mantis-right 3s ease-in-out infinite;">
+    <div style="width:35px;height:14px;background:linear-gradient(to bottom,#34d399,#10b981,#059669);border:3px solid #065f46;border-radius:8px;transform:rotate(-20deg);">
+      <div style="position:absolute;width:4px;height:6px;background:#047857;clip-path:polygon(50% 0%,0% 100%,100% 100%);top:-5px;right:8px;"></div>
+      <div style="position:absolute;width:4px;height:6px;background:#047857;clip-path:polygon(50% 0%,0% 100%,100% 100%);top:-5px;right:18px;"></div>
+    </div>
+    <div style="position:absolute;top:8px;right:-20px;width:25px;height:10px;background:linear-gradient(to bottom,#6ee7b7,#34d399);border:2px solid #065f46;border-radius:5px;transform:rotate(40deg);">
+      <div style="position:absolute;right:-8px;top:0;width:12px;height:8px;background:#059669;border:2px solid #065f46;clip-path:polygon(0% 0%,0% 100%,100% 50%);"></div>
+    </div>
+  </div>
+
+  <!-- ABDOMEN/LOWER BODY (connects shell to legs and tail) -->
+  <div style="position:absolute;width:90px;height:50px;top:143px;left:74px;z-index:18;">
+    <!-- Main abdomen -->
+    <div style="width:100%;height:100%;background:radial-gradient(ellipse at 50% 30%,#34d399,#10b981,#059669);border:4px solid #065f46;border-radius:40% 40% 50% 50% / 30% 30% 70% 70%;box-shadow:inset 5px 5px 15px rgba(167,243,208,0.3);">
+      <!-- Segment lines -->
+      <div style="position:absolute;width:80%;height:2px;background:rgba(6,95,70,0.4);top:35%;left:10%;border-radius:2px;"></div>
+      <div style="position:absolute;width:70%;height:2px;background:rgba(6,95,70,0.4);top:60%;left:15%;border-radius:2px;"></div>
+    </div>
+  </div>
+  <!-- Tail connection point -->
+  <div style="position:absolute;width:30px;height:25px;top:151px;left:52px;z-index:17;background:radial-gradient(ellipse,#10b981,#059669);border:3px solid #065f46;border-radius:50% 20% 20% 50%;"></div>
+
+  <!-- GECKO LEGS (4 legs with suction pads) -->
+  <!-- Back left - attached to abdomen -->
+  <div style="position:absolute;top:172px;left:71px;z-index:15;transform-origin:top center;animation:chimera-leg-walk 0.8s ease-in-out infinite;">
+    <div style="width:12px;height:45px;background:linear-gradient(to right,#059669,#10b981,#059669);border:2px solid #065f46;border-radius:6px;">
+      <!-- Gecko foot with toe pads -->
+      <div style="position:absolute;bottom:-8px;left:-6px;width:24px;height:12px;display:flex;gap:2px;justify-content:center;">
+        <div style="width:6px;height:10px;background:radial-gradient(ellipse,#fcd34d,#f59e0b);border:1px solid #d97706;border-radius:50%;"></div>
+        <div style="width:6px;height:12px;background:radial-gradient(ellipse,#fcd34d,#f59e0b);border:1px solid #d97706;border-radius:50%;"></div>
+        <div style="width:6px;height:10px;background:radial-gradient(ellipse,#fcd34d,#f59e0b);border:1px solid #d97706;border-radius:50%;"></div>
+      </div>
+    </div>
+  </div>
+  <!-- Back right -->
+  <div style="position:absolute;top:167px;left:151px;z-index:15;transform-origin:top center;animation:chimera-leg-walk 0.8s ease-in-out 0.4s infinite;">
+    <div style="width:12px;height:45px;background:linear-gradient(to right,#059669,#10b981,#059669);border:2px solid #065f46;border-radius:6px;">
+      <div style="position:absolute;bottom:-8px;left:-6px;width:24px;height:12px;display:flex;gap:2px;justify-content:center;">
+        <div style="width:6px;height:10px;background:radial-gradient(ellipse,#fcd34d,#f59e0b);border:1px solid #d97706;border-radius:50%;"></div>
+        <div style="width:6px;height:12px;background:radial-gradient(ellipse,#fcd34d,#f59e0b);border:1px solid #d97706;border-radius:50%;"></div>
+        <div style="width:6px;height:10px;background:radial-gradient(ellipse,#fcd34d,#f59e0b);border:1px solid #d97706;border-radius:50%;"></div>
+      </div>
+    </div>
+  </div>
+  <!-- Front left - attached to lower shell -->
+  <div style="position:absolute;top:180px;left:87px;z-index:16;transform-origin:top center;animation:chimera-leg-walk 0.8s ease-in-out 0.2s infinite;">
+    <div style="width:10px;height:40px;background:linear-gradient(to right,#059669,#10b981,#059669);border:2px solid #065f46;border-radius:5px;">
+      <div style="position:absolute;bottom:-6px;left:-5px;width:20px;height:10px;display:flex;gap:2px;justify-content:center;">
+        <div style="width:5px;height:8px;background:radial-gradient(ellipse,#fcd34d,#f59e0b);border:1px solid #d97706;border-radius:50%;"></div>
+        <div style="width:5px;height:10px;background:radial-gradient(ellipse,#fcd34d,#f59e0b);border:1px solid #d97706;border-radius:50%;"></div>
+        <div style="width:5px;height:8px;background:radial-gradient(ellipse,#fcd34d,#f59e0b);border:1px solid #d97706;border-radius:50%;"></div>
+      </div>
+    </div>
+  </div>
+  <!-- Front right -->
+  <div style="position:absolute;top:182px;left:139px;z-index:16;transform-origin:top center;transform:rotate(-23deg);animation:chimera-leg-walk 0.8s ease-in-out 0.6s infinite;">
+    <div style="width:10px;height:40px;background:linear-gradient(to right,#059669,#10b981,#059669);border:2px solid #065f46;border-radius:5px;">
+      <div style="position:absolute;bottom:-6px;left:-5px;width:20px;height:10px;display:flex;gap:2px;justify-content:center;">
+        <div style="width:5px;height:8px;background:radial-gradient(ellipse,#fcd34d,#f59e0b);border:1px solid #d97706;border-radius:50%;"></div>
+        <div style="width:5px;height:10px;background:radial-gradient(ellipse,#fcd34d,#f59e0b);border:1px solid #d97706;border-radius:50%;"></div>
+        <div style="width:5px;height:8px;background:radial-gradient(ellipse,#fcd34d,#f59e0b);border:1px solid #d97706;border-radius:50%;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEAD with compound eyes -->
+  <div style="position:absolute;width:90px;height:70px;top:25px;left:75px;z-index:30;">
+    <!-- Main head -->
+    <div style="width:100%;height:100%;background:radial-gradient(ellipse at 35% 30%,#6ee7b7,#34d399,#10b981,#059669);border:4px solid #065f46;border-radius:50% 50% 40% 40% / 60% 60% 50% 50%;box-shadow:inset 5px 5px 15px rgba(167,243,208,0.4),0 0 15px rgba(16,185,129,0.3);">
+      <!-- Reptile scale texture -->
+      <div style="position:absolute;width:80%;height:60%;top:10%;left:10%;background:repeating-radial-gradient(circle at 50% 50%,transparent 0px,transparent 3px,rgba(0,0,0,0.05) 3px,rgba(0,0,0,0.05) 4px);border-radius:50%;"></div>
+    </div>
+
+    <!-- COMPOUND EYES (3 pairs!) -->
+    <!-- Main eyes -->
+    <div style="position:absolute;top:18px;left:8px;width:28px;height:32px;background:radial-gradient(ellipse,#1f2937,#0f172a);border:3px solid #065f46;border-radius:40% 60% 60% 40%;overflow:hidden;box-shadow:0 0 10px rgba(239,68,68,0.4);">
+      <!-- Compound eye facets -->
+      <div style="position:absolute;width:100%;height:100%;background:repeating-conic-gradient(from 0deg,rgba(239,68,68,0.3) 0deg 20deg,rgba(249,115,22,0.3) 20deg 40deg);"></div>
+      <!-- Glowing pupil -->
+      <div style="position:absolute;width:12px;height:14px;background:radial-gradient(ellipse,#ef4444,#dc2626,#b91c1c);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 8px #ef4444;animation:chimera-eye-scan 4s ease-in-out infinite;"></div>
+    </div>
+    <div style="position:absolute;top:18px;right:8px;width:28px;height:32px;background:radial-gradient(ellipse,#1f2937,#0f172a);border:3px solid #065f46;border-radius:60% 40% 40% 60%;overflow:hidden;box-shadow:0 0 10px rgba(239,68,68,0.4);">
+      <div style="position:absolute;width:100%;height:100%;background:repeating-conic-gradient(from 0deg,rgba(239,68,68,0.3) 0deg 20deg,rgba(249,115,22,0.3) 20deg 40deg);"></div>
+      <div style="position:absolute;width:12px;height:14px;background:radial-gradient(ellipse,#ef4444,#dc2626,#b91c1c);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 8px #ef4444;animation:chimera-eye-scan 4s ease-in-out infinite 0.5s;"></div>
+    </div>
+    <!-- Upper small eyes -->
+    <div style="position:absolute;top:8px;left:20px;width:14px;height:16px;background:#0f172a;border:2px solid #065f46;border-radius:50%;box-shadow:0 0 6px rgba(168,85,247,0.5);">
+      <div style="position:absolute;width:6px;height:7px;background:radial-gradient(ellipse,#a855f7,#7c3aed);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 5px #a855f7;"></div>
+    </div>
+    <div style="position:absolute;top:8px;right:20px;width:14px;height:16px;background:#0f172a;border:2px solid #065f46;border-radius:50%;box-shadow:0 0 6px rgba(168,85,247,0.5);">
+      <div style="position:absolute;width:6px;height:7px;background:radial-gradient(ellipse,#a855f7,#7c3aed);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 5px #a855f7;"></div>
+    </div>
+    <!-- Side eyes -->
+    <div style="position:absolute;top:30px;left:-2px;width:12px;height:14px;background:#0f172a;border:2px solid #065f46;border-radius:50%;box-shadow:0 0 5px rgba(34,211,238,0.5);">
+      <div style="position:absolute;width:5px;height:6px;background:radial-gradient(ellipse,#22d3ee,#06b6d4);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 4px #22d3ee;"></div>
+    </div>
+    <div style="position:absolute;top:30px;right:-2px;width:12px;height:14px;background:#0f172a;border:2px solid #065f46;border-radius:50%;box-shadow:0 0 5px rgba(34,211,238,0.5);">
+      <div style="position:absolute;width:5px;height:6px;background:radial-gradient(ellipse,#22d3ee,#06b6d4);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 4px #22d3ee;"></div>
+    </div>
+
+    <!-- ANTENNAE (insect style) -->
+    <div style="position:absolute;top:-25px;left:15px;transform-origin:bottom center;animation:chimera-antenna 2s ease-in-out infinite;">
+      <div style="width:6px;height:30px;background:linear-gradient(to top,#059669,#10b981,#34d399);border:2px solid #065f46;border-radius:3px 3px 50% 50%;">
+        <!-- Antenna segments -->
+        <div style="position:absolute;width:8px;height:3px;background:#065f46;border-radius:2px;top:8px;left:-1px;"></div>
+        <div style="position:absolute;width:8px;height:3px;background:#065f46;border-radius:2px;top:16px;left:-1px;"></div>
+        <!-- Feathery tip -->
+        <div style="position:absolute;top:-10px;left:-4px;width:14px;height:12px;">
+          <div style="position:absolute;width:2px;height:8px;background:#34d399;border-radius:2px;left:2px;transform:rotate(-30deg);"></div>
+          <div style="position:absolute;width:2px;height:10px;background:#34d399;border-radius:2px;left:6px;"></div>
+          <div style="position:absolute;width:2px;height:8px;background:#34d399;border-radius:2px;right:2px;transform:rotate(30deg);"></div>
+        </div>
+      </div>
+    </div>
+    <div style="position:absolute;top:-25px;right:15px;transform-origin:bottom center;animation:chimera-antenna 2s ease-in-out infinite 0.5s;">
+      <div style="width:6px;height:30px;background:linear-gradient(to top,#059669,#10b981,#34d399);border:2px solid #065f46;border-radius:3px 3px 50% 50%;">
+        <div style="position:absolute;width:8px;height:3px;background:#065f46;border-radius:2px;top:8px;left:-1px;"></div>
+        <div style="position:absolute;width:8px;height:3px;background:#065f46;border-radius:2px;top:16px;left:-1px;"></div>
+        <div style="position:absolute;top:-10px;left:-4px;width:14px;height:12px;">
+          <div style="position:absolute;width:2px;height:8px;background:#34d399;border-radius:2px;left:2px;transform:rotate(-30deg);"></div>
+          <div style="position:absolute;width:2px;height:10px;background:#34d399;border-radius:2px;left:6px;"></div>
+          <div style="position:absolute;width:2px;height:8px;background:#34d399;border-radius:2px;right:2px;transform:rotate(30deg);"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cute mouth (despite being creepy) -->
+    <div style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:20px;height:8px;border-bottom:3px solid #065f46;border-radius:0 0 50% 50%;"></div>
+    <!-- Mandibles -->
+    <div style="position:absolute;bottom:5px;left:25px;width:8px;height:4px;background:#047857;border:1px solid #065f46;border-radius:50%;transform:rotate(-20deg);"></div>
+    <div style="position:absolute;bottom:5px;right:25px;width:8px;height:4px;background:#047857;border:1px solid #065f46;border-radius:50%;transform:rotate(20deg);"></div>
+  </div>
+
+  <!-- Floating particles/spores -->
+  <div style="position:absolute;width:4px;height:4px;background:#34d399;border-radius:50%;top:15px;left:50px;box-shadow:0 0 8px #34d399;animation:alien-glow 2s ease-in-out infinite;"></div>
+  <div style="position:absolute;width:3px;height:3px;background:#a855f7;border-radius:50%;top:40px;right:45px;box-shadow:0 0 6px #a855f7;animation:alien-glow 2.5s ease-in-out infinite 0.3s;"></div>
+  <div style="position:absolute;width:4px;height:4px;background:#22d3ee;border-radius:50%;bottom:100px;left:35px;box-shadow:0 0 8px #22d3ee;animation:alien-glow 1.8s ease-in-out infinite 0.6s;"></div>
+  <div style="position:absolute;width:3px;height:3px;background:#ef4444;border-radius:50%;bottom:110px;right:40px;box-shadow:0 0 6px #ef4444;animation:alien-glow 2.2s ease-in-out infinite 0.9s;"></div>
+</div>
+    `;
+    return '<div style="position:relative;">' + chimeraDesign + shadowHTML + '</div>';
   }
 
   // Default alien design with features borrowed from teen variants

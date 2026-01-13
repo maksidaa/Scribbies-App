@@ -331,6 +331,10 @@
     @keyframes flamingo-upper-leg-tuck{0%,40%{transform:rotate(5deg)}45%,95%{transform:rotate(60deg)}100%{transform:rotate(5deg)}}
     @keyframes flamingo-lower-leg-fold{0%,40%{transform:rotate(0deg)}45%,95%{transform:rotate(-140deg)}100%{transform:rotate(0deg)}}
     @keyframes flamingo-foot-tuck{0%,40%{transform:rotate(0deg) scale(1)}45%,95%{transform:rotate(50deg) scale(0.7)}100%{transform:rotate(0deg) scale(1)}}
+    /* Swan floating animation */
+    @keyframes swan-float{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-3px) rotate(0.5deg)}50%{transform:translateY(-5px) rotate(0deg)}75%{transform:translateY(-3px) rotate(-0.5deg)}}
+    @keyframes swan-wing-left{0%,100%{transform:rotate(0deg)}25%{transform:rotate(-2deg)}50%{transform:rotate(-4deg)}75%{transform:rotate(-2deg)}}
+    @keyframes swan-wing-right{0%,100%{transform:rotate(0deg)}25%{transform:rotate(2deg)}50%{transform:rotate(4deg)}75%{transform:rotate(2deg)}}
     /* Custom creature creator animations */
     @keyframes swing-custom{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}}
     @keyframes breathe-custom{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.05);opacity:0.9}}
@@ -491,6 +495,18 @@
     @keyframes bee-wing-l{0%{transform:rotateY(5deg)}100%{transform:rotateY(70deg)}}
     @keyframes bee-wing-r{0%{transform:rotateY(-5deg)}100%{transform:rotateY(-70deg)}}
     @keyframes ant-sway{0%,100%{transform:rotate(-15deg)}50%{transform:rotate(-30deg)}}
+    @keyframes firefly-float{0%,100%{transform:translateY(0)}25%{transform:translateY(-8px)}50%{transform:translateY(-4px)}75%{transform:translateY(-10px)}}
+    @keyframes firefly-elytra-l{0%,70%,100%{transform:rotate(0deg)}75%,95%{transform:rotate(35deg)}}
+    @keyframes firefly-elytra-r{0%,70%,100%{transform:rotate(0deg)}75%,95%{transform:rotate(-35deg)}}
+    @keyframes firefly-flight-wing-l{0%,70%,100%{opacity:0;transform:translateX(0)}72%{opacity:1;transform:translateX(-95px)}74%,78%,82%,86%,90%{opacity:1;transform:translateX(-95px) rotate(-12deg)}76%,80%,84%,88%,92%{opacity:1;transform:translateX(-95px) rotate(5deg)}94%{opacity:1;transform:translateX(-95px)}95%{opacity:0;transform:translateX(0)}}
+    @keyframes firefly-flight-wing-r{0%,70%,100%{opacity:0;transform:translateX(0)}72%{opacity:1;transform:translateX(95px)}74%,78%,82%,86%,90%{opacity:1;transform:translateX(95px) rotate(12deg)}76%,80%,84%,88%,92%{opacity:1;transform:translateX(95px) rotate(-5deg)}94%{opacity:1;transform:translateX(95px)}95%{opacity:0;transform:translateX(0)}}
+    @keyframes firefly-antenna-l{0%,100%{transform:rotate(-20deg)}50%{transform:rotate(-30deg)}}
+    @keyframes firefly-antenna-r{0%,100%{transform:rotate(20deg)}50%{transform:rotate(30deg)}}
+    @keyframes firefly-glow{0%,45%{opacity:1;box-shadow:0 0 25px #f5f99a,0 0 45px rgba(245,250,150,0.6),0 0 65px rgba(245,250,150,0.3)}50%,95%{opacity:0.15;box-shadow:0 0 5px rgba(200,210,100,0.2)}100%{opacity:1;box-shadow:0 0 25px #f5f99a,0 0 45px rgba(245,250,150,0.6),0 0 65px rgba(245,250,150,0.3)}}
+    @keyframes firefly-glow-seg1{0%,45%{background:linear-gradient(180deg,#6a6a4a,#8b8b6a,#b0b080);box-shadow:0 0 8px rgba(180,190,100,0.4)}50%,95%{background:linear-gradient(180deg,#3a3a2a,#4a4a3a,#5a5a4a);box-shadow:none}100%{background:linear-gradient(180deg,#6a6a4a,#8b8b6a,#b0b080);box-shadow:0 0 8px rgba(180,190,100,0.4)}}
+    @keyframes firefly-ambient{0%,45%{opacity:0.4;transform:translateX(-50%) scale(1)}50%,95%{opacity:0;transform:translateX(-50%) scale(0.6)}100%{opacity:0.4;transform:translateX(-50%) scale(1)}}
+    @keyframes firefly-halo{0%,45%{opacity:0.7;box-shadow:0 0 60px 30px rgba(255,255,140,0.5),0 0 100px 50px rgba(255,255,100,0.3),0 0 140px 70px rgba(255,255,80,0.15)}50%,95%{opacity:0;box-shadow:0 0 20px 10px rgba(255,255,140,0.05)}100%{opacity:0.7;box-shadow:0 0 60px 30px rgba(255,255,140,0.5),0 0 100px 50px rgba(255,255,100,0.3),0 0 140px 70px rgba(255,255,80,0.15)}}
+    @keyframes bee-zoom{0%,100%{transform:translate(0,60px) scale(1)}5%{transform:translate(8px,50px) scale(1.2)}10%{transform:translate(-10px,35px) scale(1.8)}15%{transform:translate(12px,15px) scale(3)}20%{transform:translate(-15px,-10px) scale(4.5)}25%{transform:translate(18px,-25px) scale(6)}28%{transform:translate(-20px,-30px) scale(6.2)}31%{transform:translate(22px,-25px) scale(6)}34%{transform:translate(-18px,-28px) scale(6.2)}37%{transform:translate(20px,-22px) scale(5.8)}40%{transform:translate(-15px,-18px) scale(5)}45%{transform:translate(12px,-5px) scale(4)}50%{transform:translate(-10px,10px) scale(3)}55%{transform:translate(8px,25px) scale(2)}60%{transform:translate(-6px,40px) scale(1.5)}65%{transform:translate(4px,50px) scale(1.2)}70%{transform:translate(-3px,58px) scale(1)}80%{transform:translate(2px,62px) scale(1)}90%{transform:translate(-2px,60px) scale(1)}}
     @keyframes flamingo-stand{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
 
     /* Toucan animations */
@@ -937,17 +953,76 @@
     @keyframes pegasus-prance-right{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-6px) rotate(3deg)}}
     @keyframes cloud-drift{0%,100%{transform:translateX(0) scale(1);opacity:0.8}50%{transform:translateX(5px) scale(1.05);opacity:1}}
     /* Dinosaur animations */
-    @keyframes trex-stomp{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+    @keyframes trex-stomp{0%,100%{transform:translateY(0) rotate(0deg)}20%{transform:translateY(-15px) rotate(-2deg)}40%{transform:translateY(0) rotate(0deg)}60%{transform:translateY(-12px) rotate(2deg)}80%{transform:translateY(0) rotate(0deg)}}
     @keyframes trex-roar{0%,70%,100%{transform:translateY(0) rotate(0deg)}75%,85%{transform:translateY(8px) rotate(3deg)}80%{transform:translateY(2px) rotate(1deg)}}
     @keyframes trex-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
     @keyframes trex-eye-look{0%,100%{transform:translate(0,0)}15%{transform:translate(4px,0)}30%{transform:translate(4px,3px)}45%{transform:translate(-2px,2px)}60%{transform:translate(-3px,-2px)}75%{transform:translate(2px,-2px)}90%{transform:translate(0,0)}}
     @keyframes trex-arm-wave{0%{transform:rotate(15deg)}100%{transform:rotate(50deg)}}
     @keyframes trex-arm-wave-reverse{0%{transform:rotate(-15deg)}100%{transform:rotate(-50deg)}}
     @keyframes trex-tail-sway{0%,100%{transform:rotate(5deg)}50%{transform:rotate(-12deg)}}
-    @keyframes bronto-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    @keyframes bronto-float{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-8px) rotate(-1deg)}50%{transform:translateY(-15px) rotate(0deg)}75%{transform:translateY(-8px) rotate(1deg)}}
     @keyframes bronto-neck{0%,100%{transform:rotate(0deg)}50%{transform:rotate(8deg)}}
+    @keyframes bronto-tail-sway{0%,100%{transform:rotate(10deg)}50%{transform:rotate(-15deg)}}
+    @keyframes bronto-neck-peer{0%,100%{transform:rotate(0deg)}50%{transform:rotate(8deg)}}
+    @keyframes bronto-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
     @keyframes stego-stomp{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
     @keyframes stego-tail{0%,100%{transform:rotate(0deg)}50%{transform:rotate(12deg)}}
+    @keyframes stego-tail-sway{0%,100%{transform:rotate(0deg)}50%{transform:rotate(12deg)}}
+    @keyframes stego-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes liltrex-stomp{0%,100%{transform:translateY(0) scaleY(1) rotate(0deg)}15%{transform:translateY(-15px) scaleY(0.95) rotate(-2deg)}30%{transform:translateY(0) scaleY(1.02) rotate(0deg)}45%{transform:translateY(-12px) scaleY(0.96) rotate(2deg)}60%{transform:translateY(0) scaleY(1) rotate(0deg)}}
+    @keyframes liltrex-tail-sway{0%,100%{transform:rotate(5deg)}50%{transform:rotate(-12deg)}}
+    @keyframes liltrex-arm-left{from{transform:rotate(15deg)}to{transform:rotate(50deg)}}
+    @keyframes liltrex-arm-right{from{transform:rotate(-15deg)}to{transform:rotate(-50deg)}}
+    @keyframes liltrex-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+    @keyframes liltrex-eye-look{0%,100%{transform:translate(0,0)}15%{transform:translate(10px,-2px)}30%{transform:translate(10px,5px)}45%{transform:translate(-8px,3px)}60%{transform:translate(-8px,-3px)}75%{transform:translate(5px,0)}90%{transform:translate(0,4px)}}
+    @keyframes liltrex-chomp{0%,50%,100%{transform:translateY(0) rotate(0deg)}60%{transform:translateY(6px) rotate(2deg)}65%{transform:translateY(0) rotate(0deg)}75%{transform:translateY(8px) rotate(-2deg)}80%{transform:translateY(0) rotate(0deg)}90%{transform:translateY(10px) rotate(3deg)}95%{transform:translateY(0) rotate(0deg)}}
+    @keyframes trex-breathe{0%,100%{transform:scaleY(1) scaleX(1)}50%{transform:scaleY(1.08) scaleX(1.03)}}
+    @keyframes trex-head-bob{0%,100%{transform:rotate(0deg) translateY(0)}25%{transform:rotate(-3deg) translateY(-5px)}50%{transform:rotate(2deg) translateY(3px)}75%{transform:rotate(-2deg) translateY(-3px)}}
+    @keyframes bronto-graze{0%,20%,100%{transform:rotate(0deg)}30%{transform:rotate(25deg)}40%{transform:rotate(20deg)}50%{transform:rotate(28deg)}60%{transform:rotate(22deg)}70%{transform:rotate(0deg)}}
+    @keyframes bronto-body-sway{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(2deg)}}
+    @keyframes bronto-munch{0%,40%,45%,50%,55%,100%{transform:scaleY(1)}42%,52%{transform:scaleY(0.92)}}
+    @keyframes stego-head-scan{0%,100%{transform:rotate(0deg) translateX(0)}20%{transform:rotate(-20deg) translateX(-8px)}40%{transform:rotate(-15deg) translateX(-5px)}60%{transform:rotate(20deg) translateX(8px)}80%{transform:rotate(15deg) translateX(5px)}}
+    @keyframes stego-plate-glow{0%,100%{filter:brightness(1) drop-shadow(0 0 2px #fbbf24)}25%{filter:brightness(1.4) drop-shadow(0 0 12px #fbbf24)}50%{filter:brightness(1.1) drop-shadow(0 0 4px #fbbf24)}75%{filter:brightness(1.5) drop-shadow(0 0 15px #fbbf24)}}
+    @keyframes stego-happy-stomp{0%,100%{transform:translateY(0)}10%{transform:translateY(-8px)}20%{transform:translateY(0)}30%{transform:translateY(-6px)}40%{transform:translateY(0)}}
+    @keyframes stego-leg-stomp{0%,45%,55%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+    /* Leg walking animations */
+    @keyframes trex-leg-left{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-12px) rotate(-15deg)}50%{transform:translateY(0) rotate(5deg)}75%{transform:translateY(0) rotate(0deg)}}
+    @keyframes trex-leg-right{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(0) rotate(5deg)}75%{transform:translateY(-12px) rotate(-15deg)}}
+    @keyframes bronto-leg-front-left{0%,100%{transform:translateY(0) rotate(0deg)}30%{transform:translateY(-8px) rotate(-8deg)}60%{transform:translateY(0) rotate(3deg)}}
+    @keyframes bronto-leg-front-right{0%,100%{transform:translateY(0) rotate(0deg)}15%{transform:translateY(0) rotate(3deg)}45%{transform:translateY(-8px) rotate(-8deg)}75%{transform:translateY(0) rotate(0deg)}}
+    @keyframes bronto-leg-back-left{0%,100%{transform:translateY(0) rotate(0deg)}20%{transform:translateY(0) rotate(2deg)}50%{transform:translateY(-6px) rotate(-6deg)}80%{transform:translateY(0) rotate(0deg)}}
+    @keyframes bronto-leg-back-right{0%,100%{transform:translateY(0) rotate(0deg)}35%{transform:translateY(-6px) rotate(-6deg)}65%{transform:translateY(0) rotate(2deg)}}
+    @keyframes stego-leg-front-left{0%,100%{transform:translateY(0) rotate(0deg)}20%{transform:translateY(-10px) rotate(-12deg)}40%{transform:translateY(0) rotate(4deg)}60%{transform:translateY(0) rotate(0deg)}}
+    @keyframes stego-leg-front-right{0%,100%{transform:translateY(0) rotate(0deg)}40%{transform:translateY(0) rotate(0deg)}60%{transform:translateY(-10px) rotate(-12deg)}80%{transform:translateY(0) rotate(4deg)}}
+    @keyframes stego-leg-back-left{0%,100%{transform:translateY(0) rotate(0deg)}30%{transform:translateY(-8px) rotate(-10deg)}50%{transform:translateY(0) rotate(3deg)}70%{transform:translateY(0) rotate(0deg)}}
+    @keyframes stego-leg-back-right{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(0) rotate(0deg)}70%{transform:translateY(-8px) rotate(-10deg)}90%{transform:translateY(0) rotate(3deg)}}
+    @keyframes liltrex-leg-left{0%,100%{transform:translateY(0) rotate(0deg)}20%{transform:translateY(-15px) rotate(-20deg)}40%{transform:translateY(0) rotate(8deg)}60%{transform:translateY(0) rotate(0deg)}}
+    @keyframes liltrex-leg-right{0%,100%{transform:translateY(0) rotate(0deg)}40%{transform:translateY(0) rotate(0deg)}60%{transform:translateY(-15px) rotate(-20deg)}80%{transform:translateY(0) rotate(8deg)}}
+    /* Chimera Alien animations */
+    @keyframes chimera-hover{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+    @keyframes chimera-wing-left{0%,100%{transform:rotate(-5deg) scaleY(1)}50%{transform:rotate(-25deg) scaleY(0.9)}}
+    @keyframes chimera-wing-right{0%,100%{transform:rotate(5deg) scaleY(1)}50%{transform:rotate(25deg) scaleY(0.9)}}
+    @keyframes chimera-mantis-left{0%,70%,100%{transform:rotate(20deg)}80%{transform:rotate(-30deg)}85%{transform:rotate(-20deg)}90%{transform:rotate(-35deg)}}
+    @keyframes chimera-mantis-right{0%,70%,100%{transform:rotate(-20deg)}80%{transform:rotate(30deg)}85%{transform:rotate(20deg)}90%{transform:rotate(35deg)}}
+    @keyframes chimera-tail{0%,100%{transform:rotate(-5deg)}30%{transform:rotate(15deg)}60%{transform:rotate(-10deg)}80%{transform:rotate(8deg)}}
+    @keyframes chimera-rattle{0%,60%,100%{transform:rotate(0deg)}65%{transform:rotate(15deg)}70%{transform:rotate(-15deg)}75%{transform:rotate(12deg)}80%{transform:rotate(-12deg)}85%{transform:rotate(8deg)}90%{transform:rotate(-8deg)}}
+    @keyframes chimera-antenna{0%,100%{transform:rotate(-15deg)}50%{transform:rotate(15deg)}}
+    @keyframes chimera-eye-scan{0%,100%{transform:translate(0,0)}25%{transform:translate(3px,-2px)}50%{transform:translate(-2px,2px)}75%{transform:translate(2px,1px)}}
+    @keyframes chimera-shell-shimmer{0%,100%{filter:hue-rotate(0deg) brightness(1)}50%{filter:hue-rotate(30deg) brightness(1.2)}}
+    @keyframes chimera-leg-walk{0%,100%{transform:rotate(0deg)}25%{transform:rotate(-20deg)}75%{transform:rotate(20deg)}}
+    /* Phoenix animations */
+    @keyframes phoenix-hover{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-15px) rotate(-1deg)}50%{transform:translateY(-8px) rotate(0deg)}75%{transform:translateY(-12px) rotate(1deg)}}
+    @keyframes phoenix-wing-left{0%,100%{transform:rotate(10deg) scaleY(1)}50%{transform:rotate(-20deg) scaleY(0.95)}}
+    @keyframes phoenix-wing-right{0%,100%{transform:rotate(-10deg) scaleY(1)}50%{transform:rotate(20deg) scaleY(0.95)}}
+    @keyframes phoenix-tail-flow{0%,100%{transform:rotate(0deg) scaleX(1)}25%{transform:rotate(8deg) scaleX(1.02)}50%{transform:rotate(0deg) scaleX(0.98)}75%{transform:rotate(-8deg) scaleX(1.02)}}
+    @keyframes phoenix-flame-flicker{0%,100%{opacity:0.8;transform:scaleY(1) translateY(0)}25%{opacity:1;transform:scaleY(1.1) translateY(-3px)}50%{opacity:0.9;transform:scaleY(0.95) translateY(0)}75%{opacity:1;transform:scaleY(1.05) translateY(-2px)}}
+    @keyframes phoenix-glow-pulse{0%,100%{filter:brightness(1) drop-shadow(0 0 10px #f97316)}50%{filter:brightness(1.2) drop-shadow(0 0 25px #fbbf24)}}
+    @keyframes phoenix-ember-rise{0%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-80px) scale(0.3);opacity:0}}
+    @keyframes phoenix-crest-wave{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+    @keyframes phoenix-eye-glow{0%,100%{box-shadow:0 0 8px #fef3c7}50%{box-shadow:0 0 15px #fbbf24,0 0 25px #f97316}}
+    @keyframes phoenix-eye-blink{0%,45%,55%,100%{transform:scaleY(1)}50%{transform:scaleY(0.1)}}
+    @keyframes phoenix-eye-look{0%,100%{transform:translate(-50%,-50%)}25%{transform:translate(-60%,-50%)}75%{transform:translate(-40%,-50%)}}
+    @keyframes phoenix-leg-flame{0%,100%{transform:scaleY(1) translateY(0);opacity:0.8}50%{transform:scaleY(1.3) translateY(-3px);opacity:1}}
 
     /* ========================================
        CREATURE STYLES MOVED TO creatures.css
@@ -967,14 +1042,14 @@
 </head>
 <body class="bg-gradient-to-br from-violet-500 via-purple-500 to-fuchsia-500 min-h-screen">
 <div id="app"></div>
-<script src="js/creatures/mystical.js"></script>
-<script src="js/creatures/mammals.js"></script>
-<script src="js/creatures/birds.js?v=2"></script>
+<script src="js/creatures/mystical.js?v=8"></script>
+<script src="js/creatures/mammals.js?v=1"></script>
+<script src="js/creatures/birds.js?v=36"></script>
 <script src="js/creatures/reptiles.js"></script>
-<script src="js/creatures/prehistoric.js?v=5"></script>
-<script src="js/creatures/aquatic.js"></script>
-<script src="js/creatures/insects.js?v=27"></script>
-<script src="js/creatures/aliens.js"></script>
+<script src="js/creatures/prehistoric.js?v=10"></script>
+<script src="js/creatures/aquatic.js?v=2"></script>
+<script src="js/creatures/insects.js?v=39"></script>
+<script src="js/creatures/aliens.js?v=5"></script>
 <script src="js/creatures/eggs.js"></script>
 <script src="js/creatures/babies.js"></script>
 <script src="js/creatures/teens.js"></script>
@@ -1213,9 +1288,9 @@ const CREATURE_CATEGORIES={
     teenEmoji:'teen',   // Uses renderTeen() - 3 progressive designs
     teenVariants:['🐤','🐤','🐤','🐤','🐤','🐤','🐤','🐤','🐤','🐤','🐤'],  // Young birds (for reference)
     teenNames:['Fledgling I','Fledgling II','Fledgling III','Fledgling IV','Fledgling V','Fledgling VI','Fledgling VII','Fledgling VIII','Fledgling IX','Fledgling X','Fledgling XI'],
-    adultVariants:['🦆','🕊️','🦅','🦆','🦉','🦚','🦜','🦢','🦩','🦢','🐧','🦆','🐓','🦜','🦩','🦉'],  // Mature birds - full body
-    adultNames:['Duck','Dove','Eagle','Mallard','Owl','Peacock','Parrot','Swan','Flamingo','Royal Swan','Penguin','Quacky','Rooster','Toucan','Golden Flamingo','Great Horned Owl'],
-    adultRarities:['Common','Common','Uncommon','Common','Rare','Epic','Uncommon','Rare','Legendary','Mythic','Rare','Common','Uncommon','Epic','Legendary','Epic']
+    adultVariants:['🦚','🦜','🦢','🦩','🦢','🐧','🦆','🐓','🦜','🦩','🦉','🦜'],  // Mature birds - full body
+    adultNames:['Peacock','Scarlet Macaw','Swan','Flamingo','Royal Swan','Penguin','Quacky','Rooster','Toucan','Golden Flamingo','Great Horned Owl','Lovebird'],
+    adultRarities:['Epic','Uncommon','Rare','Legendary','Mythic','Rare','Common','Uncommon','Epic','Legendary','Epic','Rare']
   },
   aquatic:{
     eggType:'blue',
@@ -1224,9 +1299,9 @@ const CREATURE_CATEGORIES={
     teenEmoji:'teen',   // Uses renderTeen() - 3 progressive designs
     teenVariants:['🐟','🐠','🐡','🐡','🐙','🦑','🦞','🦀','🐚','🪼'],  // Smaller sea creatures (for reference)
     teenNames:['Swimmer I','Swimmer II','Swimmer III','Swimmer IV','Swimmer V','Swimmer VI','Swimmer VII','Swimmer VIII','Swimmer IX','Swimmer X'],
-    adultVariants:['🐋','🐬','🦭','🦈','🐙','🦑','🦞','🦀','🦑','🪼','🦎','🦄','🪼','🐙'],  // Large sea creatures
-    adultNames:['Whale','Dolphin','Seal','Shark','Octopus','Squid','Lobster','Crab','Giant Squid','Jellyfish','Axolotl','Narwhal','Jellyfish','Octopus'],
-    adultRarities:['Rare','Common','Common','Uncommon','Uncommon','Common','Common','Common','Epic','Rare','Legendary','Mythic','Rare','Uncommon']
+    adultVariants:['🦎','🦄','🪼','🐙'],  // CSS-rendered aquatic creatures
+    adultNames:['Axolotl','Narwhal','Jellyfish','Octopus'],
+    adultRarities:['Legendary','Mythic','Rare','Epic']
   },
   reptiles:{
     eggType:'spotted',
@@ -1246,9 +1321,9 @@ const CREATURE_CATEGORIES={
     teenEmoji:'teen',   // Uses renderTeen() - 3 progressive designs
     teenVariants:['🐛','🐛','🐝','🐞','🦗','🪰','🪲','🦟','🪳','🕷️'],  // Larva/young bugs (for reference)
     teenNames:['Larva I','Larva II','Larva III','Larva IV','Larva V','Larva VI','Larva VII','Larva VIII','Larva IX','Larva X'],
-    adultVariants:['🦋','🐝','🐞','🦗','🪰','🪲','🦟','🪳','🕷️','🐞','🐞','🪰','🪰','🪲','🪲','🐝'],  // Adult insects - full CSS designs at 10, 11, 12, 13, 14, 15
-    adultNames:['Butterfly','Bee','Ladybug','Cricket','Fly','Beetle','Mosquito','Cockroach','Spider','Giant Ladybug','Busy Ladybug','Neon Dragonfly','Buzzy Housefly','Stag Beetle','Green Stag Beetle','Bumblebee Buddy'],
-    adultRarities:['Uncommon','Common','Common','Common','Common','Common','Common','Common','Rare','Mythic','Epic','Epic','Uncommon','Rare','Mythic','Epic']
+    adultVariants:['🐞','🪰','🪰','🪲','🪲','🐝','🪲'],  // Adult insects - full CSS designs 0-6
+    adultNames:['Busy Ladybug','Neon Dragonfly','Buzzy Housefly','Stag Beetle','Metallic Green Stag Beetle','Bumblebee','Lightning Bug'],
+    adultRarities:['Epic','Epic','Uncommon','Rare','Mythic','Epic','Legendary']
   },
   mammals:{
     eggType:'brown',
@@ -1279,20 +1354,20 @@ const CREATURE_CATEGORIES={
     teenEmoji:'teen',   // Uses renderTeen() - 3 progressive designs
     teenVariants:['👾','🤖','👽','🛸','💫','⭐','✨','🌟','💥','🔮','👁️'],  // Young aliens (for reference)
     teenNames:['Cosmic I','Cosmic II','Cosmic III','Cosmic IV','Cosmic V','Cosmic VI','Cosmic VII','Cosmic VIII','Cosmic IX','Cosmic X','Cosmic XI'],
-    adultVariants:['👽','👽','👽','👽','👽','👽','👽','👽','👽','👽','👁️'],  // CSS-rendered aliens
-    adultNames:['Cosmic Friend','Neon Visitor','Space Buddy','Star Child','Galaxy Pal','Astro Baby','Nebula Friend','Cosmic Cutie','Stellar Buddy','Universe Friend','Flying Eye'],
-    adultRarities:['Common','Common','Common','Uncommon','Rare','Rare','Epic','Epic','Legendary','Mythic','Legendary']
+    adultVariants:['👽','👁️','🦎'],  // CSS-rendered aliens
+    adultNames:['Cosmic Friend','Flying Eye','Chimera'],
+    adultRarities:['Rare','Legendary','Legendary']
   },
   mystical:{
     eggType:'speckled',
     blobEmoji:'blob',  // Uses renderBlob() - cute creature with eyes
     babyEmoji:'baby',   // Uses renderBaby() - cute crystal ball 🔮
     teenEmoji:'teen',   // Uses renderTeen() - 5 progressive designs (spirit, celestial, divine, unicorn, phoenix)
-    teenVariants:['🧙','🧚','🧛','🧜','🧞','🧝','🦄','🦄','🔥','🔥'],  // Young mystical (for reference)
-    teenNames:['Spirit I','Spirit II','Celestial I','Celestial II','Divine I','Divine II','Unicorn I','Unicorn II','Phoenix I','Phoenix II'],
-    adultVariants:['🦄','🦄','🐴','🦊','🐱','🦝'],  // Ancient mystical - full body
-    adultNames:['Unicorn','Flaming Unicorn','Pegasus','Kitsune','Maneki-neko','Tanuki'],
-    adultRarities:['Mythic','Legendary','Epic','Legendary','Rare','Epic']
+    teenVariants:['🧙','🧚','🧛','🧜','🧞','🧝','🦄','🦄'],  // Young mystical (for reference)
+    teenNames:['Spirit I','Spirit II','Celestial I','Celestial II','Divine I','Divine II','Unicorn I','Unicorn II'],
+    adultVariants:['🦄','🦄','🦊','🐱','🦝'],  // Ancient mystical - full body
+    adultNames:['Unicorn','Flaming Unicorn','Kitsune','Maneki-neko','Tanuki'],
+    adultRarities:['Mythic','Legendary','Legendary','Rare','Epic']
   }
 };
 
@@ -1353,10 +1428,9 @@ const CREATURE_BLURBS={
   mystical:{
     0:'A majestic unicorn with a rainbow mane and a magical golden horn. Its magic brings hope and wonder to all!',
     1:'A legendary flaming unicorn engulfed in eternal fire! Its flames never burn, only warm the hearts of those nearby.',
-    2:'A magnificent winged horse that soars through the clouds! Its silver wings carry hopes and dreams across the sky.',
-    3:'A mystical nine-tailed fox spirit with magical blue flames. Wise, playful, and full of ancient secrets!',
-    4:'A lucky beckoning cat that brings fortune and prosperity! Its waving paw attracts good luck to all nearby.',
-    5:'A magical tanuki with a leaf on its head for shapeshifting! Loves drumming on its belly and playing tricks.',
+    2:'A mystical nine-tailed fox spirit with magical blue flames. Wise, playful, and full of ancient secrets!',
+    3:'A lucky beckoning cat that brings fortune and prosperity! Its waving paw attracts good luck to all nearby.',
+    4:'A magical tanuki with a leaf on its head for shapeshifting! Loves drumming on its belly and playing tricks.',
     default:'A creature of legend and wonder, straight from fairy tales!'
   },
   prehistoric:{
@@ -1369,8 +1443,7 @@ const CREATURE_BLURBS={
   },
   alien:{
     0:'A cosmic friend from a distant galaxy! Communicates through colorful light patterns.',
-    1:'A neon visitor with glowing antennae. Collects earth souvenirs!',
-    2:'A space buddy learning human customs. Thinks handshakes are hilarious!',
+    1:'A biblical Ophanim - a celestial being of interlocking golden rings covered in watchful eyes. It sees all and radiates divine light!',
     default:'An out-of-this-world friend from beyond the stars!'
   },
   insects:{
@@ -8354,7 +8427,8 @@ function showCreaturePreview(stage,categoryKey,variantIdx=0){
         <div id="editModePanel" class="hidden mx-2 mb-2 p-2 bg-black/50 rounded-lg text-white text-xs">
           <p class="font-bold mb-1">Arrows=move | +/-=z | &lt;&gt;=rotate | Shift=10x</p>
           <p id="selectedPartInfo">No part selected</p>
-          <div class="flex gap-2 mt-2">
+          <div class="flex gap-2 mt-2 flex-wrap">
+            <button onclick="toggleCreatureAnimations()" id="animToggleBtn" class="bg-yellow-500 px-2 py-1 rounded text-xs">Stop Anims</button>
             <button onclick="copyCreaturePositions()" class="bg-green-500 px-2 py-1 rounded text-xs">Copy Positions</button>
             <button onclick="resetCreaturePositions()" class="bg-red-500 px-2 py-1 rounded text-xs">Reset</button>
           </div>
@@ -8608,6 +8682,36 @@ function resetCreaturePositions(){
     window.selectedCreaturePart=null;
   }
   document.getElementById('selectedPartInfo').textContent='No part selected (positions reset)';
+}
+
+// Toggle creature animations on/off
+window.creatureAnimationsPaused=false;
+function toggleCreatureAnimations(){
+  const container=document.getElementById('creatureEditContainer');
+  const btn=document.getElementById('animToggleBtn');
+  window.creatureAnimationsPaused=!window.creatureAnimationsPaused;
+
+  if(window.creatureAnimationsPaused){
+    // Stop all animations
+    container.style.animationPlayState='paused';
+    const allElements=container.querySelectorAll('*');
+    allElements.forEach(el=>{
+      el.style.animationPlayState='paused';
+    });
+    btn.textContent='Play Anims';
+    btn.classList.remove('bg-yellow-500');
+    btn.classList.add('bg-purple-500');
+  }else{
+    // Resume all animations
+    container.style.animationPlayState='running';
+    const allElements=container.querySelectorAll('*');
+    allElements.forEach(el=>{
+      el.style.animationPlayState='running';
+    });
+    btn.textContent='Stop Anims';
+    btn.classList.remove('bg-purple-500');
+    btn.classList.add('bg-yellow-500');
+  }
 }
 
 // Scribby info card for collection - Trading Card Style!

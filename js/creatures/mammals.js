@@ -1041,8 +1041,8 @@ function renderAdultMammal(variantIndex, level = 1){
           <div style="position:absolute;bottom:-2px;width:100%;height:17px;background:radial-gradient(ellipse at 50% 40%, #4a4040, #2d2323);border-radius:0 0 8px 8px;box-shadow:inset 1px 1px 3px rgba(80,70,70,0.3);"></div>
         </div>
 
-        <!-- NECK (z-index 21) - matching horse: top:79px, left:86px -->
-        <div style="position:absolute;width:49px;height:68px;background:radial-gradient(ellipse at 35% 30%, #ffffff 0%, #f0f0f0 40%, #e0e0e0 100%);border-left:4px solid #888;border-right:4px solid #888;clip-path:polygon(15% 0%, 85% 0%, 100% 100%, 0% 100%);top:79px;left:86px;z-index:21;box-shadow:inset 5px 5px 12px rgba(255,255,255,0.6),inset -4px -4px 10px rgba(150,150,150,0.25);">
+        <!-- NECK (z-index 20) - matching horse: top:79px, left:86px -->
+        <div style="position:absolute;width:49px;height:68px;background:radial-gradient(at 35% 30%, rgb(255, 255, 255) 0%, rgb(240, 240, 240) 40%, rgb(224, 224, 224) 100%);border-left:4px solid #888;border-right:4px solid #888;clip-path:polygon(15% 0%, 85% 0%, 100% 100%, 0% 100%);top:79px;left:86px;z-index:20;box-shadow:inset 5px 5px 12px rgba(255,255,255,0.6),inset -4px -4px 10px rgba(150,150,150,0.25);">
           <div style="position:absolute;width:8px;height:40px;background:rgba(255,255,255,0.2);border-radius:50%;top:10px;left:8px;filter:blur(3px);"></div>
         </div>
 
@@ -1071,7 +1071,7 @@ function renderAdultMammal(variantIndex, level = 1){
         </div>
 
         <!-- HEAD (z-index 40) with ears, horns inside -->
-        <div style="position:absolute;width:98px;height:120px;background:radial-gradient(ellipse at 38% 28%, #ffffff 0%, #f5f5f5 35%, #e8e8e8 70%, #d8d8d8 100%);border:4px solid #888;border-radius:50% 50% 45% 45% / 40% 40% 60% 60%;top:12px;left:64px;z-index:40;box-shadow:inset 8px 8px 20px rgba(255,255,255,0.7),inset -5px -5px 12px rgba(150,150,150,0.3);overflow:visible;">
+        <div style="position:absolute;width:98px;height:120px;background:radial-gradient(at 38% 28%, rgb(255, 255, 255) 0%, rgb(245, 245, 245) 35%, rgb(232, 232, 232) 70%, rgb(216, 216, 216) 100%);border:4px solid #888;border-radius:50% 50% 45% 45% / 40% 40% 60% 60%;top:22px;left:57px;z-index:40;box-shadow:inset 8px 8px 20px rgba(255,255,255,0.7),inset -5px -5px 12px rgba(150,150,150,0.3);overflow:visible;">
           <!-- EARS (floppy, on sides of head) -->
           <div style="position:absolute;width:28px;height:22px;background:radial-gradient(ellipse at 50% 40%, #f8f8f8, #e8e8e8, #d0d0d0);border:3px solid #888;border-radius:50% 50% 40% 40% / 60% 60% 40% 40%;top:8px;left:-18px;transform:rotate(-30deg);z-index:30;box-shadow:inset 2px 2px 5px rgba(255,255,255,0.7),inset -1px -1px 3px rgba(100,100,100,0.2);">
             <div style="position:absolute;width:14px;height:11px;background:radial-gradient(ellipse, #ffb6c1, #ff9caa);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.6;"></div>
@@ -1082,6 +1082,8 @@ function renderAdultMammal(variantIndex, level = 1){
           <!-- HORNS (on top of head) -->
           <div style="position:absolute;width:10px;height:22px;background:radial-gradient(ellipse at 40% 30%, #f5e6d3, #d4c4a8, #b8a888);border:2px solid #a09070;border-radius:40% 40% 20% 20%;top:-12px;left:18px;transform:rotate(-15deg);z-index:45;box-shadow:inset 2px 2px 4px rgba(255,250,240,0.6),inset -1px -1px 3px rgba(140,120,90,0.3);"></div>
           <div style="position:absolute;width:10px;height:22px;background:radial-gradient(ellipse at 60% 30%, #f5e6d3, #d4c4a8, #b8a888);border:2px solid #a09070;border-radius:40% 40% 20% 20%;top:-12px;right:18px;transform:rotate(15deg);z-index:45;box-shadow:inset 2px 2px 4px rgba(255,250,240,0.6),inset -1px -1px 3px rgba(140,120,90,0.3);"></div>
+          <!-- COWBELL -->
+          <div style="position:absolute;top:-5px;left:50%;transform:translateX(-50%);width:28px;height:12px;background:linear-gradient(to top, rgb(251, 191, 36), rgb(252, 211, 77));border-radius:4px 4px 0 0;border-top:2px solid rgb(217, 119, 6);border-left:2px solid rgb(217, 119, 6);border-right:2px solid rgb(217, 119, 6);box-shadow:0 0 10px rgba(255, 215, 0, 0.5);z-index:50;"></div>
           <!-- Head highlight -->
           <div style="position:absolute;width:30px;height:22px;background:rgba(255,255,255,0.6);border-radius:50%;top:18px;left:14px;filter:blur(5px);"></div>
           <!-- Black spot on head -->
@@ -1103,12 +1105,12 @@ function renderAdultMammal(variantIndex, level = 1){
             <div style="position:absolute;width:10px;height:12px;background:radial-gradient(ellipse, #c08080, #a06060);border-radius:50%;top:12px;left:14px;transform:rotate(10deg);"></div>
             <div style="position:absolute;width:10px;height:12px;background:radial-gradient(ellipse, #c08080, #a06060);border-radius:50%;top:12px;right:14px;transform:rotate(-10deg);"></div>
             <!-- Lower jaw (slides side to side randomly) -->
-            <div style="position:absolute;bottom:0;left:0;width:100%;height:22px;animation:cow-chew 4s ease-in-out infinite;overflow:visible;">
+            <div style="position:absolute;bottom:0;left:3px;width:100%;height:22px;animation:cow-chew 4s ease-in-out infinite;overflow:visible;">
               <!-- Mouth line -->
               <div style="position:absolute;top:1px;left:50%;transform:translateX(-50%);width:28px;height:6px;border-bottom:3px solid #c09090;border-radius:50%;"></div>
               <!-- Straw sticking out of corner of mouth -->
-              <div style="position:absolute;top:0;left:12px;width:2.5px;height:26px;background:linear-gradient(to bottom, #daa520, #b8860b);border-radius:1px;transform:rotate(-20deg);transform-origin:top center;"></div>
-              <div style="position:absolute;top:0;left:18px;width:2px;height:18px;background:linear-gradient(to bottom, #d4a634, #a67c00);border-radius:1px;transform:rotate(-8deg);transform-origin:top center;"></div>
+              <div style="position:absolute;top:5px;left:34px;width:2.5px;height:26px;background:linear-gradient(rgb(218, 165, 32), rgb(184, 134, 11));border-radius:1px;transform:rotate(-20deg);transform-origin:center top;"></div>
+              <div style="position:absolute;top:7px;left:33px;width:2px;height:18px;background:linear-gradient(rgb(212, 166, 52), rgb(166, 124, 0));border-radius:1px;transform:rotate(-8deg);transform-origin:center top;"></div>
             </div>
           </div>
           <!-- Blush -->

@@ -2,8 +2,8 @@ function renderAdultAquatic(variantIndex){
   const variant=variantIndex||0;
 
   const aquaticDesigns={
-    // ===== AXOLOTL BUDDY - Aquatic Variant 10 =====
-    10:`
+    // ===== AXOLOTL BUDDY - Aquatic Variant 0 =====
+    0:`
 <!-- AXOLOTL BUDDY - Cute Pink Salamander with Animated Legs -->
 <div data-part="container" style="position:relative;width:200px;height:180px;animation:axo-float 4s ease-in-out infinite;">
   <!-- Bubbles rising from behind whole body -->
@@ -68,8 +68,8 @@ function renderAdultAquatic(variantIndex){
 </div>
     `,
 
-    // ===== NARWHAL BUDDY - Aquatic Variant 11 =====
-    11:`
+    // ===== NARWHAL BUDDY - Aquatic Variant 1 =====
+    1:`
 <!-- NARWHAL BUDDY - Cute Gray Whale with Golden Tusk -->
 <div data-part="container" style="position:relative;width:200px;height:220px;animation:narwhal-bob 4s ease-in-out infinite;">
   <!-- Bubbles rising from behind whole body -->
@@ -119,8 +119,8 @@ function renderAdultAquatic(variantIndex){
 </div>
     `,
 
-    // ===== JELLYFISH BUDDY - Aquatic Variant 12 =====
-    12:`
+    // ===== JELLYFISH BUDDY - Aquatic Variant 2 =====
+    2:`
 <!-- JELLYFISH BUDDY - Pink/Purple Pulsing Jelly -->
 <div data-part="container" style="position:relative;width:160px;height:260px;animation:jelly-pulse 5s ease-in-out infinite;">
   <!-- Bubbles rising from behind whole body -->
@@ -177,8 +177,8 @@ function renderAdultAquatic(variantIndex){
 </div>
     `,
 
-    // ===== OCTOPUS BUDDY - Aquatic Variant 13 =====
-    13:`
+    // ===== OCTOPUS BUDDY - Aquatic Variant 3 =====
+    3:`
 <!-- OCTOPUS BUDDY - Purple Head with Purple Curling Tentacles -->
 <div data-part="container" style="position:relative;width:200px;height:240px;animation:octo-float 4s ease-in-out infinite;">
   <!-- Bubbles rising from behind whole body -->

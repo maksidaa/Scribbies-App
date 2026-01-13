@@ -2,57 +2,7 @@ function renderAdultInsect(variantIndex){
   const variant=variantIndex||0;
 
   const insectDesigns={
-    0:` <!-- Butterfly (placeholder) -->
-      <div style="position:relative;width:110px;height:100px;display:inline-block;">
-        <div style="font-size:60px;text-align:center;line-height:100px;">🦋</div>
-      </div>
-    `,
-    1:` <!-- Bee (placeholder) -->
-      <div style="position:relative;width:110px;height:100px;display:inline-block;">
-        <div style="font-size:60px;text-align:center;line-height:100px;">🐝</div>
-      </div>
-    `,
-    2:` <!-- Ladybug (placeholder) -->
-      <div style="position:relative;width:110px;height:100px;display:inline-block;">
-        <div style="font-size:60px;text-align:center;line-height:100px;">🐞</div>
-      </div>
-    `,
-    3:` <!-- Cricket (placeholder) -->
-      <div style="position:relative;width:110px;height:100px;display:inline-block;">
-        <div style="font-size:60px;text-align:center;line-height:100px;">🦗</div>
-      </div>
-    `,
-    4:` <!-- Fly (placeholder) -->
-      <div style="position:relative;width:110px;height:100px;display:inline-block;">
-        <div style="font-size:60px;text-align:center;line-height:100px;">🪰</div>
-      </div>
-    `,
-    5:` <!-- Beetle (placeholder) -->
-      <div style="position:relative;width:110px;height:100px;display:inline-block;">
-        <div style="font-size:60px;text-align:center;line-height:100px;">🪲</div>
-      </div>
-    `,
-    6:` <!-- Mosquito (placeholder) -->
-      <div style="position:relative;width:110px;height:100px;display:inline-block;">
-        <div style="font-size:60px;text-align:center;line-height:100px;">🦟</div>
-      </div>
-    `,
-    7:` <!-- Cockroach (placeholder) -->
-      <div style="position:relative;width:110px;height:100px;display:inline-block;">
-        <div style="font-size:60px;text-align:center;line-height:100px;">🪳</div>
-      </div>
-    `,
-    8:` <!-- Spider (placeholder) -->
-      <div style="position:relative;width:110px;height:100px;display:inline-block;">
-        <div style="font-size:60px;text-align:center;line-height:100px;">🕷️</div>
-      </div>
-    `,
-    9:` <!-- Giant Ladybug (placeholder) -->
-      <div style="position:relative;width:110px;height:100px;display:inline-block;">
-        <div style="font-size:70px;text-align:center;line-height:100px;">🐞</div>
-      </div>
-    `,
-    10:` <!-- Busy Ladybug - Accurate from ladybug.html (~43% scale) -->
+    0:` <!-- Busy Ladybug - Accurate from ladybug.html (~43% scale) -->
       <div style="position:relative;width:120px;height:130px;display:inline-block;animation:ladybug-bob 4s ease-in-out infinite;">
 
         <!-- LEFT LEGS (behind body, z-index 5) -->
@@ -131,7 +81,7 @@ function renderAdultInsect(variantIndex){
         </div>
       </div>
     `,
-    11:` <!-- Neon Dragonfly - Accurate from dragonfly.html -->
+    1:` <!-- Neon Dragonfly - Accurate from dragonfly.html -->
       <div style="position:relative;width:140px;height:170px;display:inline-block;animation:dragonfly-hover 3s ease-in-out infinite;">
 
         <!-- WINGS (z-index 5) -->
@@ -221,7 +171,7 @@ function renderAdultInsect(variantIndex){
         </div>
       </div>
     `,
-    12:` <!-- Buzzy Housefly - Cute buggy in-flight design -->
+    2:` <!-- Buzzy Housefly - Cute buggy in-flight design -->
       <div style="position:relative;width:120px;height:130px;display:inline-block;animation:fly-hover 8s ease-in-out infinite;">
 
         <!-- WINGS (z-index 5) - fast flutter, translucent -->
@@ -304,7 +254,7 @@ function renderAdultInsect(variantIndex){
         </div>
       </div>
     `,
-    13:` <!-- Stag Beetle - Big mandibles, shiny shell -->
+    3:` <!-- Stag Beetle - Big mandibles, shiny shell -->
       <div style="position:relative;width:140px;height:150px;display:inline-block;animation:beetle-idle 4s ease-in-out infinite;">
 
         <!-- MANDIBLES - SVG curved pincers with sharp pointy tips (z-index 5) -->
@@ -373,11 +323,10 @@ function renderAdultInsect(variantIndex){
           </div>
         </div>
 
-        <!-- TRANSPARENT FLIGHT WINGS (z-index 10) - elliptical wings that spread very far out -->
-        <div style="position:absolute;top:55px;left:50%;transform:translateX(-50%);width:70px;height:80px;z-index:10;">
+        <!-- TRANSPARENT FLIGHT WINGS (z-index 12) - in front of body, behind elytra -->
+        <div style="position:absolute;top:55px;left:50%;transform:translateX(-50%);width:70px;height:80px;z-index:12;">
           <!-- Left flight wing - elliptical, spreads very far left -->
-          <div style="position:absolute;top:8px;left:35px;width:130px;height:55px;background:linear-gradient(150deg,rgba(255,248,200,0.45),rgba(210,195,140,0.25));border-radius:50%;transform-origin:top right;opacity:0;animation:beetle-flight-wing-l 10s ease-in-out infinite;border:1px solid rgba(180,160,90,0.35);overflow:hidden;">
-            <!-- Fanning vein lines radiating from attachment point - contained within ellipse -->
+          <div style="position:absolute;top:-7px;left:3px;width:130px;height:55px;background:linear-gradient(150deg,rgba(255,248,200,0.45),rgba(210,195,140,0.25));border-radius:50%;transform-origin:right top;opacity:0;animation:beetle-flight-wing-l 10s ease-in-out infinite;border:1px solid rgba(180,160,90,0.35);overflow:hidden;">
             <div style="position:absolute;top:15px;right:0;width:90px;height:1px;background:rgba(140,120,70,0.35);transform-origin:right center;transform:rotate(-8deg);"></div>
             <div style="position:absolute;top:15px;right:0;width:100px;height:1px;background:rgba(140,120,70,0.3);transform-origin:right center;transform:rotate(-18deg);"></div>
             <div style="position:absolute;top:15px;right:0;width:105px;height:1px;background:rgba(140,120,70,0.3);transform-origin:right center;transform:rotate(-28deg);"></div>
@@ -386,8 +335,7 @@ function renderAdultInsect(variantIndex){
             <div style="position:absolute;top:15px;right:0;width:75px;height:1px;background:rgba(140,120,70,0.2);transform-origin:right center;transform:rotate(-58deg);"></div>
           </div>
           <!-- Right flight wing - elliptical, spreads very far right -->
-          <div style="position:absolute;top:8px;right:35px;width:130px;height:55px;background:linear-gradient(210deg,rgba(255,248,200,0.45),rgba(210,195,140,0.25));border-radius:50%;transform-origin:top left;opacity:0;animation:beetle-flight-wing-r 10s ease-in-out infinite;border:1px solid rgba(180,160,90,0.35);overflow:hidden;">
-            <!-- Fanning vein lines radiating from attachment point - contained within ellipse -->
+          <div style="position:absolute;top:-4px;left:-57px;width:130px;height:55px;background:linear-gradient(210deg,rgba(255,248,200,0.45),rgba(210,195,140,0.25));border-radius:50%;transform-origin:left top;opacity:0;animation:beetle-flight-wing-r 10s ease-in-out infinite;border:1px solid rgba(180,160,90,0.35);overflow:hidden;">
             <div style="position:absolute;top:15px;left:0;width:90px;height:1px;background:rgba(140,120,70,0.35);transform-origin:left center;transform:rotate(8deg);"></div>
             <div style="position:absolute;top:15px;left:0;width:100px;height:1px;background:rgba(140,120,70,0.3);transform-origin:left center;transform:rotate(18deg);"></div>
             <div style="position:absolute;top:15px;left:0;width:105px;height:1px;background:rgba(140,120,70,0.3);transform-origin:left center;transform:rotate(28deg);"></div>
@@ -427,8 +375,8 @@ function renderAdultInsect(variantIndex){
         </div>
       </div>
     `,
-    15:` <!-- Bumblebee Buddy - Cute fuzzy bee with fast wings -->
-      <div style="position:relative;width:140px;height:160px;display:inline-block;animation:bee-float 4s ease-in-out infinite;">
+    5:` <!-- Bumblebee - Cute fuzzy bee with fast wings -->
+      <div style="position:relative;width:140px;height:160px;display:inline-block;animation:bee-zoom 8s ease-in-out infinite;transform-origin:center 40px;">
 
         <!-- WINGS - Bigger translucent with fast flapping -->
         <div style="position:absolute;top:35px;left:50%;transform:translateX(-50%);width:180px;height:80px;z-index:15;">
@@ -488,7 +436,7 @@ function renderAdultInsect(variantIndex){
         </div>
       </div>
     `,
-    14:` <!-- Metallic Green Stag Beetle - Shiny iridescent with black pincers -->
+    4:` <!-- Metallic Green Stag Beetle - Shiny iridescent with black pincers -->
       <div style="position:relative;width:140px;height:160px;display:inline-block;animation:beetle-idle 4s ease-in-out infinite;">
 
         <!-- LONG MANDIBLES - Shiny black curved pincers (z-index 5) -->
@@ -557,9 +505,9 @@ function renderAdultInsect(variantIndex){
           </div>
         </div>
 
-        <!-- TRANSPARENT FLIGHT WINGS (z-index 10) -->
-        <div style="position:absolute;top:65px;left:50%;transform:translateX(-50%);width:70px;height:80px;z-index:10;">
-          <div style="position:absolute;top:8px;left:35px;width:130px;height:55px;background:linear-gradient(150deg,rgba(255,248,200,0.45),rgba(210,195,140,0.25));border-radius:50%;transform-origin:top right;opacity:0;animation:beetle-flight-wing-l 10s ease-in-out infinite;border:1px solid rgba(180,160,90,0.35);overflow:hidden;">
+        <!-- TRANSPARENT FLIGHT WINGS (z-index 12) - in front of body, behind elytra -->
+        <div style="position:absolute;top:65px;left:50%;transform:translateX(-50%);width:70px;height:80px;z-index:12;">
+          <div style="position:absolute;top:-4px;left:0px;width:130px;height:55px;background:linear-gradient(150deg,rgba(255,248,200,0.45),rgba(210,195,140,0.25));border-radius:50%;transform-origin:right top;opacity:0;animation:beetle-flight-wing-l 10s ease-in-out infinite;border:1px solid rgba(180,160,90,0.35);overflow:hidden;">
             <div style="position:absolute;top:15px;right:0;width:90px;height:1px;background:rgba(140,120,70,0.35);transform-origin:right center;transform:rotate(-8deg);"></div>
             <div style="position:absolute;top:15px;right:0;width:100px;height:1px;background:rgba(140,120,70,0.3);transform-origin:right center;transform:rotate(-18deg);"></div>
             <div style="position:absolute;top:15px;right:0;width:105px;height:1px;background:rgba(140,120,70,0.3);transform-origin:right center;transform:rotate(-28deg);"></div>
@@ -567,7 +515,7 @@ function renderAdultInsect(variantIndex){
             <div style="position:absolute;top:15px;right:0;width:90px;height:1px;background:rgba(140,120,70,0.25);transform-origin:right center;transform:rotate(-48deg);"></div>
             <div style="position:absolute;top:15px;right:0;width:75px;height:1px;background:rgba(140,120,70,0.2);transform-origin:right center;transform:rotate(-58deg);"></div>
           </div>
-          <div style="position:absolute;top:8px;right:35px;width:130px;height:55px;background:linear-gradient(210deg,rgba(255,248,200,0.45),rgba(210,195,140,0.25));border-radius:50%;transform-origin:top left;opacity:0;animation:beetle-flight-wing-r 10s ease-in-out infinite;border:1px solid rgba(180,160,90,0.35);overflow:hidden;">
+          <div style="position:absolute;top:-3px;left:-54px;width:130px;height:55px;background:linear-gradient(210deg,rgba(255,248,200,0.45),rgba(210,195,140,0.25));border-radius:50%;transform-origin:left top;opacity:0;animation:beetle-flight-wing-r 10s ease-in-out infinite;border:1px solid rgba(180,160,90,0.35);overflow:hidden;">
             <div style="position:absolute;top:15px;left:0;width:90px;height:1px;background:rgba(140,120,70,0.35);transform-origin:left center;transform:rotate(8deg);"></div>
             <div style="position:absolute;top:15px;left:0;width:100px;height:1px;background:rgba(140,120,70,0.3);transform-origin:left center;transform:rotate(18deg);"></div>
             <div style="position:absolute;top:15px;left:0;width:105px;height:1px;background:rgba(140,120,70,0.3);transform-origin:left center;transform:rotate(28deg);"></div>
@@ -619,6 +567,112 @@ function renderAdultInsect(variantIndex){
           <div style="position:absolute;top:24px;left:2px;width:8px;height:4px;background:#f472b6;border-radius:50%;opacity:0.5;filter:blur(1px);"></div>
           <div style="position:absolute;top:24px;right:2px;width:8px;height:4px;background:#f472b6;border-radius:50%;opacity:0.5;filter:blur(1px);"></div>
         </div>
+      </div>
+    `,
+    6:` <!-- Lightning Bug (Firefly) - Glowing segmented abdomen -->
+      <div style="position:relative;width:140px;height:200px;display:inline-block;animation:firefly-float 5s ease-in-out infinite;">
+
+        <!-- YELLOW GLOWING HALO - surrounds whole creature when tail is lit (z-index 0) -->
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-30%);width:180px;height:220px;border-radius:50%;z-index:0;animation:firefly-halo 2s ease-in-out infinite;pointer-events:none;"></div>
+
+        <!-- TRANSPARENT FLIGHT WINGS (z-index 8) - in front of body, behind elytra -->
+        <div style="position:absolute;top:55px;left:50%;transform:translateX(-50%);width:70px;height:80px;z-index:8;">
+          <!-- Left flight wing - spreads LEFT -->
+          <div style="position:absolute;top:-3px;left:-7px;width:130px;height:55px;background:linear-gradient(150deg,rgba(180,220,210,0.55),rgba(140,200,190,0.4),rgba(160,210,200,0.3));border-radius:50%;transform-origin:right top;opacity:0;animation:firefly-flight-wing-l 6s ease-in-out infinite;border:1px solid rgba(100,180,150,0.5);overflow:hidden;">
+            <div style="position:absolute;top:15px;right:0;width:90px;height:1px;background:rgba(80,140,120,0.35);transform-origin:right center;transform:rotate(-8deg);"></div>
+            <div style="position:absolute;top:15px;right:0;width:100px;height:1px;background:rgba(80,140,120,0.3);transform-origin:right center;transform:rotate(-18deg);"></div>
+            <div style="position:absolute;top:15px;right:0;width:105px;height:1px;background:rgba(80,140,120,0.3);transform-origin:right center;transform:rotate(-28deg);"></div>
+            <div style="position:absolute;top:15px;right:0;width:100px;height:1px;background:rgba(80,140,120,0.25);transform-origin:right center;transform:rotate(-38deg);"></div>
+            <div style="position:absolute;top:15px;right:0;width:90px;height:1px;background:rgba(80,140,120,0.25);transform-origin:right center;transform:rotate(-48deg);"></div>
+            <div style="position:absolute;top:15px;right:0;width:75px;height:1px;background:rgba(80,140,120,0.2);transform-origin:right center;transform:rotate(-58deg);"></div>
+          </div>
+          <!-- Right flight wing - spreads RIGHT -->
+          <div style="position:absolute;top:-2px;left:-41px;width:130px;height:55px;background:linear-gradient(210deg,rgba(180,220,210,0.55),rgba(140,200,190,0.4),rgba(160,210,200,0.3));border-radius:50%;transform-origin:left top;opacity:0;animation:firefly-flight-wing-r 6s ease-in-out infinite;border:1px solid rgba(100,180,150,0.5);overflow:hidden;">
+            <div style="position:absolute;top:15px;left:0;width:90px;height:1px;background:rgba(80,140,120,0.35);transform-origin:left center;transform:rotate(8deg);"></div>
+            <div style="position:absolute;top:15px;left:0;width:100px;height:1px;background:rgba(80,140,120,0.3);transform-origin:left center;transform:rotate(18deg);"></div>
+            <div style="position:absolute;top:15px;left:0;width:105px;height:1px;background:rgba(80,140,120,0.3);transform-origin:left center;transform:rotate(28deg);"></div>
+            <div style="position:absolute;top:15px;left:0;width:100px;height:1px;background:rgba(80,140,120,0.25);transform-origin:left center;transform:rotate(38deg);"></div>
+            <div style="position:absolute;top:15px;left:0;width:90px;height:1px;background:rgba(80,140,120,0.25);transform-origin:left center;transform:rotate(48deg);"></div>
+            <div style="position:absolute;top:15px;left:0;width:75px;height:1px;background:rgba(80,140,120,0.2);transform-origin:left center;transform:rotate(58deg);"></div>
+          </div>
+        </div>
+
+        <!-- UNDERBODY/ABDOMEN - Dark reddish-brown segmented (z-index 7) -->
+        <div style="position:absolute;top:58px;left:50%;transform:translateX(-50%);width:55px;height:85px;z-index:7;">
+          <div style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:52px;height:82px;background:linear-gradient(180deg,#8b4513 0%,#5d3a1a 15%,#4a2c10 30%,#5d3a1a 45%,#4a2c10 60%,#5d3a1a 75%,#3d2510 100%);border-radius:30% 30% 45% 45%;border:2px solid #2d1a08;box-shadow:inset 2px 2px 8px rgba(180,140,100,0.15),inset -2px -2px 8px rgba(0,0,0,0.5);">
+            <!-- Segment lines -->
+            <div style="position:absolute;top:15px;left:5px;right:5px;height:2px;background:rgba(0,0,0,0.3);border-radius:2px;"></div>
+            <div style="position:absolute;top:30px;left:3px;right:3px;height:2px;background:rgba(0,0,0,0.3);border-radius:2px;"></div>
+            <div style="position:absolute;top:45px;left:5px;right:5px;height:2px;background:rgba(0,0,0,0.3);border-radius:2px;"></div>
+            <div style="position:absolute;top:60px;left:8px;right:8px;height:2px;background:rgba(0,0,0,0.3);border-radius:2px;"></div>
+          </div>
+        </div>
+
+        <!-- ELYTRA - Long black with yellow/gold border (z-index 10) - extends full body length -->
+        <div style="position:absolute;top:42px;left:50%;transform:translateX(-50%);width:70px;height:150px;z-index:10;">
+          <!-- Left elytra - full length with yellow border -->
+          <div style="position:absolute;top:0;left:0;width:35px;height:150px;background:linear-gradient(90deg,#e5c07b 0%,#c9a45c 8%,#1f1f1f 18%,#2d2d2d 50%,#1a1a1a 100%);border-radius:45% 5% 20% 50%;border:2px solid #d4a84b;transform-origin:100% 3%;animation:firefly-elytra-l 6s ease-in-out infinite;box-shadow:inset 3px 3px 12px rgba(255,255,255,0.12),inset -2px -2px 10px rgba(0,0,0,0.6);">
+            <div style="position:absolute;top:10px;left:4px;width:10px;height:50px;background:radial-gradient(ellipse,rgba(255,255,255,0.15),transparent);border-radius:50%;"></div>
+          </div>
+          <!-- Right elytra - full length with yellow border -->
+          <div style="position:absolute;top:0;right:0;width:35px;height:150px;background:linear-gradient(270deg,#e5c07b 0%,#c9a45c 8%,#1f1f1f 18%,#2d2d2d 50%,#1a1a1a 100%);border-radius:5% 45% 50% 20%;border:2px solid #d4a84b;transform-origin:0% 3%;animation:firefly-elytra-r 6s ease-in-out infinite;box-shadow:inset 3px 3px 12px rgba(255,255,255,0.12),inset -2px -2px 10px rgba(0,0,0,0.6);">
+            <div style="position:absolute;top:10px;right:4px;width:10px;height:50px;background:radial-gradient(ellipse,rgba(255,255,255,0.15),transparent);border-radius:50%;"></div>
+          </div>
+        </div>
+
+        <!-- GLOWING ABDOMEN - Multiple segmented glowing sections (z-index 8) -->
+        <div style="position:absolute;top:130px;left:50%;transform:translateX(-50%);width:50px;height:70px;z-index:8;">
+          <!-- Segment 1 - transitional (dark to glow) -->
+          <div style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:46px;height:16px;background:linear-gradient(180deg,#4a4a3a,#6b6b4a,#8a8a5a);border-radius:30% 30% 20% 20%;border:2px solid #3a3a2a;animation:firefly-glow-seg1 2s ease-in-out infinite;"></div>
+          <!-- Segment 2 - glowing -->
+          <div style="position:absolute;top:13px;left:50%;transform:translateX(-50%);width:44px;height:16px;background:radial-gradient(ellipse at 50% 50%,#fffde7,#fff59d,#c5e063);border-radius:20%;border:2px solid #a0b83a;animation:firefly-glow 2s ease-in-out infinite;box-shadow:0 0 12px rgba(200,230,80,0.6);"></div>
+          <!-- Segment 3 - bright glowing -->
+          <div style="position:absolute;top:26px;left:50%;transform:translateX(-50%);width:40px;height:16px;background:radial-gradient(ellipse at 50% 50%,#ffffff,#fffde7,#fff59d,#e8f076);border-radius:20%;border:2px solid #b8c94a;animation:firefly-glow 2s ease-in-out infinite 0.2s;box-shadow:0 0 18px rgba(230,245,100,0.7);"></div>
+          <!-- Segment 4 - brightest glowing -->
+          <div style="position:absolute;top:39px;left:50%;transform:translateX(-50%);width:34px;height:18px;background:radial-gradient(ellipse at 50% 40%,#ffffff,#fffde7,#fff59d,#f0f68c);border-radius:30% 30% 45% 45%;border:2px solid #c8d95a;animation:firefly-glow 2s ease-in-out infinite 0.4s;box-shadow:0 0 25px #f5f99a,0 0 45px rgba(245,250,150,0.6),0 0 65px rgba(245,250,150,0.3);"></div>
+          <!-- Tip segment - pointed glow -->
+          <div style="position:absolute;top:54px;left:50%;transform:translateX(-50%);width:24px;height:14px;background:radial-gradient(ellipse at 50% 30%,#ffffff,#fffde7,#f5f99a);border-radius:40% 40% 55% 55%;border:2px solid #d0e06a;animation:firefly-glow 2s ease-in-out infinite 0.6s;box-shadow:0 0 20px #f8fc9a,0 0 35px rgba(248,252,150,0.5);"></div>
+          <!-- Inner glow highlights -->
+          <div style="position:absolute;top:30px;left:50%;transform:translateX(-50%);width:20px;height:25px;background:radial-gradient(ellipse,rgba(255,255,255,0.8),rgba(255,255,230,0.3),transparent);border-radius:50%;animation:firefly-glow 2s ease-in-out infinite;pointer-events:none;"></div>
+        </div>
+
+        <!-- THORAX/PRONOTUM - Red-orange shield (z-index 15) -->
+        <div style="position:absolute;top:32px;left:50%;transform:translateX(-50%);width:48px;height:24px;background:radial-gradient(ellipse at 40% 30%,#ff7043,#f4511e,#d84315);border-radius:50% 50% 45% 45%;border:2px solid #bf360c;z-index:15;box-shadow:inset 2px 2px 8px rgba(255,200,180,0.4),inset -2px -2px 6px rgba(0,0,0,0.3);">
+          <div style="position:absolute;top:3px;left:8px;width:12px;height:8px;background:radial-gradient(ellipse,rgba(255,255,255,0.4),transparent);border-radius:50%;"></div>
+        </div>
+
+        <!-- HEAD - Cute red face (z-index 20) -->
+        <div style="position:absolute;top:15px;left:50%;transform:translateX(-50%);width:42px;height:28px;background:radial-gradient(circle at 40% 35%,#ff8a65,#f4511e,#d84315);border-radius:50% 50% 45% 45%;z-index:20;border:2px solid #bf360c;box-shadow:0 2px 6px rgba(0,0,0,0.4),inset 2px 2px 6px rgba(255,200,180,0.3);">
+          <!-- Eyes - big cute black eyes -->
+          <div style="position:absolute;top:6px;left:4px;width:14px;height:16px;background:radial-gradient(circle at 55% 45%,#2d2d2d,#0a0a0a);border-radius:50%;border:1px solid #000;overflow:hidden;animation:blink 4s infinite;">
+            <div style="position:absolute;top:3px;left:4px;width:5px;height:6px;background:white;border-radius:50%;opacity:0.9;"></div>
+            <div style="position:absolute;bottom:3px;right:3px;width:3px;height:3px;background:white;border-radius:50%;opacity:0.5;"></div>
+          </div>
+          <div style="position:absolute;top:6px;right:4px;width:14px;height:16px;background:radial-gradient(circle at 45% 45%,#2d2d2d,#0a0a0a);border-radius:50%;border:1px solid #000;overflow:hidden;animation:blink 4s infinite;">
+            <div style="position:absolute;top:3px;right:4px;width:5px;height:6px;background:white;border-radius:50%;opacity:0.9;"></div>
+            <div style="position:absolute;bottom:3px;left:3px;width:3px;height:3px;background:white;border-radius:50%;opacity:0.5;"></div>
+          </div>
+          <!-- Cute smile -->
+          <div style="position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:10px;height:5px;border-bottom:2px solid #7f0000;border-radius:0 0 10px 10px;"></div>
+          <!-- Blush -->
+          <div style="position:absolute;top:18px;left:0px;width:8px;height:5px;background:#ffab91;border-radius:50%;opacity:0.6;filter:blur(1px);"></div>
+          <div style="position:absolute;top:18px;right:0px;width:8px;height:5px;background:#ffab91;border-radius:50%;opacity:0.6;filter:blur(1px);"></div>
+        </div>
+
+        <!-- ANTENNAE - Close together like ladybug (z-index 15 - behind head) -->
+        <div style="position:absolute;top:-2px;left:50%;transform:translateX(-50%);width:40px;height:30px;z-index:15;">
+          <!-- Left antenna -->
+          <div style="position:absolute;top:10px;left:8px;width:3px;height:24px;background:linear-gradient(180deg,#1a1a1a 0%,#3d3d3d 20%,#1a1a1a 40%,#3d3d3d 60%,#1a1a1a 80%,#3d3d3d 100%);border-radius:2px;transform-origin:bottom center;transform:rotate(-20deg);animation:firefly-antenna-l 4s ease-in-out infinite;">
+            <div style="position:absolute;top:-4px;left:-1px;width:5px;height:5px;background:#2d2d2d;border-radius:50%;"></div>
+          </div>
+          <!-- Right antenna -->
+          <div style="position:absolute;top:10px;right:8px;width:3px;height:24px;background:linear-gradient(180deg,#1a1a1a 0%,#3d3d3d 20%,#1a1a1a 40%,#3d3d3d 60%,#1a1a1a 80%,#3d3d3d 100%);border-radius:2px;transform-origin:bottom center;transform:rotate(20deg);animation:firefly-antenna-r 4s ease-in-out infinite;">
+            <div style="position:absolute;top:-4px;right:-1px;width:5px;height:5px;background:#2d2d2d;border-radius:50%;"></div>
+          </div>
+        </div>
+
+        <!-- Ambient glow around the glowing segments -->
+        <div style="position:absolute;top:130px;left:50%;transform:translateX(-50%);width:90px;height:90px;background:radial-gradient(circle,rgba(240,250,120,0.35),rgba(230,245,100,0.15) 40%,transparent 70%);border-radius:50%;z-index:1;animation:firefly-ambient 2s ease-in-out infinite;pointer-events:none;"></div>
       </div>
     `,
   };
