@@ -189,90 +189,213 @@ function renderAdultBird(variantIndex){
         </div>
       </div>
     `,
-    5:` <!-- Peacock -->
-      <div style="position:relative;width:120px;height:125px;display:inline-block;animation:bounce-slow 2.8s ease-in-out infinite;">
-        <!-- Majestic rainbow aura -->
-        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:115px;height:120px;background:radial-gradient(circle,rgba(138,43,226,0.15),rgba(0,180,150,0.12),rgba(0,120,200,0.1),transparent 65%);border-radius:50%;animation:pulse-grow 3.2s ease-in-out infinite;"></div>
-        <!-- Magnificent tail fan base (semicircle with glow) -->
-        <div style="position:absolute;left:50%;top:50%;transform:translateX(-50%);width:115px;height:90px;background:radial-gradient(ellipse at 50% 100%,rgba(0,200,140,0.5),rgba(0,160,200,0.6),rgba(30,120,180,0.7));border-radius:50% 50% 0 0;animation:peacock-fan 3.5s ease-in-out infinite;box-shadow:0 0 15px rgba(0,180,150,0.3);"></div>
+    5:` <!-- Peacock (Upgraded with fan dance & strut - 19 feathers with multiple eyes) -->
+      <div style="position:relative;width:120px;height:135px;display:inline-block;">
+        <!-- Ground shadow -->
+        <div style="position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:36px;height:8px;background:#000;border-radius:50%;filter:blur(3px);opacity:0.2;"></div>
 
-        <!-- Individual tail feathers with eye spots (creating fan pattern) -->
-        <!-- Left side feathers -->
-        <div style="position:absolute;left:8%;top:22%;width:14px;height:50px;background:linear-gradient(to bottom,rgba(0,200,140,0.8),rgba(0,160,200,0.7));border-radius:50% 50% 30% 30%;transform:rotate(-25deg);">
-          <div style="position:absolute;top:6px;left:50%;transform:translateX(-50%);width:11px;height:11px;background:radial-gradient(circle,rgba(100,50,200,1),rgba(50,100,255,0.9));border-radius:50%;border:2px solid rgba(0,220,180,0.8);box-shadow:0 0 6px rgba(100,50,200,0.5);"></div>
-        </div>
-        <div style="position:absolute;left:18%;top:16%;width:15px;height:58px;background:linear-gradient(to bottom,rgba(0,200,140,0.85),rgba(0,160,200,0.75));border-radius:50% 50% 30% 30%;transform:rotate(-18deg);">
-          <div style="position:absolute;top:8px;left:50%;transform:translateX(-50%);width:12px;height:12px;background:radial-gradient(circle,rgba(120,60,220,1),rgba(60,120,255,0.9));border-radius:50%;border:2px solid rgba(0,220,180,0.85);box-shadow:0 0 8px rgba(120,60,220,0.6);"></div>
-        </div>
-        <div style="position:absolute;left:30%;top:12%;width:16px;height:64px;background:linear-gradient(to bottom,rgba(0,200,140,0.9),rgba(0,160,200,0.8));border-radius:50% 50% 30% 30%;transform:rotate(-10deg);">
-          <div style="position:absolute;top:10px;left:50%;transform:translateX(-50%);width:13px;height:13px;background:radial-gradient(circle,rgba(130,70,230,1),rgba(70,130,255,0.95));border-radius:50%;border:2px solid rgba(0,230,190,0.9);box-shadow:0 0 10px rgba(130,70,230,0.7);"></div>
-        </div>
-
-        <!-- Center feathers -->
-        <div style="position:absolute;left:43%;top:8%;width:16px;height:68px;background:linear-gradient(to bottom,rgba(0,210,150,0.95),rgba(0,170,210,0.85));border-radius:50% 50% 30% 30%;transform:rotate(-3deg);">
-          <div style="position:absolute;top:12px;left:50%;transform:translateX(-50%);width:14px;height:14px;background:radial-gradient(circle,rgba(140,80,240,1),rgba(80,140,255,1));border-radius:50%;border:2.5px solid rgba(0,240,200,0.95);box-shadow:0 0 12px rgba(140,80,240,0.8);"></div>
-        </div>
-        <div style="position:absolute;left:50%;top:6%;transform:translateX(-50%);width:17px;height:70px;background:linear-gradient(to bottom,rgba(0,210,150,1),rgba(0,170,210,0.9));border-radius:50% 50% 30% 30%;">
-          <div style="position:absolute;top:14px;left:50%;transform:translateX(-50%);width:15px;height:15px;background:radial-gradient(circle,rgba(150,90,250,1),rgba(90,150,255,1));border-radius:50%;border:2.5px solid rgba(0,250,210,1);box-shadow:0 0 14px rgba(150,90,250,0.9);"></div>
-        </div>
-        <div style="position:absolute;right:43%;top:8%;width:16px;height:68px;background:linear-gradient(to bottom,rgba(0,210,150,0.95),rgba(0,170,210,0.85));border-radius:50% 50% 30% 30%;transform:rotate(3deg);">
-          <div style="position:absolute;top:12px;left:50%;transform:translateX(-50%);width:14px;height:14px;background:radial-gradient(circle,rgba(140,80,240,1),rgba(80,140,255,1));border-radius:50%;border:2.5px solid rgba(0,240,200,0.95);box-shadow:0 0 12px rgba(140,80,240,0.8);"></div>
-        </div>
-
-        <!-- Right side feathers -->
-        <div style="position:absolute;right:30%;top:12%;width:16px;height:64px;background:linear-gradient(to bottom,rgba(0,200,140,0.9),rgba(0,160,200,0.8));border-radius:50% 50% 30% 30%;transform:rotate(10deg);">
-          <div style="position:absolute;top:10px;left:50%;transform:translateX(-50%);width:13px;height:13px;background:radial-gradient(circle,rgba(130,70,230,1),rgba(70,130,255,0.95));border-radius:50%;border:2px solid rgba(0,230,190,0.9);box-shadow:0 0 10px rgba(130,70,230,0.7);"></div>
-        </div>
-        <div style="position:absolute;right:18%;top:16%;width:15px;height:58px;background:linear-gradient(to bottom,rgba(0,200,140,0.85),rgba(0,160,200,0.75));border-radius:50% 50% 30% 30%;transform:rotate(18deg);">
-          <div style="position:absolute;top:8px;left:50%;transform:translateX(-50%);width:12px;height:12px;background:radial-gradient(circle,rgba(120,60,220,1),rgba(60,120,255,0.9));border-radius:50%;border:2px solid rgba(0,220,180,0.85);box-shadow:0 0 8px rgba(120,60,220,0.6);"></div>
-        </div>
-        <div style="position:absolute;right:8%;top:22%;width:14px;height:50px;background:linear-gradient(to bottom,rgba(0,200,140,0.8),rgba(0,160,200,0.7));border-radius:50% 50% 30% 30%;transform:rotate(25deg);">
-          <div style="position:absolute;top:6px;left:50%;transform:translateX(-50%);width:11px;height:11px;background:radial-gradient(circle,rgba(100,50,200,1),rgba(50,100,255,0.9));border-radius:50%;border:2px solid rgba(0,220,180,0.8);box-shadow:0 0 6px rgba(100,50,200,0.5);"></div>
-        </div>
-
-        <!-- Body (iridescent emerald green/blue) -->
-        <div style="position:absolute;left:50%;top:74%;transform:translate(-50%,-50%);width:48px;height:42px;background:radial-gradient(ellipse,rgba(0,150,100,1),rgba(0,120,150,0.98));border-radius:56%;box-shadow:0 4px 10px rgba(0,0,0,0.25),inset -2px -2px 8px rgba(0,220,160,0.6);"></div>
-
-        <!-- Chest (lighter iridescent) -->
-        <div style="position:absolute;left:50%;top:70%;transform:translateX(-50%);width:28px;height:22px;background:radial-gradient(ellipse,rgba(0,200,150,0.8),rgba(0,180,180,0.7));border-radius:50%;"></div>
-
-        <!-- Neck (slender, shimmering, centered) -->
-        <div style="position:absolute;left:50%;top:58%;transform:translateX(-50%);width:18px;height:26px;background:linear-gradient(to bottom,rgba(0,120,200,1),rgba(0,100,180,0.98));border-radius:45%;"></div>
-
-        <!-- Head (royal blue, front-facing) -->
-        <div style="position:absolute;left:50%;top:42%;transform:translateX(-50%);width:28px;height:26px;background:radial-gradient(circle,rgba(0,100,200,1),rgba(0,80,160,0.98));border-radius:55%;animation:head-bob 2.8s ease-in-out infinite;"></div>
-
-        <!-- Crown crest (3 feather plumes with eye tips) -->
-        <div style="position:absolute;left:38%;top:32%;width:3px;height:10px;background:linear-gradient(to top,rgba(0,100,200,1),rgba(0,150,220,0.9));border-radius:50%;">
-          <div style="position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:5px;height:5px;background:radial-gradient(circle,rgba(0,200,255,1),rgba(0,150,255,0.9));border-radius:50%;box-shadow:0 0 5px rgba(0,200,255,0.8);"></div>
-        </div>
-        <div style="position:absolute;left:50%;top:30%;transform:translateX(-50%);width:3px;height:12px;background:linear-gradient(to top,rgba(0,100,200,1),rgba(0,150,220,0.9));border-radius:50%;">
-          <div style="position:absolute;top:-5px;left:50%;transform:translateX(-50%);width:6px;height:6px;background:radial-gradient(circle,rgba(0,220,255,1),rgba(0,170,255,0.95));border-radius:50%;box-shadow:0 0 7px rgba(0,220,255,0.9);"></div>
-        </div>
-        <div style="position:absolute;right:38%;top:32%;width:3px;height:10px;background:linear-gradient(to top,rgba(0,100,200,1),rgba(0,150,220,0.9));border-radius:50%;">
-          <div style="position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:5px;height:5px;background:radial-gradient(circle,rgba(0,200,255,1),rgba(0,150,255,0.9));border-radius:50%;box-shadow:0 0 5px rgba(0,200,255,0.8);"></div>
-        </div>
-
-        <!-- TWO eyes (dark with white highlight, front-facing) -->
-        <div style="position:absolute;left:50%;top:42%;transform:translateX(-50%);display:flex;gap:7px;">
-          <div style="width:6px;height:7px;background:black;border-radius:50%;border:1.5px solid rgba(255,255,255,0.8);animation:blink 5.5s infinite;">
-            <div style="position:absolute;top:1px;left:1.5px;width:2px;height:2px;background:white;border-radius:50%;"></div>
-          </div>
-          <div style="width:6px;height:7px;background:black;border-radius:50%;border:1.5px solid rgba(255,255,255,0.8);animation:blink 5.5s infinite;">
-            <div style="position:absolute;top:1px;left:1.5px;width:2px;height:2px;background:white;border-radius:50%;"></div>
+        <!-- Fan feathers with eye patterns (19 feathers like original) -->
+        <!-- Outer feathers (shortest) -->
+        <div style="position:absolute;bottom:38px;left:50%;margin-left:-10px;width:20px;height:68px;transform-origin:bottom center;animation:peacock-fan-dance 8s ease-in-out infinite;--angle:-92deg;--y:10px;z-index:1;">
+          <div style="width:100%;height:100%;background:repeating-linear-gradient(90deg,transparent 0,transparent 1px,#065f46 1px,#065f46 2px);border-radius:50% 50% 90% 90%;display:flex;flex-direction:column;align-items:center;padding-top:2px;">
+            <div style="width:18px;height:20px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;animation:peacock-shimmer 2s ease-in-out infinite;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.9;"></div>
           </div>
         </div>
+        <div style="position:absolute;bottom:38px;left:50%;margin-left:-10px;width:20px;height:68px;transform-origin:bottom center;animation:peacock-fan-dance 8s ease-in-out infinite;--angle:92deg;--y:10px;z-index:1;">
+          <div style="width:100%;height:100%;background:repeating-linear-gradient(90deg,transparent 0,transparent 1px,#065f46 1px,#065f46 2px);border-radius:50% 50% 90% 90%;display:flex;flex-direction:column;align-items:center;padding-top:2px;">
+            <div style="width:18px;height:20px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;animation:peacock-shimmer 2s ease-in-out infinite;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.9;"></div>
+          </div>
+        </div>
+        <div style="position:absolute;bottom:38px;left:50%;margin-left:-10px;width:20px;height:72px;transform-origin:bottom center;animation:peacock-fan-dance 8s ease-in-out infinite;--angle:-80deg;--y:8px;z-index:1;">
+          <div style="width:100%;height:100%;background:repeating-linear-gradient(90deg,transparent 0,transparent 1px,#065f46 1px,#065f46 2px);border-radius:50% 50% 90% 90%;display:flex;flex-direction:column;align-items:center;padding-top:2px;">
+            <div style="width:18px;height:20px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;animation:peacock-shimmer 2s ease-in-out infinite 0.1s;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.9;"></div>
+          </div>
+        </div>
+        <div style="position:absolute;bottom:38px;left:50%;margin-left:-10px;width:20px;height:72px;transform-origin:bottom center;animation:peacock-fan-dance 8s ease-in-out infinite;--angle:80deg;--y:8px;z-index:1;">
+          <div style="width:100%;height:100%;background:repeating-linear-gradient(90deg,transparent 0,transparent 1px,#065f46 1px,#065f46 2px);border-radius:50% 50% 90% 90%;display:flex;flex-direction:column;align-items:center;padding-top:2px;">
+            <div style="width:18px;height:20px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;animation:peacock-shimmer 2s ease-in-out infinite 0.1s;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.9;"></div>
+          </div>
+        </div>
+        <!-- Mid-outer feathers -->
+        <div style="position:absolute;bottom:38px;left:50%;margin-left:-10px;width:20px;height:80px;transform-origin:bottom center;animation:peacock-fan-dance 8s ease-in-out infinite;--angle:-68deg;--y:5px;z-index:2;">
+          <div style="width:100%;height:100%;background:repeating-linear-gradient(90deg,transparent 0,transparent 1px,#065f46 1px,#065f46 2px);border-radius:50% 50% 90% 90%;display:flex;flex-direction:column;align-items:center;padding-top:2px;">
+            <div style="width:18px;height:20px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;animation:peacock-shimmer 2s ease-in-out infinite 0.2s;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.9;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.85;"></div>
+          </div>
+        </div>
+        <div style="position:absolute;bottom:38px;left:50%;margin-left:-10px;width:20px;height:80px;transform-origin:bottom center;animation:peacock-fan-dance 8s ease-in-out infinite;--angle:68deg;--y:5px;z-index:2;">
+          <div style="width:100%;height:100%;background:repeating-linear-gradient(90deg,transparent 0,transparent 1px,#065f46 1px,#065f46 2px);border-radius:50% 50% 90% 90%;display:flex;flex-direction:column;align-items:center;padding-top:2px;">
+            <div style="width:18px;height:20px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;animation:peacock-shimmer 2s ease-in-out infinite 0.2s;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.9;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.85;"></div>
+          </div>
+        </div>
+        <div style="position:absolute;bottom:38px;left:50%;margin-left:-10px;width:20px;height:86px;transform-origin:bottom center;animation:peacock-fan-dance 8s ease-in-out infinite;--angle:-56deg;--y:3px;z-index:2;">
+          <div style="width:100%;height:100%;background:repeating-linear-gradient(90deg,transparent 0,transparent 1px,#065f46 1px,#065f46 2px);border-radius:50% 50% 90% 90%;display:flex;flex-direction:column;align-items:center;padding-top:2px;">
+            <div style="width:18px;height:20px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;animation:peacock-shimmer 2s ease-in-out infinite 0.3s;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.9;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.85;"></div>
+          </div>
+        </div>
+        <div style="position:absolute;bottom:38px;left:50%;margin-left:-10px;width:20px;height:86px;transform-origin:bottom center;animation:peacock-fan-dance 8s ease-in-out infinite;--angle:56deg;--y:3px;z-index:2;">
+          <div style="width:100%;height:100%;background:repeating-linear-gradient(90deg,transparent 0,transparent 1px,#065f46 1px,#065f46 2px);border-radius:50% 50% 90% 90%;display:flex;flex-direction:column;align-items:center;padding-top:2px;">
+            <div style="width:18px;height:20px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;animation:peacock-shimmer 2s ease-in-out infinite 0.3s;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.9;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.85;"></div>
+          </div>
+        </div>
+        <!-- Mid feathers -->
+        <div style="position:absolute;bottom:38px;left:50%;margin-left:-10px;width:20px;height:92px;transform-origin:bottom center;animation:peacock-fan-dance 8s ease-in-out infinite;--angle:-45deg;--y:0px;z-index:3;">
+          <div style="width:100%;height:100%;background:repeating-linear-gradient(90deg,transparent 0,transparent 1px,#065f46 1px,#065f46 2px);border-radius:50% 50% 90% 90%;display:flex;flex-direction:column;align-items:center;padding-top:2px;">
+            <div style="width:18px;height:20px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;animation:peacock-shimmer 2s ease-in-out infinite 0.4s;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.9;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.85;"></div>
+          </div>
+        </div>
+        <div style="position:absolute;bottom:38px;left:50%;margin-left:-10px;width:20px;height:92px;transform-origin:bottom center;animation:peacock-fan-dance 8s ease-in-out infinite;--angle:45deg;--y:0px;z-index:3;">
+          <div style="width:100%;height:100%;background:repeating-linear-gradient(90deg,transparent 0,transparent 1px,#065f46 1px,#065f46 2px);border-radius:50% 50% 90% 90%;display:flex;flex-direction:column;align-items:center;padding-top:2px;">
+            <div style="width:18px;height:20px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;animation:peacock-shimmer 2s ease-in-out infinite 0.4s;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.9;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.85;"></div>
+          </div>
+        </div>
+        <div style="position:absolute;bottom:38px;left:50%;margin-left:-10px;width:20px;height:98px;transform-origin:bottom center;animation:peacock-fan-dance 8s ease-in-out infinite;--angle:-35deg;--y:0px;z-index:3;">
+          <div style="width:100%;height:100%;background:repeating-linear-gradient(90deg,transparent 0,transparent 1px,#065f46 1px,#065f46 2px);border-radius:50% 50% 90% 90%;display:flex;flex-direction:column;align-items:center;padding-top:2px;">
+            <div style="width:18px;height:20px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;animation:peacock-shimmer 2s ease-in-out infinite 0.5s;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.9;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.85;"></div>
+          </div>
+        </div>
+        <div style="position:absolute;bottom:38px;left:50%;margin-left:-10px;width:20px;height:98px;transform-origin:bottom center;animation:peacock-fan-dance 8s ease-in-out infinite;--angle:35deg;--y:0px;z-index:3;">
+          <div style="width:100%;height:100%;background:repeating-linear-gradient(90deg,transparent 0,transparent 1px,#065f46 1px,#065f46 2px);border-radius:50% 50% 90% 90%;display:flex;flex-direction:column;align-items:center;padding-top:2px;">
+            <div style="width:18px;height:20px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;animation:peacock-shimmer 2s ease-in-out infinite 0.5s;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.9;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.85;"></div>
+          </div>
+        </div>
+        <!-- Inner feathers (tallest) -->
+        <div style="position:absolute;bottom:38px;left:50%;margin-left:-10px;width:20px;height:104px;transform-origin:bottom center;animation:peacock-fan-dance 8s ease-in-out infinite;--angle:-25deg;--y:0px;z-index:4;">
+          <div style="width:100%;height:100%;background:repeating-linear-gradient(90deg,transparent 0,transparent 1px,#065f46 1px,#065f46 2px);border-radius:50% 50% 90% 90%;display:flex;flex-direction:column;align-items:center;padding-top:2px;">
+            <div style="width:18px;height:20px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;animation:peacock-shimmer 2s ease-in-out infinite 0.6s;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.9;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.85;"></div>
+          </div>
+        </div>
+        <div style="position:absolute;bottom:38px;left:50%;margin-left:-10px;width:20px;height:104px;transform-origin:bottom center;animation:peacock-fan-dance 8s ease-in-out infinite;--angle:25deg;--y:0px;z-index:4;">
+          <div style="width:100%;height:100%;background:repeating-linear-gradient(90deg,transparent 0,transparent 1px,#065f46 1px,#065f46 2px);border-radius:50% 50% 90% 90%;display:flex;flex-direction:column;align-items:center;padding-top:2px;">
+            <div style="width:18px;height:20px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;animation:peacock-shimmer 2s ease-in-out infinite 0.6s;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.9;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.85;"></div>
+          </div>
+        </div>
+        <div style="position:absolute;bottom:38px;left:50%;margin-left:-10px;width:20px;height:108px;transform-origin:bottom center;animation:peacock-fan-dance 8s ease-in-out infinite;--angle:-16deg;--y:0px;z-index:4;">
+          <div style="width:100%;height:100%;background:repeating-linear-gradient(90deg,transparent 0,transparent 1px,#065f46 1px,#065f46 2px);border-radius:50% 50% 90% 90%;display:flex;flex-direction:column;align-items:center;padding-top:2px;">
+            <div style="width:18px;height:20px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;animation:peacock-shimmer 2s ease-in-out infinite 0.7s;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.9;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.85;"></div>
+          </div>
+        </div>
+        <div style="position:absolute;bottom:38px;left:50%;margin-left:-10px;width:20px;height:108px;transform-origin:bottom center;animation:peacock-fan-dance 8s ease-in-out infinite;--angle:16deg;--y:0px;z-index:4;">
+          <div style="width:100%;height:100%;background:repeating-linear-gradient(90deg,transparent 0,transparent 1px,#065f46 1px,#065f46 2px);border-radius:50% 50% 90% 90%;display:flex;flex-direction:column;align-items:center;padding-top:2px;">
+            <div style="width:18px;height:20px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;animation:peacock-shimmer 2s ease-in-out infinite 0.7s;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.9;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.85;"></div>
+          </div>
+        </div>
+        <div style="position:absolute;bottom:38px;left:50%;margin-left:-10px;width:20px;height:112px;transform-origin:bottom center;animation:peacock-fan-dance 8s ease-in-out infinite;--angle:-8deg;--y:0px;z-index:5;">
+          <div style="width:100%;height:100%;background:repeating-linear-gradient(90deg,transparent 0,transparent 1px,#065f46 1px,#065f46 2px);border-radius:50% 50% 90% 90%;display:flex;flex-direction:column;align-items:center;padding-top:2px;">
+            <div style="width:18px;height:20px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;animation:peacock-shimmer 2s ease-in-out infinite 0.8s;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.9;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.85;"></div>
+          </div>
+        </div>
+        <div style="position:absolute;bottom:38px;left:50%;margin-left:-10px;width:20px;height:112px;transform-origin:bottom center;animation:peacock-fan-dance 8s ease-in-out infinite;--angle:8deg;--y:0px;z-index:5;">
+          <div style="width:100%;height:100%;background:repeating-linear-gradient(90deg,transparent 0,transparent 1px,#065f46 1px,#065f46 2px);border-radius:50% 50% 90% 90%;display:flex;flex-direction:column;align-items:center;padding-top:2px;">
+            <div style="width:18px;height:20px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;animation:peacock-shimmer 2s ease-in-out infinite 0.8s;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.9;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.85;"></div>
+          </div>
+        </div>
+        <!-- Center feather (tallest) -->
+        <div style="position:absolute;bottom:38px;left:50%;margin-left:-10px;width:20px;height:118px;transform-origin:bottom center;animation:peacock-fan-dance 8s ease-in-out infinite;--angle:0deg;--y:0px;z-index:6;">
+          <div style="width:100%;height:100%;background:repeating-linear-gradient(90deg,transparent 0,transparent 1px,#065f46 1px,#065f46 2px);border-radius:50% 50% 90% 90%;display:flex;flex-direction:column;align-items:center;padding-top:2px;">
+            <div style="width:18px;height:20px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;animation:peacock-shimmer 2s ease-in-out infinite 0.9s;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.9;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.85;"></div>
+            <div style="width:10px;height:14px;margin-top:-5px;background:radial-gradient(ellipse at 50% 45%,#1e3a8a 0%,#3b82f6 25%,#14b8a6 35%,#fbbf24 45%,#4d7c0f 60%,transparent 65%);border-radius:50%;flex-shrink:0;opacity:0.8;"></div>
+          </div>
+        </div>
 
-        <!-- Beak (small, golden, centered) -->
-        <div style="position:absolute;left:50%;top:50%;transform:translateX(-50%);width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:7px solid rgba(200,160,80,1);"></div>
+        <!-- Bird body with strut -->
+        <div style="position:absolute;width:100%;height:100%;animation:peacock-strut 1s ease-in-out infinite;z-index:20;">
+          <!-- Legs with walking animation -->
+          <div style="position:absolute;bottom:8px;left:48px;width:3px;height:22px;background:repeating-linear-gradient(to bottom,#d97706,#d97706 3px,#b45309 3px,#b45309 4px);border:1px solid #78350f;border-radius:2px;transform-origin:top center;animation:peacock-leg-left 1s ease-in-out infinite;z-index:9;">
+            <div style="position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);width:14px;height:6px;">
+              <div style="position:absolute;left:50%;transform:translateX(-50%);width:5px;height:7px;background:#d97706;border:1px solid #78350f;border-radius:50% 50% 40% 40%;"></div>
+              <div style="position:absolute;left:1px;width:4px;height:6px;background:#d97706;border:1px solid #78350f;border-radius:50% 50% 40% 40%;transform:rotate(-25deg);"></div>
+              <div style="position:absolute;right:1px;width:4px;height:6px;background:#d97706;border:1px solid #78350f;border-radius:50% 50% 40% 40%;transform:rotate(25deg);"></div>
+            </div>
+          </div>
+          <div style="position:absolute;bottom:8px;left:62px;width:3px;height:22px;background:repeating-linear-gradient(to bottom,#d97706,#d97706 3px,#b45309 3px,#b45309 4px);border:1px solid #78350f;border-radius:2px;transform-origin:top center;animation:peacock-leg-right 1s ease-in-out infinite;z-index:9;">
+            <div style="position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);width:14px;height:6px;">
+              <div style="position:absolute;left:50%;transform:translateX(-50%);width:5px;height:7px;background:#d97706;border:1px solid #78350f;border-radius:50% 50% 40% 40%;"></div>
+              <div style="position:absolute;left:1px;width:4px;height:6px;background:#d97706;border:1px solid #78350f;border-radius:50% 50% 40% 40%;transform:rotate(-25deg);"></div>
+              <div style="position:absolute;right:1px;width:4px;height:6px;background:#d97706;border:1px solid #78350f;border-radius:50% 50% 40% 40%;transform:rotate(25deg);"></div>
+            </div>
+          </div>
 
-        <!-- Small wings (emerald, not obscuring tail) -->
-        <div style="position:absolute;left:22%;top:70%;transform:translateY(-50%);width:16px;height:20px;background:linear-gradient(135deg,rgba(0,150,100,1),rgba(0,120,150,0.95));border-radius:50% 20% 60% 30%;box-shadow:2px 2px 8px rgba(0,180,150,0.3);transform-origin:right center;animation:flapLeft 0.8s ease-in-out infinite;"></div>
-        <div style="position:absolute;right:22%;top:70%;transform:translateY(-50%);width:16px;height:20px;background:linear-gradient(225deg,rgba(0,150,100,1),rgba(0,120,150,0.95));border-radius:20% 50% 30% 60%;box-shadow:-2px 2px 8px rgba(0,180,150,0.3);transform-origin:left center;animation:flapRight 0.8s ease-in-out infinite;"></div>
+          <!-- Wings -->
+          <div style="position:absolute;bottom:42px;left:32px;width:14px;height:26px;background:linear-gradient(to bottom,#1d4ed8,#1e3a8a);border-radius:50% 20% 50% 50%;border:2px solid #172554;transform:rotate(12deg);z-index:9;"></div>
+          <div style="position:absolute;bottom:42px;right:32px;width:14px;height:26px;background:linear-gradient(to bottom,#1d4ed8,#1e3a8a);border-radius:20% 50% 50% 50%;border:2px solid #172554;transform:rotate(-12deg);z-index:9;"></div>
 
-        <!-- Feet (dark gray, strong) -->
-        <div style="position:absolute;left:45%;bottom:6px;width:10px;height:8px;background:rgba(100,100,100,0.95);border-radius:50% 50% 0 0;"></div>
-        <div style="position:absolute;right:45%;bottom:6px;width:10px;height:8px;background:rgba(100,100,100,0.95);border-radius:50% 50% 0 0;"></div>
+          <!-- Body -->
+          <div style="position:absolute;bottom:28px;left:50%;transform:translateX(-50%);width:32px;height:40px;background:radial-gradient(circle at 30% 30%,#2563eb 0%,#1e40af 60%,#1e3a8a 100%);border-radius:100% 100% 65% 75% / 90% 90% 95% 75%;box-shadow:inset 4px 4px 8px rgba(255,255,255,0.3),inset -3px -3px 6px rgba(0,0,0,0.4);border:2px solid #172554;z-index:10;"></div>
+
+          <!-- Neck -->
+          <div style="position:absolute;bottom:62px;left:50%;transform:translateX(-50%);width:10px;height:26px;background:linear-gradient(to right,#1d4ed8,#2563eb,#1d4ed8);border-radius:50% 50% 0 0;border:2px solid #172554;border-bottom:none;z-index:11;"></div>
+
+          <!-- Head -->
+          <div style="position:absolute;bottom:84px;left:50%;transform:translateX(-50%);width:28px;height:26px;z-index:20;">
+            <div style="width:100%;height:100%;background:radial-gradient(circle at 35% 35%,#60a5fa 0%,#2563eb 50%,#1e40af 100%);border-radius:48%;border:2px solid #172554;box-shadow:inset 3px 3px 6px rgba(255,255,255,0.4);">
+              <!-- White face patch -->
+              <div style="position:absolute;top:6px;left:4px;width:18px;height:10px;background:#ffffff;border-radius:8px;opacity:0.9;"></div>
+              <!-- Eyes -->
+              <div style="position:absolute;top:8px;left:6px;width:5px;height:5px;background:#0f172a;border-radius:50%;animation:blink 4s infinite;">
+                <div style="position:absolute;top:1px;left:1px;width:2px;height:2px;background:white;border-radius:50%;"></div>
+              </div>
+              <div style="position:absolute;top:8px;right:6px;width:5px;height:5px;background:#0f172a;border-radius:50%;animation:blink 4s infinite;">
+                <div style="position:absolute;top:1px;right:1px;width:2px;height:2px;background:white;border-radius:50%;"></div>
+              </div>
+              <!-- Beak -->
+              <div style="position:absolute;top:14px;left:50%;transform:translateX(-50%);width:8px;height:6px;background:radial-gradient(circle at 50% 20%,#fbbf24,#d97706);border-radius:10% 10% 50% 50%;border:1px solid #92400e;"></div>
+              <!-- Blush -->
+              <div style="position:absolute;top:14px;left:3px;width:4px;height:3px;background:#f472b6;border-radius:50%;opacity:0.4;filter:blur(1px);"></div>
+              <div style="position:absolute;top:14px;right:3px;width:4px;height:3px;background:#f472b6;border-radius:50%;opacity:0.4;filter:blur(1px);"></div>
+            </div>
+
+            <!-- Crest -->
+            <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);width:22px;height:16px;z-index:-1;animation:peacock-crest 1s ease-in-out infinite;">
+              <div style="position:absolute;bottom:0;left:3px;width:1px;height:12px;background:#1e3a8a;transform:rotate(-20deg);">
+                <div style="position:absolute;top:-3px;left:-2px;width:5px;height:5px;background:radial-gradient(circle,#3b82f6,#1e3a8a);border-radius:50%;"></div>
+              </div>
+              <div style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:1px;height:14px;background:#1e3a8a;">
+                <div style="position:absolute;top:-3px;left:-2px;width:5px;height:5px;background:radial-gradient(circle,#3b82f6,#1e3a8a);border-radius:50%;"></div>
+              </div>
+              <div style="position:absolute;bottom:0;right:3px;width:1px;height:12px;background:#1e3a8a;transform:rotate(20deg);">
+                <div style="position:absolute;top:-3px;left:-2px;width:5px;height:5px;background:radial-gradient(circle,#3b82f6,#1e3a8a);border-radius:50%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sparkles -->
+        <div style="position:absolute;top:8px;left:12px;width:3px;height:3px;background:white;border-radius:50%;box-shadow:0 0 5px white;opacity:0.8;animation:peacock-shimmer 2s infinite;"></div>
+        <div style="position:absolute;top:22px;right:15px;width:2px;height:2px;background:#fbbf24;border-radius:50%;box-shadow:0 0 4px gold;opacity:0.8;animation:peacock-shimmer 3s infinite 1s;"></div>
       </div>
     `,
     6:` <!-- Parrot -->
@@ -891,6 +1014,74 @@ function renderAdultBird(variantIndex){
                 <div style="width:14px;height:7px;background:radial-gradient(ellipse, #fed7aa, transparent);border-radius:50%;opacity:0.6;filter:blur(1px);"></div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    `,
+    15:` <!-- Great Horned Owl (Hooty) - Head scanning owl with ear tufts -->
+      <div style="position:relative;width:120px;height:160px;display:inline-block;animation:owl-breathe 4s ease-in-out infinite;">
+        <!-- Branch perch -->
+        <div style="position:absolute;bottom:18px;left:-30px;width:180px;height:12px;background:linear-gradient(to bottom,#451a03,#271301);border-radius:8px;border:2px solid #000;z-index:5;"></div>
+
+        <!-- Left wing -->
+        <div style="position:absolute;top:30px;left:-20px;z-index:2;transform-origin:top right;animation:owl-wing-flap-l 1.2s ease-in-out infinite;">
+          <div style="width:60px;height:80px;background:radial-gradient(ellipse at 80% 20%,#78350f,#451a03);border:2px solid #000;border-radius:100% 20% 40% 90%;box-shadow:inset 8px 0 15px rgba(0,0,0,0.5);"></div>
+        </div>
+
+        <!-- Right wing -->
+        <div style="position:absolute;top:30px;right:-20px;z-index:2;transform-origin:top left;animation:owl-wing-flap-r 1.2s ease-in-out infinite;">
+          <div style="width:60px;height:80px;background:radial-gradient(ellipse at 20% 20%,#78350f,#451a03);border:2px solid #000;border-radius:20% 100% 90% 40%;box-shadow:inset -8px 0 15px rgba(0,0,0,0.5);"></div>
+        </div>
+
+        <!-- Feet with toes -->
+        <div style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%);width:75px;display:flex;justify-content:space-around;z-index:15;">
+          <div style="position:relative;width:26px;height:30px;">
+            <div style="position:absolute;top:0;left:0;width:26px;height:22px;background:radial-gradient(ellipse,#fdba74,#ea580c);border-radius:40% 40% 20% 20%;border:1px solid #c2410c;"></div>
+            <div style="position:absolute;top:10px;left:1px;width:7px;height:15px;background:#ea580c;border:1px solid #9a3412;border-radius:3px;transform:rotate(-15deg);"></div>
+            <div style="position:absolute;top:12px;left:10px;width:7px;height:16px;background:#ea580c;border:1px solid #9a3412;border-radius:3px;"></div>
+            <div style="position:absolute;top:10px;left:18px;width:7px;height:15px;background:#ea580c;border:1px solid #9a3412;border-radius:3px;transform:rotate(15deg);"></div>
+          </div>
+          <div style="position:relative;width:26px;height:30px;">
+            <div style="position:absolute;top:0;left:0;width:26px;height:22px;background:radial-gradient(ellipse,#fdba74,#ea580c);border-radius:40% 40% 20% 20%;border:1px solid #c2410c;"></div>
+            <div style="position:absolute;top:10px;left:1px;width:7px;height:15px;background:#ea580c;border:1px solid #9a3412;border-radius:3px;transform:rotate(-15deg);"></div>
+            <div style="position:absolute;top:12px;left:10px;width:7px;height:16px;background:#ea580c;border:1px solid #9a3412;border-radius:3px;"></div>
+            <div style="position:absolute;top:10px;left:18px;width:7px;height:15px;background:#ea580c;border:1px solid #9a3412;border-radius:3px;transform:rotate(15deg);"></div>
+          </div>
+        </div>
+
+        <!-- Body -->
+        <div style="position:absolute;top:32px;left:50%;transform:translateX(-50%);width:90px;height:100px;background:radial-gradient(circle at 50% 30%,#78350f,#451a03);border:3px solid #271301;border-radius:50% 50% 45% 45%;z-index:20;overflow:hidden;box-shadow:inset 0 0 15px #000;">
+          <!-- Feather striping pattern -->
+          <div style="position:absolute;top:15px;left:12px;width:65px;height:75px;background:repeating-linear-gradient(180deg,rgba(254,243,199,0.1),rgba(254,243,199,0.1) 3px,transparent 3px,transparent 9px);border-radius:50%;"></div>
+        </div>
+
+        <!-- Head with scanning animation -->
+        <div style="position:absolute;top:-20px;left:12px;width:95px;height:82px;z-index:40;transform-origin:center 70%;animation:owl-head-scan 8s ease-in-out infinite;">
+          <!-- Left ear tuft -->
+          <div style="position:absolute;top:-6px;left:14px;width:22px;height:28px;background:linear-gradient(45deg,#451a03,#271301);border:2px solid #000;clip-path:polygon(0% 0%,100% 50%,70% 100%,10% 100%);transform:rotate(-10deg);z-index:35;"></div>
+          <!-- Right ear tuft -->
+          <div style="position:absolute;top:-6px;right:14px;width:22px;height:28px;background:linear-gradient(-45deg,#451a03,#271301);border:2px solid #000;clip-path:polygon(100% 0%,0% 50%,30% 100%,90% 100%);transform:rotate(10deg);z-index:35;"></div>
+
+          <!-- Head base -->
+          <div style="position:absolute;width:100%;height:100%;background:radial-gradient(circle at 40% 35%,#78350f,#451a03);border:3px solid #271301;border-radius:50%;box-shadow:inset 6px 6px 15px rgba(255,255,255,0.15),0 4px 12px rgba(0,0,0,0.5);z-index:40;">
+            <!-- Left eye socket -->
+            <div style="position:absolute;top:14px;left:8px;width:38px;height:48px;background:radial-gradient(circle,#b45309,#78350f 90%);border-radius:50%;border:1px solid #451a03;box-shadow:inset 0 0 10px #000;"></div>
+            <!-- Right eye socket -->
+            <div style="position:absolute;top:14px;right:8px;width:38px;height:48px;background:radial-gradient(circle,#b45309,#78350f 90%);border-radius:50%;border:1px solid #451a03;box-shadow:inset 0 0 10px #000;"></div>
+            <!-- Left eye -->
+            <div style="position:absolute;top:24px;left:18px;width:20px;height:20px;background:radial-gradient(circle,#fbbf24,#d97706);border:2px solid #000;border-radius:50%;overflow:hidden;">
+              <div style="position:absolute;top:4px;left:4px;width:12px;height:12px;background:#000;border-radius:50%;animation:owl-eye-look 6s ease-in-out infinite;">
+                <div style="position:absolute;top:2px;left:2px;width:4px;height:4px;background:#fff;border-radius:50%;"></div>
+              </div>
+            </div>
+            <!-- Right eye -->
+            <div style="position:absolute;top:24px;right:18px;width:20px;height:20px;background:radial-gradient(circle,#fbbf24,#d97706);border:2px solid #000;border-radius:50%;overflow:hidden;">
+              <div style="position:absolute;top:4px;left:4px;width:12px;height:12px;background:#000;border-radius:50%;animation:owl-eye-look 6s ease-in-out infinite;">
+                <div style="position:absolute;top:2px;left:2px;width:4px;height:4px;background:#fff;border-radius:50%;"></div>
+              </div>
+            </div>
+            <!-- Beak -->
+            <div style="position:absolute;top:44px;left:50%;transform:translateX(-50%);width:10px;height:18px;background:linear-gradient(to bottom,#334155,#020617);border:1px solid #000;border-radius:50% 50% 50% 50% / 20% 20% 80% 80%;"></div>
           </div>
         </div>
       </div>
