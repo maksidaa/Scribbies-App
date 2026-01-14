@@ -4037,6 +4037,25 @@ function renderQuickPracticeIcon(size=32){
 </div>`;
 }
 
+// Render match game icon - cards connecting
+function renderMatchIcon(size=32){
+  const s=size;
+  return`
+<div style="position:relative;width:${s}px;height:${s}px;background:linear-gradient(145deg,#c4b5fd,#a78bfa);border:3px solid #7c3aed;border-radius:${s*0.28}px;box-shadow:0 3px 8px rgba(0,0,0,0.2),inset 0 2px 4px rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;">
+  <svg width="${s*0.75}" height="${s*0.7}" viewBox="0 0 28 24" fill="none">
+    <!-- Left card -->
+    <rect x="1" y="3" width="10" height="14" rx="2" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+    <circle cx="6" cy="10" r="2.5" fill="#f59e0b"/>
+    <!-- Right card -->
+    <rect x="17" y="7" width="10" height="14" rx="2" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+    <circle cx="22" cy="14" r="2.5" fill="#f59e0b"/>
+    <!-- Connecting line with sparkle -->
+    <path d="M11 10 Q14 8 17 14" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" fill="none" stroke-dasharray="2 2"/>
+    <circle cx="14" cy="10" r="2" fill="#fde047" stroke="#ca8a04" stroke-width="1"/>
+  </svg>
+</div>`;
+}
+
 // Render choose practice icon - target/bullseye for practice
 function renderChoosePracticeIcon(size=32){
   const s=size;
@@ -6553,7 +6572,7 @@ function render(){
           <span class="text-sm">Quick</span>
         </button>
         ${S.verses.filter(v=>v.status==='active').length>=2?`<button onclick="startPractice('match')" class="bg-gradient-to-r from-violet-500 to-purple-600 text-white font-bold py-3 px-2 rounded-2xl flex flex-col items-center justify-center gap-1 shadow-lg">
-          <span class="text-2xl">🔗</span>
+          ${renderMatchIcon(28)}
           <span class="text-sm">Match</span>
         </button>`:''}
         <button onclick="setScreen('practice')" class="bg-gradient-to-r from-orange-400 to-orange-500 text-white font-bold py-3 px-2 rounded-2xl flex flex-col items-center justify-center gap-1 shadow-lg">
