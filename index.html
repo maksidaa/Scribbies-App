@@ -8410,13 +8410,48 @@ function render(){
 
     let inner='';
     if(pState.done){
-      const finalXP=pState.totalXP||5;
+      // Calculate full XP breakdown for Master Level Complete (must match completePractice exactly)
+      const v=S.verses.find(x=>x.id===pVerse.id);
+      const baseXP=pState.totalXP||2;
+      const multiplier=getModeMultiplier(v,pMode);
+      let xp=Math.ceil(baseXP*multiplier);
+      const afterModeXP=xp; // XP after mode multiplier applied
+      const wrongPenalty=Math.max(0.5,1-(pState.wrongCount||0)*0.05);
+      xp=Math.ceil(xp*wrongPenalty);
+      const wordCount=getWords(v.text).length;
+      let lengthBonus=0;
+      if(wordCount>=40)lengthBonus=Math.ceil(baseXP);
+      else if(wordCount>=25)lengthBonus=Math.ceil(baseXP*0.5);
+      else if(wordCount>=15)lengthBonus=Math.ceil(baseXP*0.2);
+      xp+=lengthBonus;
+      const reviewBonus=v.mastery>=5?getReviewBonus(v):0;
+      xp+=reviewBonus;
+      const firstPracticeBonus=S.todayCount===0?15:0;
+      xp+=firstPracticeBonus;
+      const happinessMult=getHappinessXPMultiplier();
+      const preHappinessXP=xp;
+      xp=Math.ceil(xp*happinessMult);
+      const happinessBonus=xp-preHappinessXP;
+      const totalXP=xp;
+
+      // Build bonus breakdown display - show effective base after mode multiplier
+      let bonusLines='';
+      if(multiplier<1)bonusLines+=`<div class="flex justify-between text-red-400"><span>Same mode</span><span>-${Math.round((1-multiplier)*100)}%</span></div>`;
+      if(wrongPenalty<1)bonusLines+=`<div class="flex justify-between text-red-400"><span>Wrong answers</span><span>-${Math.round((1-wrongPenalty)*100)}%</span></div>`;
+      if(lengthBonus>0)bonusLines+=`<div class="flex justify-between"><span>Long verse</span><span>+${lengthBonus}</span></div>`;
+      if(reviewBonus>0)bonusLines+=`<div class="flex justify-between"><span>Review bonus</span><span>+${reviewBonus}</span></div>`;
+      if(firstPracticeBonus>0)bonusLines+=`<div class="flex justify-between"><span>First today!</span><span>+${firstPracticeBonus}</span></div>`;
+      if(happinessBonus>0)bonusLines+=`<div class="flex justify-between"><span>Happiness</span><span>+${happinessBonus}</span></div>`;
+
       inner=`<div class="text-center">
         <p class="text-green-500 font-bold text-xl mb-2">🏆 Master Level Complete!</p>
         <p class="text-purple-600 mb-2">You predicted every word!</p>
         <div class="bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl p-3 mb-4">
-          <p class="text-2xl font-bold text-orange-600">+${finalXP} XP</p>
-          <p class="text-orange-500 text-xs">All 4 rounds completed!</p>
+          <p class="text-2xl font-bold text-orange-600">+${totalXP} XP</p>
+          <div class="text-orange-500 text-xs mt-2 space-y-0.5">
+            <div class="flex justify-between"><span>Base</span><span>${baseXP}</span></div>
+            ${bonusLines}
+          </div>
         </div>
         <button type="button" onclick="exitPracticeWithXP()" class="collect-xp-btn w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 rounded-xl">Collect XP</button>
       </div>`;
@@ -8447,7 +8482,7 @@ function render(){
 
       // Build bonus breakdown display
       let bonusLines='';
-      if(multiplier>1)bonusLines+=`<div class="flex justify-between"><span>Mode variety</span><span>×${multiplier.toFixed(1)}</span></div>`;
+      if(multiplier<1)bonusLines+=`<div class="flex justify-between text-red-400"><span>Same mode</span><span>-${Math.round((1-multiplier)*100)}%</span></div>`;
       if(wrongPenalty<1)bonusLines+=`<div class="flex justify-between text-red-400"><span>Wrong answers</span><span>-${Math.round((1-wrongPenalty)*100)}%</span></div>`;
       if(lengthBonus>0)bonusLines+=`<div class="flex justify-between"><span>Long verse</span><span>+${lengthBonus}</span></div>`;
       if(reviewBonus>0)bonusLines+=`<div class="flex justify-between"><span>Review bonus</span><span>+${reviewBonus}</span></div>`;
@@ -8543,13 +8578,48 @@ function render(){
 
     let inner='';
     if(pState.done){
-      const finalXP=pState.totalXP||8;
+      // Calculate full XP breakdown for Master Level Complete (must match completePractice exactly)
+      const v=S.verses.find(x=>x.id===pVerse.id);
+      const baseXP=pState.totalXP||2;
+      const multiplier=getModeMultiplier(v,pMode);
+      let xp=Math.ceil(baseXP*multiplier);
+      const wrongPenalty=Math.max(0.5,1-(pState.wrongCount||0)*0.05);
+      xp=Math.ceil(xp*wrongPenalty);
+      const wordCount=getWords(v.text).length;
+      let lengthBonus=0;
+      if(wordCount>=40)lengthBonus=Math.ceil(baseXP);
+      else if(wordCount>=25)lengthBonus=Math.ceil(baseXP*0.5);
+      else if(wordCount>=15)lengthBonus=Math.ceil(baseXP*0.2);
+      xp+=lengthBonus;
+      const reviewBonus=v.mastery>=5?getReviewBonus(v):0;
+      xp+=reviewBonus;
+      const firstPracticeBonus=S.todayCount===0?15:0;
+      xp+=firstPracticeBonus;
+      const happinessMult=getHappinessXPMultiplier();
+      const preHappinessXP=xp;
+      xp=Math.ceil(xp*happinessMult);
+      const happinessBonus=xp-preHappinessXP;
+      const totalXP=xp;
+
+      // Build bonus breakdown display
+      let bonusLines='';
+      if(multiplier<1)bonusLines+=`<div class="flex justify-between text-red-400"><span>Same mode</span><span>-${Math.round((1-multiplier)*100)}%</span></div>`;
+      if(wrongPenalty<1)bonusLines+=`<div class="flex justify-between text-red-400"><span>Wrong answers</span><span>-${Math.round((1-wrongPenalty)*100)}%</span></div>`;
+      if(lengthBonus>0)bonusLines+=`<div class="flex justify-between"><span>Long verse</span><span>+${lengthBonus}</span></div>`;
+      if(reviewBonus>0)bonusLines+=`<div class="flex justify-between"><span>Review bonus</span><span>+${reviewBonus}</span></div>`;
+      if(firstPracticeBonus>0)bonusLines+=`<div class="flex justify-between"><span>First today!</span><span>+${firstPracticeBonus}</span></div>`;
+      if(happinessBonus>0)bonusLines+=`<div class="flex justify-between"><span>Happiness</span><span>+${happinessBonus}</span></div>`;
+      if(pState.hintsUsed)bonusLines+=`<div class="flex justify-between text-orange-400"><span>Hints used</span><span>${pState.hintsUsed}</span></div>`;
+
       inner=`<div class="text-center">
         <p class="text-green-500 font-bold text-xl mb-2">🏆 Master Level Complete!</p>
         <p class="text-purple-600 mb-2">You filled in every word!</p>
         <div class="bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl p-3 mb-4">
-          <p class="text-2xl font-bold text-orange-600">+${finalXP} XP</p>
-          <p class="text-orange-500 text-xs">All 10 rounds completed!</p>
+          <p class="text-2xl font-bold text-orange-600">+${totalXP} XP</p>
+          <div class="text-orange-500 text-xs mt-2 space-y-0.5">
+            <div class="flex justify-between"><span>Base</span><span>${baseXP}</span></div>
+            ${bonusLines}
+          </div>
         </div>
         <button type="button" onclick="exitPracticeWithXP()" class="collect-xp-btn w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 rounded-xl">Collect XP</button>
       </div>`;
@@ -8579,7 +8649,7 @@ function render(){
 
       // Build bonus breakdown display
       let bonusLines='';
-      if(multiplier>1)bonusLines+=`<div class="flex justify-between"><span>Mode variety</span><span>×${multiplier.toFixed(1)}</span></div>`;
+      if(multiplier<1)bonusLines+=`<div class="flex justify-between text-red-400"><span>Same mode</span><span>-${Math.round((1-multiplier)*100)}%</span></div>`;
       if(wrongPenalty<1)bonusLines+=`<div class="flex justify-between text-red-400"><span>Wrong answers</span><span>-${Math.round((1-wrongPenalty)*100)}%</span></div>`;
       if(lengthBonus>0)bonusLines+=`<div class="flex justify-between"><span>Long verse</span><span>+${lengthBonus}</span></div>`;
       if(reviewBonus>0)bonusLines+=`<div class="flex justify-between"><span>Review bonus</span><span>+${reviewBonus}</span></div>`;
