@@ -289,6 +289,17 @@
     @keyframes collectXP{0%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-80vh) scale(0.5);opacity:0}}
     @keyframes pop-in{0%{transform:scale(0);opacity:0}50%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}
     @keyframes pulse-grow{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+    @keyframes pulse-gentle{0%,100%{opacity:1}50%{opacity:0.85}}
+    .animate-pulse-gentle{animation:pulse-gentle 2s ease-in-out infinite}
+    /* Practice reaction animations */
+    @keyframes practice-bounce{0%,100%{transform:translateY(0) scale(1)}30%{transform:translateY(-15px) scale(1.05)}50%{transform:translateY(-5px) scale(1)}70%{transform:translateY(-8px) scale(1.02)}}
+    @keyframes practice-sad{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(3px) rotate(-3deg)}50%{transform:translateY(5px) rotate(0deg)}75%{transform:translateY(3px) rotate(3deg)}}
+    @keyframes practice-celebrate{0%{transform:translateY(0) scale(1) rotate(0deg)}20%{transform:translateY(-20px) scale(1.1) rotate(-5deg)}40%{transform:translateY(-10px) scale(1.05) rotate(3deg)}60%{transform:translateY(-15px) scale(1.08) rotate(-3deg)}80%{transform:translateY(-5px) scale(1.02) rotate(2deg)}100%{transform:translateY(0) scale(1) rotate(0deg)}}
+    @keyframes float-up{0%{transform:translateY(0) scale(0);opacity:0}20%{transform:translateY(-10px) scale(1.2);opacity:1}100%{transform:translateY(-60px) scale(0.8);opacity:0}}
+    @keyframes float-up-hearts{0%{transform:translateY(0) scale(0);opacity:0}15%{transform:translateY(-5px) scale(1.3);opacity:1}100%{transform:translateY(-80px) scale(0.5);opacity:0}}
+    .practice-bounce{animation:practice-bounce 0.5s ease-out}
+    .practice-sad{animation:practice-sad 0.4s ease-in-out}
+    .practice-celebrate{animation:practice-celebrate 0.8s ease-out}
     @keyframes food-fly{0%{transform:translateY(150px) scale(1);opacity:1}60%{transform:translateY(20px) scale(0.8);opacity:1}100%{transform:translateY(0) scale(0);opacity:0}}
     @keyframes reaction-pop{0%{transform:translate(-50%,-50%) scale(0);opacity:0}50%{transform:translate(-50%,-50%) scale(1.3);opacity:1}100%{transform:translate(-50%,-50%) scale(1);opacity:1}}
     @keyframes message-slide{0%{transform:translateY(20px);opacity:0}100%{transform:translateY(0);opacity:1}}
@@ -1560,6 +1571,48 @@ let downloadProgress=null; // {current: n, total: n, status: 'downloading'|'proc
 let tutorialStep=0; // Current tutorial step (0 = not showing)
 let foodPopup=null; // {foodIdx: number, qty: number} - food detail popup state
 let verseFilter='active'; // 'active' or 'saved' - which verses to show on practice screen
+let practiceReaction=null; // {type: 'correct'|'wrong'|'celebrate', emojis: ['💚'], timestamp: Date.now()}
+let practiceStreak=0; // Track correct answers in a row
+
+// Trigger a practice reaction animation
+function triggerReaction(type){
+  const emojis={
+    correct:['💚','✨','⭐','✓'],
+    wrong:['😢','❌','💔'],
+    streak:['🔥','💪','⚡'],
+    celebrate:['🎉','🏆','✨','💫']
+  };
+  const picks=emojis[type]||emojis.correct;
+  // Pick 1-3 random emojis
+  const count=type==='celebrate'?3:type==='streak'?2:1;
+  const selected=[];
+  for(let i=0;i<count;i++){
+    selected.push(picks[Math.floor(Math.random()*picks.length)]);
+  }
+  practiceReaction={type,emojis:selected,timestamp:Date.now()};
+  // Clear reaction after animation
+  setTimeout(()=>{practiceReaction=null;render()},type==='celebrate'?1000:600);
+  render();
+}
+
+// Get mini scribby HTML for practice screens
+function getMiniScribby(){
+  const stage=S.buddyStage||'egg';
+  const cat=S.buddyCategory||'mammal';
+  const variant=S.buddyVariant||0;
+  const anim=practiceReaction?
+    (practiceReaction.type==='wrong'?'practice-sad':
+     practiceReaction.type==='celebrate'?'practice-celebrate':'practice-bounce'):'';
+  const reactionEmojis=practiceReaction?practiceReaction.emojis.map((e,i)=>
+    `<span style="position:absolute;left:${50+i*15-practiceReaction.emojis.length*7}%;top:0;font-size:24px;animation:float-up-hearts 0.8s ease-out forwards;animation-delay:${i*0.1}s">${e}</span>`
+  ).join(''):'';
+  return`<div class="relative" style="width:80px;height:80px;">
+    <div class="${anim}" style="transform-origin:bottom center;width:100%;height:100%;">
+      ${renderBuddy(stage,cat,variant,80)}
+    </div>
+    ${reactionEmojis}
+  </div>`;
+}
 
 // Toggle verse status between active and saved
 function toggleVerseStatus(verseId){
@@ -1930,11 +1983,43 @@ function getReviewBonus(verse){
   return 20;
 }
 
-// Check if verse needs review (7+ days)
+// Check if verse needs review (7+ days) - for mastered verses
 function needsReview(verse){
   if(!verse.lastPracticed||verse.mastery<5)return false;
   const daysSince=Math.floor((Date.now()-new Date(verse.lastPracticed).getTime())/(1000*60*60*24));
   return daysSince>=7;
+}
+
+// Smart Review: Check if verse is due for review based on spaced repetition
+function isDueForReview(verse){
+  if(verse.status!=='active')return false;
+  if(!verse.nextReview)return true; // Never practiced = always due
+  return Date.now()>=verse.nextReview;
+}
+
+// Smart Review: Get all verses due for review, sorted by urgency
+function getDueVerses(){
+  const active=S.verses.filter(v=>v.status==='active');
+  const due=active.filter(v=>isDueForReview(v));
+  // Sort by most overdue first, then by lowest mastery
+  return due.sort((a,b)=>{
+    const aOverdue=a.nextReview?(Date.now()-a.nextReview):999999999;
+    const bOverdue=b.nextReview?(Date.now()-b.nextReview):999999999;
+    if(Math.abs(aOverdue-bOverdue)>3600000)return bOverdue-aOverdue; // >1hr difference
+    return a.mastery-b.mastery; // Lower mastery first
+  });
+}
+
+// Smart Review: Get time until next review in human-readable format
+function getReviewTimeText(verse){
+  if(!verse.nextReview)return'Now';
+  const diff=verse.nextReview-Date.now();
+  if(diff<=0)return'Now';
+  const hours=Math.floor(diff/(1000*60*60));
+  const days=Math.floor(hours/24);
+  if(days>0)return`${days}d`;
+  if(hours>0)return`${hours}h`;
+  return'<1h';
 }
 
 // Smart recommendations
@@ -4621,9 +4706,13 @@ function getPracticeStatusBar(){
   else if(stage==='adult')xpDisplay='Max';
   else xpDisplay=`${S.growthXP||0}/${STAGES[stage].growthNeeded}`;
 
-  return`<div class="bg-white/10 rounded-xl px-3 py-2 mb-3 flex items-center gap-2">
-    <div style="transform:scale(0.2);transform-origin:left center;width:50px;height:40px;margin:-20px 0;">${renderBuddyVisual()}</div>
-    <span class="text-white/90 text-sm font-semibold">✨ ${xpDisplay} XP</span>
+  return`<div class="bg-white/10 rounded-2xl p-3 mb-3 flex items-center gap-3">
+    ${getMiniScribby()}
+    <div class="flex-1">
+      <p class="text-white font-bold text-sm">${S.buddyName||'Buddy'}</p>
+      <p class="text-white/70 text-xs">✨ ${xpDisplay} XP</p>
+      ${practiceStreak>=3?`<p class="text-orange-300 text-xs font-bold">🔥 ${practiceStreak} streak!</p>`:''}
+    </div>
   </div>`;
 }
 
@@ -5305,6 +5394,17 @@ const collectXP=()=>{
   },800);
 };
 const quickPractice=()=>{
+  // Smart Review: prioritize verses due for review first
+  const dueVerses=getDueVerses();
+  if(dueVerses.length){
+    const v=dueVerses[0]; // Most urgent verse
+    selectedVerse=v.id;
+    // Pick a mode based on mastery level
+    const modeOpts=v.mastery<2?['predict','blanks']:v.mastery<4?['blanks','chunk','jumble']:['first','recall','chunk'];
+    startPractice(modeOpts[Math.floor(Math.random()*modeOpts.length)]);
+    return;
+  }
+  // Fallback to recommendations if nothing due
   const recs=getRecommendations();
   if(recs.verses.length){
     const v=recs.verses[0];
@@ -5360,6 +5460,8 @@ const continuePracticing=()=>{
 
 const startPractice=mode=>{
   if(!S.verses.length)return;
+  practiceStreak=0; // Reset streak at start of practice
+  practiceReaction=null; // Clear any pending reactions
 
   // Check if buddy might refuse to practice (only for non-egg stages)
   if(S.buddyStage!=='egg'&&mightRefusePractice()){
@@ -5375,13 +5477,31 @@ const startPractice=mode=>{
     const reviewVerses=S.verses.filter(needsReview);
     if(!reviewVerses.length)return;
     pVerse=reviewVerses[Math.floor(Math.random()*reviewVerses.length)];
+  }else if(selectedVerse==='smartreview'){
+    // Smart Review: pick most overdue verse using spaced repetition
+    const dueVerses=getDueVerses();
+    if(!dueVerses.length)return;
+    // Pick the most urgent one (first in sorted list)
+    pVerse=dueVerses[0];
   }else{
     pVerse=S.verses.find(v=>v.id===selectedVerse);
     if(!pVerse)return;
   }
   pMode=mode;
   const W=getWords(pVerse.text);
-  if(mode==='predict')pState={W,cur:0,rev:[W[0]],correct:0,total:W.length-1,wrong:false,wrongCount:0,done:false};
+  if(mode==='predict'){
+    // Progressive difficulty: Round 1=easy (every 4th, full context, first letter hint)
+    // Round 2=medium (every 3rd, full context, letter count hint)
+    // Round 3=hard (every 2nd, last 5 words, no hint)
+    // Round 4=master (every word, last 2 words, no hint)
+    const round=1;
+    const predictPattern=4; // Predict every Nth word
+    const contextLimit=null; // null=show all, or number of words to show
+    const hintType='firstLetter'; // 'firstLetter', 'letterCount', 'none'
+    // Find indices of words to predict this round
+    const predictIndices=W.map((w,i)=>i>0&&i%predictPattern===0?i:-1).filter(i=>i>=0);
+    pState={W,cur:0,rev:[W[0]],correct:0,total:predictIndices.length,predictIndices,currentPredictIdx:0,wrong:false,wrongCount:0,done:false,round,predictPattern,contextLimit,hintType,inp:'',roundComplete:false,totalXP:0,hintsUsed:0};
+  }
   else if(mode==='blanks'){
     // Progressive difficulty: round 1=every 4th word, round 2=every 3rd, round 3=every 2nd, round 4=all words
     const round=1;
@@ -5396,6 +5516,43 @@ const startPractice=mode=>{
   else if(mode==='recall')pState={W,inp:'',checked:false,score:0,wrongCount:0,done:false};
   else if(mode==='hangman'){
     pState={W,guessed:[],wrong:0,maxWrong:8,wrongCount:0,done:false,won:false};
+  }
+  else if(mode==='chunk'){
+    // Split verse into chunks for easier memorization
+    const text=pVerse.text;
+    // Split by punctuation or into ~5-7 word chunks
+    let chunks=text.split(/(?<=[.!?,;:])\s+/).filter(c=>c.trim());
+    // If no natural breaks or chunks too big, split by word count
+    if(chunks.length<2||chunks.some(c=>getWords(c).length>10)){
+      const words=getWords(text);
+      const chunkSize=Math.ceil(words.length/Math.ceil(words.length/6));
+      chunks=[];
+      for(let i=0;i<words.length;i+=chunkSize){
+        chunks.push(words.slice(i,i+chunkSize).join(' '));
+      }
+    }
+    // Build practice phases: each chunk alone, then cumulative combinations
+    const phases=[];
+    for(let i=0;i<chunks.length;i++){
+      // Practice this chunk alone
+      phases.push({type:'single',chunkIdx:i,text:chunks[i]});
+      // After first chunk, add combination phases
+      if(i>0){
+        phases.push({type:'combine',upTo:i,text:chunks.slice(0,i+1).join(' ')});
+      }
+    }
+    pState={
+      chunks,
+      phases,
+      currentPhase:0,
+      inp:'',
+      wrong:false,
+      wrongAnswer:'',
+      wrongCount:0,
+      hintsUsed:0,
+      done:false,
+      phaseComplete:false
+    };
   }
   else if(mode==='match'){
     // Get 4 random verses from user's collection for matching
@@ -5416,7 +5573,73 @@ const startPractice=mode=>{
   render();
 };
 
-const selectPredict=w=>{const cor=pState.W[pState.cur+1];pState.rev.push(cor);if(clean(w)===clean(cor)){pState.correct++;pState.wrong=false}else{pState.wrong=true;pState.wrongCount++}pState.cur++;if(pState.cur>=pState.W.length-1){pState.done=true;setTimeout(()=>completePractice(),500)}render()};
+const selectPredict=w=>{
+  const targetIdx=pState.predictIndices[pState.currentPredictIdx];
+  const cor=pState.W[targetIdx];
+  // Add all words up to and including the target to revealed
+  while(pState.rev.length<=targetIdx){
+    pState.rev.push(pState.W[pState.rev.length]);
+  }
+  if(clean(w)===clean(cor)){
+    pState.correct++;
+    pState.wrong=false;
+    practiceStreak++;
+    triggerReaction(practiceStreak>=3?'streak':'correct');
+  }else{
+    pState.wrong=true;
+    pState.wrongCount++;
+    practiceStreak=0;
+    triggerReaction('wrong');
+  }
+  pState.currentPredictIdx++;
+  pState.cur=targetIdx;
+
+  if(pState.currentPredictIdx>=pState.predictIndices.length){
+    // Round complete!
+    pState.roundComplete=true;
+    const accuracy=pState.total>0?pState.correct/pState.total:0;
+    pState.roundXP=Math.max(0.5,Math.round(accuracy*2*10)/10); // 0.5-2 XP per round based on accuracy
+    pState.totalXP=(pState.totalXP||0)+pState.roundXP;
+    if(pState.round>=4){
+      pState.done=true;
+      triggerReaction('celebrate');
+    }
+  }
+  render();
+};
+
+const advancePredictRound=()=>{
+  pState.round++;
+  const patterns=[4,3,2,1]; // every 4th, 3rd, 2nd, every word
+  const contexts=[null,null,5,2]; // full, full, last 5, last 2
+  const hints=['firstLetter','letterCount','none','none'];
+
+  pState.predictPattern=patterns[pState.round-1]||1;
+  pState.contextLimit=contexts[pState.round-1];
+  pState.hintType=hints[pState.round-1]||'none';
+
+  // Recalculate predict indices for new pattern
+  const W=pState.W;
+  if(pState.predictPattern===1){
+    pState.predictIndices=W.map((w,i)=>i>0?i:-1).filter(i=>i>=0);
+  }else{
+    pState.predictIndices=W.map((w,i)=>i>0&&i%pState.predictPattern===0?i:-1).filter(i=>i>=0);
+  }
+
+  pState.rev=[W[0]];
+  pState.cur=0;
+  pState.currentPredictIdx=0;
+  pState.correct=0;
+  pState.total=pState.predictIndices.length;
+  pState.roundComplete=false;
+  pState.wrong=false;
+  render();
+};
+
+const exitPredictEarly=()=>{
+  pState.done=true;
+  completePractice();
+};
 const checkBlanks=()=>{
   const exp=pState.missing[pState.cBlank];
   if(clean(pState.inp)===clean(exp)){
@@ -5428,40 +5651,156 @@ const checkBlanks=()=>{
     pState.inp='';
     pState.wrong=false;
     pState.wrongAnswer='';
+    pState.hintLevel=0; // Reset hint level for next word
+    practiceStreak++;
+    triggerReaction(practiceStreak>=3?'streak':'correct');
 
     if(pState.cBlank>=pState.missing.length){
-      // Round complete! Check if we should advance to harder round
-      if(pState.round<4){
-        // Advance to next round with more blanks
-        pState.roundComplete=true;
-        setTimeout(()=>{
-          pState.round++;
-          const patterns=[4,3,2,1]; // every 4th, 3rd, 2nd, all
-          pState.blankPattern=patterns[pState.round-1]||1;
-          const W=pState.W;
-          pState.blanks=W.map((w,i)=>pState.blankPattern===1||(i+1)%pState.blankPattern===0?'':w);
-          pState.missing=W.filter((w,i)=>pState.blankPattern===1||(i+1)%pState.blankPattern===0);
-          pState.missingIndices=W.map((w,i)=>pState.blankPattern===1||(i+1)%pState.blankPattern===0?i:-1).filter(x=>x>=0);
-          pState.cBlank=0;
-          pState.filledIndices=[];
-          pState.roundComplete=false;
-          render();
-        },1500);
-      }else{
+      // Round complete! Show reward screen
+      pState.roundComplete=true;
+      // Calculate XP: 2 base, minus 0.25 for each hint used (min 0.5)
+      const hintPenalty=Math.min(1.5,(pState.hintsUsed||0)*0.25);
+      pState.roundXP=Math.max(0.5,2-hintPenalty);
+      pState.totalXP=(pState.totalXP||0)+pState.roundXP;
+      if(pState.round>=4){
         // All rounds done!
         pState.done=true;
-        setTimeout(()=>completePractice(),500);
+        triggerReaction('celebrate');
       }
     }
   }else{
     pState.wrong=true;
     pState.wrongAnswer=pState.inp;
     pState.wrongCount++;
+    pState.hintLevel=(pState.hintLevel||0)+1;
+    pState.hintsUsed=(pState.hintsUsed||0)+1;
+    practiceStreak=0;
+    triggerReaction('wrong');
+
+    // After 4 wrong attempts, reveal the word
+    if(pState.hintLevel>=4){
+      pState.revealed=true;
+    }
   }
   render();
 };
-const selectJumble=i=>{const w=pState.shuf[i],exp=pState.W[pState.sel.length];if(clean(w)===clean(exp)){pState.sel.push(w);pState.shuf.splice(i,1);pState.wrong=false;if(pState.sel.length>=pState.W.length){pState.done=true;setTimeout(()=>completePractice(),500)}}else{pState.wrong=true;pState.wrongCount++}render()};
-const checkFirst=()=>{const exp=pState.W[pState.cWord];if(clean(pState.inp)===clean(exp)){pState.hints[pState.cWord]=exp;pState.cWord++;pState.inp='';pState.wrong=false;if(pState.cWord>=pState.W.length){pState.done=true;setTimeout(()=>completePractice(),500)}}else{pState.wrong=true;pState.wrongCount++}render()};
+
+const skipBlankWord=()=>{
+  // User chose to skip after seeing the revealed answer
+  const exp=pState.missing[pState.cBlank];
+  const blankIdx=pState.blanks.indexOf('');
+  pState.blanks[blankIdx]=exp;
+  pState.filledIndices.push(pState.missingIndices[pState.cBlank]);
+  pState.cBlank++;
+  pState.inp='';
+  pState.wrong=false;
+  pState.wrongAnswer='';
+  pState.hintLevel=0;
+  pState.revealed=false;
+  pState.hintsUsed=(pState.hintsUsed||0)+1; // Extra penalty for skipping
+
+  if(pState.cBlank>=pState.missing.length){
+    pState.roundComplete=true;
+    const hintPenalty=Math.min(1.5,(pState.hintsUsed||0)*0.25);
+    pState.roundXP=Math.max(0.5,2-hintPenalty);
+    pState.totalXP=(pState.totalXP||0)+pState.roundXP;
+    if(pState.round>=4){
+      pState.done=true;
+    }
+  }
+  render();
+};
+
+const advanceBlankRound=()=>{
+  pState.round++;
+  const patterns=[4,3,2,1]; // every 4th, 3rd, 2nd, all
+  pState.blankPattern=patterns[pState.round-1]||1;
+  const W=pState.W;
+  pState.blanks=W.map((w,i)=>pState.blankPattern===1||(i+1)%pState.blankPattern===0?'':w);
+  pState.missing=W.filter((w,i)=>pState.blankPattern===1||(i+1)%pState.blankPattern===0);
+  pState.missingIndices=W.map((w,i)=>pState.blankPattern===1||(i+1)%pState.blankPattern===0?i:-1).filter(x=>x>=0);
+  pState.cBlank=0;
+  pState.filledIndices=[];
+  pState.roundComplete=false;
+  pState.hintLevel=0;
+  pState.hintsUsed=0; // Reset hints for new round
+  pState.revealed=false;
+  render();
+};
+
+const exitBlanksEarly=()=>{
+  // Give partial XP based on rounds completed
+  pState.done=true;
+  completePractice();
+};
+
+// Chunk Master functions
+const checkChunk=()=>{
+  const phase=pState.phases[pState.currentPhase];
+  const expected=phase.text;
+  const userWords=getWords(pState.inp);
+  const expectedWords=getWords(expected);
+
+  // Calculate similarity (allow minor typos)
+  let correct=0;
+  expectedWords.forEach((w,i)=>{
+    if(userWords[i]&&clean(userWords[i])===clean(w))correct++;
+  });
+  const accuracy=expectedWords.length>0?correct/expectedWords.length:0;
+
+  if(accuracy>=0.9){
+    // Phase complete!
+    pState.phaseComplete=true;
+    pState.phaseAccuracy=Math.round(accuracy*100);
+    pState.wrong=false;
+    practiceStreak++;
+    triggerReaction(practiceStreak>=3?'streak':'correct');
+  }else{
+    pState.wrong=true;
+    pState.wrongCount++;
+    pState.hintsUsed++;
+    practiceStreak=0;
+    triggerReaction('wrong');
+    // Show what was wrong
+    pState.comparison=expectedWords.map((w,i)=>{
+      const userWord=userWords[i];
+      if(userWord&&clean(userWord)===clean(w))return{type:'correct',word:w};
+      if(userWord)return{type:'wrong',expected:w,actual:userWord};
+      return{type:'missing',word:w};
+    });
+  }
+  render();
+};
+
+const advanceChunkPhase=()=>{
+  pState.currentPhase++;
+  pState.inp='';
+  pState.wrong=false;
+  pState.wrongAnswer='';
+  pState.phaseComplete=false;
+  pState.comparison=null;
+
+  if(pState.currentPhase>=pState.phases.length){
+    pState.done=true;
+    completePractice();
+  }else{
+    render();
+  }
+};
+
+const showChunkHint=()=>{
+  // Show the expected text as a hint
+  pState.showingHint=true;
+  pState.hintsUsed++;
+  render();
+};
+
+const hideChunkHint=()=>{
+  pState.showingHint=false;
+  render();
+};
+const selectJumble=i=>{const w=pState.shuf[i],exp=pState.W[pState.sel.length];if(clean(w)===clean(exp)){pState.sel.push(w);pState.shuf.splice(i,1);pState.wrong=false;practiceStreak++;triggerReaction(practiceStreak>=3?'streak':'correct');if(pState.sel.length>=pState.W.length){pState.done=true;triggerReaction('celebrate');setTimeout(()=>completePractice(),800)}}else{pState.wrong=true;pState.wrongCount++;practiceStreak=0;triggerReaction('wrong')}render()};
+const checkFirst=()=>{const exp=pState.W[pState.cWord];if(clean(pState.inp)===clean(exp)){pState.hints[pState.cWord]=exp;pState.cWord++;pState.inp='';pState.wrong=false;practiceStreak++;triggerReaction(practiceStreak>=3?'streak':'correct');if(pState.cWord>=pState.W.length){pState.done=true;triggerReaction('celebrate');setTimeout(()=>completePractice(),800)}}else{pState.wrong=true;pState.wrongCount++;practiceStreak=0;triggerReaction('wrong')}render()};
 const checkRecall=()=>{
   const iw=getWords(pState.inp);
   let c=0;
@@ -5491,7 +5830,12 @@ const checkRecall=()=>{
   pState.score=Math.round(c/pState.W.length*100);
   pState.checked=true;
   pState.done=pState.score>=80;
-  if(pState.done)setTimeout(()=>completePractice(),500);
+  if(pState.done){
+    triggerReaction('celebrate');
+    setTimeout(()=>completePractice(),800);
+  }else{
+    triggerReaction('wrong');
+  }
   render();
 };
 const selectMatchText=idx=>{
@@ -5521,9 +5865,12 @@ const checkMatch=()=>{
     pState.selectedText=null;
     pState.selectedRef=null;
     pState.wrong=false;
+    practiceStreak++;
+    triggerReaction(practiceStreak>=3?'streak':'correct');
     if(pState.matchedCount>=pState.verses.length){
       pState.done=true;
-      setTimeout(()=>completePractice(),500);
+      triggerReaction('celebrate');
+      setTimeout(()=>completePractice(),800);
     }
   }else{
     // Wrong match
@@ -5531,6 +5878,8 @@ const checkMatch=()=>{
     pState.wrongCount++;
     pState.selectedText=null;
     pState.selectedRef=null;
+    practiceStreak=0;
+    triggerReaction('wrong');
   }
   render();
 };
@@ -5545,6 +5894,8 @@ const guessLetter=l=>{
   if(!isCorrect){
     pState.wrong++;
     pState.wrongCount++;
+    practiceStreak=0;
+    triggerReaction('wrong');
     if(pState.wrong>=pState.maxWrong){
       // Game over - failed
       pState.done=true;
@@ -5552,6 +5903,8 @@ const guessLetter=l=>{
       setTimeout(()=>completePractice(),1000);
     }
   }else{
+    practiceStreak++;
+    triggerReaction(practiceStreak>=3?'streak':'correct');
     // Check if entire verse is revealed
     const allRevealed=pState.W.every(word=>
       clean(word).split('').every(c=>pState.guessed.includes(c)||!/[a-z]/.test(c))
@@ -5560,6 +5913,7 @@ const guessLetter=l=>{
       // Won - entire verse completed
       pState.done=true;
       pState.won=true;
+      triggerReaction('celebrate');
       setTimeout(()=>completePractice(),1000);
     }
   }
@@ -5574,17 +5928,18 @@ const completePractice=()=>{
   if(!v)return;
 
   // Ensure modeUsage exists
-  if(!v.modeUsage)v.modeUsage={predict:0,blanks:0,match:0,jumble:0,first:0,recall:0,hangman:0};
+  if(!v.modeUsage)v.modeUsage={predict:0,blanks:0,chunk:0,match:0,jumble:0,first:0,recall:0,hangman:0};
 
   // Base XP calculation
   let baseXP=0;
-  if(pMode==='predict'){const p=pState.total>0?Math.round(pState.correct/pState.total*100):0;baseXP=p>=90?5:p>=70?3:p>=50?2:1}
-  else if(pMode==='blanks')baseXP=8; // 4 rounds of progressive difficulty
+  if(pMode==='predict')baseXP=pState.totalXP||2;
+  else if(pMode==='blanks')baseXP=pState.totalXP||2; // 2 XP per round completed
   else if(pMode==='match')baseXP=6;
   else if(pMode==='jumble')baseXP=7;
   else if(pMode==='first')baseXP=8;
   else if(pMode==='hangman')baseXP=pState.won?6:3;
   else if(pMode==='recall')baseXP=pState.score===100?15:10;
+  else if(pMode==='chunk'){const hintPenalty=Math.min(3,(pState.hintsUsed||0)*0.5);baseXP=Math.max(3,6-hintPenalty)}
 
   // Apply mode multiplier
   const multiplier=getModeMultiplier(v,pMode);
@@ -5656,6 +6011,7 @@ const completePractice=()=>{
   if(v.mastery<5){
     if(pMode==='predict')masteryGain=0.2;
     else if(pMode==='blanks')masteryGain=0.5;
+    else if(pMode==='chunk')masteryGain=0.8; // Good for learning long verses
     else if(pMode==='match')masteryGain=0.3; // Lower since it tests multiple verses
     else if(pMode==='jumble')masteryGain=0.7;
     else if(pMode==='first')masteryGain=1.0;
@@ -5665,6 +6021,15 @@ const completePractice=()=>{
     v.mastery=Math.min(5,v.mastery+masteryGain);
     if(v.mastery>=5){v.mastery=5;S.xp+=50}
   }
+
+  // Smart Review: Update spaced repetition data
+  v.lastPracticed=Date.now();
+  // Calculate next review interval based on mastery (in hours)
+  const reviewIntervals={0:4,1:24,2:72,3:168,4:336,5:720}; // 4h, 1d, 3d, 7d, 14d, 30d
+  const masteryLevel=Math.floor(v.mastery);
+  const hoursUntilReview=reviewIntervals[masteryLevel]||4;
+  v.nextReview=Date.now()+(hoursUntilReview*60*60*1000);
+
   // Capture stage BEFORE growth check for evolution animation
   const prevStage=S.buddyStage;
   const growth=checkBuddyGrowth();
@@ -6182,14 +6547,18 @@ function render(){
           </div>
         </div>
       </div>
-      ${S.verses.length?`<div class="grid grid-cols-2 gap-2 mb-4">
+      ${S.verses.length?`<div class="grid ${S.verses.filter(v=>v.status==='active').length>=2?'grid-cols-3':'grid-cols-2'} gap-2 mb-4">
         <button onclick="quickPractice()" class="bg-gradient-to-r from-yellow-400 to-amber-500 text-white font-bold py-3 px-2 rounded-2xl flex flex-col items-center justify-center gap-1 shadow-lg">
           ${renderQuickPracticeIcon(28)}
-          <span class="text-sm">Quick Practice</span>
+          <span class="text-sm">Quick</span>
         </button>
+        ${S.verses.filter(v=>v.status==='active').length>=2?`<button onclick="startPractice('match')" class="bg-gradient-to-r from-violet-500 to-purple-600 text-white font-bold py-3 px-2 rounded-2xl flex flex-col items-center justify-center gap-1 shadow-lg">
+          <span class="text-2xl">🔗</span>
+          <span class="text-sm">Match</span>
+        </button>`:''}
         <button onclick="setScreen('practice')" class="bg-gradient-to-r from-orange-400 to-orange-500 text-white font-bold py-3 px-2 rounded-2xl flex flex-col items-center justify-center gap-1 shadow-lg">
           ${renderChoosePracticeIcon(28)}
-          <span class="text-sm">Choose Practice</span>
+          <span class="text-sm">Choose</span>
         </button>
       </div>`:''}
       ${stage==='adult'?`<div class="mb-4">
@@ -7140,16 +7509,22 @@ function render(){
       const activeVerses=S.verses.filter(v=>v.status==='active');
       const savedVerses=S.verses.filter(v=>v.status==='saved');
       const reviewList=activeVerses.filter(needsReview);
+      const dueForReview=getDueVerses();
       const filteredVerses=verseFilter==='active'?activeVerses:savedVerses;
 
       const verseList=filteredVerses.map(v=>{
         const bonus=v.mastery>=5?getReviewBonus(v):0;
         const daysSince=v.lastPracticed?Math.floor((Date.now()-new Date(v.lastPracticed).getTime())/(1000*60*60*24)):null;
         const isActive=v.status==='active';
-        return`<div class="w-full bg-white rounded-2xl p-4 mb-3 text-left">
+        const isDue=isActive&&isDueForReview(v);
+        const reviewTime=isActive?getReviewTimeText(v):null;
+        return`<div class="w-full bg-white rounded-2xl p-4 mb-3 text-left ${isDue?'ring-2 ring-amber-400':''}">
           <button onclick="selectVerse(${v.id})" class="w-full text-left">
             <div class="flex justify-between mb-1">
-              <p class="font-bold text-purple-800">${v.ref}</p>
+              <div class="flex items-center gap-2">
+                <p class="font-bold text-purple-800">${v.ref}</p>
+                ${isDue?`<span class="text-xs px-2 py-0.5 rounded-full bg-amber-500 text-white font-bold animate-pulse">Due!</span>`:''}
+              </div>
               <div class="flex gap-2 items-center">
                 ${bonus>0?`<span class="text-xs px-2 py-1 rounded-full bg-green-500 text-white">+${bonus} XP</span>`:''}
                 <div class="text-right">
@@ -7162,7 +7537,7 @@ function render(){
               <div class="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all" style="width:${v.mastery/5*100}%"></div>
             </div>
             <p class="text-purple-700 text-sm line-clamp-2">${v.text}</p>
-            ${daysSince!==null?`<p class="text-purple-400 text-xs mt-1">Last practiced ${daysSince} day${daysSince!==1?'s':''} ago</p>`:''}
+            ${isActive&&reviewTime&&!isDue?`<p class="text-purple-400 text-xs mt-1">Next review: ${reviewTime}</p>`:daysSince!==null?`<p class="text-purple-400 text-xs mt-1">Last practiced ${daysSince} day${daysSince!==1?'s':''} ago</p>`:''}
           </button>
           <div class="flex justify-end mt-2 pt-2 border-t border-purple-100">
             <button onclick="event.stopPropagation();toggleVerseStatus(${v.id})" class="text-xs px-3 py-1.5 rounded-lg ${isActive?'bg-gray-100 text-gray-600 hover:bg-gray-200':'bg-green-100 text-green-700 hover:bg-green-200'} font-medium">
@@ -7190,24 +7565,17 @@ function render(){
           </button>
         </div>
         ${S.verses.length?`
-          ${verseFilter==='active'&&reviewList.length?`<button onclick="selectVerse('review')" class="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-2xl p-4 mb-4 font-bold flex items-center justify-center gap-2">
-            <span class="text-2xl">📚</span>
-            <div class="flex-1 text-left">
-              <div>Review Mode</div>
-              <div class="text-sm font-normal opacity-90">${reviewList.length} verse${reviewList.length!==1?'s':''} need${reviewList.length===1?'s':''} review</div>
-            </div>
-          </button>`:''}
           ${filterTabs}
           ${filteredVerses.length?verseList:`<div class="bg-white/95 rounded-2xl p-6 text-center"><p class="text-purple-600">${verseFilter==='active'?'No verses to practice. Check "Stored" or add new ones!':'No stored verses yet. Tap "Store for later" on any verse.'}</p></div>`}`:'<div class="bg-white/95 rounded-3xl p-8 text-center"><p class="text-purple-800">Add verses first!</p></div>'}
       </div>`;
     }else{
       // Mode selection screen
-      const modes=[{id:'predict',n:'Predict',i:'🎯',s:'⭐',x:'1-5'},{id:'blanks',n:'Fill Blanks',i:'✏️',s:'⭐⭐⭐',x:'8',desc:'4 rounds!'},{id:'match',n:'Verse Match',i:'🔗',s:'⭐⭐',x:'6'},{id:'jumble',n:'Word Jumble',i:'🔀',s:'⭐⭐⭐',x:'7'},{id:'first',n:'First Letters',i:'🔤',s:'⭐⭐⭐⭐',x:'8'},{id:'recall',n:'Full Recall',i:'💭',s:'⭐⭐⭐⭐⭐',x:'10-15'}];
+      const modes=[{id:'predict',n:'Predict',i:'🎯',s:'⭐',x:'2-8',desc:'4 levels!'},{id:'blanks',n:'Fill Blanks',i:'✏️',s:'⭐⭐⭐',x:'2-8',desc:'4 levels!'},{id:'chunk',n:'Chunk Master',i:'🧩',s:'⭐⭐',x:'3-6',desc:'Learn in pieces'},{id:'jumble',n:'Word Jumble',i:'🔀',s:'⭐⭐⭐',x:'7'},{id:'first',n:'First Letters',i:'🔤',s:'⭐⭐⭐⭐',x:'8'},{id:'recall',n:'Full Recall',i:'💭',s:'⭐⭐⭐⭐⭐',x:'10-15'}];
       const btns=modes.map(m=>`<button onclick="startPractice('${m.id}')" class="w-full bg-white/95 rounded-2xl p-4 mb-3 flex items-center gap-3 text-left">
         <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center text-2xl">${m.i}</div>
         <div class="flex-1"><p class="font-bold text-purple-800">${m.n} <span class="text-yellow-500 text-sm">${m.s}</span></p></div>
         <span class="text-purple-400 text-sm">+${m.x}</span></button>`).join('');
-      const selectedV=selectedVerse==='random'||selectedVerse==='review'?null:S.verses.find(v=>v.id===selectedVerse);
+      const selectedV=selectedVerse==='random'||selectedVerse==='review'||selectedVerse==='smartreview'?null:S.verses.find(v=>v.id===selectedVerse);
       h=`<div class="p-5 pb-24">
         ${buddyStatus}
         <div class="flex items-center gap-3 mb-4">
@@ -7221,6 +7589,10 @@ function render(){
           <p class="text-purple-800 font-bold">📚 Review Mode</p>
           <p class="text-purple-600 text-sm">A mastered verse will be chosen for you</p>
           <p class="text-green-600 text-sm font-semibold mt-1">+Bonus XP for reviewing!</p>
+        </div>`:selectedVerse==='smartreview'?`<div class="bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl p-4 mb-4 text-center border-2 border-amber-300">
+          <p class="text-orange-800 font-bold">🧠 Smart Review</p>
+          <p class="text-orange-600 text-sm">The most urgent verse will be chosen</p>
+          <p class="text-amber-600 text-sm font-semibold mt-1">Spaced repetition for better memory!</p>
         </div>`:''}
         ${btns}
       </div>`;
@@ -7801,16 +8173,77 @@ function render(){
   else if(pMode==='predict'){
     const buddyStatusCompact=getPracticeStatusBar();
     const p=pState.total>0?Math.round(pState.correct/pState.total*100):0;
+    const roundNames=['','Round 1: Easy','Round 2: Medium','Round 3: Hard','Round 4: Master'];
+    const roundDesc=['','Every 4th word + hints','Every 3rd word + letter count','Every 2nd word, limited context','Every word, minimal context'];
+
+    // Apply context limit to displayed text
+    let displayText=pState.rev.join(' ');
+    if(pState.contextLimit&&pState.rev.length>pState.contextLimit){
+      const limited=pState.rev.slice(-pState.contextLimit);
+      displayText='... '+limited.join(' ');
+    }
+
     let inner='';
     if(pState.done){
-      const xp=p>=90?5:p>=70?3:p>=50?2:1;
-      inner=`<div class="text-center"><p class="text-4xl font-bold ${p>=70?'text-green-500':'text-orange-500'}">${p}%</p><p class="text-purple-600 mb-4">${p>=90?'Amazing!':p>=70?'Great!':'Keep trying!'}</p><button onclick="completePractice()" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 px-8 rounded-xl">+${xp} XP</button></div>`;
+      const finalXP=Math.round((pState.totalXP||5)*10)/10;
+      inner=`<div class="text-center">
+        <p class="text-green-500 font-bold text-xl mb-2">🏆 Master Level Complete!</p>
+        <p class="text-purple-600 mb-2">You predicted every word!</p>
+        <div class="bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl p-3 mb-4">
+          <p class="text-2xl font-bold text-orange-600">+${finalXP} XP</p>
+          <p class="text-orange-500 text-xs">All 4 rounds completed!</p>
+        </div>
+        <button onclick="completePractice()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 rounded-xl">Collect XP</button>
+      </div>`;
+    }else if(pState.roundComplete){
+      const roundXPDisplay=Math.round(pState.roundXP*10)/10;
+      const totalXPDisplay=Math.round(pState.totalXP*10)/10;
+      const accuracy=pState.total>0?Math.round(pState.correct/pState.total*100):0;
+      inner=`<div class="text-center">
+        <p class="text-green-500 font-bold text-xl mb-2">✨ ${roundNames[pState.round]} Complete!</p>
+        <p class="text-purple-600 text-sm mb-2">${accuracy}% accuracy</p>
+        <div class="bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl p-3 mb-4">
+          <p class="text-2xl font-bold text-orange-600">+${roundXPDisplay} XP</p>
+          <p class="text-orange-500 text-xs">Total earned: ${totalXPDisplay} XP</p>
+        </div>
+        <p class="text-purple-600 text-sm mb-4">Ready for <b>${roundNames[pState.round+1]}</b>?<br><span class="text-purple-400 text-xs">${roundDesc[pState.round+1]}</span></p>
+        <button onclick="advancePredictRound()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 rounded-xl mb-2">Continue to Next Level 🔥</button>
+        <button onclick="exitPredictEarly()" class="w-full bg-purple-100 text-purple-600 font-semibold py-2.5 rounded-xl">Collect ${totalXPDisplay} XP & Exit</button>
+      </div>`;
     }else{
-      const cor=pState.W[pState.cur+1],dec=getDecoys(cor,pVerse.text),opts=shuffle([cor,...dec]);
-      inner=`<p class="text-purple-500 text-sm text-center mb-3">What's next?</p><div class="space-y-2">${opts.map(w=>`<button onclick="selectPredict('${w.replace(/'/g,"\\'")}')" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white py-3 rounded-xl">${w}</button>`).join('')}</div>`;
+      const targetIdx=pState.predictIndices[pState.currentPredictIdx];
+      const cor=pState.W[targetIdx],dec=getDecoys(cor,pVerse.text),opts=shuffle([cor,...dec]);
+
+      // Generate hint based on hintType
+      let hintHtml='';
+      if(pState.hintType==='firstLetter'){
+        hintHtml=`<p class="text-purple-400 text-xs mb-2">Hint: Starts with "${cor[0].toUpperCase()}"</p>`;
+      }else if(pState.hintType==='letterCount'){
+        hintHtml=`<p class="text-purple-400 text-xs mb-2">Hint: ${cor.length} letters</p>`;
+      }
+
+      inner=`<p class="text-purple-500 text-sm text-center mb-2">What comes next?</p>${hintHtml}<div class="space-y-2">${opts.map(w=>`<button onclick="selectPredict('${w.replace(/'/g,"\\'")}')" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white py-3 rounded-xl">${w}</button>`).join('')}</div>`;
     }
-    h=`<div class="p-5">${buddyStatusCompact}<div class="flex justify-between mb-4"><button onclick="pMode=null;render()" class="text-white text-xl">✕</button><p class="text-white font-semibold">🎯 Predict</p><p class="text-white/60">${pState.cur}/${pState.total}</p></div>
-      <div class="bg-white/95 rounded-3xl p-5 ${pState.wrong?'shake':''}"><p class="text-purple-600 font-medium mb-2">${pVerse.ref}</p><p class="text-purple-800 mb-4">${pState.rev.join(' ')}${pState.done?'':' ...'}</p>${pState.wrong&&!pState.done?'<p class="text-orange-500 text-sm text-center mb-2">Not quite!</p>':''}${inner}</div></div>`;
+
+    h=`<div class="p-5">${buddyStatusCompact}
+      <div class="flex justify-between items-center mb-4">
+        <button onclick="pMode=null;render()" class="text-white text-xl">✕</button>
+        <div class="text-center">
+          <p class="text-white font-semibold">🎯 Predict</p>
+          <p class="text-white/60 text-xs">${roundNames[pState.round]}</p>
+        </div>
+        <p class="text-white/60">${pState.currentPredictIdx}/${pState.total}</p>
+      </div>
+      <div class="bg-white/95 rounded-3xl p-5 ${pState.wrong?'shake':''}">
+        <div class="flex justify-between items-center mb-2">
+          <p class="text-purple-600 font-medium">${pVerse.ref}</p>
+          <div class="flex gap-1">${[1,2,3,4].map(r=>`<div class="w-2 h-2 rounded-full ${r<pState.round?'bg-green-500':r===pState.round?'bg-yellow-400':'bg-purple-200'}"></div>`).join('')}</div>
+        </div>
+        <p class="text-purple-800 mb-4">${displayText}${pState.done||pState.roundComplete?'':' ...'}</p>
+        ${pState.wrong&&!pState.done&&!pState.roundComplete?'<p class="text-orange-500 text-sm text-center mb-2">Not quite!</p>':''}
+        ${inner}
+      </div>
+    </div>`;
   }
 
   else if(pMode==='blanks'){
@@ -7827,22 +8260,67 @@ function render(){
 
     let inner='';
     if(pState.done){
+      const finalXP=Math.round((pState.totalXP||8)*10)/10;
       inner=`<div class="text-center">
         <p class="text-green-500 font-bold text-xl mb-2">🏆 Master Level Complete!</p>
-        <p class="text-purple-600 mb-4">You filled in every word!</p>
-        <button onclick="completePractice()" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 px-8 rounded-xl">+8 XP</button>
+        <p class="text-purple-600 mb-2">You filled in every word!</p>
+        <div class="bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl p-3 mb-4">
+          <p class="text-2xl font-bold text-orange-600">+${finalXP} XP</p>
+          <p class="text-orange-500 text-xs">All 4 rounds completed!</p>
+        </div>
+        <button onclick="completePractice()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 rounded-xl">Collect XP</button>
       </div>`;
     }else if(pState.roundComplete){
+      const roundXPDisplay=Math.round(pState.roundXP*10)/10;
+      const totalXPDisplay=Math.round(pState.totalXP*10)/10;
       inner=`<div class="text-center">
         <p class="text-green-500 font-bold text-xl mb-2">✨ ${roundNames[pState.round]} Complete!</p>
-        <p class="text-purple-600 mb-4">Get ready for ${roundNames[pState.round+1]}...</p>
-        <div class="animate-pulse text-4xl">🔥</div>
+        <div class="bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl p-3 mb-4">
+          <p class="text-2xl font-bold text-orange-600">+${roundXPDisplay} XP</p>
+          <p class="text-orange-500 text-xs">Total earned: ${totalXPDisplay} XP${pState.hintsUsed?` (${pState.hintsUsed} hints used)`:''}</p>
+        </div>
+        <p class="text-purple-600 text-sm mb-4">Ready for <b>${roundNames[pState.round+1]}</b>?<br><span class="text-purple-400 text-xs">${roundDesc[pState.round+1]}</span></p>
+        <button onclick="advanceBlankRound()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 rounded-xl mb-2">Continue to Next Level 🔥</button>
+        <button onclick="exitBlanksEarly()" class="w-full bg-purple-100 text-purple-600 font-semibold py-2.5 rounded-xl">Collect ${totalXPDisplay} XP & Exit</button>
       </div>`;
+    }else if(pState.revealed){
+      // Word revealed after too many wrong attempts
+      const word=pState.missing[pState.cBlank];
+      inner=`<div class="bg-orange-50 rounded-xl p-4 mb-3 text-center">
+        <p class="text-orange-600 text-sm font-semibold mb-2">The word was:</p>
+        <p class="text-2xl font-bold text-purple-800">${word}</p>
+        <p class="text-orange-400 text-xs mt-2">Take a moment to remember it!</p>
+      </div>
+      <button onclick="skipBlankWord()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 rounded-xl">Continue →</button>`;
     }else{
+      const word=pState.missing[pState.cBlank]||'';
+      const hintLevel=pState.hintLevel||0;
+      let hintText='';
+      let hintIcon='💡';
+
+      if(hintLevel===0){
+        hintText=`The word has <b>${word.length}</b> letters`;
+      }else if(hintLevel===1){
+        hintText=`${word.length} letters, starts with "<b>${word[0].toUpperCase()}</b>"`;
+        hintIcon='🔤';
+      }else if(hintLevel===2){
+        hintText=`Starts with "<b>${word[0].toUpperCase()}</b>", ends with "<b>${word[word.length-1]}</b>"`;
+        hintIcon='🎯';
+      }else if(hintLevel>=3){
+        // Show more letters
+        const revealed=word.split('').map((c,i)=>i===0||i===word.length-1||i===Math.floor(word.length/2)?c:'_').join(' ');
+        hintText=`Pattern: <b>${revealed}</b>`;
+        hintIcon='🔓';
+      }
+
       const wrongFeedback=pState.wrong?`<div class="bg-red-50 rounded-xl p-3 mb-3">
-        <p class="text-red-500 text-sm font-semibold">❌ "${pState.wrongAnswer}" is not correct</p>
-        <p class="text-red-400 text-xs">Hint: The word has ${pState.missing[pState.cBlank]?.length||0} letters</p>
-      </div>`:'';
+        <p class="text-red-500 text-sm font-semibold mb-1">❌ "${pState.wrongAnswer}" is not correct</p>
+        <p class="text-purple-600 text-xs">${hintIcon} Hint: ${hintText}</p>
+        ${hintLevel>=3?'<p class="text-orange-500 text-xs mt-1">⚠️ One more wrong = answer revealed!</p>':''}
+      </div>`:`<div class="bg-purple-50 rounded-xl p-2 mb-3 text-center">
+        <p class="text-purple-500 text-xs">${hintIcon} ${hintText}</p>
+      </div>`;
+
       inner=`${wrongFeedback}<input id="inp" value="${pState.inp}" oninput="pState.inp=this.value;pState.wrong=false;pState.wrongAnswer=''" onkeypress="if(event.key==='Enter')checkBlanks()" placeholder="Type the missing word..." class="w-full border-2 ${pState.wrong?'border-red-400':'border-purple-200'} rounded-xl px-4 py-3 mb-3"><button onclick="checkBlanks()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 rounded-xl">Check</button>`;
     }
 
@@ -7990,6 +8468,96 @@ function render(){
     }
     h=`<div class="p-5">${buddyStatusCompact}<div class="flex justify-between mb-4"><button onclick="pMode=null;render()" class="text-white text-xl">✕</button><p class="text-white font-semibold">💭 Recall</p><p class="text-white/60">+10-15</p></div>
       <div class="bg-white/95 rounded-3xl p-5"><p class="text-purple-600 font-medium mb-1">${pVerse.ref}</p><p class="text-purple-400 text-sm mb-3">Type from memory</p>${inner}</div></div>`;
+  }
+
+  else if(pMode==='chunk'){
+    const buddyStatusCompact=getPracticeStatusBar();
+    const phase=pState.phases[pState.currentPhase];
+    const progress=Math.round((pState.currentPhase/pState.phases.length)*100);
+
+    // Phase indicator dots
+    const phaseDots=pState.phases.map((p,i)=>`<div class="w-2 h-2 rounded-full ${i<pState.currentPhase?'bg-green-500':i===pState.currentPhase?'bg-yellow-400':'bg-purple-200'}"></div>`).join('');
+
+    let inner='';
+    if(pState.done){
+      // Final completion
+      const hintPenalty=Math.min(3,(pState.hintsUsed||0)*0.5);
+      const finalXP=Math.max(3,6-hintPenalty);
+      inner=`<div class="text-center">
+        <p class="text-green-500 font-bold text-xl mb-2">🏆 Verse Mastered!</p>
+        <p class="text-purple-600 mb-2">You learned the whole verse in chunks!</p>
+        <div class="bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl p-3 mb-4">
+          <p class="text-2xl font-bold text-orange-600">+${Math.round(finalXP*10)/10} XP</p>
+          ${pState.hintsUsed?`<p class="text-orange-500 text-xs">${pState.hintsUsed} hints used</p>`:''}
+        </div>
+        <button onclick="completePractice()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 rounded-xl">Collect XP</button>
+      </div>`;
+    }else if(pState.phaseComplete){
+      // Phase complete - advance to next
+      const isCombine=phase.type==='combine';
+      inner=`<div class="text-center">
+        <p class="text-green-500 font-bold text-xl mb-2">✨ ${isCombine?'Combined!':'Chunk Learned!'}</p>
+        <p class="text-purple-600 text-sm mb-3">${pState.phaseAccuracy}% accuracy</p>
+        <button onclick="advanceChunkPhase()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 rounded-xl">Continue →</button>
+      </div>`;
+    }else{
+      // Active practice
+      const isCombine=phase.type==='combine';
+      const chunkNum=isCombine?`Chunks 1-${phase.upTo+1}`:`Chunk ${phase.chunkIdx+1}`;
+      const phaseType=isCombine?'🔗 Combine':'📝 Learn';
+
+      // Show the text to memorize (or hint if requested)
+      const targetText=phase.text;
+      const textDisplay=pState.showingHint?
+        `<div class="bg-green-50 border-2 border-green-300 rounded-xl p-4 mb-3">
+          <p class="text-purple-800 leading-relaxed">${targetText}</p>
+          <button onclick="hideChunkHint()" class="mt-2 text-sm text-green-600 font-semibold">Hide & Try Again</button>
+        </div>`:
+        `<div class="bg-purple-50 rounded-xl p-4 mb-3 text-center">
+          <p class="text-purple-500 text-xs font-semibold mb-1">${phaseType} - ${chunkNum}</p>
+          <p class="text-purple-800 leading-relaxed">${targetText}</p>
+        </div>`;
+
+      // Comparison feedback when wrong
+      const comparisonHtml=pState.comparison?`<div class="bg-red-50 rounded-xl p-3 mb-3">
+        <p class="text-red-500 text-sm font-semibold mb-2">❌ Not quite right:</p>
+        <p class="text-sm leading-relaxed">${pState.comparison.map(c=>{
+          if(c.type==='correct')return`<span class="text-green-600">${c.word}</span>`;
+          if(c.type==='wrong')return`<span class="text-red-500 line-through">${c.actual}</span><span class="text-green-600 bg-green-100 px-1 rounded">${c.expected}</span>`;
+          return`<span class="text-red-500 bg-red-100 px-1 rounded">${c.word}</span>`;
+        }).join(' ')}</p>
+      </div>`:'';
+
+      inner=`${textDisplay}
+        ${comparisonHtml}
+        <p class="text-purple-500 text-xs mb-2">Now type it from memory:</p>
+        <textarea id="inp" oninput="pState.inp=this.value;pState.wrong=false;pState.comparison=null" placeholder="Type the ${isCombine?'combined chunks':'chunk'} here..." class="w-full border-2 ${pState.wrong?'border-red-400':'border-purple-200'} rounded-xl px-4 py-3 h-24 mb-3">${pState.inp}</textarea>
+        <div class="flex gap-2">
+          <button onclick="showChunkHint()" class="flex-1 bg-purple-100 text-purple-600 font-semibold py-3 rounded-xl">👁️ Peek</button>
+          <button onclick="checkChunk()" class="flex-2 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 px-6 rounded-xl">Check</button>
+        </div>`;
+    }
+
+    h=`<div class="p-5">${buddyStatusCompact}
+      <div class="flex justify-between items-center mb-4">
+        <button onclick="pMode=null;render()" class="text-white text-xl">✕</button>
+        <div class="text-center">
+          <p class="text-white font-semibold">🧩 Chunk Master</p>
+          <p class="text-white/60 text-xs">${pState.chunks.length} chunks</p>
+        </div>
+        <p class="text-white/60">${pState.currentPhase+1}/${pState.phases.length}</p>
+      </div>
+      <div class="bg-white/95 rounded-3xl p-5">
+        <div class="flex justify-between items-center mb-3">
+          <p class="text-purple-600 font-medium">${pVerse.ref}</p>
+          <div class="flex gap-1">${phaseDots}</div>
+        </div>
+        <div class="w-full bg-purple-100 rounded-full h-2 mb-4">
+          <div class="bg-gradient-to-r from-violet-500 to-fuchsia-500 h-2 rounded-full transition-all" style="width:${progress}%"></div>
+        </div>
+        ${inner}
+      </div>
+    </div>`;
   }
 
   // No bottom bar needed - stats are on the buddy card
