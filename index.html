@@ -7632,7 +7632,7 @@ function render(){
       <div style="transform:scale(0.5);transform-origin:center;margin:-50px -30px;">${renderBuddyVisual()}</div>
       <div class="flex-1">
         <div class="flex justify-between items-center mb-1">
-          <span class="text-white font-semibold text-sm">${getStageName()}</span>
+          <span class="text-white font-semibold text-sm">${S.buddyStage==='egg'?'Egg':(S.buddyName||'Buddy')}</span>
           <span class="text-white/90 font-bold">✨ ${(()=>{
             const stage=S.buddyStage||'egg';
             if(stage==='egg')return `${S.eggXP||0}/${STAGES.egg.hatchXP}`;
