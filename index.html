@@ -5579,9 +5579,9 @@ const startPractice=mode=>{
     pState={W,cur:0,rev:[W[0]],correct:0,total:predictIndices.length,predictIndices,currentPredictIdx:0,wrong:false,wrongCount:0,done:false,round,predictPattern,contextLimit,hintType,inp:'',roundComplete:false,totalXP:0,hintsUsed:0};
   }
   else if(mode==='blanks'){
-    // Progressive difficulty: round 1=every 4th word, round 2=every 3rd, round 3=every 2nd, round 4=all words
+    // Progressive difficulty: 6 rounds from every 6th word to all words
     const round=1;
-    const blankPattern=4; // Start with every 4th word
+    const blankPattern=6; // Start with every 6th word
     const bl=W.map((w,i)=>(i+1)%blankPattern===0?'':w);
     const mi=W.filter((w,i)=>(i+1)%blankPattern===0);
     const missingIndices=W.map((w,i)=>(i+1)%blankPattern===0?i:-1).filter(i=>i>=0);
@@ -5747,7 +5747,7 @@ const checkBlanks=()=>{
       const hintPenalty=Math.min(1.5,(pState.hintsUsed||0)*0.25);
       pState.roundXP=Math.max(0.5,2-hintPenalty);
       pState.totalXP=(pState.totalXP||0)+pState.roundXP;
-      if(pState.round>=4){
+      if(pState.round>=6){
         // All rounds done!
         pState.done=true;
         triggerReaction('celebrate');
@@ -5789,7 +5789,7 @@ const skipBlankWord=()=>{
     const hintPenalty=Math.min(1.5,(pState.hintsUsed||0)*0.25);
     pState.roundXP=Math.max(0.5,2-hintPenalty);
     pState.totalXP=(pState.totalXP||0)+pState.roundXP;
-    if(pState.round>=4){
+    if(pState.round>=6){
       pState.done=true;
     }
   }
@@ -5798,7 +5798,7 @@ const skipBlankWord=()=>{
 
 const advanceBlankRound=()=>{
   pState.round++;
-  const patterns=[4,3,2,1]; // every 4th, 3rd, 2nd, all
+  const patterns=[6,5,4,3,2,1]; // every 6th, 5th, 4th, 3rd, 2nd, all
   pState.blankPattern=patterns[pState.round-1]||1;
   const W=pState.W;
   pState.blanks=W.map((w,i)=>pState.blankPattern===1||(i+1)%pState.blankPattern===0?'':w);
@@ -8357,8 +8357,8 @@ function render(){
       return w;
     }).join(' ');
 
-    const roundNames=['','Round 1: Easy','Round 2: Medium','Round 3: Hard','Round 4: Master'];
-    const roundDesc=['','Every 4th word','Every 3rd word','Every 2nd word','All words!'];
+    const roundNames=['','Round 1: Easy','Round 2: Warm Up','Round 3: Medium','Round 4: Challenging','Round 5: Hard','Round 6: Master'];
+    const roundDesc=['','Every 6th word','Every 5th word','Every 4th word','Every 3rd word','Every 2nd word','All words!'];
 
     let inner='';
     if(pState.done){
@@ -8368,7 +8368,7 @@ function render(){
         <p class="text-purple-600 mb-2">You filled in every word!</p>
         <div class="bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl p-3 mb-4">
           <p class="text-2xl font-bold text-orange-600">+${finalXP} XP</p>
-          <p class="text-orange-500 text-xs">All 4 rounds completed!</p>
+          <p class="text-orange-500 text-xs">All 6 rounds completed!</p>
         </div>
         <button onclick="completePractice()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 rounded-xl">Collect XP</button>
       </div>`;
@@ -8438,7 +8438,7 @@ function render(){
       <div class="bg-white/95 rounded-3xl p-5">
         <div class="flex justify-between items-center mb-2">
           <p class="text-purple-600 font-medium">${pVerse.ref}</p>
-          <div class="flex gap-1">${[1,2,3,4].map(r=>`<div class="w-2 h-2 rounded-full ${r<=pState.round?'bg-green-500':'bg-purple-200'}"></div>`).join('')}</div>
+          <div class="flex gap-1">${[1,2,3,4,5,6].map(r=>`<div class="w-2 h-2 rounded-full ${r<=pState.round?'bg-green-500':'bg-purple-200'}"></div>`).join('')}</div>
         </div>
         <p class="text-purple-800 mb-4 leading-relaxed">${disp}</p>
         ${inner}
