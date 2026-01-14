@@ -2983,7 +2983,7 @@ async function completeOnboarding(){
             text:item.text,
             tags:item.tags||[],
             mastery:0,
-            modeUsage:{predict:0,blanks:0,jumble:0,first:0,recall:0},
+            modeUsage:{predict:0,blanks:0,match:0,jumble:0,first:0,recall:0,hangman:0},
             lastPracticed:null,
             status:'active'
           });
@@ -4708,6 +4708,7 @@ function checkLogin(){
   updateHealth();
 }
 checkLogin();
+loadCustomRarities(); // Load any saved rarity customizations
 
 const setScreen=s=>{screen=s;pMode=null;feedingState=null;if(s!=='practice')selectedVerse=null;render()};
 const openModal=(m,v)=>{modal=m;editV=v||null;form=v?{type:v.type,ref:v.ref,text:v.text,tags:v.tags.slice(),startPracticing:true}:{type:'scripture',ref:'',text:'',tags:[],startPracticing:true};if(m==='feed')feedTab='buy';if(m==='add'){addTab='library';libraryView={collection:null,book:null,chapter:null};searchQuery='';}render()};
@@ -4736,7 +4737,7 @@ const addLibraryVerse=idx=>{
     text:libVerse.text,
     tags:libVerse.tags.slice(),
     mastery:0,
-    modeUsage:{predict:0,blanks:0,jumble:0,first:0,recall:0,hangman:0},
+    modeUsage:{predict:0,blanks:0,match:0,jumble:0,first:0,recall:0,hangman:0},
     lastPracticed:null,
     status:'active'
   });
@@ -4758,7 +4759,7 @@ const addLibraryVerseByRef=(ref,verseObj)=>{
     text:verseObj.text,
     tags:verseObj.tags&&verseObj.tags.length?verseObj.tags.slice():['Faith'],
     mastery:0,
-    modeUsage:{predict:0,blanks:0,jumble:0,first:0,recall:0,hangman:0},
+    modeUsage:{predict:0,blanks:0,match:0,jumble:0,first:0,recall:0,hangman:0},
     lastPracticed:null,
     status:'active'
   });
@@ -5325,21 +5326,158 @@ const startPractice=mode=>{
   pMode=mode;
   const W=getWords(pVerse.text);
   if(mode==='predict')pState={W,cur:0,rev:[W[0]],correct:0,total:W.length-1,wrong:false,wrongCount:0,done:false};
-  else if(mode==='blanks'){const bl=W.map((w,i)=>(i+1)%4===0?'':w),mi=W.filter((w,i)=>(i+1)%4===0);pState={W,blanks:bl,missing:mi,cBlank:0,inp:'',wrong:false,wrongCount:0,done:false}}
+  else if(mode==='blanks'){
+    // Progressive difficulty: round 1=every 4th word, round 2=every 3rd, round 3=every 2nd, round 4=all words
+    const round=1;
+    const blankPattern=4; // Start with every 4th word
+    const bl=W.map((w,i)=>(i+1)%blankPattern===0?'':w);
+    const mi=W.filter((w,i)=>(i+1)%blankPattern===0);
+    const missingIndices=W.map((w,i)=>(i+1)%blankPattern===0?i:-1).filter(i=>i>=0);
+    pState={W,blanks:bl,missing:mi,missingIndices,cBlank:0,inp:'',wrong:false,wrongAnswer:'',wrongCount:0,done:false,round,blankPattern,filledIndices:[]}
+  }
   else if(mode==='jumble')pState={W,shuf:shuffle(W),sel:[],wrong:false,wrongCount:0,done:false};
   else if(mode==='first'){const h=W.map(w=>w[0]+'_'.repeat(w.length-1));pState={W,hints:h,cWord:0,inp:'',wrong:false,wrongCount:0,done:false}}
   else if(mode==='recall')pState={W,inp:'',checked:false,score:0,wrongCount:0,done:false};
   else if(mode==='hangman'){
     pState={W,guessed:[],wrong:0,maxWrong:8,wrongCount:0,done:false,won:false};
   }
+  else if(mode==='match'){
+    // Get 4 random verses from user's collection for matching
+    const activeVerses=S.verses.filter(v=>v.status==='active'&&v.text&&v.ref);
+    const shuffled=[...activeVerses].sort(()=>Math.random()-0.5);
+    const matchVerses=shuffled.slice(0,Math.min(4,shuffled.length));
+    const refs=matchVerses.map(v=>({ref:v.ref,matched:false})).sort(()=>Math.random()-0.5);
+    pState={
+      verses:matchVerses.map(v=>({id:v.id,ref:v.ref,text:v.text,matched:false})),
+      refs,
+      selectedText:null,
+      selectedRef:null,
+      wrongCount:0,
+      done:false,
+      matchedCount:0
+    };
+  }
   render();
 };
 
 const selectPredict=w=>{const cor=pState.W[pState.cur+1];pState.rev.push(cor);if(clean(w)===clean(cor)){pState.correct++;pState.wrong=false}else{pState.wrong=true;pState.wrongCount++}pState.cur++;if(pState.cur>=pState.W.length-1){pState.done=true;setTimeout(()=>completePractice(),500)}render()};
-const checkBlanks=()=>{const exp=pState.missing[pState.cBlank];if(clean(pState.inp)===clean(exp)){pState.blanks[pState.blanks.indexOf('')]=exp;pState.cBlank++;pState.inp='';pState.wrong=false;if(pState.cBlank>=pState.missing.length){pState.done=true;setTimeout(()=>completePractice(),500)}}else{pState.wrong=true;pState.wrongCount++}render()};
+const checkBlanks=()=>{
+  const exp=pState.missing[pState.cBlank];
+  if(clean(pState.inp)===clean(exp)){
+    // Correct! Fill in the blank
+    const blankIdx=pState.blanks.indexOf('');
+    pState.blanks[blankIdx]=exp;
+    pState.filledIndices.push(pState.missingIndices[pState.cBlank]);
+    pState.cBlank++;
+    pState.inp='';
+    pState.wrong=false;
+    pState.wrongAnswer='';
+
+    if(pState.cBlank>=pState.missing.length){
+      // Round complete! Check if we should advance to harder round
+      if(pState.round<4){
+        // Advance to next round with more blanks
+        pState.roundComplete=true;
+        setTimeout(()=>{
+          pState.round++;
+          const patterns=[4,3,2,1]; // every 4th, 3rd, 2nd, all
+          pState.blankPattern=patterns[pState.round-1]||1;
+          const W=pState.W;
+          pState.blanks=W.map((w,i)=>pState.blankPattern===1||(i+1)%pState.blankPattern===0?'':w);
+          pState.missing=W.filter((w,i)=>pState.blankPattern===1||(i+1)%pState.blankPattern===0);
+          pState.missingIndices=W.map((w,i)=>pState.blankPattern===1||(i+1)%pState.blankPattern===0?i:-1).filter(x=>x>=0);
+          pState.cBlank=0;
+          pState.filledIndices=[];
+          pState.roundComplete=false;
+          render();
+        },1500);
+      }else{
+        // All rounds done!
+        pState.done=true;
+        setTimeout(()=>completePractice(),500);
+      }
+    }
+  }else{
+    pState.wrong=true;
+    pState.wrongAnswer=pState.inp;
+    pState.wrongCount++;
+  }
+  render();
+};
 const selectJumble=i=>{const w=pState.shuf[i],exp=pState.W[pState.sel.length];if(clean(w)===clean(exp)){pState.sel.push(w);pState.shuf.splice(i,1);pState.wrong=false;if(pState.sel.length>=pState.W.length){pState.done=true;setTimeout(()=>completePractice(),500)}}else{pState.wrong=true;pState.wrongCount++}render()};
 const checkFirst=()=>{const exp=pState.W[pState.cWord];if(clean(pState.inp)===clean(exp)){pState.hints[pState.cWord]=exp;pState.cWord++;pState.inp='';pState.wrong=false;if(pState.cWord>=pState.W.length){pState.done=true;setTimeout(()=>completePractice(),500)}}else{pState.wrong=true;pState.wrongCount++}render()};
-const checkRecall=()=>{const iw=getWords(pState.inp);let c=0;pState.W.forEach((w,i)=>{if(iw[i]&&clean(iw[i])===clean(w))c++});pState.score=Math.round(c/pState.W.length*100);pState.checked=true;pState.done=pState.score>=80;if(pState.done)setTimeout(()=>completePractice(),500);render()};
+const checkRecall=()=>{
+  const iw=getWords(pState.inp);
+  let c=0;
+  // Build detailed comparison for display
+  const comparison=[];
+  const maxLen=Math.max(pState.W.length,iw.length);
+  for(let i=0;i<maxLen;i++){
+    const expected=pState.W[i]||null;
+    const actual=iw[i]||null;
+    if(expected&&actual&&clean(actual)===clean(expected)){
+      // Correct word
+      comparison.push({type:'correct',expected,actual});
+      c++;
+    }else if(expected&&actual){
+      // Wrong word (typed something different)
+      comparison.push({type:'wrong',expected,actual});
+    }else if(expected&&!actual){
+      // Missing word (didn't type enough)
+      comparison.push({type:'missing',expected,actual:null});
+    }else if(!expected&&actual){
+      // Extra word (typed too much)
+      comparison.push({type:'extra',expected:null,actual});
+    }
+  }
+  pState.comparison=comparison;
+  pState.userWords=iw;
+  pState.score=Math.round(c/pState.W.length*100);
+  pState.checked=true;
+  pState.done=pState.score>=80;
+  if(pState.done)setTimeout(()=>completePractice(),500);
+  render();
+};
+const selectMatchText=idx=>{
+  if(pState.verses[idx].matched)return;
+  pState.selectedText=idx;
+  pState.wrong=false;
+  // If ref already selected, check for match
+  if(pState.selectedRef!==null)checkMatch();
+  else render();
+};
+const selectMatchRef=idx=>{
+  if(pState.refs[idx].matched)return;
+  pState.selectedRef=idx;
+  pState.wrong=false;
+  // If text already selected, check for match
+  if(pState.selectedText!==null)checkMatch();
+  else render();
+};
+const checkMatch=()=>{
+  const verse=pState.verses[pState.selectedText];
+  const ref=pState.refs[pState.selectedRef];
+  if(verse.ref===ref.ref){
+    // Correct match!
+    verse.matched=true;
+    ref.matched=true;
+    pState.matchedCount++;
+    pState.selectedText=null;
+    pState.selectedRef=null;
+    pState.wrong=false;
+    if(pState.matchedCount>=pState.verses.length){
+      pState.done=true;
+      setTimeout(()=>completePractice(),500);
+    }
+  }else{
+    // Wrong match
+    pState.wrong=true;
+    pState.wrongCount++;
+    pState.selectedText=null;
+    pState.selectedRef=null;
+  }
+  render();
+};
 const guessLetter=l=>{
   if(pState.guessed.includes(l))return;
   pState.guessed.push(l);
@@ -5380,12 +5518,13 @@ const completePractice=()=>{
   if(!v)return;
 
   // Ensure modeUsage exists
-  if(!v.modeUsage)v.modeUsage={predict:0,blanks:0,jumble:0,first:0,recall:0,hangman:0};
+  if(!v.modeUsage)v.modeUsage={predict:0,blanks:0,match:0,jumble:0,first:0,recall:0,hangman:0};
 
   // Base XP calculation
   let baseXP=0;
   if(pMode==='predict'){const p=pState.total>0?Math.round(pState.correct/pState.total*100):0;baseXP=p>=90?5:p>=70?3:p>=50?2:1}
-  else if(pMode==='blanks')baseXP=5;
+  else if(pMode==='blanks')baseXP=8; // 4 rounds of progressive difficulty
+  else if(pMode==='match')baseXP=6;
   else if(pMode==='jumble')baseXP=7;
   else if(pMode==='first')baseXP=8;
   else if(pMode==='hangman')baseXP=pState.won?6:3;
@@ -5461,6 +5600,7 @@ const completePractice=()=>{
   if(v.mastery<5){
     if(pMode==='predict')masteryGain=0.2;
     else if(pMode==='blanks')masteryGain=0.5;
+    else if(pMode==='match')masteryGain=0.3; // Lower since it tests multiple verses
     else if(pMode==='jumble')masteryGain=0.7;
     else if(pMode==='first')masteryGain=1.0;
     else if(pMode==='hangman')masteryGain=pState.won?0.6:0.3;
@@ -7006,7 +7146,7 @@ function render(){
       </div>`;
     }else{
       // Mode selection screen
-      const modes=[{id:'predict',n:'Predict',i:'🎯',s:'⭐',x:'1-5'},{id:'blanks',n:'Fill Blanks',i:'✏️',s:'⭐⭐',x:'5'},{id:'jumble',n:'Word Jumble',i:'🔀',s:'⭐⭐⭐',x:'7'},{id:'first',n:'First Letters',i:'🔤',s:'⭐⭐⭐⭐',x:'8'},{id:'recall',n:'Full Recall',i:'💭',s:'⭐⭐⭐⭐⭐',x:'10-15'}];
+      const modes=[{id:'predict',n:'Predict',i:'🎯',s:'⭐',x:'1-5'},{id:'blanks',n:'Fill Blanks',i:'✏️',s:'⭐⭐⭐',x:'8',desc:'4 rounds!'},{id:'match',n:'Verse Match',i:'🔗',s:'⭐⭐',x:'6'},{id:'jumble',n:'Word Jumble',i:'🔀',s:'⭐⭐⭐',x:'7'},{id:'first',n:'First Letters',i:'🔤',s:'⭐⭐⭐⭐',x:'8'},{id:'recall',n:'Full Recall',i:'💭',s:'⭐⭐⭐⭐⭐',x:'10-15'}];
       const btns=modes.map(m=>`<button onclick="startPractice('${m.id}')" class="w-full bg-white/95 rounded-2xl p-4 mb-3 flex items-center gap-3 text-left">
         <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center text-2xl">${m.i}</div>
         <div class="flex-1"><p class="font-bold text-purple-800">${m.n} <span class="text-yellow-500 text-sm">${m.s}</span></p></div>
@@ -7619,12 +7759,55 @@ function render(){
 
   else if(pMode==='blanks'){
     const buddyStatusCompact=getPracticeStatusBar();
-    const disp=pState.blanks.map(w=>w===''?'<span class="bg-yellow-200 px-1 rounded">____</span>':w).join(' ');
+    // Display with color coding: green for filled, yellow for current blank, normal for given words
+    const disp=pState.blanks.map((w,i)=>{
+      if(w==='')return '<span class="bg-yellow-200 px-1 rounded font-bold">____</span>';
+      if(pState.filledIndices&&pState.filledIndices.includes(i))return `<span class="text-green-600 font-semibold">${w}</span>`;
+      return w;
+    }).join(' ');
+
+    const roundNames=['','Round 1: Easy','Round 2: Medium','Round 3: Hard','Round 4: Master'];
+    const roundDesc=['','Every 4th word','Every 3rd word','Every 2nd word','All words!'];
+
     let inner='';
-    if(pState.done)inner=`<div class="text-center"><p class="text-green-500 font-bold text-xl mb-4">✨ Perfect!</p><button onclick="completePractice()" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 px-8 rounded-xl">+5 XP</button></div>`;
-    else inner=`<input id="inp" value="${pState.inp}" oninput="pState.inp=this.value;pState.wrong=false" onkeypress="if(event.key==='Enter')checkBlanks()" placeholder="Type word..." class="w-full border-2 ${pState.wrong?'border-red-400':'border-purple-200'} rounded-xl px-4 py-3 mb-3">${pState.wrong?'<p class="text-red-500 text-sm mb-2">Try again!</p>':''}<button onclick="checkBlanks()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 rounded-xl">Check</button>`;
-    h=`<div class="p-5">${buddyStatusCompact}<div class="flex justify-between mb-4"><button onclick="pMode=null;render()" class="text-white text-xl">✕</button><p class="text-white font-semibold">✏️ Blanks</p><p class="text-white/60">${pState.cBlank}/${pState.missing.length}</p></div>
-      <div class="bg-white/95 rounded-3xl p-5"><p class="text-purple-600 font-medium mb-2">${pVerse.ref}</p><p class="text-purple-800 mb-4">${disp}</p>${inner}</div></div>`;
+    if(pState.done){
+      inner=`<div class="text-center">
+        <p class="text-green-500 font-bold text-xl mb-2">🏆 Master Level Complete!</p>
+        <p class="text-purple-600 mb-4">You filled in every word!</p>
+        <button onclick="completePractice()" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 px-8 rounded-xl">+8 XP</button>
+      </div>`;
+    }else if(pState.roundComplete){
+      inner=`<div class="text-center">
+        <p class="text-green-500 font-bold text-xl mb-2">✨ ${roundNames[pState.round]} Complete!</p>
+        <p class="text-purple-600 mb-4">Get ready for ${roundNames[pState.round+1]}...</p>
+        <div class="animate-pulse text-4xl">🔥</div>
+      </div>`;
+    }else{
+      const wrongFeedback=pState.wrong?`<div class="bg-red-50 rounded-xl p-3 mb-3">
+        <p class="text-red-500 text-sm font-semibold">❌ "${pState.wrongAnswer}" is not correct</p>
+        <p class="text-red-400 text-xs">Hint: The word has ${pState.missing[pState.cBlank]?.length||0} letters</p>
+      </div>`:'';
+      inner=`${wrongFeedback}<input id="inp" value="${pState.inp}" oninput="pState.inp=this.value;pState.wrong=false;pState.wrongAnswer=''" onkeypress="if(event.key==='Enter')checkBlanks()" placeholder="Type the missing word..." class="w-full border-2 ${pState.wrong?'border-red-400':'border-purple-200'} rounded-xl px-4 py-3 mb-3"><button onclick="checkBlanks()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 rounded-xl">Check</button>`;
+    }
+
+    h=`<div class="p-5">${buddyStatusCompact}
+      <div class="flex justify-between mb-4">
+        <button onclick="pMode=null;render()" class="text-white text-xl">✕</button>
+        <div class="text-center">
+          <p class="text-white font-semibold">✏️ Fill in the Blanks</p>
+          <p class="text-white/60 text-xs">${roundNames[pState.round]} - ${roundDesc[pState.round]}</p>
+        </div>
+        <p class="text-white/60">${pState.cBlank}/${pState.missing.length}</p>
+      </div>
+      <div class="bg-white/95 rounded-3xl p-5">
+        <div class="flex justify-between items-center mb-2">
+          <p class="text-purple-600 font-medium">${pVerse.ref}</p>
+          <div class="flex gap-1">${[1,2,3,4].map(r=>`<div class="w-2 h-2 rounded-full ${r<=pState.round?'bg-green-500':'bg-purple-200'}"></div>`).join('')}</div>
+        </div>
+        <p class="text-purple-800 mb-4 leading-relaxed">${disp}</p>
+        ${inner}
+      </div>
+    </div>`;
   }
 
   else if(pMode==='hangman'){
@@ -7651,6 +7834,49 @@ function render(){
       <div class="bg-white/95 rounded-3xl p-5">${inner}</div></div>`;
   }
 
+  else if(pMode==='match'){
+    const buddyStatusCompact=getPracticeStatusBar();
+    let inner='';
+    if(pState.done){
+      inner=`<div class="text-center">
+        <p class="text-green-500 font-bold text-xl mb-2">🎉 All Matched!</p>
+        <p class="text-purple-600 mb-4">Great memory!</p>
+        <button onclick="completePractice()" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 px-8 rounded-xl">+6 XP</button>
+      </div>`;
+    }else if(!pState.verses||pState.verses.length<2){
+      inner=`<div class="text-center">
+        <p class="text-orange-500 mb-4">You need at least 2 verses to play Verse Match!</p>
+        <button onclick="pMode=null;render()" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 px-8 rounded-xl">Back</button>
+      </div>`;
+    }else{
+      const textCards=pState.verses.map((v,i)=>`
+        <button onclick="selectMatchText(${i})" class="w-full p-3 rounded-xl text-left text-sm transition-all ${v.matched?'bg-green-100 border-2 border-green-400 opacity-60':pState.selectedText===i?'bg-yellow-100 border-2 border-yellow-400 ring-2 ring-yellow-300':'bg-purple-50 border-2 border-purple-200 hover:border-purple-400'}">
+          ${v.matched?'✓ ':''}<span class="${v.matched?'text-green-700':'text-purple-800'}">${v.text.length>80?v.text.substring(0,80)+'...':v.text}</span>
+        </button>
+      `).join('');
+      const refCards=pState.refs.map((r,i)=>`
+        <button onclick="selectMatchRef(${i})" class="w-full p-3 rounded-xl text-center font-semibold transition-all ${r.matched?'bg-green-100 border-2 border-green-400 opacity-60':pState.selectedRef===i?'bg-yellow-100 border-2 border-yellow-400 ring-2 ring-yellow-300':'bg-purple-50 border-2 border-purple-200 hover:border-purple-400'}">
+          ${r.matched?'✓ ':''}<span class="${r.matched?'text-green-700':'text-purple-800'}">${r.ref}</span>
+        </button>
+      `).join('');
+      inner=`
+        ${pState.wrong?'<p class="text-red-500 text-sm text-center mb-3">❌ Not a match! Try again.</p>':''}
+        <p class="text-purple-500 text-xs mb-2 font-semibold">TAP A VERSE TEXT:</p>
+        <div class="space-y-2 mb-4">${textCards}</div>
+        <p class="text-purple-500 text-xs mb-2 font-semibold">THEN TAP ITS REFERENCE:</p>
+        <div class="grid grid-cols-2 gap-2">${refCards}</div>
+      `;
+    }
+    h=`<div class="p-5">${buddyStatusCompact}
+      <div class="flex justify-between mb-4">
+        <button onclick="pMode=null;render()" class="text-white text-xl">✕</button>
+        <p class="text-white font-semibold">🔗 Verse Match</p>
+        <p class="text-white/60">${pState.matchedCount||0}/${pState.verses?.length||0}</p>
+      </div>
+      <div class="bg-white/95 rounded-3xl p-5">${inner}</div>
+    </div>`;
+  }
+
   else if(pMode==='jumble'){
     const buddyStatusCompact=getPracticeStatusBar();
     let inner='';
@@ -7674,11 +7900,40 @@ function render(){
     const buddyStatusCompact=getPracticeStatusBar();
     let inner='';
     if(pState.checked){
-      if(pState.done)inner=`<div class="text-center"><p class="text-4xl font-bold text-green-500">${pState.score}%</p><p class="text-purple-600 mb-4">Great job!</p><button onclick="completePractice()" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 px-8 rounded-xl">+${pState.score===100?15:10} XP</button></div>`;
-      else inner=`<div class="text-center"><p class="text-4xl font-bold text-orange-500">${pState.score}%</p><p class="text-purple-600 mb-4">Need 80%+</p><button onclick="startPractice('recall')" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 px-8 rounded-xl">Try Again</button></div>`;
-    }else inner=`<textarea id="inp" oninput="pState.inp=this.value" placeholder="Type the verse..." class="w-full border-2 border-purple-200 rounded-xl px-4 py-3 h-32 mb-3">${pState.inp}</textarea><button onclick="checkRecall()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 rounded-xl">Check</button>`;
+      // Build the comparison display
+      const comparisonHtml=pState.comparison?pState.comparison.map(c=>{
+        if(c.type==='correct'){
+          return `<span class="text-green-600 font-medium">${c.expected}</span>`;
+        }else if(c.type==='wrong'){
+          return `<span class="relative inline-block"><span class="text-red-500 line-through text-xs absolute -top-3 left-0 whitespace-nowrap">${c.actual}</span><span class="text-green-600 font-medium bg-green-100 px-1 rounded">${c.expected}</span></span>`;
+        }else if(c.type==='missing'){
+          return `<span class="text-red-500 font-medium bg-red-100 px-1 rounded">${c.expected}</span>`;
+        }else if(c.type==='extra'){
+          return `<span class="text-orange-500 line-through">${c.actual}</span>`;
+        }
+        return '';
+      }).join(' '):'';
+
+      const legendHtml=`<div class="flex flex-wrap gap-3 text-xs mt-3 pt-3 border-t border-purple-200">
+        <span class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-green-500"></span> Correct</span>
+        <span class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-red-100 border border-red-300"></span> Missed</span>
+        <span class="flex items-center gap-1"><span class="text-red-500 line-through">abc</span> Wrong word</span>
+      </div>`;
+
+      if(pState.done){
+        inner=`<div class="text-center mb-4"><p class="text-4xl font-bold text-green-500">${pState.score}%</p><p class="text-purple-600 mb-2">Great job!</p></div>
+          <div class="bg-purple-50 rounded-xl p-3 mb-4"><p class="text-sm leading-relaxed">${comparisonHtml}</p>${legendHtml}</div>
+          <button onclick="completePractice()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 rounded-xl">+${pState.score===100?15:10} XP</button>`;
+      }else{
+        inner=`<div class="text-center mb-4"><p class="text-4xl font-bold text-orange-500">${pState.score}%</p><p class="text-purple-600 mb-2">Need 80%+ to pass</p></div>
+          <div class="bg-purple-50 rounded-xl p-3 mb-4"><p class="text-sm leading-relaxed">${comparisonHtml}</p>${legendHtml}</div>
+          <button onclick="startPractice('recall')" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 rounded-xl">Try Again</button>`;
+      }
+    }else{
+      inner=`<textarea id="inp" oninput="pState.inp=this.value" placeholder="Type the verse from memory..." class="w-full border-2 border-purple-200 rounded-xl px-4 py-3 h-32 mb-3">${pState.inp}</textarea><button onclick="checkRecall()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 rounded-xl">Check</button>`;
+    }
     h=`<div class="p-5">${buddyStatusCompact}<div class="flex justify-between mb-4"><button onclick="pMode=null;render()" class="text-white text-xl">✕</button><p class="text-white font-semibold">💭 Recall</p><p class="text-white/60">+10-15</p></div>
-      <div class="bg-white/95 rounded-3xl p-5"><p class="text-purple-600 font-medium mb-1">${pVerse.ref}</p><p class="text-purple-400 text-sm mb-3">Type from memory</p>${pState.checked?`<div class="bg-purple-50 rounded-xl p-3 mb-3 text-sm text-purple-700">${pVerse.text}</div>`:''}${inner}</div></div>`;
+      <div class="bg-white/95 rounded-3xl p-5"><p class="text-purple-600 font-medium mb-1">${pVerse.ref}</p><p class="text-purple-400 text-sm mb-3">Type from memory</p>${inner}</div></div>`;
   }
 
   // No bottom bar needed - stats are on the buddy card
@@ -8144,8 +8399,8 @@ function render(){
             <button onclick="form.type='scripture';render()" class="flex-1 py-2 rounded-xl text-sm font-semibold ${form.type==='scripture'?'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white':'bg-purple-100 text-purple-600'}">Scripture</button>
             <button onclick="form.type='quote';render()" class="flex-1 py-2 rounded-xl text-sm font-semibold ${form.type==='quote'?'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white':'bg-purple-100 text-purple-600'}">Quote</button>
           </div>`:''}
-          <input value="${form.ref}" onchange="form.ref=this.value" placeholder="${form.type==='scripture'?'Reference (Alma 32:21)':'Author'}" class="w-full border border-purple-200 rounded-xl px-4 py-2 mb-3 text-sm">
-          <textarea onchange="form.text=this.value" placeholder="Text..." class="w-full border border-purple-200 rounded-xl px-4 py-2 mb-3 h-24 text-sm">${form.text}</textarea>
+          <input value="${form.ref}" oninput="form.ref=this.value" placeholder="${form.type==='scripture'?'Reference (Alma 32:21)':'Author'}" class="w-full border border-purple-200 rounded-xl px-4 py-2 mb-3 text-sm">
+          <textarea oninput="form.text=this.value" placeholder="Text..." class="w-full border border-purple-200 rounded-xl px-4 py-2 mb-3 h-24 text-sm">${form.text}</textarea>
           <p class="text-xs text-purple-500 mb-2">Tags (up to 3):</p>
           <div class="flex flex-wrap gap-1 mb-4">${TAGS.map(t=>`<button onclick="toggleTag('${t}')" class="text-xs px-2 py-1 rounded-full ${form.tags.includes(t)?'bg-violet-500 text-white':'bg-purple-100 text-purple-600'}">${t}</button>`).join('')}</div>
           ${isAdd?`<div class="mb-4">
@@ -8467,8 +8722,41 @@ function updateCreatureRarity(categoryKey,variantIdx,newRarity){
   if(category&&category.adultRarities){
     category.adultRarities[variantIdx]=newRarity;
     console.log(`Updated ${categoryKey} variant ${variantIdx} to ${newRarity}`);
+    // Save to localStorage
+    saveCustomRarities();
     // Re-render the preview to update colors
     showCreaturePreview('adult',categoryKey,variantIdx);
+  }
+}
+
+// Save custom rarities to localStorage
+function saveCustomRarities(){
+  const rarityData={};
+  Object.keys(CREATURE_CATEGORIES).forEach(key=>{
+    const cat=CREATURE_CATEGORIES[key];
+    if(cat.adultRarities){
+      rarityData[key]=cat.adultRarities.slice();
+    }
+  });
+  localStorage.setItem('customRarities',JSON.stringify(rarityData));
+  console.log('Custom rarities saved');
+}
+
+// Load custom rarities from localStorage
+function loadCustomRarities(){
+  const saved=localStorage.getItem('customRarities');
+  if(saved){
+    try{
+      const rarityData=JSON.parse(saved);
+      Object.keys(rarityData).forEach(key=>{
+        if(CREATURE_CATEGORIES[key]&&CREATURE_CATEGORIES[key].adultRarities){
+          CREATURE_CATEGORIES[key].adultRarities=rarityData[key];
+        }
+      });
+      console.log('Custom rarities loaded');
+    }catch(e){
+      console.error('Failed to load custom rarities',e);
+    }
   }
 }
 
