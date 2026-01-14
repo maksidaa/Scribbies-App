@@ -1611,6 +1611,13 @@ let practiceReaction=null; // {type: 'correct'|'wrong'|'celebrate', emojis: ['�
 let practiceStreak=0; // Track correct answers in a row
 let predictOptions=[]; // Store predict phrase options to avoid onclick escaping issues
 
+// HTML escape function to prevent XSS and broken HTML
+function escapeHtml(str){
+  const div=document.createElement('div');
+  div.textContent=str;
+  return div.innerHTML;
+}
+
 // Trigger a practice reaction animation
 function triggerReaction(type){
   // Simple emojis: heart for correct/streak/celebrate, sad for wrong
@@ -5649,6 +5656,11 @@ const startPractice=mode=>{
   render();
 };
 
+function closePracticeMode(){
+  pMode=null;
+  render();
+}
+
 function selectPredictByIndex(idx){
   if(idx>=0&&idx<predictOptions.length){
     selectPredict(predictOptions[idx]);
@@ -8345,19 +8357,19 @@ function render(){
       }
       predictOptions=shuffle([correctPhrase,...decoyPhrases]);
 
-      inner=`<p class="text-purple-500 text-sm text-center mb-2">What comes next?</p><div class="space-y-2">${predictOptions.map((w,i)=>`<button onclick="selectPredictByIndex(${i})" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white py-3 px-4 rounded-xl text-sm">${w}</button>`).join('')}</div>`;
+      inner=`<p class="text-purple-500 text-sm text-center mb-2">What comes next?</p><div class="space-y-2" style="position:relative;z-index:10;">${predictOptions.map((w,i)=>`<button type="button" data-predict-idx="${i}" class="predict-btn w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white py-3 px-4 rounded-xl text-sm" style="position:relative;z-index:10;pointer-events:auto;">${escapeHtml(w)}</button>`).join('')}</div>`;
     }
 
     h=`<div class="p-5">${buddyStatusCompact}
-      <div class="flex justify-between items-center mb-4">
-        <button onclick="pMode=null;render()" class="text-white text-xl">✕</button>
+      <div class="flex justify-between items-center mb-4" style="position:relative;z-index:10;">
+        <button type="button" class="close-practice-btn text-white text-xl font-bold px-2" style="position:relative;z-index:10;pointer-events:auto;">✕</button>
         <div class="text-center">
           <p class="text-white font-semibold">🎯 Predict</p>
           <p class="text-white/60 text-xs">${roundNames[pState.round]}</p>
         </div>
         <p class="text-white/60">${pState.currentPredictIdx}/${pState.total}</p>
       </div>
-      <div class="bg-white/95 rounded-3xl p-5 ${pState.wrong?'shake':''}">
+      <div class="bg-white/95 rounded-3xl p-5 ${pState.wrong?'shake':''}" style="position:relative;z-index:5;">
         <div class="flex justify-between items-center mb-2">
           <p class="text-purple-600 font-medium">${pVerse.ref}</p>
           <div class="flex gap-1">${[1,2,3,4].map(r=>`<div class="w-2 h-2 rounded-full ${r<pState.round?'bg-green-500':r===pState.round?'bg-yellow-400':'bg-purple-200'}"></div>`).join('')}</div>
@@ -9346,6 +9358,25 @@ document.addEventListener('touchmove',onDrag,{passive:false});
 document.addEventListener('mousemove',onDrag);
 document.addEventListener('touchend',endDrag);
 document.addEventListener('mouseup',endDrag);
+
+// Event delegation for predict mode buttons (more reliable than inline onclick)
+document.addEventListener('click',function(e){
+  // Handle predict option buttons
+  const predictBtn=e.target.closest('.predict-btn');
+  if(predictBtn){
+    const idx=parseInt(predictBtn.dataset.predictIdx,10);
+    if(!isNaN(idx)&&idx>=0&&idx<predictOptions.length){
+      selectPredict(predictOptions[idx]);
+    }
+    return;
+  }
+  // Handle close practice button
+  if(e.target.closest('.close-practice-btn')){
+    pMode=null;
+    render();
+    return;
+  }
+});
 
 // Creature preview modal
 function showCreaturePreview(stage,categoryKey,variantIdx=0){
