@@ -4762,7 +4762,16 @@ const openModal=(m,v)=>{modal=m;editV=v||null;form=v?{type:v.type,ref:v.ref,text
 const closeModal=()=>{modal=null;editV=null;render()};
 const toggleTag=t=>{const i=form.tags.indexOf(t);if(i>=0)form.tags.splice(i,1);else if(form.tags.length<3)form.tags.push(t);render()};
 const saveVerse=()=>{
-  if(!form.text.trim()||!form.ref.trim())return;
+  // Grab values directly from DOM in case oninput didn't fire
+  const refInput=document.querySelector('input[placeholder*="Reference"],input[placeholder*="Author"]');
+  const textInput=document.querySelector('textarea[placeholder="Text..."]');
+  if(refInput)form.ref=refInput.value;
+  if(textInput)form.text=textInput.value;
+
+  if(!form.text.trim()||!form.ref.trim()){
+    alert('Please enter both a reference and text');
+    return;
+  }
   if(editV){const v=S.verses.find(x=>x.id===editV.id);if(v){v.type=form.type;v.ref=form.ref;v.text=form.text;v.tags=form.tags.slice()}}
   else{S.verses.push({id:S.nextId++,type:form.type,ref:form.ref,text:form.text,tags:form.tags.slice(),mastery:0,userAdded:true,status:form.startPracticing?'active':'saved'});S.xp+=5}
   save();closeModal();
