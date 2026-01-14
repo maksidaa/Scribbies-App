@@ -5668,26 +5668,67 @@ const startPractice=mode=>{
     pState={W,guessed:[],wrong:0,maxWrong:8,wrongCount:0,done:false,won:false};
   }
   else if(mode==='match'){
-    // Get 4 random verses from user's collection for matching
-    const activeVerses=S.verses.filter(v=>v.status==='active'&&v.text&&v.ref);
-    const shuffled=[...activeVerses].sort(()=>Math.random()-0.5);
-    const matchVerses=shuffled.slice(0,Math.min(4,shuffled.length));
-    const refs=matchVerses.map(v=>({ref:v.ref,matched:false})).sort(()=>Math.random()-0.5);
-    pState={
-      verses:matchVerses.map(v=>({id:v.id,ref:v.ref,text:v.text,matched:false})),
-      refs,
-      selectedText:null,
-      selectedRef:null,
-      wrongCount:0,
-      done:false,
-      matchedCount:0
-    };
+    // Show difficulty selector first
+    pState={selectingDifficulty:true};
   }
   render();
 };
 
 function closePracticeMode(){
   pMode=null;
+  render();
+}
+
+// Match game difficulty settings
+const MATCH_DIFFICULTIES={
+  easy:{pairs:3,decoys:0,baseXP:2,label:'Easy',color:'from-green-400 to-green-500'},
+  medium:{pairs:4,decoys:0,baseXP:4,label:'Medium',color:'from-yellow-400 to-yellow-500'},
+  hard:{pairs:5,decoys:1,baseXP:6,label:'Hard',color:'from-orange-400 to-orange-500'},
+  expert:{pairs:6,decoys:2,baseXP:10,label:'Expert',color:'from-red-400 to-red-500'},
+  impossible:{pairs:8,decoys:3,baseXP:15,label:'Impossible',color:'from-purple-600 to-pink-600'}
+};
+
+function startMatchWithDifficulty(difficulty){
+  const config=MATCH_DIFFICULTIES[difficulty];
+  if(!config)return;
+
+  // Get verse pools
+  const activeVerses=S.verses.filter(v=>v.status==='active'&&v.text&&v.ref);
+  const allVerses=S.verses.filter(v=>v.text&&v.ref);
+
+  // Easy/Medium use active only, Hard+ use all verses
+  const useAllVerses=difficulty==='hard'||difficulty==='expert'||difficulty==='impossible';
+  const versePool=useAllVerses?allVerses:activeVerses;
+
+  // Shuffle and pick verses for matching
+  const shuffled=[...versePool].sort(()=>Math.random()-0.5);
+  const matchVerses=shuffled.slice(0,Math.min(config.pairs,shuffled.length));
+
+  // Create refs from matched verses
+  const refs=matchVerses.map(v=>({ref:v.ref,matched:false,isDecoy:false}));
+
+  // Add decoy refs (real refs from other verses not in this game)
+  if(config.decoys>0){
+    const unusedVerses=shuffled.slice(config.pairs);
+    const decoyRefs=unusedVerses.slice(0,config.decoys).map(v=>({ref:v.ref,matched:false,isDecoy:true}));
+    refs.push(...decoyRefs);
+  }
+
+  // Shuffle refs so decoys are mixed in
+  refs.sort(()=>Math.random()-0.5);
+
+  pState={
+    verses:matchVerses.map(v=>({id:v.id,ref:v.ref,text:v.text,matched:false})),
+    refs,
+    selectedText:null,
+    selectedRef:null,
+    wrongCount:0,
+    done:false,
+    matchedCount:0,
+    difficulty,
+    baseXP:config.baseXP,
+    decoyCount:config.decoys
+  };
   render();
 }
 
@@ -6005,6 +6046,20 @@ const selectMatchRef=idx=>{
 const checkMatch=()=>{
   const verse=pState.verses[pState.selectedText];
   const ref=pState.refs[pState.selectedRef];
+
+  // Check if user selected a decoy reference
+  if(ref.isDecoy){
+    pState.wrong=true;
+    pState.wrongIsDecoy=true;
+    pState.wrongCount++;
+    pState.selectedText=null;
+    pState.selectedRef=null;
+    practiceStreak=0;
+    triggerReaction('wrong');
+    render();
+    return;
+  }
+
   if(verse.ref===ref.ref){
     // Correct match!
     verse.matched=true;
@@ -6013,6 +6068,7 @@ const checkMatch=()=>{
     pState.selectedText=null;
     pState.selectedRef=null;
     pState.wrong=false;
+    pState.wrongIsDecoy=false;
     practiceStreak++;
     triggerReaction(practiceStreak>=3?'streak':'correct');
     if(pState.matchedCount>=pState.verses.length){
@@ -6023,6 +6079,7 @@ const checkMatch=()=>{
   }else{
     // Wrong match
     pState.wrong=true;
+    pState.wrongIsDecoy=false;
     pState.wrongCount++;
     pState.selectedText=null;
     pState.selectedRef=null;
@@ -6082,7 +6139,7 @@ const completePractice=(skipRender=false)=>{
   let baseXP=0;
   if(pMode==='predict')baseXP=pState.totalXP||2;
   else if(pMode==='blanks')baseXP=pState.totalXP||2; // 2 XP per round completed
-  else if(pMode==='match')baseXP=6;
+  else if(pMode==='match')baseXP=pState.baseXP||6;
   else if(pMode==='jumble')baseXP=7;
   else if(pMode==='first')baseXP=8;
   else if(pMode==='hangman')baseXP=pState.won?6:3;
@@ -8611,11 +8668,58 @@ function render(){
   else if(pMode==='match'){
     const buddyStatusCompact=getPracticeStatusBar();
     let inner='';
-    if(pState.done){
+
+    // Difficulty selector screen
+    if(pState.selectingDifficulty){
+      const activeVerses=S.verses.filter(v=>v.status==='active'&&v.text&&v.ref);
+      const allVerses=S.verses.filter(v=>v.text&&v.ref);
+      const activeCount=activeVerses.length;
+      const totalCount=allVerses.length;
+
+      // Determine which difficulties are available
+      const canEasy=activeCount>=3;
+      const canMedium=activeCount>=4;
+      const canHard=totalCount>=10&&allVerses.length>=6;
+      const canExpert=totalCount>=10&&allVerses.length>=8;
+      const canImpossible=totalCount>=10&&allVerses.length>=11;
+
+      const diffBtn=(key,enabled)=>{
+        const d=MATCH_DIFFICULTIES[key];
+        if(!enabled){
+          return `<button disabled class="w-full py-3 px-4 rounded-xl bg-gray-200 text-gray-400 font-semibold opacity-60 cursor-not-allowed">
+            <span class="block">${d.label}</span>
+            <span class="text-xs">${d.pairs} pairs${d.decoys?` + ${d.decoys} decoy${d.decoys>1?'s':''}`:''} • ${d.baseXP} XP</span>
+            <span class="text-xs block text-gray-400">${key==='easy'||key==='medium'?`Need ${d.pairs}+ active verses`:'Need 10+ total verses'}</span>
+          </button>`;
+        }
+        return `<button onclick="startMatchWithDifficulty('${key}')" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r ${d.color} text-white font-semibold shadow-md hover:shadow-lg transition-all">
+          <span class="block">${d.label}</span>
+          <span class="text-xs opacity-90">${d.pairs} pairs${d.decoys?` + ${d.decoys} decoy${d.decoys>1?'s':''}`:''} • ${d.baseXP} XP</span>
+        </button>`;
+      };
+
+      inner=`<div class="text-center">
+        <p class="text-purple-800 font-bold text-lg mb-2">Choose Difficulty</p>
+        <p class="text-purple-500 text-sm mb-4">Higher difficulty = more XP!</p>
+        <div class="space-y-2">
+          ${diffBtn('easy',canEasy)}
+          ${diffBtn('medium',canMedium)}
+          ${diffBtn('hard',canHard)}
+          ${diffBtn('expert',canExpert)}
+          ${diffBtn('impossible',canImpossible)}
+        </div>
+        <p class="text-purple-400 text-xs mt-4">Easy/Medium: Practice Now verses only<br>Hard+: All your verses</p>
+      </div>`;
+    }
+    else if(pState.done){
+      const xpDisplay=pState.baseXP||6;
+      const diffLabel=MATCH_DIFFICULTIES[pState.difficulty]?.label||'';
       inner=`<div class="text-center">
         <p class="text-green-500 font-bold text-xl mb-2">🎉 All Matched!</p>
-        <p class="text-purple-600 mb-4">Great memory!</p>
-        <button onclick="completePractice()" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 px-8 rounded-xl">+6 XP</button>
+        <p class="text-purple-600 mb-2">Great memory!</p>
+        ${diffLabel?`<p class="text-purple-400 text-sm mb-2">${diffLabel} difficulty</p>`:''}
+        <button onclick="completePractice()" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 px-8 rounded-xl">+${xpDisplay} XP</button>
+        <button onclick="pState.selectingDifficulty=true;render()" class="block mx-auto mt-3 text-purple-500 text-sm">Play Again</button>
       </div>`;
     }else if(!pState.verses||pState.verses.length<2){
       inner=`<div class="text-center">
@@ -8629,23 +8733,24 @@ function render(){
         </button>
       `).join('');
       const refCards=pState.refs.map((r,i)=>`
-        <button onclick="selectMatchRef(${i})" class="w-full p-3 rounded-xl text-center font-semibold transition-all ${r.matched?'bg-green-100 border-2 border-green-400 opacity-60':pState.selectedRef===i?'bg-yellow-100 border-2 border-yellow-400 ring-2 ring-yellow-300':'bg-purple-50 border-2 border-purple-200 hover:border-purple-400'}">
+        <button onclick="selectMatchRef(${i})" class="w-full p-3 rounded-xl text-center font-semibold transition-all ${r.matched?'bg-green-100 border-2 border-green-400 opacity-60':pState.selectedRef===i?'bg-yellow-100 border-2 border-yellow-400 ring-2 ring-yellow-300':r.isDecoy&&r.matched===false?'bg-purple-50 border-2 border-purple-200 hover:border-purple-400':'bg-purple-50 border-2 border-purple-200 hover:border-purple-400'}">
           ${r.matched?'✓ ':''}<span class="${r.matched?'text-green-700':'text-purple-800'}">${r.ref}</span>
         </button>
       `).join('');
+      const diffLabel=MATCH_DIFFICULTIES[pState.difficulty]?.label||'';
       inner=`
-        ${pState.wrong?'<p class="text-red-500 text-sm text-center mb-3">❌ Not a match! Try again.</p>':''}
+        ${pState.wrong?`<p class="text-red-500 text-sm text-center mb-3">❌ ${pState.wrongIsDecoy?'That reference is a decoy!':'Not a match!'} Try again.</p>`:''}
         <p class="text-purple-500 text-xs mb-2 font-semibold">TAP A VERSE TEXT:</p>
         <div class="space-y-2 mb-4">${textCards}</div>
-        <p class="text-purple-500 text-xs mb-2 font-semibold">THEN TAP ITS REFERENCE:</p>
+        <p class="text-purple-500 text-xs mb-2 font-semibold">THEN TAP ITS REFERENCE:${pState.decoyCount?` <span class="text-orange-500">(${pState.decoyCount} decoy${pState.decoyCount>1?'s':''}!)</span>`:''}</p>
         <div class="grid grid-cols-2 gap-2">${refCards}</div>
       `;
     }
     h=`<div class="p-5">${buddyStatusCompact}
       <div class="flex justify-between mb-4">
-        <button onclick="pMode=null;render()" class="text-white text-xl">←</button>
+        <button onclick="${pState.selectingDifficulty?'pMode=null;render()':'pState.selectingDifficulty=true;render()'}" class="text-white text-xl">←</button>
         <p class="text-white font-semibold">🔗 Verse Match</p>
-        <p class="text-white/60">${pState.matchedCount||0}/${pState.verses?.length||0}</p>
+        <p class="text-white/60">${pState.selectingDifficulty?'':`${pState.matchedCount||0}/${pState.verses?.length||0}`}</p>
       </div>
       <div class="bg-white/95 rounded-3xl p-5">${inner}</div>
     </div>`;
