@@ -1597,18 +1597,15 @@ function triggerReaction(type){
 
 // Get mini scribby HTML for practice screens
 function getMiniScribby(){
-  const stage=S.buddyStage||'egg';
-  const cat=S.buddyCategory||'mammal';
-  const variant=S.buddyVariant||0;
   const anim=practiceReaction?
     (practiceReaction.type==='wrong'?'practice-sad':
      practiceReaction.type==='celebrate'?'practice-celebrate':'practice-bounce'):'';
   const reactionEmojis=practiceReaction?practiceReaction.emojis.map((e,i)=>
     `<span style="position:absolute;left:${50+i*15-practiceReaction.emojis.length*7}%;top:0;font-size:24px;animation:float-up-hearts 0.8s ease-out forwards;animation-delay:${i*0.1}s">${e}</span>`
   ).join(''):'';
-  return`<div class="relative" style="width:80px;height:80px;">
-    <div class="${anim}" style="transform-origin:bottom center;width:100%;height:100%;">
-      ${renderBuddy(stage,cat,variant,80)}
+  return`<div class="relative" style="width:80px;height:80px;overflow:visible;">
+    <div class="${anim}" style="transform-origin:bottom center;transform:scale(0.33);margin:-50px -60px;">
+      ${renderBuddyVisual()}
     </div>
     ${reactionEmojis}
   </div>`;
