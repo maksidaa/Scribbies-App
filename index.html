@@ -5698,7 +5698,27 @@ function startMatchWithDifficulty(difficulty){
 
   // Easy/Medium use active only, Hard+ use all verses
   const useAllVerses=difficulty==='hard'||difficulty==='expert'||difficulty==='impossible';
-  const versePool=useAllVerses?allVerses:activeVerses;
+  const basePool=useAllVerses?allVerses:activeVerses;
+
+  // Separate scriptures from quotes - don't mix them!
+  const scriptures=basePool.filter(v=>v.type!=='quote');
+  const quotes=basePool.filter(v=>v.type==='quote');
+
+  // Pick whichever type has enough entries, prefer the one with more
+  // Need enough for pairs + decoys
+  const needed=config.pairs+config.decoys;
+  let versePool;
+  if(scriptures.length>=needed&&quotes.length>=needed){
+    // Both have enough, pick randomly
+    versePool=Math.random()<0.5?scriptures:quotes;
+  }else if(scriptures.length>=needed){
+    versePool=scriptures;
+  }else if(quotes.length>=needed){
+    versePool=quotes;
+  }else{
+    // Neither has enough alone, use whichever has more
+    versePool=scriptures.length>=quotes.length?scriptures:quotes;
+  }
 
   // Shuffle and pick verses for matching
   const shuffled=[...versePool].sort(()=>Math.random()-0.5);
@@ -5707,7 +5727,7 @@ function startMatchWithDifficulty(difficulty){
   // Create refs from matched verses
   const refs=matchVerses.map(v=>({ref:v.ref,matched:false,isDecoy:false}));
 
-  // Add decoy refs (real refs from other verses not in this game)
+  // Add decoy refs (real refs from other verses not in this game, same type)
   if(config.decoys>0){
     const unusedVerses=shuffled.slice(config.pairs);
     const decoyRefs=unusedVerses.slice(0,config.decoys).map(v=>({ref:v.ref,matched:false,isDecoy:true}));
