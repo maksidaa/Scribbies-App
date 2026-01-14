@@ -1621,13 +1621,21 @@ function escapeHtml(str){
 
 // Trigger a practice reaction animation
 function triggerReaction(type){
-  // Simple emojis: heart for correct/streak/celebrate, sad for wrong
-  let emoji='❤️';
-  if(type==='wrong')emoji='😢';
-  practiceReaction={type,emojis:[emoji],timestamp:Date.now()};
-  // Clear reaction after animation (longer for the floating hearts)
-  setTimeout(()=>{practiceReaction=null;render()},2500);
-  render();
+  console.log('triggerReaction called with:', type);
+  try{
+    // Simple emojis: heart for correct/streak/celebrate, sad for wrong
+    let emoji='❤️';
+    if(type==='wrong')emoji='😢';
+    practiceReaction={type,emojis:[emoji],timestamp:Date.now()};
+    console.log('practiceReaction set:', practiceReaction);
+    // Clear reaction after animation (longer for the floating hearts)
+    setTimeout(()=>{practiceReaction=null;render()},2500);
+    console.log('About to call render() from triggerReaction');
+    render();
+    console.log('render() completed in triggerReaction');
+  }catch(err){
+    console.error('Error in triggerReaction:', err);
+  }
 }
 
 // Get mini scribby HTML for practice screens
@@ -6227,6 +6235,8 @@ const completePractice=()=>{
 };
 
 function render(){
+  console.log('render() starting, pMode:', pMode, 'screen:', screen);
+  try{
   // Clean up any expired pending trades
   if(typeof cleanupExpiredTrades==='function')cleanupExpiredTrades();
 
@@ -9373,6 +9383,10 @@ function render(){
       cursorPos=null;
     }
   },10);
+  console.log('render() completed successfully');
+  }catch(err){
+    console.error('Error in render():', err);
+  }
 }
 
 // Clean up old library storage format (if it exists)
