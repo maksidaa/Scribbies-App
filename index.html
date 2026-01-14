@@ -5691,41 +5691,53 @@ function selectPredictByIndex(idx){
 }
 
 function selectPredict(w){
-  const targetIdx=pState.predictIndices[pState.currentPredictIdx];
-  const startIdx=pState.rev.length;
-  // Get the correct phrase from current position to checkpoint
-  const phraseWords=pState.W.slice(startIdx,targetIdx+1);
-  const correctPhrase=phraseWords.join(' ');
-  // Add all words up to and including the target to revealed
-  while(pState.rev.length<=targetIdx){
-    pState.rev.push(pState.W[pState.rev.length]);
-  }
-  if(clean(w)===clean(correctPhrase)){
-    pState.correct++;
-    pState.wrong=false;
-    practiceStreak++;
-    triggerReaction(practiceStreak>=3?'streak':'correct');
-  }else{
-    pState.wrong=true;
-    pState.wrongCount++;
-    practiceStreak=0;
-    triggerReaction('wrong');
-  }
-  pState.currentPredictIdx++;
-  pState.cur=targetIdx;
-
-  if(pState.currentPredictIdx>=pState.predictIndices.length){
-    // Round complete!
-    pState.roundComplete=true;
-    const accuracy=pState.total>0?pState.correct/pState.total:0;
-    pState.roundXP=Math.max(0.5,Math.round(accuracy*2*10)/10); // 0.5-2 XP per round based on accuracy
-    pState.totalXP=(pState.totalXP||0)+pState.roundXP;
-    if(pState.round>=4){
-      pState.done=true;
-      triggerReaction('celebrate');
+  console.log('selectPredict called with:', w);
+  console.log('pState:', JSON.stringify(pState));
+  try{
+    const targetIdx=pState.predictIndices[pState.currentPredictIdx];
+    const startIdx=pState.rev.length;
+    console.log('targetIdx:', targetIdx, 'startIdx:', startIdx);
+    // Get the correct phrase from current position to checkpoint
+    const phraseWords=pState.W.slice(startIdx,targetIdx+1);
+    const correctPhrase=phraseWords.join(' ');
+    console.log('correctPhrase:', correctPhrase, 'selected:', w);
+    // Add all words up to and including the target to revealed
+    while(pState.rev.length<=targetIdx){
+      pState.rev.push(pState.W[pState.rev.length]);
     }
+    if(clean(w)===clean(correctPhrase)){
+      console.log('CORRECT!');
+      pState.correct++;
+      pState.wrong=false;
+      practiceStreak++;
+      triggerReaction(practiceStreak>=3?'streak':'correct');
+    }else{
+      console.log('WRONG - expected:', clean(correctPhrase), 'got:', clean(w));
+      pState.wrong=true;
+      pState.wrongCount++;
+      practiceStreak=0;
+      triggerReaction('wrong');
+    }
+    pState.currentPredictIdx++;
+    pState.cur=targetIdx;
+
+    if(pState.currentPredictIdx>=pState.predictIndices.length){
+      // Round complete!
+      pState.roundComplete=true;
+      const accuracy=pState.total>0?pState.correct/pState.total:0;
+      pState.roundXP=Math.max(0.5,Math.round(accuracy*2*10)/10); // 0.5-2 XP per round based on accuracy
+      pState.totalXP=(pState.totalXP||0)+pState.roundXP;
+      if(pState.round>=4){
+        pState.done=true;
+        triggerReaction('celebrate');
+      }
+    }
+    console.log('About to call render()');
+    render();
+    console.log('render() completed');
+  }catch(err){
+    console.error('Error in selectPredict:', err);
   }
-  render();
 }
 
 function advancePredictRound(){
