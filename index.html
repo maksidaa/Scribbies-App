@@ -1614,6 +1614,7 @@ let foodPopup=null; // {foodIdx: number, qty: number} - food detail popup state
 let verseFilter='active'; // 'active' or 'saved' - which verses to show on practice screen
 let practiceReaction=null; // {type: 'correct'|'wrong'|'celebrate', emojis: ['💚'], timestamp: Date.now()}
 let practiceStreak=0; // Track correct answers in a row
+let predictOptions=[]; // Store predict phrase options to avoid onclick escaping issues
 
 // Trigger a practice reaction animation
 function triggerReaction(type){
@@ -4747,7 +4748,7 @@ function renderBuddyVisual(){
   return`<div class="buddy-card-container${customizeClass}"><div class="buddy-with-accessories${stateClass}">${stateDecorations}${renderAccessories()}${buddyHTML}</div></div>`;
 }
 
-// Large practice header - prominent centered Scribby with XP bar
+// Large practice header - prominent Scribby centered with XP bar beside it
 function getPracticeStatusBar(){
   const stage=S.buddyStage||'egg';
   let xpCurrent, xpMax, xpPercent;
@@ -4768,25 +4769,27 @@ function getPracticeStatusBar(){
     (practiceReaction.type==='wrong'?'practice-sad':
      practiceReaction.type==='celebrate'?'practice-celebrate':'practice-bounce'):'';
   const reactionEmojis=practiceReaction?practiceReaction.emojis.map((e,i)=>
-    `<span style="position:absolute;left:50%;transform:translateX(-50%);top:-20px;font-size:42px;animation:float-up-hearts 0.8s ease-out forwards;animation-delay:${i*0.1}s">${e}</span>`
+    `<span style="position:absolute;left:50%;top:-15px;font-size:36px;animation:float-up-hearts 0.7s ease-out forwards;z-index:100;">${e}</span>`
   ).join(''):'';
 
-  return`<div class="bg-white/10 rounded-2xl p-4 mb-3">
-    <div class="flex flex-col items-center">
-      <div class="relative mb-2" style="width:180px;height:190px;overflow:visible;">
-        <div class="${anim}" style="transform-origin:center center;display:flex;justify-content:center;">
-          <div style="transform:scale(0.75);transform-origin:top center;">
+  // Much larger Scribby - 200px container with scale 0.8
+  return`<div class="bg-white/10 rounded-2xl p-5 mb-3">
+    <div class="flex items-center justify-center gap-6">
+      <div class="relative flex-shrink-0" style="width:200px;height:210px;">
+        <div class="${anim}" style="transform-origin:center center;width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
+          <div style="transform:scale(0.83);transform-origin:center center;">
             ${renderBuddyVisual()}
           </div>
         </div>
         ${reactionEmojis}
       </div>
-      <p class="text-white font-bold text-xl mb-1">${S.buddyName||'Buddy'}${practiceStreak>=3?` <span class="text-orange-300">🔥${practiceStreak}</span>`:''}</p>
-      <div class="w-full max-w-xs">
-        <div class="flex justify-between items-center mb-1">
-          <span class="text-yellow-300 text-sm">✨ ${stage==='adult'?'Max Level':`${xpCurrent}/${xpMax} XP`}</span>
+      <div class="flex-1 max-w-xs">
+        <p class="text-white font-bold text-2xl mb-2">${S.buddyName||'Buddy'}${practiceStreak>=3?` <span class="text-orange-300 text-lg">🔥${practiceStreak}</span>`:''}</p>
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-yellow-300">✨</span>
+          <span class="text-white font-semibold">${stage==='adult'?'Max Level':`${xpCurrent}/${xpMax} XP`}</span>
         </div>
-        <div class="h-3 bg-white/20 rounded-full overflow-hidden">
+        <div class="h-4 bg-white/20 rounded-full overflow-hidden">
           <div class="h-full bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full transition-all duration-300" style="width:${xpPercent}%"></div>
         </div>
       </div>
@@ -5649,6 +5652,12 @@ const startPractice=mode=>{
     };
   }
   render();
+};
+
+const selectPredictByIndex=idx=>{
+  if(idx>=0&&idx<predictOptions.length){
+    selectPredict(predictOptions[idx]);
+  }
 };
 
 const selectPredict=w=>{
@@ -8316,7 +8325,7 @@ function render(){
           decoyPhrases.push(shuffled);
         }
       }
-      const opts=shuffle([correctPhrase,...decoyPhrases]);
+      predictOptions=shuffle([correctPhrase,...decoyPhrases]);
 
       // Generate hint based on hintType (use first word of phrase)
       let hintHtml='';
@@ -8326,7 +8335,7 @@ function render(){
         hintHtml=`<p class="text-purple-400 text-xs mb-2">Hint: ${phraseWords.length} word${phraseWords.length>1?'s':''}</p>`;
       }
 
-      inner=`<p class="text-purple-500 text-sm text-center mb-2">What comes next?</p>${hintHtml}<div class="space-y-2">${opts.map(w=>`<button onclick="selectPredict('${w.replace(/'/g,"\\'")}')" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white py-3 px-4 rounded-xl text-sm">${w}</button>`).join('')}</div>`;
+      inner=`<p class="text-purple-500 text-sm text-center mb-2">What comes next?</p>${hintHtml}<div class="space-y-2">${predictOptions.map((w,i)=>`<button onclick="selectPredictByIndex(${i})" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white py-3 px-4 rounded-xl text-sm">${w}</button>`).join('')}</div>`;
     }
 
     h=`<div class="p-5">${buddyStatusCompact}
