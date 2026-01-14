@@ -5721,10 +5721,15 @@ function selectPredict(w){
       triggerReaction(practiceStreak>=3?'streak':'correct');
     }else{
       console.log('WRONG - expected:', clean(correctPhrase), 'got:', clean(w));
+      console.log('Setting pState.wrong=true');
       pState.wrong=true;
+      console.log('Setting pState.wrongCount++');
       pState.wrongCount++;
+      console.log('Setting practiceStreak=0');
       practiceStreak=0;
+      console.log('About to call triggerReaction(wrong)');
       triggerReaction('wrong');
+      console.log('triggerReaction(wrong) returned');
     }
     pState.currentPredictIdx++;
     pState.cur=targetIdx;
