@@ -291,15 +291,15 @@
     @keyframes pulse-grow{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
     @keyframes pulse-gentle{0%,100%{opacity:1}50%{opacity:0.85}}
     .animate-pulse-gentle{animation:pulse-gentle 2s ease-in-out infinite}
-    /* Practice reaction animations - subtle shakes */
-    @keyframes practice-bounce{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
-    @keyframes practice-sad{0%,100%{transform:rotate(0deg)}25%{transform:rotate(-3deg)}75%{transform:rotate(3deg)}}
-    @keyframes practice-celebrate{0%,100%{transform:scale(1)}25%{transform:scale(1.1) rotate(-2deg)}50%{transform:scale(1.12)}75%{transform:scale(1.1) rotate(2deg)}}
+    /* Practice reaction animations */
+    @keyframes practice-bounce{0%{transform:scale(1) translateY(0)}30%{transform:scale(1.15) translateY(-8px)}60%{transform:scale(1.05) translateY(-2px)}100%{transform:scale(1) translateY(0)}}
+    @keyframes practice-sad{0%{transform:rotate(0deg)}20%{transform:rotate(-8deg)}40%{transform:rotate(8deg)}60%{transform:rotate(-5deg)}80%{transform:rotate(5deg)}100%{transform:rotate(0deg)}}
+    @keyframes practice-celebrate{0%{transform:scale(1) rotate(0deg)}25%{transform:scale(1.2) rotate(-6deg)}50%{transform:scale(1.25) translateY(-10px)}75%{transform:scale(1.2) rotate(6deg)}100%{transform:scale(1) rotate(0deg)}}
     @keyframes float-up{0%{transform:translateY(0) scale(0);opacity:0}20%{transform:translateY(-10px) scale(1.2);opacity:1}100%{transform:translateY(-40px) scale(0.8);opacity:0}}
     @keyframes float-up-hearts{0%{transform:translateY(0) scale(0);opacity:0}15%{transform:translateY(-5px) scale(1.3);opacity:1}100%{transform:translateY(-50px) scale(0.5);opacity:0}}
-    .practice-bounce{animation:practice-bounce 0.3s ease-out}
-    .practice-sad{animation:practice-sad 0.3s ease-in-out}
-    .practice-celebrate{animation:practice-celebrate 0.5s ease-out}
+    .practice-bounce{animation:practice-bounce 0.4s ease-out}
+    .practice-sad{animation:practice-sad 0.4s ease-in-out}
+    .practice-celebrate{animation:practice-celebrate 0.6s ease-out}
     @keyframes food-fly{0%{transform:translateY(150px) scale(1);opacity:1}60%{transform:translateY(20px) scale(0.8);opacity:1}100%{transform:translateY(0) scale(0);opacity:0}}
     @keyframes reaction-pop{0%{transform:translate(-50%,-50%) scale(0);opacity:0}50%{transform:translate(-50%,-50%) scale(1.3);opacity:1}100%{transform:translate(-50%,-50%) scale(1);opacity:1}}
     @keyframes message-slide{0%{transform:translateY(20px);opacity:0}100%{transform:translateY(0);opacity:1}}
@@ -1576,22 +1576,12 @@ let practiceStreak=0; // Track correct answers in a row
 
 // Trigger a practice reaction animation
 function triggerReaction(type){
-  const emojis={
-    correct:['💚','✨','⭐','✓'],
-    wrong:['😢','❌','💔'],
-    streak:['🔥','💪','⚡'],
-    celebrate:['🎉','🏆','✨','💫']
-  };
-  const picks=emojis[type]||emojis.correct;
-  // Pick 1-3 random emojis
-  const count=type==='celebrate'?3:type==='streak'?2:1;
-  const selected=[];
-  for(let i=0;i<count;i++){
-    selected.push(picks[Math.floor(Math.random()*picks.length)]);
-  }
-  practiceReaction={type,emojis:selected,timestamp:Date.now()};
+  // Simple emojis: heart for correct/streak/celebrate, sad for wrong
+  let emoji='❤️';
+  if(type==='wrong')emoji='😢';
+  practiceReaction={type,emojis:[emoji],timestamp:Date.now()};
   // Clear reaction after animation
-  setTimeout(()=>{practiceReaction=null;render()},type==='celebrate'?1000:600);
+  setTimeout(()=>{practiceReaction=null;render()},type==='celebrate'?800:500);
   render();
 }
 
