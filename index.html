@@ -363,12 +363,13 @@
     .sleeping .f-eye{transform:scaleY(0.05) !important;animation:none !important;border-radius:50% !important}
     .sleeping .tn-eye{transform:scaleY(0.05) !important;animation:none !important;border-radius:50% !important}
     .sleeping .dr-eye{transform:scaleY(0.05) !important;animation:none !important;border-radius:50% !important}
+    .sleeping .bb-eye{transform:scaleY(0.05) !important;animation:none !important;border-radius:50% !important}
 
     /* XP State Animations */
     /* 10-25%: Drowsy - slow sway, half-closed eyes */
     @keyframes drowsy-sway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
     .drowsy{animation:drowsy-sway 4s ease-in-out infinite !important}
-    .drowsy .bl-eye,.drowsy .s-eye,.drowsy .f-eye,.drowsy .tn-eye,.drowsy .dr-eye{transform:scaleY(0.6) !important}
+    .drowsy .bl-eye,.drowsy .s-eye,.drowsy .f-eye,.drowsy .tn-eye,.drowsy .dr-eye,.drowsy .bb-eye{transform:scaleY(0.6) !important}
 
     /* 25-50%: Awake - normal idle, looking around */
     @keyframes awake-idle{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
@@ -1063,7 +1064,7 @@
 <script src="js/creatures/insects.js?v=39"></script>
 <script src="js/creatures/aliens.js?v=5"></script>
 <script src="js/creatures/eggs.js"></script>
-<script src="js/creatures/babies.js"></script>
+<script src="js/creatures/babies.js?v=2"></script>
 <script src="js/creatures/teens.js"></script>
 <script src="js/creatures/game.js"></script>
 <script>
@@ -1611,6 +1612,7 @@ let verseFilter='active'; // 'active' or 'saved' - which verses to show on pract
 let practiceReaction=null; // {type: 'correct'|'wrong'|'celebrate', emojis: ['💚'], timestamp: Date.now()}
 let practiceStreak=0; // Track correct answers in a row
 let predictOptions=[]; // Store predict phrase options to avoid onclick escaping issues
+let predictProcessing=false; // Lock to prevent rapid double-clicks
 
 // HTML escape function to prevent XSS and broken HTML
 function escapeHtml(str){
@@ -1623,7 +1625,10 @@ function escapeHtml(str){
 function triggerReaction(type){
   let emoji='❤️';
   if(type==='wrong')emoji='😢';
-  practiceReaction={type,emojis:[emoji],timestamp:Date.now()};
+  // Heart count based on streak: 1 heart for first correct, up to 7
+  // practiceStreak is already incremented when this is called, so streak=1 means first correct
+  const heartCount=type==='wrong'?2:Math.min(practiceStreak,7);
+  practiceReaction={type,emojis:[emoji],count:heartCount,timestamp:Date.now()};
   // Clear reaction after animation
   setTimeout(()=>{
     practiceReaction=null;
@@ -1641,7 +1646,7 @@ function getMiniScribby(){
   let reactionEmojis='';
   if(practiceReaction){
     const emoji=practiceReaction.emojis[0]||'❤️';
-    const count=practiceReaction.type==='wrong'?3:5;
+    const count=practiceReaction.count||1;
     for(let i=0;i<count;i++){
       const leftPos=20+Math.random()*60;
       const delay=(Math.random()*0.3).toFixed(2);
@@ -4810,7 +4815,7 @@ function getPracticeStatusBar(){
         ${reactionEmojis}
       </div>
       <div class="flex-1 max-w-xs">
-        <p class="text-white font-bold text-2xl mb-2">${S.buddyName||'Buddy'}${practiceStreak>=3?` <span class="text-orange-300 text-lg">🔥${practiceStreak}</span>`:''}</p>
+        <p class="text-white font-bold text-2xl mb-2">${S.buddyStage==='egg'?'Egg':(S.buddyName||'Buddy')}${practiceStreak>=3?` <span class="text-orange-300 text-lg">🔥${practiceStreak}</span>`:''}</p>
         <div class="flex items-center gap-2 mb-2">
           <span class="text-yellow-300">✨</span>
           <span class="text-white font-semibold">${stage==='adult'?'Max Level':`${xpCurrent}/${xpMax} XP`}</span>
@@ -5507,7 +5512,7 @@ const quickPractice=()=>{
     const v=dueVerses[0]; // Most urgent verse
     selectedVerse=v.id;
     // Pick a mode based on mastery level
-    const modeOpts=v.mastery<2?['predict','blanks']:v.mastery<4?['blanks','chunk','jumble']:['first','recall','chunk'];
+    const modeOpts=v.mastery<2?['predict','blanks']:v.mastery<4?['blanks','jumble']:['first','recall','jumble'];
     startPractice(modeOpts[Math.floor(Math.random()*modeOpts.length)]);
     return;
   }
@@ -5596,70 +5601,67 @@ const startPractice=mode=>{
   }
   pMode=mode;
   const W=getWords(pVerse.text);
+
+  // Load saved progress for this verse/mode if available
+  const v=S.verses.find(x=>x.id===pVerse.id);
+  const savedRound=(v&&v.modeProgress&&v.modeProgress[mode])||1;
+
   if(mode==='predict'){
     // Progressive difficulty: Round 1=easy (every 4th, full context, first letter hint)
     // Round 2=medium (every 3rd, full context, letter count hint)
     // Round 3=hard (every 2nd, last 5 words, no hint)
     // Round 4=master (every word, last 2 words, no hint)
-    const round=1;
-    const predictPattern=4; // Predict every Nth word
-    const contextLimit=null; // null=show all, or number of words to show
-    const hintType='firstLetter'; // 'firstLetter', 'letterCount', 'none'
+    const round=Math.min(savedRound,4); // Cap at round 4
+    const patterns=[4,3,2,1];
+    const contexts=[null,null,5,2];
+    const hints=['firstLetter','letterCount','none','none'];
+    const predictPattern=patterns[round-1]||4;
+    const contextLimit=contexts[round-1];
+    const hintType=hints[round-1]||'firstLetter';
     // Find indices of words to predict this round
-    const predictIndices=W.map((w,i)=>i>0&&i%predictPattern===0?i:-1).filter(i=>i>=0);
+    let predictIndices;
+    if(predictPattern===1){
+      predictIndices=W.map((w,i)=>i>0?i:-1).filter(i=>i>=0);
+    }else{
+      predictIndices=W.map((w,i)=>i>0&&i%predictPattern===0?i:-1).filter(i=>i>=0);
+    }
+    // Always include the last word so the verse completes
+    if(predictIndices.length===0||predictIndices[predictIndices.length-1]!==W.length-1){
+      predictIndices.push(W.length-1);
+    }
     pState={W,cur:0,rev:[W[0]],correct:0,total:predictIndices.length,predictIndices,currentPredictIdx:0,wrong:false,wrongCount:0,done:false,round,predictPattern,contextLimit,hintType,inp:'',roundComplete:false,totalXP:0,hintsUsed:0};
   }
   else if(mode==='blanks'){
-    // Progressive difficulty: 6 rounds from every 6th word to all words
-    const round=1;
-    const blankPattern=6; // Start with every 6th word
-    const bl=W.map((w,i)=>(i+1)%blankPattern===0?'':w);
-    const mi=W.filter((w,i)=>(i+1)%blankPattern===0);
-    const missingIndices=W.map((w,i)=>(i+1)%blankPattern===0?i:-1).filter(i=>i>=0);
-    pState={W,blanks:bl,missing:mi,missingIndices,cBlank:0,inp:'',wrong:false,wrongAnswer:'',wrongCount:0,done:false,round,blankPattern,filledIndices:[]}
+    // Progressive difficulty: 10 rounds from every 6th word to all words
+    const round=Math.min(savedRound,10); // Cap at round 10
+    let bl, mi, missingIndices;
+    if(round<=5){
+      const blankPatterns=[6,5,4,3,2];
+      const blankPattern=blankPatterns[round-1];
+      bl=W.map((w,i)=>(i+1)%blankPattern===0?'':w);
+      mi=W.filter((w,i)=>(i+1)%blankPattern===0);
+      missingIndices=W.map((w,i)=>(i+1)%blankPattern===0?i:-1).filter(i=>i>=0);
+    }else{
+      // Rounds 6-10: progressive blanks (1 word shown, N blanks)
+      const showPatterns=[2,3,4,5,null]; // rounds 6-10
+      const showEvery=showPatterns[round-6];
+      if(showEvery===null){
+        bl=W.map(()=>'');
+        mi=[...W];
+        missingIndices=W.map((_,i)=>i);
+      }else{
+        bl=W.map((w,i)=>i%showEvery===0?w:'');
+        mi=W.filter((_,i)=>i%showEvery!==0);
+        missingIndices=W.map((w,i)=>i%showEvery!==0?i:-1).filter(i=>i>=0);
+      }
+    }
+    pState={W,blanks:bl,missing:mi,missingIndices,cBlank:0,inp:'',wrong:false,wrongAnswer:'',wrongCount:0,done:false,round,filledIndices:[]}
   }
   else if(mode==='jumble')pState={W,shuf:shuffle(W),sel:[],wrong:false,wrongCount:0,done:false};
   else if(mode==='first'){const h=W.map(w=>w[0]+'_'.repeat(w.length-1));pState={W,hints:h,cWord:0,inp:'',wrong:false,wrongCount:0,done:false}}
   else if(mode==='recall')pState={W,inp:'',checked:false,score:0,wrongCount:0,done:false};
   else if(mode==='hangman'){
     pState={W,guessed:[],wrong:0,maxWrong:8,wrongCount:0,done:false,won:false};
-  }
-  else if(mode==='chunk'){
-    // Split verse into chunks for easier memorization
-    const text=pVerse.text;
-    // Split by punctuation or into ~5-7 word chunks
-    let chunks=text.split(/(?<=[.!?,;:])\s+/).filter(c=>c.trim());
-    // If no natural breaks or chunks too big, split by word count
-    if(chunks.length<2||chunks.some(c=>getWords(c).length>10)){
-      const words=getWords(text);
-      const chunkSize=Math.ceil(words.length/Math.ceil(words.length/6));
-      chunks=[];
-      for(let i=0;i<words.length;i+=chunkSize){
-        chunks.push(words.slice(i,i+chunkSize).join(' '));
-      }
-    }
-    // Build practice phases: each chunk alone, then cumulative combinations
-    const phases=[];
-    for(let i=0;i<chunks.length;i++){
-      // Practice this chunk alone
-      phases.push({type:'single',chunkIdx:i,text:chunks[i]});
-      // After first chunk, add combination phases
-      if(i>0){
-        phases.push({type:'combine',upTo:i,text:chunks.slice(0,i+1).join(' ')});
-      }
-    }
-    pState={
-      chunks,
-      phases,
-      currentPhase:0,
-      inp:'',
-      wrong:false,
-      wrongAnswer:'',
-      wrongCount:0,
-      hintsUsed:0,
-      done:false,
-      phaseComplete:false
-    };
   }
   else if(mode==='match'){
     // Get 4 random verses from user's collection for matching
@@ -5686,8 +5688,11 @@ function closePracticeMode(){
 }
 
 function selectPredictByIndex(idx){
+  if(predictProcessing)return; // Ignore clicks while processing
   if(idx>=0&&idx<predictOptions.length){
+    predictProcessing=true;
     selectPredict(predictOptions[idx]);
+    setTimeout(()=>{predictProcessing=false;},150); // Brief lock to let DOM update
   }
 }
 
@@ -5696,30 +5701,35 @@ function selectPredict(w){
   const startIdx=pState.rev.length;
   const phraseWords=pState.W.slice(startIdx,targetIdx+1);
   const correctPhrase=phraseWords.join(' ');
-  // Add all words up to and including the target to revealed
-  while(pState.rev.length<=targetIdx){
-    pState.rev.push(pState.W[pState.rev.length]);
-  }
+
   if(clean(w)===clean(correctPhrase)){
+    // Correct! Reveal the words and advance
+    while(pState.rev.length<=targetIdx){
+      pState.rev.push(pState.W[pState.rev.length]);
+    }
     pState.correct++;
     pState.wrong=false;
     practiceStreak++;
     triggerReaction(practiceStreak>=3?'streak':'correct');
+    pState.currentPredictIdx++;
+    pState.cur=targetIdx;
   }else{
+    // Wrong! Let them try again (don't reveal answer, don't advance)
     pState.wrong=true;
     pState.wrongCount++;
     practiceStreak=0;
     triggerReaction('wrong');
+    render();
+    return; // Don't continue to round complete check
   }
-  pState.currentPredictIdx++;
-  pState.cur=targetIdx;
 
   if(pState.currentPredictIdx>=pState.predictIndices.length){
     // Round complete!
     pState.roundComplete=true;
     const accuracy=pState.total>0?pState.correct/pState.total:0;
-    pState.roundXP=Math.max(0.5,Math.round(accuracy*2*10)/10);
+    pState.roundXP=Math.max(1,Math.ceil(accuracy*2)); // Always whole numbers, min 1 XP
     pState.totalXP=(pState.totalXP||0)+pState.roundXP;
+    triggerConfetti(); // Celebrate round completion!
     if(pState.round>=4){
       pState.done=true;
       triggerReaction('celebrate');
@@ -5730,6 +5740,7 @@ function selectPredict(w){
 
 function advancePredictRound(){
   pState.round++;
+  practiceStreak=0; // Reset streak for new round
   const patterns=[4,3,2,1]; // every 4th, 3rd, 2nd, every word
   const contexts=[null,null,5,2]; // full, full, last 5, last 2
   const hints=['firstLetter','letterCount','none','none'];
@@ -5745,10 +5756,15 @@ function advancePredictRound(){
   }else{
     pState.predictIndices=W.map((w,i)=>i>0&&i%pState.predictPattern===0?i:-1).filter(i=>i>=0);
   }
+  // Always include the last word so the verse completes
+  if(pState.predictIndices.length===0||pState.predictIndices[pState.predictIndices.length-1]!==W.length-1){
+    pState.predictIndices.push(W.length-1);
+  }
 
   pState.rev=[W[0]];
   pState.cur=0;
   pState.currentPredictIdx=0;
+  pState.lastGeneratedIdx=-1; // Reset so options regenerate for new round
   pState.correct=0;
   pState.total=pState.predictIndices.length;
   pState.roundComplete=false;
@@ -5756,10 +5772,59 @@ function advancePredictRound(){
   render();
 }
 
-function exitPredictEarly(){
-  pState.done=true;
-  completePractice();
+function exitPracticeWithXP(){
+  // Save round progress for this verse/mode before exiting
+  if(pVerse && pMode){
+    const v=S.verses.find(x=>x.id===pVerse.id);
+    if(v){
+      if(!v.modeProgress)v.modeProgress={};
+      // If round was completed, save next round; otherwise save current round
+      const currentRound=pState.round||1;
+      const nextRound=pState.roundComplete?currentRound+1:currentRound;
+      v.modeProgress[pMode]=nextRound;
+      save();
+    }
+  }
+
+  // Award XP if not already done
+  if(!pState.completed){
+    completePractice(true);
+  }
+
+  // Clear any pending reaction timeout
+  practiceReaction=null;
+
+  // Force exit to home - reset ALL practice state completely
+  // Explicitly clear celebration/evolving to prevent render from showing those screens
+  pState={celebration:false,evolving:false};
+  pMode=null;
+  pVerse=null;
+  selectedVerse=null;
+  screen='home';
+
+  // Use requestAnimationFrame to ensure DOM updates after state changes
+  requestAnimationFrame(()=>render());
 }
+
+function exitPredictEarly(){
+  exitPracticeWithXP();
+}
+
+// Robust collect XP - ensures user can always exit
+function collectAndExit(){
+  // Award XP
+  if(!pState.completed){
+    completePractice(true);
+  }
+  // Force exit to home - reset all practice state
+  pState={};
+  pMode=null;
+  pVerse=null;
+  selectedVerse=null;
+  screen='home';
+  render();
+}
+
 const checkBlanks=()=>{
   const exp=pState.missing[pState.cBlank];
   if(clean(pState.inp)===clean(exp)){
@@ -5778,10 +5843,11 @@ const checkBlanks=()=>{
     if(pState.cBlank>=pState.missing.length){
       // Round complete! Show reward screen
       pState.roundComplete=true;
-      // Calculate XP: 2 base, minus 0.25 for each hint used (min 0.5)
+      // Calculate XP: 2 base, minus 0.25 for each hint used (min 1)
       const hintPenalty=Math.min(1.5,(pState.hintsUsed||0)*0.25);
-      pState.roundXP=Math.max(0.5,2-hintPenalty);
+      pState.roundXP=Math.max(1,Math.ceil(2-hintPenalty));
       pState.totalXP=(pState.totalXP||0)+pState.roundXP;
+      triggerConfetti(); // Celebrate round completion!
       if(pState.round>=10){
         // All rounds done!
         pState.done=true;
@@ -5822,8 +5888,9 @@ const skipBlankWord=()=>{
   if(pState.cBlank>=pState.missing.length){
     pState.roundComplete=true;
     const hintPenalty=Math.min(1.5,(pState.hintsUsed||0)*0.25);
-    pState.roundXP=Math.max(0.5,2-hintPenalty);
+    pState.roundXP=Math.max(1,Math.ceil(2-hintPenalty));
     pState.totalXP=(pState.totalXP||0)+pState.roundXP;
+    triggerConfetti(); // Celebrate round completion!
     if(pState.round>=10){
       pState.done=true;
     }
@@ -5833,6 +5900,7 @@ const skipBlankWord=()=>{
 
 const advanceBlankRound=()=>{
   pState.round++;
+  practiceStreak=0; // Reset streak for new round
   const W=pState.W;
   let blanks, missing, missingIndices;
 
@@ -5870,76 +5938,9 @@ const advanceBlankRound=()=>{
 };
 
 const exitBlanksEarly=()=>{
-  // Give partial XP based on rounds completed
-  pState.done=true;
-  completePractice();
+  exitPracticeWithXP();
 };
 
-// Chunk Master functions
-const checkChunk=()=>{
-  const phase=pState.phases[pState.currentPhase];
-  const expected=phase.text;
-  const userWords=getWords(pState.inp);
-  const expectedWords=getWords(expected);
-
-  // Calculate similarity (allow minor typos)
-  let correct=0;
-  expectedWords.forEach((w,i)=>{
-    if(userWords[i]&&clean(userWords[i])===clean(w))correct++;
-  });
-  const accuracy=expectedWords.length>0?correct/expectedWords.length:0;
-
-  if(accuracy>=0.9){
-    // Phase complete!
-    pState.phaseComplete=true;
-    pState.phaseAccuracy=Math.round(accuracy*100);
-    pState.wrong=false;
-    practiceStreak++;
-    triggerReaction(practiceStreak>=3?'streak':'correct');
-  }else{
-    pState.wrong=true;
-    pState.wrongCount++;
-    pState.hintsUsed++;
-    practiceStreak=0;
-    triggerReaction('wrong');
-    // Show what was wrong
-    pState.comparison=expectedWords.map((w,i)=>{
-      const userWord=userWords[i];
-      if(userWord&&clean(userWord)===clean(w))return{type:'correct',word:w};
-      if(userWord)return{type:'wrong',expected:w,actual:userWord};
-      return{type:'missing',word:w};
-    });
-  }
-  render();
-};
-
-const advanceChunkPhase=()=>{
-  pState.currentPhase++;
-  pState.inp='';
-  pState.wrong=false;
-  pState.wrongAnswer='';
-  pState.phaseComplete=false;
-  pState.comparison=null;
-
-  if(pState.currentPhase>=pState.phases.length){
-    pState.done=true;
-    completePractice();
-  }else{
-    render();
-  }
-};
-
-const showChunkHint=()=>{
-  // Show the expected text as a hint
-  pState.showingHint=true;
-  pState.hintsUsed++;
-  render();
-};
-
-const hideChunkHint=()=>{
-  pState.showingHint=false;
-  render();
-};
 const selectJumble=i=>{const w=pState.shuf[i],exp=pState.W[pState.sel.length];if(clean(w)===clean(exp)){pState.sel.push(w);pState.shuf.splice(i,1);pState.wrong=false;practiceStreak++;triggerReaction(practiceStreak>=3?'streak':'correct');if(pState.sel.length>=pState.W.length){pState.done=true;triggerReaction('celebrate');setTimeout(()=>completePractice(),800)}}else{pState.wrong=true;pState.wrongCount++;practiceStreak=0;triggerReaction('wrong')}render()};
 const checkFirst=()=>{const exp=pState.W[pState.cWord];if(clean(pState.inp)===clean(exp)){pState.hints[pState.cWord]=exp;pState.cWord++;pState.inp='';pState.wrong=false;practiceStreak++;triggerReaction(practiceStreak>=3?'streak':'correct');if(pState.cWord>=pState.W.length){pState.done=true;triggerReaction('celebrate');setTimeout(()=>completePractice(),800)}}else{pState.wrong=true;pState.wrongCount++;practiceStreak=0;triggerReaction('wrong')}render()};
 const checkRecall=()=>{
@@ -6060,7 +6061,7 @@ const guessLetter=l=>{
   }
   render();
 };
-const completePractice=()=>{
+const completePractice=(skipRender=false)=>{
   // Prevent duplicate completions
   if(pState.completed)return;
   pState.completed=true;
@@ -6069,7 +6070,7 @@ const completePractice=()=>{
   if(!v)return;
 
   // Ensure modeUsage exists
-  if(!v.modeUsage)v.modeUsage={predict:0,blanks:0,chunk:0,match:0,jumble:0,first:0,recall:0,hangman:0};
+  if(!v.modeUsage)v.modeUsage={predict:0,blanks:0,match:0,jumble:0,first:0,recall:0,hangman:0};
 
   // Base XP calculation
   let baseXP=0;
@@ -6080,15 +6081,14 @@ const completePractice=()=>{
   else if(pMode==='first')baseXP=8;
   else if(pMode==='hangman')baseXP=pState.won?6:3;
   else if(pMode==='recall')baseXP=pState.score===100?15:10;
-  else if(pMode==='chunk'){const hintPenalty=Math.min(3,(pState.hintsUsed||0)*0.5);baseXP=Math.max(3,6-hintPenalty)}
 
   // Apply mode multiplier
   const multiplier=getModeMultiplier(v,pMode);
-  let xp=Math.round(baseXP*multiplier);
+  let xp=Math.ceil(baseXP*multiplier);
 
   // Apply wrong answer penalty - 5% reduction per wrong answer, min 50%
   const wrongPenalty=Math.max(0.5,1-(pState.wrongCount||0)*0.05);
-  xp=Math.round(xp*wrongPenalty);
+  xp=Math.ceil(xp*wrongPenalty);
 
   // Length bonus based on word count (not for match game since it tests multiple verses)
   let lengthBonus=0;
@@ -6097,13 +6097,13 @@ const completePractice=()=>{
     const wordCount=getWords(v.text).length;
     if(wordCount>=40){
       lengthMultiplier=2.0;
-      lengthBonus=Math.round(baseXP);
+      lengthBonus=Math.ceil(baseXP);
     }else if(wordCount>=25){
       lengthMultiplier=1.5;
-      lengthBonus=Math.round(baseXP*0.5);
+      lengthBonus=Math.ceil(baseXP*0.5);
     }else if(wordCount>=15){
       lengthMultiplier=1.2;
-      lengthBonus=Math.round(baseXP*0.2);
+      lengthBonus=Math.ceil(baseXP*0.2);
     }
     xp+=lengthBonus;
   }
@@ -6118,7 +6118,7 @@ const completePractice=()=>{
   // Apply happiness multiplier to final XP
   const happinessMult=getHappinessXPMultiplier();
   const preHappinessXP=xp;
-  xp=Math.round(xp*happinessMult);
+  xp=Math.ceil(xp*happinessMult);
   const happinessBonus=xp-preHappinessXP;
 
   // Update counts and XP
@@ -6154,7 +6154,6 @@ const completePractice=()=>{
   if(v.mastery<5){
     if(pMode==='predict')masteryGain=0.2;
     else if(pMode==='blanks')masteryGain=0.5;
-    else if(pMode==='chunk')masteryGain=0.8; // Good for learning long verses
     else if(pMode==='match')masteryGain=0.3; // Lower since it tests multiple verses
     else if(pMode==='jumble')masteryGain=0.7;
     else if(pMode==='first')masteryGain=1.0;
@@ -6211,7 +6210,7 @@ const completePractice=()=>{
     pState.evolving=false;
   }
 
-  render();
+  if(!skipRender)render();
 };
 
 function render(){
@@ -7713,7 +7712,7 @@ function render(){
       </div>`;
     }else{
       // Mode selection screen
-      const modes=[{id:'predict',n:'Predict',i:'🎯',s:'⭐',x:'2-8',desc:'4 levels!'},{id:'blanks',n:'Fill Blanks',i:'✏️',s:'⭐⭐⭐',x:'2-8',desc:'4 levels!'},{id:'chunk',n:'Chunk Master',i:'🧩',s:'⭐⭐',x:'3-6',desc:'Learn in pieces'},{id:'jumble',n:'Word Jumble',i:'🔀',s:'⭐⭐⭐',x:'7'},{id:'first',n:'First Letters',i:'🔤',s:'⭐⭐⭐⭐',x:'8'},{id:'recall',n:'Full Recall',i:'💭',s:'⭐⭐⭐⭐⭐',x:'10-15'}];
+      const modes=[{id:'predict',n:'Predict',i:'🎯',s:'⭐',x:'2-8',desc:'4 levels!'},{id:'blanks',n:'Fill Blanks',i:'✏️',s:'⭐⭐⭐',x:'2-8',desc:'4 levels!'},{id:'jumble',n:'Word Jumble',i:'🔀',s:'⭐⭐⭐',x:'7'},{id:'first',n:'First Letters',i:'🔤',s:'⭐⭐⭐⭐',x:'8'},{id:'recall',n:'Full Recall',i:'💭',s:'⭐⭐⭐⭐⭐',x:'10-15'}];
       const btns=modes.map(m=>`<button onclick="startPractice('${m.id}')" class="w-full bg-white/95 rounded-2xl p-4 mb-3 flex items-center gap-3 text-left">
         <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center text-2xl">${m.i}</div>
         <div class="flex-1"><p class="font-bold text-purple-800">${m.n} <span class="text-yellow-500 text-sm">${m.s}</span></p></div>
@@ -8295,7 +8294,7 @@ function render(){
     const msg=msgs[Math.floor(Math.random()*msgs.length)];
     h=`<div class="p-5">
       <div class="flex justify-between mb-4">
-        <button onclick="pMode=null;render()" class="text-white text-xl">✕</button>
+        <button onclick="pMode=null;render()" class="text-white text-xl">←</button>
         <p class="text-white font-semibold">😔 Not Now</p>
         <div></div>
       </div>
@@ -8328,7 +8327,7 @@ function render(){
 
     let inner='';
     if(pState.done){
-      const finalXP=Math.round((pState.totalXP||5)*10)/10;
+      const finalXP=pState.totalXP||5;
       inner=`<div class="text-center">
         <p class="text-green-500 font-bold text-xl mb-2">🏆 Master Level Complete!</p>
         <p class="text-purple-600 mb-2">You predicted every word!</p>
@@ -8336,62 +8335,99 @@ function render(){
           <p class="text-2xl font-bold text-orange-600">+${finalXP} XP</p>
           <p class="text-orange-500 text-xs">All 4 rounds completed!</p>
         </div>
-        <button onclick="completePractice()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 rounded-xl">Collect XP</button>
+        <button type="button" onclick="exitPracticeWithXP()" class="collect-xp-btn w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 rounded-xl">Collect XP</button>
       </div>`;
     }else if(pState.roundComplete){
-      const roundXPDisplay=Math.round(pState.roundXP*10)/10;
-      const totalXPDisplay=Math.round(pState.totalXP*10)/10;
       const accuracy=pState.total>0?Math.round(pState.correct/pState.total*100):0;
+      // Calculate full XP breakdown for display
+      const v=S.verses.find(x=>x.id===pVerse.id);
+      const baseXP=pState.totalXP||2;
+      const multiplier=getModeMultiplier(v,pMode);
+      let xp=Math.ceil(baseXP*multiplier);
+      const wrongPenalty=Math.max(0.5,1-(pState.wrongCount||0)*0.05);
+      xp=Math.ceil(xp*wrongPenalty);
+      const wordCount=getWords(v.text).length;
+      let lengthBonus=0;
+      if(wordCount>=40)lengthBonus=Math.ceil(baseXP);
+      else if(wordCount>=25)lengthBonus=Math.ceil(baseXP*0.5);
+      else if(wordCount>=15)lengthBonus=Math.ceil(baseXP*0.2);
+      xp+=lengthBonus;
+      const reviewBonus=v.mastery>=5?getReviewBonus(v):0;
+      xp+=reviewBonus;
+      const firstPracticeBonus=S.todayCount===0?15:0;
+      xp+=firstPracticeBonus;
+      const happinessMult=getHappinessXPMultiplier();
+      const preHappinessXP=xp;
+      xp=Math.ceil(xp*happinessMult);
+      const happinessBonus=xp-preHappinessXP;
+      const totalXP=xp;
+
+      // Build bonus breakdown display
+      let bonusLines='';
+      if(multiplier>1)bonusLines+=`<div class="flex justify-between"><span>Mode variety</span><span>×${multiplier.toFixed(1)}</span></div>`;
+      if(wrongPenalty<1)bonusLines+=`<div class="flex justify-between"><span>Wrong answers</span><span>×${wrongPenalty.toFixed(2)}</span></div>`;
+      if(lengthBonus>0)bonusLines+=`<div class="flex justify-between"><span>Long verse</span><span>+${lengthBonus}</span></div>`;
+      if(reviewBonus>0)bonusLines+=`<div class="flex justify-between"><span>Review bonus</span><span>+${reviewBonus}</span></div>`;
+      if(firstPracticeBonus>0)bonusLines+=`<div class="flex justify-between"><span>First today!</span><span>+${firstPracticeBonus}</span></div>`;
+      if(happinessBonus>0)bonusLines+=`<div class="flex justify-between"><span>Happiness</span><span>+${happinessBonus}</span></div>`;
+
       inner=`<div class="text-center">
         <p class="text-green-500 font-bold text-xl mb-2">✨ ${roundNames[pState.round]} Complete!</p>
         <p class="text-purple-600 text-sm mb-2">${accuracy}% accuracy</p>
         <div class="bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl p-3 mb-4">
-          <p class="text-2xl font-bold text-orange-600">+${roundXPDisplay} XP</p>
-          <p class="text-orange-500 text-xs">Total earned: ${totalXPDisplay} XP</p>
+          <p class="text-2xl font-bold text-orange-600">+${totalXP} XP</p>
+          <div class="text-orange-500 text-xs mt-2 space-y-0.5">
+            <div class="flex justify-between"><span>Base</span><span>${baseXP}</span></div>
+            ${bonusLines}
+          </div>
         </div>
         <p class="text-purple-600 text-sm mb-4">Ready for <b>${roundNames[pState.round+1]}</b>?<br><span class="text-purple-400 text-xs">${roundDesc[pState.round+1]}</span></p>
-        <button onclick="advancePredictRound()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 rounded-xl mb-2">Continue to Next Level 🔥</button>
-        <button onclick="exitPredictEarly()" class="w-full bg-purple-100 text-purple-600 font-semibold py-2.5 rounded-xl">Collect ${totalXPDisplay} XP & Exit</button>
+        <button type="button" onclick="advancePredictRound()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 rounded-xl mb-2">Continue to Next Level 🔥</button>
+        <button type="button" onclick="exitPracticeWithXP()" class="w-full bg-purple-100 text-purple-600 font-semibold py-2.5 rounded-xl">Exit & Collect XP</button>
       </div>`;
     }else{
-      const targetIdx=pState.predictIndices[pState.currentPredictIdx];
-      const startIdx=pState.rev.length;
-      const phraseWords=pState.W.slice(startIdx,targetIdx+1);
-      const correctPhrase=phraseWords.join(' ');
+      // Only regenerate options when moving to a new prediction (prevents re-shuffle on re-render)
+      if(pState.lastGeneratedIdx!==pState.currentPredictIdx){
+        const targetIdx=pState.predictIndices[pState.currentPredictIdx];
+        const startIdx=pState.rev.length;
+        const phraseWords=pState.W.slice(startIdx,targetIdx+1);
+        const correctPhrase=phraseWords.join(' ');
 
-      // Generate decoy phrases by grabbing other chunks from the verse
-      const decoyPhrases=[];
-      const phraseLen=phraseWords.length;
-      for(let i=0;i<pState.W.length-phraseLen&&decoyPhrases.length<2;i++){
-        if(i!==startIdx){
-          const chunk=pState.W.slice(i,i+phraseLen).join(' ');
-          if(chunk!==correctPhrase&&!decoyPhrases.includes(chunk)){
-            decoyPhrases.push(chunk);
+        // Generate decoy phrases by grabbing other chunks from the verse
+        const decoyPhrases=[];
+        const phraseLen=phraseWords.length;
+        for(let i=0;i<pState.W.length-phraseLen&&decoyPhrases.length<2;i++){
+          if(i!==startIdx){
+            const chunk=pState.W.slice(i,i+phraseLen).join(' ');
+            if(chunk!==correctPhrase&&!decoyPhrases.includes(chunk)){
+              decoyPhrases.push(chunk);
+            }
           }
         }
-      }
-      // If we don't have enough decoys, shuffle words from different parts
-      // Safety: limit iterations to prevent infinite loop
-      let safetyCounter=0;
-      while(decoyPhrases.length<2&&safetyCounter<100){
-        safetyCounter++;
-        const shuffled=[...phraseWords].sort(()=>Math.random()-0.5).join(' ');
-        if(shuffled!==correctPhrase&&!decoyPhrases.includes(shuffled)){
-          decoyPhrases.push(shuffled);
+        // If we don't have enough decoys, shuffle words from different parts
+        // Safety: limit iterations to prevent infinite loop
+        let safetyCounter=0;
+        while(decoyPhrases.length<2&&safetyCounter<100){
+          safetyCounter++;
+          const shuffled=[...phraseWords].sort(()=>Math.random()-0.5).join(' ');
+          if(shuffled!==correctPhrase&&!decoyPhrases.includes(shuffled)){
+            decoyPhrases.push(shuffled);
+          }
+          // If only 1 word, we can't shuffle to get different result, so just use placeholder
+          if(phraseWords.length<=1&&decoyPhrases.length<2){
+            decoyPhrases.push('(option '+(decoyPhrases.length+1)+')');
+          }
         }
-        // If only 1 word, we can't shuffle to get different result, so just use placeholder
-        if(phraseWords.length<=1&&decoyPhrases.length<2){
-          decoyPhrases.push('(option '+(decoyPhrases.length+1)+')');
-        }
+        predictOptions=shuffle([correctPhrase,...decoyPhrases]);
+        pState.lastGeneratedIdx=pState.currentPredictIdx;
       }
-      predictOptions=shuffle([correctPhrase,...decoyPhrases]);
 
       inner=`<p class="text-purple-500 text-sm text-center mb-2">What comes next?</p><div class="space-y-2">${predictOptions.map((w,i)=>`<button type="button" onclick="selectPredictByIndex(${i})" class="predict-btn w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white py-3 px-4 rounded-xl text-sm">${escapeHtml(w)}</button>`).join('')}</div>`;
     }
 
     h=`<div class="p-5">${buddyStatusCompact}
       <div class="flex justify-between items-center mb-4">
-        <button type="button" onclick="pMode=null;render()" class="text-white text-xl font-bold px-2">✕</button>
+        <button type="button" onclick="pMode=null;render()" class="text-white text-xl font-bold px-2">←</button>
         <div class="text-center">
           <p class="text-white font-semibold">🎯 Predict</p>
           <p class="text-white/60 text-xs">${roundNames[pState.round]}</p>
@@ -8424,7 +8460,7 @@ function render(){
 
     let inner='';
     if(pState.done){
-      const finalXP=Math.round((pState.totalXP||8)*10)/10;
+      const finalXP=pState.totalXP||8;
       inner=`<div class="text-center">
         <p class="text-green-500 font-bold text-xl mb-2">🏆 Master Level Complete!</p>
         <p class="text-purple-600 mb-2">You filled in every word!</p>
@@ -8432,20 +8468,54 @@ function render(){
           <p class="text-2xl font-bold text-orange-600">+${finalXP} XP</p>
           <p class="text-orange-500 text-xs">All 10 rounds completed!</p>
         </div>
-        <button onclick="completePractice()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 rounded-xl">Collect XP</button>
+        <button type="button" onclick="exitPracticeWithXP()" class="collect-xp-btn w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 rounded-xl">Collect XP</button>
       </div>`;
     }else if(pState.roundComplete){
-      const roundXPDisplay=Math.round(pState.roundXP*10)/10;
-      const totalXPDisplay=Math.round(pState.totalXP*10)/10;
+      // Calculate full XP breakdown for display
+      const v=S.verses.find(x=>x.id===pVerse.id);
+      const baseXP=pState.totalXP||2;
+      const multiplier=getModeMultiplier(v,pMode);
+      let xp=Math.ceil(baseXP*multiplier);
+      const wrongPenalty=Math.max(0.5,1-(pState.wrongCount||0)*0.05);
+      xp=Math.ceil(xp*wrongPenalty);
+      const wordCount=getWords(v.text).length;
+      let lengthBonus=0;
+      if(wordCount>=40)lengthBonus=Math.ceil(baseXP);
+      else if(wordCount>=25)lengthBonus=Math.ceil(baseXP*0.5);
+      else if(wordCount>=15)lengthBonus=Math.ceil(baseXP*0.2);
+      xp+=lengthBonus;
+      const reviewBonus=v.mastery>=5?getReviewBonus(v):0;
+      xp+=reviewBonus;
+      const firstPracticeBonus=S.todayCount===0?15:0;
+      xp+=firstPracticeBonus;
+      const happinessMult=getHappinessXPMultiplier();
+      const preHappinessXP=xp;
+      xp=Math.ceil(xp*happinessMult);
+      const happinessBonus=xp-preHappinessXP;
+      const totalXP=xp;
+
+      // Build bonus breakdown display
+      let bonusLines='';
+      if(multiplier>1)bonusLines+=`<div class="flex justify-between"><span>Mode variety</span><span>×${multiplier.toFixed(1)}</span></div>`;
+      if(wrongPenalty<1)bonusLines+=`<div class="flex justify-between"><span>Wrong answers</span><span>×${wrongPenalty.toFixed(2)}</span></div>`;
+      if(lengthBonus>0)bonusLines+=`<div class="flex justify-between"><span>Long verse</span><span>+${lengthBonus}</span></div>`;
+      if(reviewBonus>0)bonusLines+=`<div class="flex justify-between"><span>Review bonus</span><span>+${reviewBonus}</span></div>`;
+      if(firstPracticeBonus>0)bonusLines+=`<div class="flex justify-between"><span>First today!</span><span>+${firstPracticeBonus}</span></div>`;
+      if(happinessBonus>0)bonusLines+=`<div class="flex justify-between"><span>Happiness</span><span>+${happinessBonus}</span></div>`;
+      if(pState.hintsUsed)bonusLines+=`<div class="flex justify-between text-orange-400"><span>Hints used</span><span>${pState.hintsUsed}</span></div>`;
+
       inner=`<div class="text-center">
         <p class="text-green-500 font-bold text-xl mb-2">✨ ${roundNames[pState.round]} Complete!</p>
         <div class="bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl p-3 mb-4">
-          <p class="text-2xl font-bold text-orange-600">+${roundXPDisplay} XP</p>
-          <p class="text-orange-500 text-xs">Total earned: ${totalXPDisplay} XP${pState.hintsUsed?` (${pState.hintsUsed} hints used)`:''}</p>
+          <p class="text-2xl font-bold text-orange-600">+${totalXP} XP</p>
+          <div class="text-orange-500 text-xs mt-2 space-y-0.5">
+            <div class="flex justify-between"><span>Base</span><span>${baseXP}</span></div>
+            ${bonusLines}
+          </div>
         </div>
         <p class="text-purple-600 text-sm mb-4">Ready for <b>${roundNames[pState.round+1]}</b>?<br><span class="text-purple-400 text-xs">${roundDesc[pState.round+1]}</span></p>
-        <button onclick="advanceBlankRound()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 rounded-xl mb-2">Continue to Next Level 🔥</button>
-        <button onclick="exitBlanksEarly()" class="w-full bg-purple-100 text-purple-600 font-semibold py-2.5 rounded-xl">Collect ${totalXPDisplay} XP & Exit</button>
+        <button type="button" onclick="advanceBlankRound()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 rounded-xl mb-2">Continue to Next Level 🔥</button>
+        <button type="button" onclick="exitPracticeWithXP()" class="w-full bg-purple-100 text-purple-600 font-semibold py-2.5 rounded-xl">Exit & Collect XP</button>
       </div>`;
     }else if(pState.revealed){
       // Word revealed after too many wrong attempts
@@ -8490,7 +8560,7 @@ function render(){
 
     h=`<div class="p-5">${buddyStatusCompact}
       <div class="flex justify-between mb-4">
-        <button onclick="pMode=null;render()" class="text-white text-xl">✕</button>
+        <button onclick="pMode=null;render()" class="text-white text-xl">←</button>
         <div class="text-center">
           <p class="text-white font-semibold">✏️ Fill in the Blanks</p>
           <p class="text-white/60 text-xs">${roundNames[pState.round]} - ${roundDesc[pState.round]}</p>
@@ -8528,7 +8598,7 @@ function render(){
       const keyboard=alphabet.map(l=>`<button onclick="guessLetter('${l.toLowerCase()}')" class="w-10 h-10 rounded-lg font-bold text-sm ${pState.guessed.includes(l.toLowerCase())?'bg-gray-200 text-gray-400 cursor-not-allowed':'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white'}" ${pState.guessed.includes(l.toLowerCase())?'disabled':''}>${l}</button>`).join('');
       inner=`<div class="text-center mb-4"><div class="text-6xl mb-2">${hangmanStages[pState.wrong]}</div><p class="text-purple-600 text-sm font-semibold">Wrong guesses: ${pState.wrong}/${pState.maxWrong}</p></div><div class="bg-purple-50 rounded-xl p-4 mb-4"><div class="text-lg leading-relaxed">${display}</div></div><div class="grid grid-cols-7 gap-2">${keyboard}</div>`;
     }
-    h=`<div class="p-5">${buddyStatusCompact}<div class="flex justify-between mb-4"><button onclick="pMode=null;render()" class="text-white text-xl">✕</button><p class="text-white font-semibold">⚔️ Hangman</p><p class="text-white/60">${pVerse.ref}</p></div>
+    h=`<div class="p-5">${buddyStatusCompact}<div class="flex justify-between mb-4"><button onclick="pMode=null;render()" class="text-white text-xl">←</button><p class="text-white font-semibold">⚔️ Hangman</p><p class="text-white/60">${pVerse.ref}</p></div>
       <div class="bg-white/95 rounded-3xl p-5">${inner}</div></div>`;
   }
 
@@ -8567,7 +8637,7 @@ function render(){
     }
     h=`<div class="p-5">${buddyStatusCompact}
       <div class="flex justify-between mb-4">
-        <button onclick="pMode=null;render()" class="text-white text-xl">✕</button>
+        <button onclick="pMode=null;render()" class="text-white text-xl">←</button>
         <p class="text-white font-semibold">🔗 Verse Match</p>
         <p class="text-white/60">${pState.matchedCount||0}/${pState.verses?.length||0}</p>
       </div>
@@ -8580,7 +8650,7 @@ function render(){
     let inner='';
     if(pState.done)inner=`<div class="text-center"><p class="text-green-500 font-bold text-xl mb-4">✨ Perfect!</p><button onclick="completePractice()" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 px-8 rounded-xl">+7 XP</button></div>`;
     else inner=`<div class="flex flex-wrap gap-2">${pState.shuf.map((w,i)=>`<button onclick="selectJumble(${i})" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white px-3 py-2 rounded-lg">${w}</button>`).join('')}</div>`;
-    h=`<div class="p-5">${buddyStatusCompact}<div class="flex justify-between mb-4"><button onclick="pMode=null;render()" class="text-white text-xl">✕</button><p class="text-white font-semibold">🔀 Jumble</p><p class="text-white/60">${pState.sel.length}/${pState.W.length}</p></div>
+    h=`<div class="p-5">${buddyStatusCompact}<div class="flex justify-between mb-4"><button onclick="pMode=null;render()" class="text-white text-xl">←</button><p class="text-white font-semibold">🔀 Jumble</p><p class="text-white/60">${pState.sel.length}/${pState.W.length}</p></div>
       <div class="bg-white/95 rounded-3xl p-5"><p class="text-purple-600 font-medium mb-2">${pVerse.ref}</p><div class="bg-purple-50 rounded-xl p-3 mb-3 min-h-16"><p class="text-purple-800">${pState.sel.join(' ')||'Tap in order...'}</p></div>${pState.wrong?'<p class="text-red-500 text-sm text-center mb-2">Wrong order!</p>':''}${inner}</div></div>`;
   }
 
@@ -8590,7 +8660,7 @@ function render(){
     let inner='';
     if(pState.done)inner=`<div class="text-center"><p class="text-green-500 font-bold text-xl mb-4">✨ Amazing!</p><button onclick="completePractice()" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 px-8 rounded-xl">+8 XP</button></div>`;
     else inner=`<input id="inp" value="${pState.inp}" oninput="pState.inp=this.value;pState.wrong=false" onkeypress="if(event.key==='Enter')checkFirst()" placeholder="Type word..." class="w-full border-2 ${pState.wrong?'border-red-400':'border-purple-200'} rounded-xl px-4 py-3 mb-3">${pState.wrong?'<p class="text-red-500 text-sm mb-2">Try again!</p>':''}<button onclick="checkFirst()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 rounded-xl">Check</button>`;
-    h=`<div class="p-5">${buddyStatusCompact}<div class="flex justify-between mb-4"><button onclick="pMode=null;render()" class="text-white text-xl">✕</button><p class="text-white font-semibold">🔤 First Letters</p><p class="text-white/60">${pState.cWord}/${pState.W.length}</p></div>
+    h=`<div class="p-5">${buddyStatusCompact}<div class="flex justify-between mb-4"><button onclick="pMode=null;render()" class="text-white text-xl">←</button><p class="text-white font-semibold">🔤 First Letters</p><p class="text-white/60">${pState.cWord}/${pState.W.length}</p></div>
       <div class="bg-white/95 rounded-3xl p-5"><p class="text-purple-600 font-medium mb-2">${pVerse.ref}</p><p class="text-purple-800 font-mono text-sm mb-4">${disp}</p>${inner}</div></div>`;
   }
 
@@ -8630,99 +8700,10 @@ function render(){
     }else{
       inner=`<textarea id="inp" oninput="pState.inp=this.value" placeholder="Type the verse from memory..." class="w-full border-2 border-purple-200 rounded-xl px-4 py-3 h-32 mb-3">${pState.inp}</textarea><button onclick="checkRecall()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 rounded-xl">Check</button>`;
     }
-    h=`<div class="p-5">${buddyStatusCompact}<div class="flex justify-between mb-4"><button onclick="pMode=null;render()" class="text-white text-xl">✕</button><p class="text-white font-semibold">💭 Recall</p><p class="text-white/60">+10-15</p></div>
+    h=`<div class="p-5">${buddyStatusCompact}<div class="flex justify-between mb-4"><button onclick="pMode=null;render()" class="text-white text-xl">←</button><p class="text-white font-semibold">💭 Recall</p><p class="text-white/60">+10-15</p></div>
       <div class="bg-white/95 rounded-3xl p-5"><p class="text-purple-600 font-medium mb-1">${pVerse.ref}</p><p class="text-purple-400 text-sm mb-3">Type from memory</p>${inner}</div></div>`;
   }
 
-  else if(pMode==='chunk'){
-    const buddyStatusCompact=getPracticeStatusBar();
-    const phase=pState.phases[pState.currentPhase];
-    const progress=Math.round((pState.currentPhase/pState.phases.length)*100);
-
-    // Phase indicator dots
-    const phaseDots=pState.phases.map((p,i)=>`<div class="w-2 h-2 rounded-full ${i<pState.currentPhase?'bg-green-500':i===pState.currentPhase?'bg-yellow-400':'bg-purple-200'}"></div>`).join('');
-
-    let inner='';
-    if(pState.done){
-      // Final completion
-      const hintPenalty=Math.min(3,(pState.hintsUsed||0)*0.5);
-      const finalXP=Math.max(3,6-hintPenalty);
-      inner=`<div class="text-center">
-        <p class="text-green-500 font-bold text-xl mb-2">🏆 Verse Mastered!</p>
-        <p class="text-purple-600 mb-2">You learned the whole verse in chunks!</p>
-        <div class="bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl p-3 mb-4">
-          <p class="text-2xl font-bold text-orange-600">+${Math.round(finalXP*10)/10} XP</p>
-          ${pState.hintsUsed?`<p class="text-orange-500 text-xs">${pState.hintsUsed} hints used</p>`:''}
-        </div>
-        <button onclick="completePractice()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 rounded-xl">Collect XP</button>
-      </div>`;
-    }else if(pState.phaseComplete){
-      // Phase complete - advance to next
-      const isCombine=phase.type==='combine';
-      inner=`<div class="text-center">
-        <p class="text-green-500 font-bold text-xl mb-2">✨ ${isCombine?'Combined!':'Chunk Learned!'}</p>
-        <p class="text-purple-600 text-sm mb-3">${pState.phaseAccuracy}% accuracy</p>
-        <button onclick="advanceChunkPhase()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 rounded-xl">Continue →</button>
-      </div>`;
-    }else{
-      // Active practice
-      const isCombine=phase.type==='combine';
-      const chunkNum=isCombine?`Chunks 1-${phase.upTo+1}`:`Chunk ${phase.chunkIdx+1}`;
-      const phaseType=isCombine?'🔗 Combine':'📝 Learn';
-
-      // Show the text to memorize (or hint if requested)
-      const targetText=phase.text;
-      const textDisplay=pState.showingHint?
-        `<div class="bg-green-50 border-2 border-green-300 rounded-xl p-4 mb-3">
-          <p class="text-purple-800 leading-relaxed">${targetText}</p>
-          <button onclick="hideChunkHint()" class="mt-2 text-sm text-green-600 font-semibold">Hide & Try Again</button>
-        </div>`:
-        `<div class="bg-purple-50 rounded-xl p-4 mb-3 text-center">
-          <p class="text-purple-500 text-xs font-semibold mb-1">${phaseType} - ${chunkNum}</p>
-          <p class="text-purple-800 leading-relaxed">${targetText}</p>
-        </div>`;
-
-      // Comparison feedback when wrong
-      const comparisonHtml=pState.comparison?`<div class="bg-red-50 rounded-xl p-3 mb-3">
-        <p class="text-red-500 text-sm font-semibold mb-2">❌ Not quite right:</p>
-        <p class="text-sm leading-relaxed">${pState.comparison.map(c=>{
-          if(c.type==='correct')return`<span class="text-green-600">${c.word}</span>`;
-          if(c.type==='wrong')return`<span class="text-red-500 line-through">${c.actual}</span><span class="text-green-600 bg-green-100 px-1 rounded">${c.expected}</span>`;
-          return`<span class="text-red-500 bg-red-100 px-1 rounded">${c.word}</span>`;
-        }).join(' ')}</p>
-      </div>`:'';
-
-      inner=`${textDisplay}
-        ${comparisonHtml}
-        <p class="text-purple-500 text-xs mb-2">Now type it from memory:</p>
-        <textarea id="inp" oninput="pState.inp=this.value;pState.wrong=false;pState.comparison=null" placeholder="Type the ${isCombine?'combined chunks':'chunk'} here..." class="w-full border-2 ${pState.wrong?'border-red-400':'border-purple-200'} rounded-xl px-4 py-3 h-24 mb-3">${pState.inp}</textarea>
-        <div class="flex gap-2">
-          <button onclick="showChunkHint()" class="flex-1 bg-purple-100 text-purple-600 font-semibold py-3 rounded-xl">👁️ Peek</button>
-          <button onclick="checkChunk()" class="flex-2 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 px-6 rounded-xl">Check</button>
-        </div>`;
-    }
-
-    h=`<div class="p-5">${buddyStatusCompact}
-      <div class="flex justify-between items-center mb-4">
-        <button onclick="pMode=null;render()" class="text-white text-xl">✕</button>
-        <div class="text-center">
-          <p class="text-white font-semibold">🧩 Chunk Master</p>
-          <p class="text-white/60 text-xs">${pState.chunks.length} chunks</p>
-        </div>
-        <p class="text-white/60">${pState.currentPhase+1}/${pState.phases.length}</p>
-      </div>
-      <div class="bg-white/95 rounded-3xl p-5">
-        <div class="flex justify-between items-center mb-3">
-          <p class="text-purple-600 font-medium">${pVerse.ref}</p>
-          <div class="flex gap-1">${phaseDots}</div>
-        </div>
-        <div class="w-full bg-purple-100 rounded-full h-2 mb-4">
-          <div class="bg-gradient-to-r from-violet-500 to-fuchsia-500 h-2 rounded-full transition-all" style="width:${progress}%"></div>
-        </div>
-        ${inner}
-      </div>
-    </div>`;
-  }
 
   // No bottom bar needed - stats are on the buddy card
 
@@ -9392,15 +9373,30 @@ document.addEventListener('mouseup',endDrag);
 document.addEventListener('click',function(e){
   const predictBtn=e.target.closest('.predict-btn');
   if(predictBtn){
+    if(predictProcessing)return; // Ignore clicks while processing
     const idx=parseInt(predictBtn.dataset.predictIdx,10);
     if(!isNaN(idx)&&idx>=0&&idx<predictOptions.length){
+      predictProcessing=true;
       selectPredict(predictOptions[idx]);
+      setTimeout(()=>{predictProcessing=false;},150);
     }
     return;
   }
   const closeBtn=e.target.closest('.close-practice-btn');
   if(closeBtn){
     pMode=null;
+    render();
+    return;
+  }
+  const collectBtn=e.target.closest('.collect-xp-btn');
+  if(collectBtn){
+    // Force exit to home
+    completePractice(true);
+    pState={};
+    pMode=null;
+    pVerse=null;
+    selectedVerse=null;
+    screen='home';
     render();
     return;
   }

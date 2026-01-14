@@ -255,10 +255,10 @@ function renderBaby(categoryKey){
         </div>
         <!-- Big cute eyes -->
         <div style="position:absolute;left:50%;top:45%;transform:translateX(-50%);display:flex;gap:14px;">
-          <div style="width:20px;height:23px;background:radial-gradient(circle at 30% 30%,#374151,#000);border-radius:50%;position:relative;animation:blink 3s infinite;">
+          <div class="bb-eye" style="width:20px;height:23px;background:radial-gradient(circle at 30% 30%,#374151,#000);border-radius:50%;position:relative;animation:blink 3s infinite;">
             <div style="position:absolute;top:4px;left:5px;width:7px;height:7px;background:white;border-radius:50%;"></div>
           </div>
-          <div style="width:20px;height:23px;background:radial-gradient(circle at 30% 30%,#374151,#000);border-radius:50%;position:relative;animation:blink 3s infinite;">
+          <div class="bb-eye" style="width:20px;height:23px;background:radial-gradient(circle at 30% 30%,#374151,#000);border-radius:50%;position:relative;animation:blink 3s infinite;">
             <div style="position:absolute;top:4px;left:5px;width:7px;height:7px;background:white;border-radius:50%;"></div>
           </div>
         </div>
@@ -279,7 +279,7 @@ function renderBaby(categoryKey){
         <div style="position:absolute;left:20px;top:50%;transform:translateY(-50%);width:13px;height:20px;background:radial-gradient(ellipse at 40% 40%,#60a5fa,#3b82f6);border-radius:50% 0 0 50%;animation:wiggle 1.5s ease-in-out infinite;box-shadow:inset 2px 2px 5px rgba(255,255,255,0.3);"></div>
         <div style="position:absolute;right:13px;top:50%;transform:translateY(-50%);width:20px;height:26px;background:radial-gradient(ellipse at 30% 40%,#60a5fa,#2563eb);clip-path:polygon(0 50%,100% 0,100% 100%);animation:wiggle 1.5s ease-in-out infinite;"></div>
         <!-- Big cute eye -->
-        <div style="position:absolute;left:36px;top:50%;transform:translateY(-50%);width:16px;height:16px;background:radial-gradient(circle at 30% 30%,#374151,#000);border-radius:50%;position:relative;animation:blink 3s infinite;">
+        <div class="bb-eye" style="position:absolute;left:36px;top:50%;transform:translateY(-50%);width:16px;height:16px;background:radial-gradient(circle at 30% 30%,#374151,#000);border-radius:50%;position:relative;animation:blink 3s infinite;">
           <div style="position:absolute;top:3px;left:5px;width:5px;height:5px;background:white;border-radius:50%;"></div>
         </div>
         <!-- Tiny bubble -->
@@ -295,7 +295,7 @@ function renderBaby(categoryKey){
         <!-- Tiny tail -->
         <div style="position:absolute;left:8px;top:50%;transform:translateY(-50%);width:30px;height:16px;background:radial-gradient(ellipse at 40% 40%,#4ade80,#22c55e);border-radius:50% 0 0 50%;animation:wiggle 1.5s ease-in-out infinite;box-shadow:inset 2px 2px 5px rgba(255,255,255,0.3);"></div>
         <!-- Big cute eyes -->
-        <div style="position:absolute;left:69px;top:50%;transform:translateY(-50%);width:15px;height:15px;background:radial-gradient(circle at 30% 30%,#374151,#000);border-radius:50%;position:relative;animation:blink 3s infinite;">
+        <div class="bb-eye" style="position:absolute;left:69px;top:50%;transform:translateY(-50%);width:15px;height:15px;background:radial-gradient(circle at 30% 30%,#374151,#000);border-radius:50%;position:relative;animation:blink 3s infinite;">
           <div style="position:absolute;top:3px;left:3px;width:5px;height:5px;background:white;border-radius:50%;"></div>
         </div>
         <!-- Tiny legs -->
@@ -318,10 +318,10 @@ function renderBaby(categoryKey){
         <div style="position:absolute;right:35%;top:17%;width:7px;height:7px;background:radial-gradient(circle,#374151,#000);border-radius:50%;"></div>
         <!-- Big cute eyes -->
         <div style="position:absolute;left:50%;top:37%;transform:translateX(-50%);display:flex;gap:10px;">
-          <div style="width:13px;height:13px;background:radial-gradient(circle at 30% 30%,#374151,#000);border-radius:50%;position:relative;animation:blink 3s infinite;">
+          <div class="bb-eye" style="width:13px;height:13px;background:radial-gradient(circle at 30% 30%,#374151,#000);border-radius:50%;position:relative;animation:blink 3s infinite;">
             <div style="position:absolute;top:2px;left:3px;width:5px;height:5px;background:white;border-radius:50%;"></div>
           </div>
-          <div style="width:13px;height:13px;background:radial-gradient(circle at 30% 30%,#374151,#000);border-radius:50%;position:relative;animation:blink 3s infinite;">
+          <div class="bb-eye" style="width:13px;height:13px;background:radial-gradient(circle at 30% 30%,#374151,#000);border-radius:50%;position:relative;animation:blink 3s infinite;">
             <div style="position:absolute;top:2px;left:3px;width:5px;height:5px;background:white;border-radius:50%;"></div>
           </div>
         </div>
@@ -338,10 +338,10 @@ function renderBaby(categoryKey){
         <div style="position:absolute;right:22%;top:22%;width:23px;height:30px;background:radial-gradient(ellipse at 60% 30%,#fbbf24,#d97706);border-radius:50% 50% 20% 20%;box-shadow:inset -3px 3px 7px rgba(254,243,199,0.4),inset 0 0 10px rgba(255,182,193,0.4);animation:wiggle 2.5s ease-in-out infinite;"></div>
         <!-- HUGE cute eyes -->
         <div style="position:absolute;left:50%;top:50%;transform:translateX(-50%);display:flex;gap:16px;">
-          <div style="width:23px;height:23px;background:radial-gradient(circle at 30% 30%,#374151,#000);border-radius:50%;position:relative;animation:blink 3s infinite;">
+          <div class="bb-eye" style="width:23px;height:23px;background:radial-gradient(circle at 30% 30%,#374151,#000);border-radius:50%;position:relative;animation:blink 3s infinite;">
             <div style="position:absolute;top:5px;left:7px;width:8px;height:8px;background:white;border-radius:50%;"></div>
           </div>
-          <div style="width:23px;height:23px;background:radial-gradient(circle at 30% 30%,#374151,#000);border-radius:50%;position:relative;animation:blink 3s infinite;">
+          <div class="bb-eye" style="width:23px;height:23px;background:radial-gradient(circle at 30% 30%,#374151,#000);border-radius:50%;position:relative;animation:blink 3s infinite;">
             <div style="position:absolute;top:5px;left:7px;width:8px;height:8px;background:white;border-radius:50%;"></div>
           </div>
         </div>
@@ -364,10 +364,10 @@ function renderBaby(categoryKey){
         <div style="position:absolute;right:30%;top:28%;width:10px;height:15px;background:radial-gradient(ellipse at 40% 30%,#fef3c7,#ddc8b4,#a1887f);border-radius:50% 50% 0 0;animation:wiggle 2s ease-in-out infinite;box-shadow:inset 2px 2px 3px rgba(255,255,255,0.5);"></div>
         <!-- Big cute dino eyes -->
         <div style="position:absolute;left:50%;top:50%;transform:translateX(-50%);display:flex;gap:16px;">
-          <div style="width:16px;height:16px;background:radial-gradient(circle at 30% 30%,#374151,#000);border-radius:50%;position:relative;animation:blink 3s infinite;">
+          <div class="bb-eye" style="width:16px;height:16px;background:radial-gradient(circle at 30% 30%,#374151,#000);border-radius:50%;position:relative;animation:blink 3s infinite;">
             <div style="position:absolute;top:3px;left:5px;width:5px;height:5px;background:white;border-radius:50%;"></div>
           </div>
-          <div style="width:16px;height:16px;background:radial-gradient(circle at 30% 30%,#374151,#000);border-radius:50%;position:relative;animation:blink 3s infinite;">
+          <div class="bb-eye" style="width:16px;height:16px;background:radial-gradient(circle at 30% 30%,#374151,#000);border-radius:50%;position:relative;animation:blink 3s infinite;">
             <div style="position:absolute;top:3px;left:5px;width:5px;height:5px;background:white;border-radius:50%;"></div>
           </div>
         </div>
@@ -384,10 +384,10 @@ function renderBaby(categoryKey){
         </div>
         <!-- HUGE alien eyes with 3D -->
         <div style="position:absolute;left:50%;top:46%;transform:translateX(-50%);display:flex;gap:10px;">
-          <div style="width:26px;height:33px;background:radial-gradient(ellipse at 40% 35%,#1f2937,#000);border-radius:50%;position:relative;animation:blink 4s infinite;box-shadow:inset 3px 3px 7px rgba(255,255,255,0.1);">
+          <div class="bb-eye" style="width:26px;height:33px;background:radial-gradient(ellipse at 40% 35%,#1f2937,#000);border-radius:50%;position:relative;animation:blink 4s infinite;box-shadow:inset 3px 3px 7px rgba(255,255,255,0.1);">
             <div style="position:absolute;top:8px;left:8px;width:8px;height:8px;background:radial-gradient(circle,#4ade80,#22c55e);border-radius:50%;box-shadow:0 0 7px rgba(34,197,94,0.6);"></div>
           </div>
-          <div style="width:26px;height:33px;background:radial-gradient(ellipse at 40% 35%,#1f2937,#000);border-radius:50%;position:relative;animation:blink 4s infinite;box-shadow:inset 3px 3px 7px rgba(255,255,255,0.1);">
+          <div class="bb-eye" style="width:26px;height:33px;background:radial-gradient(ellipse at 40% 35%,#1f2937,#000);border-radius:50%;position:relative;animation:blink 4s infinite;box-shadow:inset 3px 3px 7px rgba(255,255,255,0.1);">
             <div style="position:absolute;top:8px;left:8px;width:8px;height:8px;background:radial-gradient(circle,#4ade80,#22c55e);border-radius:50%;box-shadow:0 0 7px rgba(34,197,94,0.6);"></div>
           </div>
         </div>
@@ -423,8 +423,8 @@ function renderBaby(categoryKey){
         <div style="position:absolute;left:50%;top:42%;transform:translateX(-50%);font-size:24px;animation:wiggle 3s ease-in-out infinite;">🌙</div>
         <!-- Cute mystical eyes with 3D -->
         <div style="position:absolute;left:50%;top:58%;transform:translateX(-50%);display:flex;gap:13px;">
-          <div style="width:16px;height:16px;background:radial-gradient(circle at 35% 35%,#fff 0%,#e9d5ff 40%,#8b5cf6 100%);border-radius:50%;box-shadow:0 0 10px rgba(139,92,246,0.8);animation:blink 3s infinite;"></div>
-          <div style="width:16px;height:16px;background:radial-gradient(circle at 35% 35%,#fff 0%,#e9d5ff 40%,#8b5cf6 100%);border-radius:50%;box-shadow:0 0 10px rgba(139,92,246,0.8);animation:blink 3s infinite;"></div>
+          <div class="bb-eye" style="width:16px;height:16px;background:radial-gradient(circle at 35% 35%,#fff 0%,#e9d5ff 40%,#8b5cf6 100%);border-radius:50%;box-shadow:0 0 10px rgba(139,92,246,0.8);animation:blink 3s infinite;"></div>
+          <div class="bb-eye" style="width:16px;height:16px;background:radial-gradient(circle at 35% 35%,#fff 0%,#e9d5ff 40%,#8b5cf6 100%);border-radius:50%;box-shadow:0 0 10px rgba(139,92,246,0.8);animation:blink 3s infinite;"></div>
         </div>
         <!-- Tiny stars -->
         <div style="position:absolute;left:15%;top:30%;font-size:16px;animation:sparkle 1.5s ease-in-out infinite;">⭐</div>
