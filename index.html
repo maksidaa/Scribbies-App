@@ -8412,12 +8412,12 @@ function render(){
       }
       predictOptions=shuffle([correctPhrase,...decoyPhrases]);
 
-      inner=`<p class="text-purple-500 text-sm text-center mb-2">What comes next?</p><div class="space-y-2" style="position:relative;z-index:10;">${predictOptions.map((w,i)=>`<button type="button" data-predict-idx="${i}" class="predict-btn w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white py-3 px-4 rounded-xl text-sm" style="position:relative;z-index:10;pointer-events:auto;">${escapeHtml(w)}</button>`).join('')}</div>`;
+      inner=`<p class="text-purple-500 text-sm text-center mb-2">What comes next?</p><div class="space-y-2" style="position:relative;z-index:100;">${predictOptions.map((w,i)=>`<button type="button" onclick="console.log('DIRECT CLICK ${i}');selectPredictByIndex(${i})" data-predict-idx="${i}" class="predict-btn w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white py-3 px-4 rounded-xl text-sm" style="position:relative;z-index:100;pointer-events:auto;cursor:pointer;">${escapeHtml(w)}</button>`).join('')}</div>`;
     }
 
     h=`<div class="p-5">${buddyStatusCompact}
       <div class="flex justify-between items-center mb-4" style="position:relative;z-index:10;">
-        <button type="button" class="close-practice-btn text-white text-xl font-bold px-2" style="position:relative;z-index:10;pointer-events:auto;">✕</button>
+        <button type="button" onclick="console.log('X CLICKED');pMode=null;render()" class="close-practice-btn text-white text-xl font-bold px-2" style="position:relative;z-index:100;pointer-events:auto;cursor:pointer;">✕</button>
         <div class="text-center">
           <p class="text-white font-semibold">🎯 Predict</p>
           <p class="text-white/60 text-xs">${roundNames[pState.round]}</p>
