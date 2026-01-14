@@ -1548,19 +1548,19 @@ if(S.snacksFed!==undefined){
   delete S.snacksFed;
 }
 if(S.health===undefined)S.health=75;
-if(S.lastActiveTime===undefined)S.lastActiveTime=Date.now();
+if(S.lastDecayCheck===undefined)S.lastDecayCheck=Date.now();
 
-// Apply stat decay based on time away from the app
+// Apply stat decay based on real time passed (whether in app or not)
 function applyStatDecay(){
   const now=Date.now();
-  const lastActive=S.lastActiveTime||now;
-  const hoursAway=Math.floor((now-lastActive)/(1000*60*60));
+  const lastCheck=S.lastDecayCheck||now;
+  const hoursPassed=Math.floor((now-lastCheck)/(1000*60*60));
 
-  if(hoursAway>=1){
+  if(hoursPassed>=1){
     // Decay rates: lose 2% happiness per hour, 1% health per hour
-    // Cap at reasonable amounts so players don't return to 0/0
-    const happinessLoss=Math.min(hoursAway*2,S.happiness-10); // Don't go below 10
-    const healthLoss=Math.min(hoursAway*1,S.health-20); // Don't go below 20
+    // Minimum floors so Scribby doesn't die completely
+    const happinessLoss=Math.min(hoursPassed*2,S.happiness-10);
+    const healthLoss=Math.min(hoursPassed*1,S.health-20);
 
     if(happinessLoss>0){
       S.happiness=Math.max(10,S.happiness-happinessLoss);
@@ -1569,25 +1569,20 @@ function applyStatDecay(){
       S.health=Math.max(20,S.health-healthLoss);
     }
 
-    // Only save and notify if significant decay occurred
-    if(happinessLoss>5||healthLoss>5){
-      save();
-    }
+    // Update the decay check timestamp
+    S.lastDecayCheck=now;
+    save();
   }
-
-  // Update last active time
-  S.lastActiveTime=now;
-  save();
 }
 
-// Apply decay on app load
+// Apply any accumulated decay on app load
 applyStatDecay();
 
-// Update last active time periodically (every 5 minutes)
+// Check for decay every hour while app is open
 setInterval(()=>{
-  S.lastActiveTime=Date.now();
-  save();
-},5*60*1000);
+  applyStatDecay();
+  render(); // Update UI to show new stats
+},60*60*1000); // Every hour
 
 // Neglect tracking - timestamps for when stats first hit critical levels
 if(S.zeroHappinessSince===undefined)S.zeroHappinessSince=null;
@@ -5654,13 +5649,13 @@ const startPractice=mode=>{
   render();
 };
 
-const selectPredictByIndex=idx=>{
+function selectPredictByIndex(idx){
   if(idx>=0&&idx<predictOptions.length){
     selectPredict(predictOptions[idx]);
   }
-};
+}
 
-const selectPredict=w=>{
+function selectPredict(w){
   const targetIdx=pState.predictIndices[pState.currentPredictIdx];
   const startIdx=pState.rev.length;
   // Get the correct phrase from current position to checkpoint
@@ -5696,9 +5691,9 @@ const selectPredict=w=>{
     }
   }
   render();
-};
+}
 
-const advancePredictRound=()=>{
+function advancePredictRound(){
   pState.round++;
   const patterns=[4,3,2,1]; // every 4th, 3rd, 2nd, every word
   const contexts=[null,null,5,2]; // full, full, last 5, last 2
@@ -5724,12 +5719,12 @@ const advancePredictRound=()=>{
   pState.roundComplete=false;
   pState.wrong=false;
   render();
-};
+}
 
-const exitPredictEarly=()=>{
+function exitPredictEarly(){
   pState.done=true;
   completePractice();
-};
+}
 const checkBlanks=()=>{
   const exp=pState.missing[pState.cBlank];
   if(clean(pState.inp)===clean(exp)){
@@ -8327,15 +8322,7 @@ function render(){
       }
       predictOptions=shuffle([correctPhrase,...decoyPhrases]);
 
-      // Generate hint based on hintType (use first word of phrase)
-      let hintHtml='';
-      if(pState.hintType==='firstLetter'&&phraseWords.length>0){
-        hintHtml=`<p class="text-purple-400 text-xs mb-2">Hint: Starts with "${phraseWords[0][0].toUpperCase()}"</p>`;
-      }else if(pState.hintType==='letterCount'){
-        hintHtml=`<p class="text-purple-400 text-xs mb-2">Hint: ${phraseWords.length} word${phraseWords.length>1?'s':''}</p>`;
-      }
-
-      inner=`<p class="text-purple-500 text-sm text-center mb-2">What comes next?</p>${hintHtml}<div class="space-y-2">${predictOptions.map((w,i)=>`<button onclick="selectPredictByIndex(${i})" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white py-3 px-4 rounded-xl text-sm">${w}</button>`).join('')}</div>`;
+      inner=`<p class="text-purple-500 text-sm text-center mb-2">What comes next?</p><div class="space-y-2">${predictOptions.map((w,i)=>`<button onclick="selectPredictByIndex(${i})" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white py-3 px-4 rounded-xl text-sm">${w}</button>`).join('')}</div>`;
     }
 
     h=`<div class="p-5">${buddyStatusCompact}
