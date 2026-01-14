@@ -1610,6 +1610,7 @@ let tutorialStep=0; // Current tutorial step (0 = not showing)
 let foodPopup=null; // {foodIdx: number, qty: number} - food detail popup state
 let verseFilter='active'; // 'active' or 'saved' - which verses to show on practice screen
 let practiceReaction=null; // {type: 'correct'|'wrong'|'celebrate', emojis: ['💚'], timestamp: Date.now()}
+let practiceReactionTimeout=null; // Store timeout ID so we can clear it on exit
 let practiceStreak=0; // Track correct answers in a row
 let predictOptions=[]; // Store predict phrase options to avoid onclick escaping issues
 let predictProcessing=false; // Lock to prevent rapid double-clicks
@@ -1629,9 +1630,12 @@ function triggerReaction(type){
   // practiceStreak is already incremented when this is called, so streak=1 means first correct
   const heartCount=type==='wrong'?2:Math.min(practiceStreak,7);
   practiceReaction={type,emojis:[emoji],count:heartCount,timestamp:Date.now()};
+  // Clear any existing timeout before setting new one
+  if(practiceReactionTimeout)clearTimeout(practiceReactionTimeout);
   // Clear reaction after animation
-  setTimeout(()=>{
+  practiceReactionTimeout=setTimeout(()=>{
     practiceReaction=null;
+    practiceReactionTimeout=null;
     render();
   },2500);
 }
@@ -5791,7 +5795,11 @@ function exitPracticeWithXP(){
     completePractice(true);
   }
 
-  // Clear any pending reaction timeout
+  // Clear any pending reaction timeout - IMPORTANT: must clear the timeout itself!
+  if(practiceReactionTimeout){
+    clearTimeout(practiceReactionTimeout);
+    practiceReactionTimeout=null;
+  }
   practiceReaction=null;
 
   // Force exit to home - reset ALL practice state completely
@@ -5801,9 +5809,7 @@ function exitPracticeWithXP(){
   pVerse=null;
   selectedVerse=null;
   screen='home';
-
-  // Use requestAnimationFrame to ensure DOM updates after state changes
-  requestAnimationFrame(()=>render());
+  render();
 }
 
 function exitPredictEarly(){
