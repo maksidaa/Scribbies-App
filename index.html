@@ -4806,9 +4806,9 @@ function getPracticeStatusBar(){
   }
 
   // Much larger Scribby - 200px container with scale 0.8
-  return`<div class="bg-white/10 rounded-2xl p-5 mb-3 overflow-visible">
+  return`<div class="bg-white/10 rounded-2xl p-5 mb-3" style="position:relative;z-index:1;">
     <div class="flex items-center justify-center gap-6">
-      <div class="relative flex-shrink-0" style="width:200px;height:200px;overflow:visible;">
+      <div class="relative flex-shrink-0" style="width:200px;height:200px;overflow:hidden;pointer-events:none;">
         <div class="${anim}" style="transform-origin:center center;width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
           <div style="transform:scale(0.83);transform-origin:center center;">
             ${renderBuddyVisual()}
@@ -8424,7 +8424,7 @@ function render(){
         </div>
         <p class="text-white/60">${pState.currentPredictIdx}/${pState.total}</p>
       </div>
-      <div class="bg-white/95 rounded-3xl p-5 ${pState.wrong?'shake':''}" style="position:relative;z-index:5;">
+      <div class="bg-white/95 rounded-3xl p-5 ${pState.wrong?'shake':''}" style="position:relative;z-index:50;">
         <div class="flex justify-between items-center mb-2">
           <p class="text-purple-600 font-medium">${pVerse.ref}</p>
           <div class="flex gap-1">${[1,2,3,4].map(r=>`<div class="w-2 h-2 rounded-full ${r<pState.round?'bg-green-500':r===pState.round?'bg-yellow-400':'bg-purple-200'}"></div>`).join('')}</div>
