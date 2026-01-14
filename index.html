@@ -4768,9 +4768,9 @@ function getPracticeStatusBar(){
   ).join(''):'';
 
   // Much larger Scribby - 200px container with scale 0.8
-  return`<div class="bg-white/10 rounded-2xl p-5 mb-3">
+  return`<div class="bg-white/10 rounded-2xl p-5 mb-3 overflow-hidden">
     <div class="flex items-center justify-center gap-6">
-      <div class="relative flex-shrink-0" style="width:200px;height:210px;">
+      <div class="relative flex-shrink-0" style="width:200px;height:200px;overflow:hidden;">
         <div class="${anim}" style="transform-origin:center center;width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
           <div style="transform:scale(0.83);transform-origin:center center;">
             ${renderBuddyVisual()}
@@ -6034,21 +6034,23 @@ const completePractice=()=>{
   const wrongPenalty=Math.max(0.5,1-(pState.wrongCount||0)*0.05);
   xp=Math.round(xp*wrongPenalty);
 
-  // Length bonus based on word count
-  const wordCount=getWords(v.text).length;
+  // Length bonus based on word count (not for match game since it tests multiple verses)
   let lengthBonus=0;
   let lengthMultiplier=1.0;
-  if(wordCount>=40){
-    lengthMultiplier=2.0;
-    lengthBonus=Math.round(baseXP);
-  }else if(wordCount>=25){
-    lengthMultiplier=1.5;
-    lengthBonus=Math.round(baseXP*0.5);
-  }else if(wordCount>=15){
-    lengthMultiplier=1.2;
-    lengthBonus=Math.round(baseXP*0.2);
+  if(pMode!=='match'){
+    const wordCount=getWords(v.text).length;
+    if(wordCount>=40){
+      lengthMultiplier=2.0;
+      lengthBonus=Math.round(baseXP);
+    }else if(wordCount>=25){
+      lengthMultiplier=1.5;
+      lengthBonus=Math.round(baseXP*0.5);
+    }else if(wordCount>=15){
+      lengthMultiplier=1.2;
+      lengthBonus=Math.round(baseXP*0.2);
+    }
+    xp+=lengthBonus;
   }
-  xp+=lengthBonus;
 
   // Add review bonus if mastered
   const reviewBonus=v.mastery>=5?getReviewBonus(v):0;
