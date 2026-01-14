@@ -8346,7 +8346,7 @@ function render(){
   }
 
   else if(pMode==='predict'){
-    const buddyStatusCompact=getPracticeStatusBar();
+    // const buddyStatusCompact=getPracticeStatusBar(); // Temporarily disabled for debugging
     const p=pState.total>0?Math.round(pState.correct/pState.total*100):0;
     const roundNames=['','Round 1: Easy','Round 2: Medium','Round 3: Hard','Round 4: Master'];
     const roundDesc=['','Every 4th word + hints','Every 3rd word + letter count','Every 2nd word, limited context','Every word, minimal context'];
