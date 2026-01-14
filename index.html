@@ -5777,6 +5777,7 @@ function advancePredictRound(){
 }
 
 function exitPracticeWithXP(){
+  console.log('exitPracticeWithXP called', {pMode, screen, pStateCompleted: pState.completed, pStateCelebration: pState.celebration});
   // Save round progress for this verse/mode before exiting
   if(pVerse && pMode){
     const v=S.verses.find(x=>x.id===pVerse.id);
@@ -5809,7 +5810,9 @@ function exitPracticeWithXP(){
   pVerse=null;
   selectedVerse=null;
   screen='home';
+  console.log('exitPracticeWithXP before render', {pMode, screen, pStateCelebration: pState.celebration, pStateEvolving: pState.evolving});
   render();
+  console.log('exitPracticeWithXP after render', {pMode, screen});
 }
 
 function exitPredictEarly(){
