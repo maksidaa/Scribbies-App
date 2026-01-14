@@ -8415,16 +8415,16 @@ function render(){
       inner=`<p class="text-purple-500 text-sm text-center mb-2">What comes next?</p><div class="space-y-2" style="position:relative;z-index:100;">${predictOptions.map((w,i)=>`<button type="button" onclick="console.log('DIRECT CLICK ${i}');selectPredictByIndex(${i})" data-predict-idx="${i}" class="predict-btn w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white py-3 px-4 rounded-xl text-sm" style="position:relative;z-index:100;pointer-events:auto;cursor:pointer;">${escapeHtml(w)}</button>`).join('')}</div>`;
     }
 
-    h=`<div class="p-5">${buddyStatusCompact}
-      <div class="flex justify-between items-center mb-4" style="position:relative;z-index:10;">
-        <button type="button" onclick="console.log('X CLICKED');pMode=null;render()" class="close-practice-btn text-white text-xl font-bold px-2" style="position:relative;z-index:100;pointer-events:auto;cursor:pointer;">✕</button>
+    h=`<div class="p-5">
+      <div class="flex justify-between items-center mb-4">
+        <button type="button" onclick="console.log('X CLICKED');pMode=null;render()" class="close-practice-btn text-white text-xl font-bold px-2 bg-red-500 rounded-lg">✕</button>
         <div class="text-center">
           <p class="text-white font-semibold">🎯 Predict</p>
           <p class="text-white/60 text-xs">${roundNames[pState.round]}</p>
         </div>
         <p class="text-white/60">${pState.currentPredictIdx}/${pState.total}</p>
       </div>
-      <div class="bg-white/95 rounded-3xl p-5 ${pState.wrong?'shake':''}" style="position:relative;z-index:50;">
+      <div class="bg-white rounded-3xl p-5">
         <div class="flex justify-between items-center mb-2">
           <p class="text-purple-600 font-medium">${pVerse.ref}</p>
           <div class="flex gap-1">${[1,2,3,4].map(r=>`<div class="w-2 h-2 rounded-full ${r<pState.round?'bg-green-500':r===pState.round?'bg-yellow-400':'bg-purple-200'}"></div>`).join('')}</div>
