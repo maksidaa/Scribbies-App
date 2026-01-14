@@ -1646,10 +1646,20 @@ const TUTORIAL_STEPS=[
   {title:'Meet Your Scribby!',text:'This is your new friend! They start as an egg and grow as you learn scriptures together.',icon:'🥚',highlight:'buddy'},
   {title:'Practice Scriptures',text:'Tap "Practice" to start learning! Your Scribby earns XP when you practice, which helps them grow.',icon:'📖',highlight:'practice'},
   {title:'Feed & Play',text:'Keep your Scribby happy by feeding them treats and playing games. Happy Scribbies grow faster!',icon:'🍎',highlight:'happiness'},
-  {title:'Manage Your Verses',text:'Your starter verses are ready to go! You can add more from the Library, or remove ones you\'ve mastered.',icon:'✏️',highlight:'verses'},
   {title:'Watch Them Evolve!',text:'As your Scribby grows, they\'ll transform into unique creatures. Collect different variants in your Album!',icon:'✨',highlight:'album'},
   {title:'Trade With Friends!',text:'Connect with friends to trade Scribbies and items! Complete your collection by swapping rare variants.',icon:'🤝',highlight:'social'}
 ];
+
+// Verse management tutorial (shown after initial tutorial, on practice screen)
+const VERSE_TUTORIAL_STEPS=[
+  {title:'Your Verses Are Stored!',text:'We\'ve added starter verses to your "Stored" section. These are saved for later - you\'ll need to move some to "Practice Now" to start learning!',icon:'📚'},
+  {title:'Find Your Stored Verses',text:'Tap the "Stored" tab to see all your saved verses. You can store verses you want to learn later.',icon:'📂',action:'showStored'},
+  {title:'Move to Practice',text:'Tap any stored verse, then tap "Practice Now" to move it to your active practice list!',icon:'▶️',action:'highlightVerse'},
+  {title:'Add More Anytime',text:'Want more verses? Tap the + button to browse the full library and add scriptures or quotes that inspire you!',icon:'➕',action:'highlightAdd'},
+  {title:'You\'re Ready!',text:'Now go pick some verses to practice! Your Scribby is excited to start learning with you!',icon:'🎉'}
+];
+
+let verseTutorialStep=0;
 
 function showTutorial(){
   tutorialStep=1;
@@ -1661,6 +1671,8 @@ function nextTutorial(){
   if(tutorialStep>TUTORIAL_STEPS.length){
     tutorialStep=0;
     localStorage.setItem('tutorialComplete','true');
+    // Start verse management tutorial
+    startVerseTutorial();
   }
   render();
 }
@@ -1668,6 +1680,41 @@ function nextTutorial(){
 function skipTutorial(){
   tutorialStep=0;
   localStorage.setItem('tutorialComplete','true');
+  // Start verse management tutorial
+  startVerseTutorial();
+  render();
+}
+
+function startVerseTutorial(){
+  if(!localStorage.getItem('verseTutorialComplete')){
+    verseTutorialStep=1;
+    screen='practice';
+    verseFilter='saved'; // Show stored tab
+  }
+}
+
+function nextVerseTutorial(){
+  const currentStep=VERSE_TUTORIAL_STEPS[verseTutorialStep-1];
+  // Handle actions for each step
+  if(currentStep?.action==='showStored'){
+    verseFilter='saved';
+  }else if(currentStep?.action==='highlightAdd'){
+    // Stay on practice screen
+  }
+
+  verseTutorialStep++;
+  if(verseTutorialStep>VERSE_TUTORIAL_STEPS.length){
+    verseTutorialStep=0;
+    localStorage.setItem('verseTutorialComplete','true');
+    verseFilter='active'; // Switch back to active tab
+  }
+  render();
+}
+
+function skipVerseTutorial(){
+  verseTutorialStep=0;
+  localStorage.setItem('verseTutorialComplete','true');
+  verseFilter='active';
   render();
 }
 
@@ -2985,7 +3032,7 @@ async function completeOnboarding(){
             mastery:0,
             modeUsage:{predict:0,blanks:0,match:0,jumble:0,first:0,recall:0,hangman:0},
             lastPracticed:null,
-            status:'active'
+            status:'saved' // Start in "stored" so tutorial can teach moving to active
           });
         }
       }
@@ -8528,6 +8575,29 @@ function render(){
         </div>
         <div class="flex justify-center gap-1 mt-4">
           ${TUTORIAL_STEPS.map((s,i)=>`<div class="w-2 h-2 rounded-full ${i<tutorialStep?'bg-purple-500':'bg-purple-200'}"></div>`).join('')}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  // Verse management tutorial overlay (shown on practice screen after initial tutorial)
+  if(verseTutorialStep>0&&verseTutorialStep<=VERSE_TUTORIAL_STEPS.length&&screen==='practice'){
+    const step=VERSE_TUTORIAL_STEPS[verseTutorialStep-1];
+    const isLast=verseTutorialStep===VERSE_TUTORIAL_STEPS.length;
+    const storedCount=S.verses.filter(v=>v.status==='saved').length;
+
+    h+=`<div class="fixed inset-0 bg-black/60 z-[100] flex items-end justify-center p-4 pb-24">
+      <div class="bg-white rounded-3xl p-5 max-w-sm w-full text-center animate-bounce-in shadow-2xl">
+        <div class="text-4xl mb-2">${step.icon}</div>
+        <h2 class="text-lg font-bold text-purple-800 mb-1">${step.title}</h2>
+        <p class="text-purple-600 text-sm mb-4">${step.text}</p>
+        ${storedCount>0&&verseTutorialStep===1?`<p class="text-purple-500 text-xs mb-3 bg-purple-50 rounded-lg p-2">You have <b>${storedCount} verses</b> waiting in your Stored section!</p>`:''}
+        <div class="flex gap-3">
+          ${!isLast?`<button onclick="skipVerseTutorial()" class="flex-1 py-2.5 rounded-xl bg-purple-100 text-purple-600 font-semibold text-sm">Skip</button>`:''}
+          <button onclick="nextVerseTutorial()" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-semibold text-sm">${isLast?'Got it!':'Next →'}</button>
+        </div>
+        <div class="flex justify-center gap-1 mt-3">
+          ${VERSE_TUTORIAL_STEPS.map((s,i)=>`<div class="w-1.5 h-1.5 rounded-full ${i<verseTutorialStep?'bg-purple-500':'bg-purple-200'}"></div>`).join('')}
         </div>
       </div>
     </div>`;
