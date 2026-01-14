@@ -1621,21 +1621,14 @@ function escapeHtml(str){
 
 // Trigger a practice reaction animation
 function triggerReaction(type){
-  console.log('triggerReaction called with:', type);
-  try{
-    // Simple emojis: heart for correct/streak/celebrate, sad for wrong
-    let emoji='❤️';
-    if(type==='wrong')emoji='😢';
-    practiceReaction={type,emojis:[emoji],timestamp:Date.now()};
-    console.log('practiceReaction set:', practiceReaction);
-    // Clear reaction after animation (longer for the floating hearts)
-    setTimeout(()=>{practiceReaction=null;render()},2500);
-    console.log('About to call render() from triggerReaction');
+  let emoji='❤️';
+  if(type==='wrong')emoji='😢';
+  practiceReaction={type,emojis:[emoji],timestamp:Date.now()};
+  // Clear reaction after animation
+  setTimeout(()=>{
+    practiceReaction=null;
     render();
-    console.log('render() completed in triggerReaction');
-  }catch(err){
-    console.error('Error in triggerReaction:', err);
-  }
+  },2500);
 }
 
 // Get mini scribby HTML for practice screens
@@ -5699,63 +5692,40 @@ function selectPredictByIndex(idx){
 }
 
 function selectPredict(w){
-  console.log('selectPredict called with:', w);
-  console.log('pState:', JSON.stringify(pState));
-  try{
-    const targetIdx=pState.predictIndices[pState.currentPredictIdx];
-    const startIdx=pState.rev.length;
-    console.log('targetIdx:', targetIdx, 'startIdx:', startIdx);
-    // Get the correct phrase from current position to checkpoint
-    const phraseWords=pState.W.slice(startIdx,targetIdx+1);
-    const correctPhrase=phraseWords.join(' ');
-    console.log('correctPhrase:', correctPhrase, 'selected:', w);
-    // Add all words up to and including the target to revealed
-    while(pState.rev.length<=targetIdx){
-      pState.rev.push(pState.W[pState.rev.length]);
-    }
-    if(clean(w)===clean(correctPhrase)){
-      console.log('CORRECT!');
-      console.log('pState.correct++ from', pState.correct);
-      pState.correct++;
-      console.log('pState.wrong=false');
-      pState.wrong=false;
-      console.log('practiceStreak++ from', practiceStreak);
-      practiceStreak++;
-      console.log('About to call triggerReaction, streak:', practiceStreak);
-      triggerReaction(practiceStreak>=3?'streak':'correct');
-      console.log('triggerReaction returned');
-    }else{
-      console.log('WRONG - expected:', clean(correctPhrase), 'got:', clean(w));
-      console.log('Setting pState.wrong=true');
-      pState.wrong=true;
-      console.log('Setting pState.wrongCount++');
-      pState.wrongCount++;
-      console.log('Setting practiceStreak=0');
-      practiceStreak=0;
-      console.log('About to call triggerReaction(wrong)');
-      triggerReaction('wrong');
-      console.log('triggerReaction(wrong) returned');
-    }
-    pState.currentPredictIdx++;
-    pState.cur=targetIdx;
-
-    if(pState.currentPredictIdx>=pState.predictIndices.length){
-      // Round complete!
-      pState.roundComplete=true;
-      const accuracy=pState.total>0?pState.correct/pState.total:0;
-      pState.roundXP=Math.max(0.5,Math.round(accuracy*2*10)/10); // 0.5-2 XP per round based on accuracy
-      pState.totalXP=(pState.totalXP||0)+pState.roundXP;
-      if(pState.round>=4){
-        pState.done=true;
-        triggerReaction('celebrate');
-      }
-    }
-    console.log('About to call render()');
-    render();
-    console.log('render() completed');
-  }catch(err){
-    console.error('Error in selectPredict:', err);
+  const targetIdx=pState.predictIndices[pState.currentPredictIdx];
+  const startIdx=pState.rev.length;
+  const phraseWords=pState.W.slice(startIdx,targetIdx+1);
+  const correctPhrase=phraseWords.join(' ');
+  // Add all words up to and including the target to revealed
+  while(pState.rev.length<=targetIdx){
+    pState.rev.push(pState.W[pState.rev.length]);
   }
+  if(clean(w)===clean(correctPhrase)){
+    pState.correct++;
+    pState.wrong=false;
+    practiceStreak++;
+    triggerReaction(practiceStreak>=3?'streak':'correct');
+  }else{
+    pState.wrong=true;
+    pState.wrongCount++;
+    practiceStreak=0;
+    triggerReaction('wrong');
+  }
+  pState.currentPredictIdx++;
+  pState.cur=targetIdx;
+
+  if(pState.currentPredictIdx>=pState.predictIndices.length){
+    // Round complete!
+    pState.roundComplete=true;
+    const accuracy=pState.total>0?pState.correct/pState.total:0;
+    pState.roundXP=Math.max(0.5,Math.round(accuracy*2*10)/10);
+    pState.totalXP=(pState.totalXP||0)+pState.roundXP;
+    if(pState.round>=4){
+      pState.done=true;
+      triggerReaction('celebrate');
+    }
+  }
+  render();
 }
 
 function advancePredictRound(){
@@ -6245,8 +6215,6 @@ const completePractice=()=>{
 };
 
 function render(){
-  console.log('render() starting, pMode:', pMode, 'screen:', screen);
-  try{
   // Clean up any expired pending trades
   if(typeof cleanupExpiredTrades==='function')cleanupExpiredTrades();
 
@@ -8346,7 +8314,7 @@ function render(){
   }
 
   else if(pMode==='predict'){
-    // const buddyStatusCompact=getPracticeStatusBar(); // Temporarily disabled for debugging
+    const buddyStatusCompact=getPracticeStatusBar();
     const p=pState.total>0?Math.round(pState.correct/pState.total*100):0;
     const roundNames=['','Round 1: Easy','Round 2: Medium','Round 3: Hard','Round 4: Master'];
     const roundDesc=['','Every 4th word + hints','Every 3rd word + letter count','Every 2nd word, limited context','Every word, minimal context'];
@@ -8387,8 +8355,7 @@ function render(){
       </div>`;
     }else{
       const targetIdx=pState.predictIndices[pState.currentPredictIdx];
-      const startIdx=pState.rev.length; // Where revealed text ends
-      // Get the phrase from revealed position to checkpoint (inclusive)
+      const startIdx=pState.rev.length;
       const phraseWords=pState.W.slice(startIdx,targetIdx+1);
       const correctPhrase=phraseWords.join(' ');
 
@@ -8404,20 +8371,27 @@ function render(){
         }
       }
       // If we don't have enough decoys, shuffle words from different parts
-      while(decoyPhrases.length<2){
+      // Safety: limit iterations to prevent infinite loop
+      let safetyCounter=0;
+      while(decoyPhrases.length<2&&safetyCounter<100){
+        safetyCounter++;
         const shuffled=[...phraseWords].sort(()=>Math.random()-0.5).join(' ');
         if(shuffled!==correctPhrase&&!decoyPhrases.includes(shuffled)){
           decoyPhrases.push(shuffled);
         }
+        // If only 1 word, we can't shuffle to get different result, so just use placeholder
+        if(phraseWords.length<=1&&decoyPhrases.length<2){
+          decoyPhrases.push('(option '+(decoyPhrases.length+1)+')');
+        }
       }
       predictOptions=shuffle([correctPhrase,...decoyPhrases]);
 
-      inner=`<p class="text-purple-500 text-sm text-center mb-2">What comes next?</p><div class="space-y-2" style="position:relative;z-index:100;">${predictOptions.map((w,i)=>`<button type="button" onclick="console.log('DIRECT CLICK ${i}');selectPredictByIndex(${i})" data-predict-idx="${i}" class="predict-btn w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white py-3 px-4 rounded-xl text-sm" style="position:relative;z-index:100;pointer-events:auto;cursor:pointer;">${escapeHtml(w)}</button>`).join('')}</div>`;
+      inner=`<p class="text-purple-500 text-sm text-center mb-2">What comes next?</p><div class="space-y-2">${predictOptions.map((w,i)=>`<button type="button" onclick="selectPredictByIndex(${i})" class="predict-btn w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white py-3 px-4 rounded-xl text-sm">${escapeHtml(w)}</button>`).join('')}</div>`;
     }
 
-    h=`<div class="p-5">
+    h=`<div class="p-5">${buddyStatusCompact}
       <div class="flex justify-between items-center mb-4">
-        <button type="button" onclick="console.log('X CLICKED');pMode=null;render()" class="close-practice-btn text-white text-xl font-bold px-2 bg-red-500 rounded-lg">✕</button>
+        <button type="button" onclick="pMode=null;render()" class="text-white text-xl font-bold px-2">✕</button>
         <div class="text-center">
           <p class="text-white font-semibold">🎯 Predict</p>
           <p class="text-white/60 text-xs">${roundNames[pState.round]}</p>
@@ -9393,10 +9367,6 @@ function render(){
       cursorPos=null;
     }
   },10);
-  console.log('render() completed successfully');
-  }catch(err){
-    console.error('Error in render():', err);
-  }
 }
 
 // Clean up old library storage format (if it exists)
@@ -9418,27 +9388,18 @@ document.addEventListener('mousemove',onDrag);
 document.addEventListener('touchend',endDrag);
 document.addEventListener('mouseup',endDrag);
 
-// Event delegation for predict mode buttons (more reliable than inline onclick)
+// Event delegation for predict mode buttons (backup for inline onclick)
 document.addEventListener('click',function(e){
-  console.log('Click detected on:', e.target);
-  console.log('Target classes:', e.target.className);
-  // Handle predict option buttons
   const predictBtn=e.target.closest('.predict-btn');
-  console.log('Predict btn found:', predictBtn);
   if(predictBtn){
     const idx=parseInt(predictBtn.dataset.predictIdx,10);
-    console.log('Predict idx:', idx, 'Options:', predictOptions);
     if(!isNaN(idx)&&idx>=0&&idx<predictOptions.length){
-      console.log('Calling selectPredict with:', predictOptions[idx]);
       selectPredict(predictOptions[idx]);
     }
     return;
   }
-  // Handle close practice button
   const closeBtn=e.target.closest('.close-practice-btn');
-  console.log('Close btn found:', closeBtn);
   if(closeBtn){
-    console.log('Closing practice mode');
     pMode=null;
     render();
     return;
