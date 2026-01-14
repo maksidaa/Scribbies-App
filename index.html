@@ -5715,10 +5715,15 @@ function selectPredict(w){
     }
     if(clean(w)===clean(correctPhrase)){
       console.log('CORRECT!');
+      console.log('pState.correct++ from', pState.correct);
       pState.correct++;
+      console.log('pState.wrong=false');
       pState.wrong=false;
+      console.log('practiceStreak++ from', practiceStreak);
       practiceStreak++;
+      console.log('About to call triggerReaction, streak:', practiceStreak);
       triggerReaction(practiceStreak>=3?'streak':'correct');
+      console.log('triggerReaction returned');
     }else{
       console.log('WRONG - expected:', clean(correctPhrase), 'got:', clean(w));
       console.log('Setting pState.wrong=true');
