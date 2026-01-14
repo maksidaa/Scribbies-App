@@ -8448,7 +8448,7 @@ function render(){
       // Build bonus breakdown display
       let bonusLines='';
       if(multiplier>1)bonusLines+=`<div class="flex justify-between"><span>Mode variety</span><span>×${multiplier.toFixed(1)}</span></div>`;
-      if(wrongPenalty<1)bonusLines+=`<div class="flex justify-between"><span>Wrong answers</span><span>×${wrongPenalty.toFixed(2)}</span></div>`;
+      if(wrongPenalty<1)bonusLines+=`<div class="flex justify-between text-red-400"><span>Wrong answers</span><span>-${Math.round((1-wrongPenalty)*100)}%</span></div>`;
       if(lengthBonus>0)bonusLines+=`<div class="flex justify-between"><span>Long verse</span><span>+${lengthBonus}</span></div>`;
       if(reviewBonus>0)bonusLines+=`<div class="flex justify-between"><span>Review bonus</span><span>+${reviewBonus}</span></div>`;
       if(firstPracticeBonus>0)bonusLines+=`<div class="flex justify-between"><span>First today!</span><span>+${firstPracticeBonus}</span></div>`;
@@ -8580,7 +8580,7 @@ function render(){
       // Build bonus breakdown display
       let bonusLines='';
       if(multiplier>1)bonusLines+=`<div class="flex justify-between"><span>Mode variety</span><span>×${multiplier.toFixed(1)}</span></div>`;
-      if(wrongPenalty<1)bonusLines+=`<div class="flex justify-between"><span>Wrong answers</span><span>×${wrongPenalty.toFixed(2)}</span></div>`;
+      if(wrongPenalty<1)bonusLines+=`<div class="flex justify-between text-red-400"><span>Wrong answers</span><span>-${Math.round((1-wrongPenalty)*100)}%</span></div>`;
       if(lengthBonus>0)bonusLines+=`<div class="flex justify-between"><span>Long verse</span><span>+${lengthBonus}</span></div>`;
       if(reviewBonus>0)bonusLines+=`<div class="flex justify-between"><span>Review bonus</span><span>+${reviewBonus}</span></div>`;
       if(firstPracticeBonus>0)bonusLines+=`<div class="flex justify-between"><span>First today!</span><span>+${firstPracticeBonus}</span></div>`;
