@@ -1548,6 +1548,47 @@ if(S.snacksFed!==undefined){
   delete S.snacksFed;
 }
 if(S.health===undefined)S.health=75;
+if(S.lastActiveTime===undefined)S.lastActiveTime=Date.now();
+
+// Apply stat decay based on time away from the app
+function applyStatDecay(){
+  const now=Date.now();
+  const lastActive=S.lastActiveTime||now;
+  const hoursAway=Math.floor((now-lastActive)/(1000*60*60));
+
+  if(hoursAway>=1){
+    // Decay rates: lose 2% happiness per hour, 1% health per hour
+    // Cap at reasonable amounts so players don't return to 0/0
+    const happinessLoss=Math.min(hoursAway*2,S.happiness-10); // Don't go below 10
+    const healthLoss=Math.min(hoursAway*1,S.health-20); // Don't go below 20
+
+    if(happinessLoss>0){
+      S.happiness=Math.max(10,S.happiness-happinessLoss);
+    }
+    if(healthLoss>0){
+      S.health=Math.max(20,S.health-healthLoss);
+    }
+
+    // Only save and notify if significant decay occurred
+    if(happinessLoss>5||healthLoss>5){
+      save();
+    }
+  }
+
+  // Update last active time
+  S.lastActiveTime=now;
+  save();
+}
+
+// Apply decay on app load
+applyStatDecay();
+
+// Update last active time periodically (every 5 minutes)
+setInterval(()=>{
+  S.lastActiveTime=Date.now();
+  save();
+},5*60*1000);
+
 // Neglect tracking - timestamps for when stats first hit critical levels
 if(S.zeroHappinessSince===undefined)S.zeroHappinessSince=null;
 if(S.zeroHealthSince===undefined)S.zeroHealthSince=null;
@@ -1591,11 +1632,11 @@ function getMiniScribby(){
     (practiceReaction.type==='wrong'?'practice-sad':
      practiceReaction.type==='celebrate'?'practice-celebrate':'practice-bounce'):'';
   const reactionEmojis=practiceReaction?practiceReaction.emojis.map((e,i)=>
-    `<span style="position:absolute;left:${40+i*20}%;top:-5px;font-size:20px;animation:float-up-hearts 0.6s ease-out forwards;animation-delay:${i*0.1}s">${e}</span>`
+    `<span style="position:absolute;left:${60+i*15}%;top:10px;font-size:32px;animation:float-up-hearts 0.6s ease-out forwards;animation-delay:${i*0.1}s">${e}</span>`
   ).join(''):'';
-  return`<div class="relative" style="width:70px;height:70px;overflow:visible;">
+  return`<div class="relative" style="width:120px;height:130px;overflow:visible;">
     <div class="${anim}" style="transform-origin:center center;">
-      <div style="transform:scale(0.29);transform-origin:top left;margin:-5px 0 0 -5px;">
+      <div style="transform:scale(0.5);transform-origin:top left;">
         ${renderBuddyVisual()}
       </div>
     </div>
@@ -4706,20 +4747,49 @@ function renderBuddyVisual(){
   return`<div class="buddy-card-container${customizeClass}"><div class="buddy-with-accessories${stateClass}">${stateDecorations}${renderAccessories()}${buddyHTML}</div></div>`;
 }
 
-// Compact buddy status for practice screens - shows actual creature and stage-specific XP
+// Large practice header - prominent centered Scribby with XP bar
 function getPracticeStatusBar(){
   const stage=S.buddyStage||'egg';
-  let xpDisplay;
-  if(stage==='egg')xpDisplay=`${S.eggXP||0}/${STAGES.egg.hatchXP}`;
-  else if(stage==='adult')xpDisplay='Max';
-  else xpDisplay=`${S.growthXP||0}/${STAGES[stage].growthNeeded}`;
+  let xpCurrent, xpMax, xpPercent;
+  if(stage==='egg'){
+    xpCurrent=S.eggXP||0;
+    xpMax=STAGES.egg.hatchXP;
+    xpPercent=Math.min(xpCurrent/xpMax*100,100);
+  }else if(stage==='adult'){
+    xpCurrent=xpMax=100;
+    xpPercent=100;
+  }else{
+    xpCurrent=S.growthXP||0;
+    xpMax=STAGES[stage].growthNeeded;
+    xpPercent=Math.min(xpCurrent/xpMax*100,100);
+  }
 
-  return`<div class="bg-white/10 rounded-2xl p-3 mb-3 flex items-center gap-3">
-    ${getMiniScribby()}
-    <div class="flex-1">
-      <p class="text-white font-bold text-sm">${S.buddyName||'Buddy'}</p>
-      <p class="text-white/70 text-xs">✨ ${xpDisplay} XP</p>
-      ${practiceStreak>=3?`<p class="text-orange-300 text-xs font-bold">🔥 ${practiceStreak} streak!</p>`:''}
+  const anim=practiceReaction?
+    (practiceReaction.type==='wrong'?'practice-sad':
+     practiceReaction.type==='celebrate'?'practice-celebrate':'practice-bounce'):'';
+  const reactionEmojis=practiceReaction?practiceReaction.emojis.map((e,i)=>
+    `<span style="position:absolute;left:50%;transform:translateX(-50%);top:-20px;font-size:42px;animation:float-up-hearts 0.8s ease-out forwards;animation-delay:${i*0.1}s">${e}</span>`
+  ).join(''):'';
+
+  return`<div class="bg-white/10 rounded-2xl p-4 mb-3">
+    <div class="flex flex-col items-center">
+      <div class="relative mb-2" style="width:180px;height:190px;overflow:visible;">
+        <div class="${anim}" style="transform-origin:center center;display:flex;justify-content:center;">
+          <div style="transform:scale(0.75);transform-origin:top center;">
+            ${renderBuddyVisual()}
+          </div>
+        </div>
+        ${reactionEmojis}
+      </div>
+      <p class="text-white font-bold text-xl mb-1">${S.buddyName||'Buddy'}${practiceStreak>=3?` <span class="text-orange-300">🔥${practiceStreak}</span>`:''}</p>
+      <div class="w-full max-w-xs">
+        <div class="flex justify-between items-center mb-1">
+          <span class="text-yellow-300 text-sm">✨ ${stage==='adult'?'Max Level':`${xpCurrent}/${xpMax} XP`}</span>
+        </div>
+        <div class="h-3 bg-white/20 rounded-full overflow-hidden">
+          <div class="h-full bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full transition-all duration-300" style="width:${xpPercent}%"></div>
+        </div>
+      </div>
     </div>
   </div>`;
 }
@@ -5583,12 +5653,15 @@ const startPractice=mode=>{
 
 const selectPredict=w=>{
   const targetIdx=pState.predictIndices[pState.currentPredictIdx];
-  const cor=pState.W[targetIdx];
+  const startIdx=pState.rev.length;
+  // Get the correct phrase from current position to checkpoint
+  const phraseWords=pState.W.slice(startIdx,targetIdx+1);
+  const correctPhrase=phraseWords.join(' ');
   // Add all words up to and including the target to revealed
   while(pState.rev.length<=targetIdx){
     pState.rev.push(pState.W[pState.rev.length]);
   }
-  if(clean(w)===clean(cor)){
+  if(clean(w)===clean(correctPhrase)){
     pState.correct++;
     pState.wrong=false;
     practiceStreak++;
@@ -7489,7 +7562,7 @@ function render(){
   else if(screen==='practice'&&!pMode){
     // Compact buddy status for practice screens
     const buddyStatus=`<div class="bg-white/20 rounded-2xl p-3 mb-4 flex items-center gap-3">
-      <div style="transform:scale(0.35);transform-origin:center;margin:-40px -30px;">${renderBuddyVisual()}</div>
+      <div style="transform:scale(0.5);transform-origin:center;margin:-50px -30px;">${renderBuddyVisual()}</div>
       <div class="flex-1">
         <div class="flex justify-between items-center mb-1">
           <span class="text-white font-semibold text-sm">${getStageName()}</span>
@@ -8220,17 +8293,40 @@ function render(){
       </div>`;
     }else{
       const targetIdx=pState.predictIndices[pState.currentPredictIdx];
-      const cor=pState.W[targetIdx],dec=getDecoys(cor,pVerse.text),opts=shuffle([cor,...dec]);
+      const startIdx=pState.rev.length; // Where revealed text ends
+      // Get the phrase from revealed position to checkpoint (inclusive)
+      const phraseWords=pState.W.slice(startIdx,targetIdx+1);
+      const correctPhrase=phraseWords.join(' ');
 
-      // Generate hint based on hintType
+      // Generate decoy phrases by grabbing other chunks from the verse
+      const decoyPhrases=[];
+      const phraseLen=phraseWords.length;
+      for(let i=0;i<pState.W.length-phraseLen&&decoyPhrases.length<2;i++){
+        if(i!==startIdx){
+          const chunk=pState.W.slice(i,i+phraseLen).join(' ');
+          if(chunk!==correctPhrase&&!decoyPhrases.includes(chunk)){
+            decoyPhrases.push(chunk);
+          }
+        }
+      }
+      // If we don't have enough decoys, shuffle words from different parts
+      while(decoyPhrases.length<2){
+        const shuffled=[...phraseWords].sort(()=>Math.random()-0.5).join(' ');
+        if(shuffled!==correctPhrase&&!decoyPhrases.includes(shuffled)){
+          decoyPhrases.push(shuffled);
+        }
+      }
+      const opts=shuffle([correctPhrase,...decoyPhrases]);
+
+      // Generate hint based on hintType (use first word of phrase)
       let hintHtml='';
-      if(pState.hintType==='firstLetter'){
-        hintHtml=`<p class="text-purple-400 text-xs mb-2">Hint: Starts with "${cor[0].toUpperCase()}"</p>`;
+      if(pState.hintType==='firstLetter'&&phraseWords.length>0){
+        hintHtml=`<p class="text-purple-400 text-xs mb-2">Hint: Starts with "${phraseWords[0][0].toUpperCase()}"</p>`;
       }else if(pState.hintType==='letterCount'){
-        hintHtml=`<p class="text-purple-400 text-xs mb-2">Hint: ${cor.length} letters</p>`;
+        hintHtml=`<p class="text-purple-400 text-xs mb-2">Hint: ${phraseWords.length} word${phraseWords.length>1?'s':''}</p>`;
       }
 
-      inner=`<p class="text-purple-500 text-sm text-center mb-2">What comes next?</p>${hintHtml}<div class="space-y-2">${opts.map(w=>`<button onclick="selectPredict('${w.replace(/'/g,"\\'")}')" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white py-3 rounded-xl">${w}</button>`).join('')}</div>`;
+      inner=`<p class="text-purple-500 text-sm text-center mb-2">What comes next?</p>${hintHtml}<div class="space-y-2">${opts.map(w=>`<button onclick="selectPredict('${w.replace(/'/g,"\\'")}')" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white py-3 px-4 rounded-xl text-sm">${w}</button>`).join('')}</div>`;
     }
 
     h=`<div class="p-5">${buddyStatusCompact}
