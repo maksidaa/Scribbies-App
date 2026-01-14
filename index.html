@@ -5747,7 +5747,7 @@ const checkBlanks=()=>{
       const hintPenalty=Math.min(1.5,(pState.hintsUsed||0)*0.25);
       pState.roundXP=Math.max(0.5,2-hintPenalty);
       pState.totalXP=(pState.totalXP||0)+pState.roundXP;
-      if(pState.round>=6){
+      if(pState.round>=10){
         // All rounds done!
         pState.done=true;
         triggerReaction('celebrate');
@@ -5789,7 +5789,7 @@ const skipBlankWord=()=>{
     const hintPenalty=Math.min(1.5,(pState.hintsUsed||0)*0.25);
     pState.roundXP=Math.max(0.5,2-hintPenalty);
     pState.totalXP=(pState.totalXP||0)+pState.roundXP;
-    if(pState.round>=6){
+    if(pState.round>=10){
       pState.done=true;
     }
   }
@@ -5798,12 +5798,33 @@ const skipBlankWord=()=>{
 
 const advanceBlankRound=()=>{
   pState.round++;
-  const patterns=[6,5,4,3,2,1]; // every 6th, 5th, 4th, 3rd, 2nd, all
-  pState.blankPattern=patterns[pState.round-1]||1;
   const W=pState.W;
-  pState.blanks=W.map((w,i)=>pState.blankPattern===1||(i+1)%pState.blankPattern===0?'':w);
-  pState.missing=W.filter((w,i)=>pState.blankPattern===1||(i+1)%pState.blankPattern===0);
-  pState.missingIndices=W.map((w,i)=>pState.blankPattern===1||(i+1)%pState.blankPattern===0?i:-1).filter(x=>x>=0);
+  let blanks, missing, missingIndices;
+
+  if(pState.round<=5){
+    // Rounds 1-5: Every Nth word is blank
+    const blankPatterns=[6,5,4,3,2]; // every 6th, 5th, 4th, 3rd, 2nd word blank
+    const pattern=blankPatterns[pState.round-1];
+    blanks=W.map((w,i)=>(i+1)%pattern===0?'':w);
+    missing=W.filter((w,i)=>(i+1)%pattern===0);
+    missingIndices=W.map((w,i)=>(i+1)%pattern===0?i:-1).filter(x=>x>=0);
+  }else if(pState.round<=9){
+    // Rounds 6-9: Show every Nth word, rest are blank (1 word, N-1 blanks)
+    const showPatterns=[3,4,5,6]; // show every 3rd=1word2blanks, 4th=1word3blanks, etc.
+    const pattern=showPatterns[pState.round-6];
+    blanks=W.map((w,i)=>i%pattern===0?w:'');
+    missing=W.filter((w,i)=>i%pattern!==0);
+    missingIndices=W.map((w,i)=>i%pattern!==0?i:-1).filter(x=>x>=0);
+  }else{
+    // Round 10: All words blank
+    blanks=W.map(()=>'');
+    missing=[...W];
+    missingIndices=W.map((w,i)=>i);
+  }
+
+  pState.blanks=blanks;
+  pState.missing=missing;
+  pState.missingIndices=missingIndices;
   pState.cBlank=0;
   pState.filledIndices=[];
   pState.roundComplete=false;
@@ -8357,8 +8378,8 @@ function render(){
       return w;
     }).join(' ');
 
-    const roundNames=['','Round 1: Easy','Round 2: Warm Up','Round 3: Medium','Round 4: Challenging','Round 5: Hard','Round 6: Master'];
-    const roundDesc=['','Every 6th word','Every 5th word','Every 4th word','Every 3rd word','Every 2nd word','All words!'];
+    const roundNames=['','Round 1','Round 2','Round 3','Round 4','Round 5','Round 6','Round 7','Round 8','Round 9','Round 10: Master'];
+    const roundDesc=['','Every 6th word','Every 5th word','Every 4th word','Every 3rd word','Every 2nd word','1 word, 2 blanks','1 word, 3 blanks','1 word, 4 blanks','1 word, 5 blanks','All words!'];
 
     let inner='';
     if(pState.done){
@@ -8368,7 +8389,7 @@ function render(){
         <p class="text-purple-600 mb-2">You filled in every word!</p>
         <div class="bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl p-3 mb-4">
           <p class="text-2xl font-bold text-orange-600">+${finalXP} XP</p>
-          <p class="text-orange-500 text-xs">All 6 rounds completed!</p>
+          <p class="text-orange-500 text-xs">All 10 rounds completed!</p>
         </div>
         <button onclick="completePractice()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold py-3 rounded-xl">Collect XP</button>
       </div>`;
@@ -8438,7 +8459,7 @@ function render(){
       <div class="bg-white/95 rounded-3xl p-5">
         <div class="flex justify-between items-center mb-2">
           <p class="text-purple-600 font-medium">${pVerse.ref}</p>
-          <div class="flex gap-1">${[1,2,3,4,5,6].map(r=>`<div class="w-2 h-2 rounded-full ${r<=pState.round?'bg-green-500':'bg-purple-200'}"></div>`).join('')}</div>
+          <div class="flex gap-0.5">${[1,2,3,4,5,6,7,8,9,10].map(r=>`<div class="w-1.5 h-1.5 rounded-full ${r<=pState.round?'bg-green-500':'bg-purple-200'}"></div>`).join('')}</div>
         </div>
         <p class="text-purple-800 mb-4 leading-relaxed">${disp}</p>
         ${inner}
