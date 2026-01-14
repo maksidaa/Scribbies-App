@@ -9361,17 +9361,25 @@ document.addEventListener('mouseup',endDrag);
 
 // Event delegation for predict mode buttons (more reliable than inline onclick)
 document.addEventListener('click',function(e){
+  console.log('Click detected on:', e.target);
+  console.log('Target classes:', e.target.className);
   // Handle predict option buttons
   const predictBtn=e.target.closest('.predict-btn');
+  console.log('Predict btn found:', predictBtn);
   if(predictBtn){
     const idx=parseInt(predictBtn.dataset.predictIdx,10);
+    console.log('Predict idx:', idx, 'Options:', predictOptions);
     if(!isNaN(idx)&&idx>=0&&idx<predictOptions.length){
+      console.log('Calling selectPredict with:', predictOptions[idx]);
       selectPredict(predictOptions[idx]);
     }
     return;
   }
   // Handle close practice button
-  if(e.target.closest('.close-practice-btn')){
+  const closeBtn=e.target.closest('.close-practice-btn');
+  console.log('Close btn found:', closeBtn);
+  if(closeBtn){
+    console.log('Closing practice mode');
     pMode=null;
     render();
     return;
