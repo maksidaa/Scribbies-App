@@ -5777,7 +5777,6 @@ function advancePredictRound(){
 }
 
 function exitPracticeWithXP(){
-  console.log('exitPracticeWithXP called', {pMode, screen, pStateCompleted: pState.completed, pStateCelebration: pState.celebration});
   // Save round progress for this verse/mode before exiting
   if(pVerse && pMode){
     const v=S.verses.find(x=>x.id===pVerse.id);
@@ -5810,9 +5809,7 @@ function exitPracticeWithXP(){
   pVerse=null;
   selectedVerse=null;
   screen='home';
-  console.log('exitPracticeWithXP before render', {pMode, screen, pStateCelebration: pState.celebration, pStateEvolving: pState.evolving});
   render();
-  console.log('exitPracticeWithXP after render', {pMode, screen});
 }
 
 function exitPredictEarly(){
@@ -6102,8 +6099,8 @@ const completePractice=(skipRender=false)=>{
   // Length bonus based on word count (not for match game since it tests multiple verses)
   let lengthBonus=0;
   let lengthMultiplier=1.0;
+  const wordCount=pMode!=='match'?getWords(v.text).length:0;
   if(pMode!=='match'){
-    const wordCount=getWords(v.text).length;
     if(wordCount>=40){
       lengthMultiplier=2.0;
       lengthBonus=Math.ceil(baseXP);
