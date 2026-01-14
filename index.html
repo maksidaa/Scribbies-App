@@ -6806,7 +6806,21 @@ function render(){
         <button onclick="setScreen('trade')" class="bg-white/15 hover:bg-white/25 rounded-xl py-3 px-2 flex flex-col items-center gap-1.5 transition-colors">
           ${renderTradeIcon(24)}
           <span class="text-white text-xs font-medium">Trade</span>
-          <span class="text-white/0 text-xs px-2 py-0.5">·</span>
+          ${(()=>{
+            // Count tradeable items: graduated scribbies + unequipped accessories + tradeable food
+            const graduatedCount=(S.graduatedBuddies||[]).length;
+            const equippedIds=Object.values(S.equipped||{}).filter(id=>id!==null);
+            const accessoryCount=(S.inventory||[]).filter(idx=>{
+              const acc=ACCESSORIES[idx];
+              return acc&&['hat','eyes','held','back','effect'].includes(acc.type)&&!equippedIds.includes(idx);
+            }).length;
+            const foodCount=(S.inventory||[]).filter(idx=>{
+              const acc=ACCESSORIES[idx];
+              return acc&&acc.type==='food';
+            }).length;
+            const total=graduatedCount+accessoryCount+foodCount;
+            return `<span class="bg-white/20 text-white text-xs font-bold px-2 py-0.5 rounded-full">${total}</span>`;
+          })()}
         </button>
       </div>
     </div>`;
