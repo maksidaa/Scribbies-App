@@ -1,6 +1,6 @@
 # Scribbies
 
-A scripture memorization game about hatching and raising creatures. Choose a starter egg, learn short verses, explore three trails, and bring new companions back to camp.
+A scripture memorization game about hatching and raising creatures. Open directly on your egg or pet. Warm it, learn a short verse, hatch it, feed it, and play together. Exploration is a separate shortcut.
 
 ## Play and develop
 
@@ -13,9 +13,9 @@ The local preview runs at http://127.0.0.1:5173. `npm run check` validates the g
 
 ## The adventure
 
-- Eighteen collectible species, three starter choices, three habitats, and eighteen trail encounters.
+- Eighteen collectible species, three habitats, and eighteen trail encounters. A fresh game receives its first egg immediately; returning games keep their selected companion.
 - Eggs earn warmth through practice and care. Hatched companions grow through baby, teen, adult, and radiant stages.
-- Feed berries, play a matching game, choose a traveling companion, and collect wearable charms. Pets stay safe when the player takes a break.
+- Feed berries, buy snacks with earned leaves, play a matching game, choose a companion, and wear charms from the baby stage onward. Pets stay safe when the player takes a break.
 - Five memorization modes: next-word recognition, missing words, word order, first-letter prompts, and full recall. Reading and optional on-device speech precede practice.
 - Recognition alone cannot earn full mastery. Later-day unassisted recall earns the highest level; due dates bring learned verses back for review.
 - A grown-up area for custom verses, backup, restore, sound and motion settings, and resetting progress.
@@ -24,7 +24,7 @@ The included passages use the King James Version. Custom verses keep the wording
 
 ## Saves and privacy
 
-The web app saves locally; the native app uses Capacitor Preferences. A previous snapshot protects against a damaged latest save. JSON backup and restore are available in the grown-up area; iOS uses the native share sheet. There are no game accounts, analytics, ads, chat, purchases, or backend services in this edition. The private web host has its own access and hosting services.
+The web app saves locally; the native app uses Capacitor Preferences. A previous snapshot protects against a damaged latest save. JSON backup and restore are available in the grown-up area; iOS uses the native share sheet. There are no game accounts, analytics, ads, chat, real-money purchases, or backend services in this edition. The private web host has its own access and hosting services.
 
 Compatible original `sb` saves migrate automatically without deleting the original save. Not every original creature has a corresponding adventure species. The original application is preserved as `classic.html`; original source art remains under `js/creatures/`. Classic features such as Firebase accounts and trading are not part of the new release.
 
@@ -46,3 +46,11 @@ npm run ios:open
 ```
 
 The native app is `com.maksidaa.scribbies`, version 2.0.0. It uses the same developer team as Stake Admin, with a separate EAS project and app identity. See [the release guide](docs/ios-release.md) for the EAS workflow and validation limits.
+
+## Home interaction rules
+
+Home is a single pet scene with a compact header, four inventory/exploration shortcuts, one growth meter, and three large care buttons. No introduction, daily-task list, chapter map, achievement panel, or navigation sidebar appears above the pet. Details open in dismissible sheets. Home remains reachable from every secondary screen, and unfinished learning asks before leaving.
+
+The Learn button selects a due review or the first unfinished verse and an appropriate practice mode automatically. New learners begin with word recognition, then progress through word order and recall. Full mode and verse selection stays available in Verses. Completing practice returns home; an egg at 60 warmth hatches with a direct tap. Music, voices, read-aloud ducking, and reduced motion remain supported.
+
+See `docs/art-style.md` for the draft art standard and `/art-review.html` for the original/proposed Hopple comparison. The proposed creature redesign is not applied to the collection until the user reviews it. Firebase sign-in and friend trading remain separate restoration work; they are preserved in `classic.html`, not represented as working shortcuts in the new home.

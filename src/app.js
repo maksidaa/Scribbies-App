@@ -6,20 +6,22 @@ import '@fontsource/nunito/latin-900.css';
 import '../creatures.css';
 import './legacy-animations.css';
 import './styles.css';
+import './home.css';
+import {home,foodShelf,wardrobe,nursery,growthDetails,homeMenu} from './home.js';
 import {Capacitor} from '@capacitor/core';
 import {nativeStorage,exportNativeBackup,isNative,haptic} from './platform.js';
 import {createAudioEngine} from './audio.js';
 import {SPECIES,REGIONS,VERSES,MODES,CHARMS,speciesById} from './data.js';
-import {createState,SAVE_KEY,dayKey,refreshDay,chooseEgg,activeBuddy,hatch,stage,growthInfo,nodeUnlocked,regionUnlocked,nextNode,makeQuestions,checkAnswer,completeSession,care,purchase,claimDaily,dueVerses,addCustomVerse} from './game.js';
+import {createState,SAVE_KEY,dayKey,refreshDay,chooseEgg,activeBuddy,hatch,stage,growthInfo,nodeUnlocked,regionUnlocked,nextNode,makeQuestions,checkAnswer,completeSession,care,purchase,buyBerries,ensureHomeBuddy,homePractice,claimDaily,dueVerses,addCustomVerse} from './game.js';
 import {loadState,saveState,validateState} from './storage.js';
 import {icon} from './icons.js';
 import {art,eggArt,buddyArt,button,progress,escape as e} from './ui.js';
-import {shell,adventure,collection,camp,journal,settings,practice,audioControls} from './views.js';
+import {shell,adventure,collection,camp,journal,settings,practice,audioControls,dailyCard} from './views.js';
 let storage;try{storage=window.localStorage}catch{storage={getItem:()=>null,setItem:()=>{throw new Error('Saving unavailable')},removeItem:()=>{}}}
 let nativeError=null;
 if(isNative()){try{storage=await nativeStorage([SAVE_KEY,SAVE_KEY+'.backup','sb'],()=>notify('Saving failed. Export your adventure before closing the app.'))}catch{nativeError='Native saving could not open. A browser save is being used for this session.'}}
 const loaded=loadState(storage);let state=loaded.state,saveBlocked=loaded.blocked||false;
-let view='adventure',region=0,family='All',owned=false,search='',topic='All',session=null;
+let view='home',region=0,family='All',owned=false,search='',topic='All',session=null;
 let parentUntil=0,gateAnswer=null,pendingImport=null,playState=null,lastFocus=null;
 let toastTimer,searchTimer,speaking=false,speechRun=0,selectedStarter='sprig',pendingStart=null;
 const audio=createAudioEngine();
@@ -47,16 +49,17 @@ function listen(){
 }
 function render(){
  refreshDay(state);document.body.classList.toggle('reduce-motion',!state.settings.motion);
- const content={adventure:()=>adventure(state,region),collection:()=>collection(state,family,owned),camp:()=>camp(state),journal:()=>journal(state,search,topic),settings:()=>settings(state),practice:()=>practice(state,session)};
- if(view==='practice'&&!session)view='adventure';
- audio.configure(state.settings);audio.scene(view,view==='practice'&&session?.phase!=='result');
- app.innerHTML=shell(state,view,(content[view]||content.adventure)(),region);
- document.title=`Scribbies · ${{adventure:'Your adventure',collection:'Scribbypedia',camp:'My camp',journal:'Verse journal',settings:'Grown-up corner',practice:'Learning together'}[view]}`;
+ const content={home:()=>home(state),adventure:()=>adventure(state,region),collection:()=>collection(state,family,owned),camp:()=>camp(state),journal:()=>journal(state,search,topic),settings:()=>settings(state),practice:()=>practice(state,session)};
+ if(view==='practice'&&!session)view='home';
+ audio.configure(state.settings);audio.scene(view==='home'?'camp':view,view==='practice'&&session?.phase!=='result');
+ app.innerHTML=shell(state,view,(content[view]||content.home)(),region);
+ document.title=`Scribbies · ${{home:'Home',adventure:'Your adventure',collection:'Scribbypedia',camp:'My camp',journal:'Verse journal',settings:'Grown-up corner',practice:'Learning together'}[view]}`;
 }
 function navigate(next){
- if(!['adventure','collection','camp','journal','settings'].includes(next))return;
+ if(next==='camp')next='home';
+ if(!['home','adventure','collection','camp','journal','settings'].includes(next))return;
  if(next==='settings'&&parentUntil<Date.now()){parentGate();return}
- const perform=()=>{stopSpeaking();session=null;view=next;render();window.scrollTo({top:0,behavior:'instant'});document.querySelector('#main-content').focus({preventScroll:true})};
+ const perform=()=>{closeDialog();stopSpeaking();session=null;view=next;render();window.scrollTo({top:0,behavior:'instant'});document.querySelector('#main-content').focus({preventScroll:true})};
  if(session&&session.phase!=='result'){askLeave(perform);return}perform();
 }
 function openDialog(title,content,cls=''){
@@ -77,12 +80,12 @@ function showHatch(){
  if(!b){showEggs();return}
  if(b.hatched){notify(`${b.name} is already here!`);return}
  if(b.warmth<60){notify(`Just ${60-b.warmth} more warmth. Learn a verse to help your egg hatch.`);return}
- openDialog('Tap, tap… hello in there!',`<div class="hatch-reveal">${eggArt(b.id,230)}<p>Your egg is ready. Tap below to hatch it.</p>${button(`${icon('sparkles')} Help my egg hatch`,'crack-egg','primary')}</div>`,'hatch-dialog');
+ openDialog('Ready to hatch',`<div class="hatch-reveal">${eggArt(b.id,230)}<p>Your egg is ready. Tap below to hatch it.</p>${button(`${icon('sparkles')} Help my egg hatch`,'crack-egg','primary')}</div>`,'hatch-dialog');
 }
 function crackEgg(){
  if(!hatch(state))return;
  persist();sound('hatch');render();const b=activeBuddy(state);
- openDialog(`Hello, ${e(b.name)}!`,`<div class="hatch-reveal hatch-celebrate">${buddyArt(b,240)}<div class="celebration-sprinkles" aria-hidden="true">✦ · ✧ · ✦</div><h3>Your Scribby has hatched!</h3><p>Name your new buddy. Then feed, play, and practice to help it grow.</p><form id="hatch-name-form"><label>What shall we call your friend?<input name="buddyName" maxlength="24" value="${e(b.name)}" required autocomplete="off"></label>${button(`Welcome to the family ${icon('heart')}`,'save-hatch-name','primary wide','type="submit"')}</form></div>`,'hatch-dialog');
+ openDialog(`Hello, ${e(b.name)}!`,`<div class="hatch-reveal hatch-celebrate">${buddyArt(b,240)}<div class="celebration-sprinkles" aria-hidden="true">✦ · ✧ · ✦</div><h3>Your Scribby has hatched!</h3><p>Give your Scribby a name.</p><form id="hatch-name-form"><label>What shall we call your friend?<input name="buddyName" maxlength="24" value="${e(b.name)}" required autocomplete="off"></label>${button(`Let’s play ${icon('heart')}`,'save-hatch-name','primary wide','type="submit"')}</form></div>`,'hatch-dialog');
 }
 function startAdventure(node=nextNode(state,region)){
  if(!Number.isInteger(node)||node<0||node>5||!nodeUnlocked(state,region,node)){notify('There’s a little discovery before this one. Follow the glowing marker.');return}
@@ -122,9 +125,9 @@ function nextQuestion(){
 let leaveCallback=null;
 function askLeave(callback){leaveCallback=callback;openDialog('Leave this practice?',`<p class="modal-intro">Your friends and earlier discoveries are safe. This unfinished practice will start from the beginning next time.</p><div class="button-row">${button('Keep learning','close-modal','primary')}${button('Leave for now','confirm-leave','outline')}</div>`)}
 function doCare(kind){const old=stage(activeBuddy(state));const result=care(state,kind);if(result.ok){persist();render();const grew=stage(activeBuddy(state))!==old;sound(grew?'evolve':kind);if(grew)notify('Your Scribby grew! Check out its new life stage.');else notify(result.message)}else notify(result.message);animateBuddy(kind)}
-function animateBuddy(type){const el=document.querySelector('.camp-creature');if(!el)return;el.classList.remove('reaction-play','reaction-feed','reaction-pet');void el.offsetWidth;el.classList.add(`reaction-${type==='feed'?'feed':type==='play'?'play':'pet'}`);const speech=document.querySelector('#camp-speech');if(speech)speech.textContent=type==='feed'?'That was delicious!':type==='play'?'Again, again! That was wonderful!':'Happy to see you!'}
+function animateBuddy(type){const el=document.querySelector('.camp-creature');if(!el)return;el.classList.remove('reaction-play','reaction-feed','reaction-pet');void el.offsetWidth;el.classList.add(`reaction-${type==='feed'?'feed':type==='play'?'play':'pet'}`);const speech=document.querySelector('#camp-speech');if(speech)speech.textContent=type==='warm'?'A little warmer. Keep learning!':type==='feed'?'That was delicious!':type==='play'?'Again?':'Happy to see you!'}
 function startPlay(){
- const b=activeBuddy(state);if(!b?.hatched){doCare('warm');return}
+ const b=activeBuddy(state);if(!b){showEggs();return}
  const symbols=['leaf','heart','star','sun','paw','berry'];const seq=Array.from({length:3},()=>symbols[Math.floor(Math.random()*symbols.length)]);
  playState={sequence:seq,index:0,revealed:true,choices:[...symbols],errors:0};renderPlay();
 }
@@ -135,7 +138,7 @@ function chooseMemory(shape){
  const p=playState;if(!p||p.revealed)return;
  if(shape!==p.sequence[p.index]){notify('Almost! Try another shape, or take another peek.');p.errors++;return}
  p.index++;
- if(p.index===p.sequence.length){closeDialog();doCare('play');return}
+ if(p.index===p.sequence.length){closeDialog();doCare(activeBuddy(state)?.hatched?'play':'warm');return}
  sound();renderPlay();
 }
 function speciesDetail(id){const sp=speciesById(id);if(!sp)return;const b=state.buddies.find(b=>b.id===id);let location=id==='fern'?'Daily goals reward':'';
@@ -154,19 +157,30 @@ function parentGate(){
 }
 async function download(data,name){if(isNative()){try{await exportNativeBackup(typeof data==='string'?data:JSON.stringify(data,null,2),name)}catch{notify('Backup sharing was closed or unavailable. Your saved game is unchanged.')}return}const blob=new Blob([typeof data==='string'?data:JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download=name;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),10000)}
 function exportSave(){if(parentUntil<Date.now()){parentGate();return}download(state,`scribbies-adventure-${dayKey()}.json`);notify('Your adventure backup is ready.')}
-function help(){openDialog('How to play',`<div class="help-steps">${[['sun','Start with your egg','Choose an egg. Each learning session adds warmth. At 60 warmth, visit camp to hatch it.'],['book','Learn in steps','Read and listen, find missing words, and rebuild the verse. Hints and retries are always welcome.'],['paw','Raise a friend','Feed a berry, play a memory game, and keep learning. Your baby grows into a young, grown, then radiant Scribby.'],['compass','See what’s out there','Follow the glowing trail markers. Discover new eggs, earn three badges, and meet Luma, guardian of the Everlight.'],['heart','Come back when you can','Review reminders help verses stick. Your friends never die, disappear, or lose progress while you’re away.']].map(([i,t,p])=>`<div>${icon(i)}<section><h3>${t}</h3><p>${p}</p></section></div>`).join('')}</div>${button('Let’s go','close-modal','primary wide')}`)}
+function help(){openDialog('How to play',`<div class="help-steps">${[['sun','Start with your egg','Your egg is already home. Learn to add warmth. At 60 warmth, tap your egg to hatch it.'],['book','Learn in steps','Read and listen, find missing words, and rebuild the verse. Hints and retries are always welcome.'],['paw','Raise a friend','Feed a berry, play a memory game, and keep learning. Your baby grows into a young, grown, then radiant Scribby.'],['compass','See what’s out there','Follow the glowing trail markers. Discover new eggs, earn three badges, and meet Luma, guardian of the Everlight.'],['heart','Come back when you can','Review reminders help verses stick. Your friends never die, disappear, or lose progress while you’re away.']].map(([i,t,p])=>`<div>${icon(i)}<section><h3>${t}</h3><p>${p}</p></section></div>`).join('')}</div>${button('Let’s go','close-modal','primary wide')}`)}
 function privacy(){openDialog('Privacy, in plain words',`<div class="privacy-copy"><p>Scribbies stores your nickname, verses, companions, settings, and progress on this device. The game does not send this information to us and includes no analytics, advertising, online accounts, chat, or in-app purchases.</p><p>Read-aloud uses an available on-device English voice. It does not record you. The game does not request your microphone, camera, contacts, or location.</p><p>Backups contain your game progress and any verses you added. They are saved only when you ask. You decide where to keep them and who to share them with.</p><p>The private web preview is hosted by OpenAI Sites. Access to that preview uses the host’s sign-in and normal hosting services. Those services are separate from the game’s device-local save.</p><p>In the grown-up corner you can export your adventure or start over. Removing the app or clearing browser storage can remove your saved game. Keep a backup of an adventure you love.</p></div>${button('Got it','close-modal','primary wide')}`)}
+function showFood(){openDialog('Food',foodShelf(state),'home-sheet')}
+function showWardrobe(){openDialog('Dress up',wardrobe(state),'home-sheet wardrobe-dialog')}
+function learnFromHome(){const next=homePractice(state);if(next)startSession(next.verseId,next.mode)}
 const actions={
- choose:()=>showEggs(), 'confirm-egg':()=>{try{chooseEgg(state,selectedStarter);persist();sound('warm');const next=pendingStart;pendingStart=null;closeDialog();render();if(next)next();else{view='camp';render();notify('Your egg is home! Learn a verse to help it hatch.')}}catch(error){notify(error.message)}},
+ 'home-learn':learnFromHome,
+ 'home-menu':()=>openDialog('More',homeMenu(state),'home-sheet'),
+ food:showFood,wardrobe:showWardrobe,shop:showWardrobe,
+ nursery:()=>openDialog('Your Scribbies',nursery(state),'home-sheet'),
+ growth:()=>openDialog('Growing up',growthDetails(state),'home-sheet'),
+ journal:()=>navigate('journal'),goals:()=>openDialog('Daily goals',dailyCard(state),'home-sheet'),
+ 'shelf-feed':()=>{closeDialog();doCare('feed')},
+ 'buy-berries':()=>{if(buyBerries(state)){persist();render();showFood();sound('reward');notify('3 berries added.')}else notify('You need 12 leaves. Earn more by learning.')},
+ choose:()=>showEggs(), 'confirm-egg':()=>{try{chooseEgg(state,selectedStarter);persist();sound('warm');const next=pendingStart;pendingStart=null;closeDialog();render();if(next)next();else{view='home';render();notify('Your egg is home! Learn a verse to help it hatch.')}}catch(error){notify(error.message)}},
  start:()=>startAdventure(), 'next-region':()=>{if(region<2&&regionUnlocked(state,region+1)){region++;render()}},
- camp:()=>navigate('camp'),adventure:()=>navigate('adventure'),learn:()=>modePicker(dueVerses(state)[0]?.id||state.verses[0].id),
+ home:()=>navigate('home'),camp:()=>navigate('home'),adventure:()=>navigate('adventure'),learn:learnFromHome,
  hatch:showHatch,'crack-egg':crackEgg,'close-modal':closeDialog,
  'begin-questions':beginQuestions,'check-answer':()=>checkResponse(),'next-question':nextQuestion,
  hint:()=>{if(!session)return;session.hinted=true;session.hintVisible=!session.hintVisible;render()},listen,
- 'leave-practice':()=>navigate('adventure'),'confirm-leave':()=>{const next=leaveCallback;leaveCallback=null;closeDialog();if(next)next()},
- 'finish-session':()=>navigate('adventure'),'result-camp':()=>navigate('camp'),'result-hatch':()=>{navigate('camp');showHatch()},
+ 'leave-practice':()=>navigate('home'),'confirm-leave':()=>{const next=leaveCallback;leaveCallback=null;closeDialog();if(next)next()},
+ 'finish-session':()=>navigate('home'),'result-explore':()=>navigate('adventure'),'result-camp':()=>navigate('camp'),'result-hatch':()=>{navigate('camp');showHatch()},
  daily:()=>{if(claimDaily(state)){persist();render();sound('reward');notify('Daily reward: +40 leaves and 2 berries.')}},
- feed:()=>doCare('feed'),warm:()=>doCare('warm'),pet:()=>{animateBuddy('pet');sound('pet');notify(activeBuddy(state)?.hatched?'Your Scribby says hello!':'Your egg gives a wiggle.')},play:startPlay,
+ feed:()=>{if(state.berries<1)showFood();else doCare('feed')},warm:()=>{if(activeBuddy(state)?.warmth>=60)crackEgg();else doCare('warm')},pet:()=>{animateBuddy('pet');sound('pet');notify(activeBuddy(state)?.hatched?'Your Scribby says hello!':'Your egg gives a wiggle.')},play:startPlay,
  'hide-pattern':()=>{if(playState){playState.revealed=false;playState.index=0;renderPlay()}},'show-pattern':()=>{if(playState){playState.revealed=true;playState.index=0;renderPlay()}},
  rename:()=>{const b=activeBuddy(state);if(b)openDialog('Rename your Scribby',`<form id="rename-form"><label>Buddy nickname<input name="buddyName" maxlength="24" value="${e(b.name)}" required></label>${button('Save name','save-rename','primary wide','type="submit"')}</form>`)},
  review:()=>modePicker(dueVerses(state)[0]?.id||state.verses[0].id),'quick-practice':()=>modePicker(state.verses[0].id),
@@ -174,7 +188,7 @@ const actions={
  parent:parentGate,help,privacy,export:exportSave,audio:()=>{if(view==='settings'){document.querySelector('.audio-controls')?.scrollIntoView({block:'center'});return}openDialog('Music & sounds',audioControls(state))}, 'preview-voice':()=>sound('pet'),
  'export-legacy':()=>{try{const raw=storage.getItem('sb');if(raw)download(raw,'scribbies-original-save.json');else notify('There is no original Scribbies save on this device.')}catch{notify('Original save is unavailable.')}},
  import:()=>{if(parentUntil<Date.now()){parentGate();return}document.querySelector('#import-file').click()},
- 'confirm-import':()=>{if(!pendingImport||parentUntil<Date.now())return;state=pendingImport;saveBlocked=false;persist();closeDialog();render();notify('Your adventure is back. Welcome home!')},
+ 'confirm-import':()=>{if(!pendingImport||parentUntil<Date.now())return;state=pendingImport;ensureHomeBuddy(state);saveBlocked=false;persist();closeDialog();render();notify('Your adventure is back. Welcome home!')},
  reset:()=>openDialog('Start a new adventure?',`<p class="modal-intro">This clears your current eggs, companions, discoveries, and saved verses. Your original Scribbies archive stays untouched. Save a backup if you’d like to keep this adventure.</p><form id="reset-form"><label>Type NEW to start over<input name="confirm" required autocomplete="off" placeholder="NEW"></label><p class="form-error" id="reset-error" role="alert"></p><div class="button-row">${button('Keep my adventure','close-modal','secondary','type="button"')}${button('Start fresh','confirm-reset','danger','type="submit"')}</div></form>`)
 };
 document.addEventListener('click',event=>{
@@ -187,10 +201,10 @@ document.addEventListener('click',event=>{
   if(target.dataset.starter){selectedStarter=target.dataset.starter;const after=pendingStart;showEggs(after);return}
   if(target.dataset.family){family=target.dataset.family;render();return}
   if(target.dataset.species){speciesDetail(target.dataset.species);return}
-  if(target.dataset.buddy){if(state.buddies.some(b=>b.id===target.dataset.buddy)){state.active=target.dataset.buddy;persist();closeDialog();view='camp';render();sound('pet')}return}
+  if(target.dataset.buddy){if(state.buddies.some(b=>b.id===target.dataset.buddy)){state.active=target.dataset.buddy;persist();closeDialog();view='home';render();sound('pet')}return}
   if(target.dataset.charm){const b=activeBuddy(state);if(!b)return;const id=target.dataset.charm;
-   if(!state.charms.includes(id)&&!purchase(state,id)){notify('Keep exploring to earn a few more leaves.');return}
-   b.charm=id;persist();render();sound('pet');notify(stage(b)==='adult'||stage(b)==='radiant'?'Charm equipped.':'Saved for your Scribby’s grown-up look.');return}
+   if(!state.charms.includes(id)&&!purchase(state,id)){notify('Earn more leaves by learning.');return}
+   b.charm=id;persist();render();closeDialog();sound('pet');notify(b.hatched?'All dressed up!':'Saved for hatching day.');return}
   if(target.dataset.practice){modePicker(target.dataset.practice);return}
   if(target.dataset.mode){startSession(target.dataset.verse,target.dataset.mode);return}
   if(target.dataset.answer!==undefined){checkResponse(Number(target.dataset.answer));return}
@@ -228,14 +242,14 @@ document.addEventListener('submit',event=>{
  if(form.id==='verse-form'){try{addCustomVerse(state,{ref:data.get('ref'),text:data.get('text'),topic:data.get('topic')},form.dataset.editId||null);persist();closeDialog();view='journal';render();notify('Verse saved.')}catch(error){document.querySelector('#verse-error').textContent=error.message}return}
  if(form.id==='parent-form'){if(String(data.get('answer')).trim()===gateAnswer){parentUntil=Date.now()+10*60*1000;gateAnswer=null;closeDialog();navigate('settings')}else{document.querySelector('#gate-error').textContent='Please ask your grown-up to try again.'}return}
  if(form.id==='profile-form'){const name=String(data.get('name')).trim().slice(0,24);if(name){state.name=name;persist();render();notify('Nickname saved.')}return}
- if(form.id==='rename-form'||form.id==='hatch-name-form'){const b=activeBuddy(state),name=String(data.get('buddyName')).trim().slice(0,24);if(b&&name){b.name=name;persist();closeDialog();view='camp';render();notify(`Welcome home, ${name}!`)}return}
+ if(form.id==='rename-form'||form.id==='hatch-name-form'){const b=activeBuddy(state),name=String(data.get('buddyName')).trim().slice(0,24);if(b&&name){b.name=name;persist();closeDialog();view='home';render();notify(`Welcome home, ${name}!`)}return}
  if(form.id==='reset-form'){
   if(parentUntil<Date.now()){closeDialog();parentGate();return}
   if(String(data.get('confirm')).trim()!=='NEW'){document.querySelector('#reset-error').textContent='Type NEW to confirm, or keep your adventure.';return}
-  state=createState();saveBlocked=false;region=0;session=null;search='';topic='All';persist();closeDialog();view='adventure';render();notify('New adventure started. Choose your egg.');
+  state=createState();ensureHomeBuddy(state);saveBlocked=false;region=0;session=null;search='';topic='All';persist();closeDialog();view='home';render();notify('Your new egg is home.');
  }
 });
-window.addEventListener('hashchange',()=>{const next=location.hash.slice(1);if(next==='adventure')navigate(next)});
+window.addEventListener('hashchange',()=>{const next=location.hash.slice(1);if(['home','adventure'].includes(next))navigate(next)});
 const wakeAudio=()=>audio.unlock();
 document.addEventListener('pointerdown',wakeAudio,{capture:true,passive:true});
 document.addEventListener('keydown',wakeAudio,{capture:true});
@@ -245,6 +259,7 @@ window.addEventListener('pageshow',()=>audio.visibility(!document.hidden));
 if(import.meta.hot)import.meta.hot.dispose(()=>{audio.dispose();document.removeEventListener('pointerdown',wakeAudio,true);document.removeEventListener('keydown',wakeAudio,true)});
 window.addEventListener('storage',event=>{if(event.key===SAVE_KEY&&event.newValue){if(session&&session.phase!=='result'){session=null;view='adventure';stopSpeaking();notify('Your adventure changed in another tab. The newest save has been loaded; please restart this practice.');}try{state=validateState(JSON.parse(event.newValue));render()}catch{}}});
 window.addEventListener('online',()=>notify('Back online. Your adventure is still right here.'));
+if(!saveBlocked&&ensureHomeBuddy(state))persist();
 render();
 if(loaded.warning||nativeError)notify(loaded.warning||nativeError);
 if('speechSynthesis'in window)window.speechSynthesis.getVoices();

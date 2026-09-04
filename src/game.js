@@ -120,3 +120,19 @@ export function addCustomVerse(state,{ref,text,topic},id){
  if(id){const v=state.verses.find(v=>v.id===id&&v.custom);if(!v)throw new Error('Only your own verses can be edited.');Object.assign(v,{ref,text,topic,mastery:0,practiceCount:0,lastPracticed:null,due:null});return v}
  const v={id:`custom-${globalThis.crypto.randomUUID()}`,ref,text,topic,source:'Added by your family',custom:true,mastery:0,practiceCount:0,lastPracticed:null,due:null};state.verses.push(v);return v;
 }
+
+// Reuse an existing companion; give a fresh game its first egg immediately.
+export function ensureHomeBuddy(state){
+ if(!state.buddies.length){chooseEgg(state,'sprig');return true}
+ if(!activeBuddy(state)){state.active=state.buddies[0].id;return true}
+ return false;
+}
+export function buyBerries(state){
+ if(state.coins<12||state.berries>9996)return false;
+ state.coins-=12;state.berries+=3;return true;
+}
+export function homePractice(state){
+ const verse=dueVerses(state)[0]||state.verses.find(v=>v.mastery<5)||state.verses[0];
+ if(!verse)return null;
+ return {verseId:verse.id,mode:verse.mastery<2?'predict':verse.mastery<3?'jumble':verse.mastery<4?'first':'recall'};
+}

@@ -45,10 +45,10 @@ export const REGIONS = [
 ];
 export const MODES = [
  {id:'predict',name:'Trail clues',original:'Predict',icon:'compass',description:'Find the missing word.',difficulty:1},
- {id:'blanks',name:'Missing pieces',original:'Fill blanks',icon:'puzzle',description:'Bring the verse back to life.',difficulty:2},
+ {id:'blanks',name:'Missing pieces',original:'Fill blanks',icon:'puzzle',description:'Fill in the missing words.',difficulty:2},
  {id:'jumble',name:'Word trail',original:'Word jumble',icon:'route',description:'Put the words in order.',difficulty:3},
  {id:'first',name:'First-letter hints',original:'First letters',icon:'feather',description:'Remember with a tiny clue.',difficulty:4},
- {id:'recall',name:'Heart words',original:'Full recall',icon:'heart',description:'Write it from your heart.',difficulty:5}
+ {id:'recall',name:'From memory',original:'Full recall',icon:'heart',description:'Try the whole verse from memory.',difficulty:5}
 ];
 export const POSITIONS = [[27,76],[43,61],[54,47],[65,33],[54,19],[79,18]];
 export const CHARMS = [

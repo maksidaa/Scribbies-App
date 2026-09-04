@@ -14,10 +14,16 @@ export const progress=(value,max=100,cls='',label='Progress')=>`<div class="prog
 
 const categoryOf=id=>({mammal:'mammals',reptile:'reptiles',bird:'birds',aquatic:'aquatic',prehistoric:'prehistoric',mystical:'mystical',image:'mystical'}[speciesById(id)?.art]||'mammals');
 export const eggArt=(id='sprig',size=180)=>`<div class="egg-art" role="img" aria-label="Unhatched Scribby egg" style="--egg-scale:${size/230};width:${size}px;height:${size}px"><div>${renderEgg(categoryOf(id))}</div></div>`;
-export const buddyArt=(buddy,size=180)=>{
+const baseBuddyArt=(buddy,size=180)=>{
  if(!buddy||!buddy.hatched)return eggArt(buddy?.id,size);
  const phase=stage(buddy);
  if(phase==='baby')return `<div class="baby-art" role="img" aria-label="Baby ${escape(buddy.name)}" style="width:${size}px;height:${size}px;--baby-scale:${size/175}"><div>${renderBaby(categoryOf(buddy.id),buddy.id)}</div></div>`;
  if(phase==='teen')return `<div class="teen-art" role="img" aria-label="Young ${escape(buddy.name)}" style="width:${size}px;height:${size}px;--teen-scale:${size/240}"><div>${renderTeen(categoryOf(buddy.id),speciesById(buddy.id).variant)}</div></div>`;
  return art(buddy.id,size,buddy.growth,buddy.charm);
+};
+
+export const buddyArt=(buddy,size=180)=>{
+ const body=baseBuddyArt(buddy,size),charm=CHARMS.find(c=>c.id===buddy?.charm&&c.id!=='none');
+ if(!buddy?.hatched||!['baby','teen'].includes(stage(buddy))||!charm)return body;
+ return `<div class="wearable-buddy" style="width:${size}px;height:${size}px">${body}<span class="creature-charm" style="--charm:${charm.color}" role="img" aria-label="${escape(charm.name)}">${icon(charm.icon)}</span></div>`;
 };

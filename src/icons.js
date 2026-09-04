@@ -1,4 +1,7 @@
 const paths = {
+ menu:'<path d="M4 6h16 M4 12h16 M4 18h16"/>',
+ home:'<path d="m3 10 9-7 9 7 M5 9v12h5v-7h4v7h5V9"/>',
+ shirt:'<path d="m8 3-6 4 3 5 3-2v11h8V10l3 2 3-5-6-4c0 5-8 5-8 0Z"/>',
  compass:'<circle cx="12" cy="12" r="9"/><path d="m16 8-3 5-5 3 3-5Z"/>',
  leaf:'<path d="M20 4C9 2 3 7 4 14c1 7 13 8 16-10Z M4 20 15 9 M8 16v-5 M8 16h5"/>',
  book:'<path d="M12 5C8 2 4 3 2 4v15c3-2 7-1 10 1 3-2 7-3 10-1V4c-3-1-6-2-10 1Z M12 5v15"/>',
