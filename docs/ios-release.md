@@ -36,10 +36,22 @@ https://expo.dev/accounts/maksidaa/projects/scribbies/builds/af55b0a5-3f7f-4cef-
 Automatic TestFlight delivery was scheduled with the existing EAS Submit key:
 https://expo.dev/accounts/maksidaa/projects/scribbies/submissions/1a78e362-d3f1-45d1-8a58-7b672ae4970b
 
-At 22:25 UTC, the submission was still queued during Expo's reported submission-service incident. This is not a confirmation that Apple has received or processed the build. Check the submission before retrying to avoid duplicate uploads.
+Build 3 was confirmed by App Store Connect as VALID / IN_BETA_TESTING at 23:28 UTC on September 4, 2026. The user has opened this build on an iPhone. It contains the earlier dashboard home.
 
 The first development pass passed 33 automated tests, the production web build, dependency auditing (zero reported vulnerabilities), and an unsigned Xcode simulator compilation. Tests cover creature lifecycle, every adventure encounter, all species being obtainable, rewards being applied once, daily caps, memorization modes and spaced review, save recovery, legacy migration, escaping, and template rendering.
 
-These checks do not establish that the app has been played through on physical devices. Before App Store release, play the complete new-player flow on iPhone and iPad, including egg choice, practice, hatch, care, collection, backup/restore, app restart, offline launch, sound and accessibility settings. Check VoiceOver, larger text, safe areas, keyboard interactions, and reduced motion. TestFlight submission is separate from App Review approval.
+These checks do not establish that the app has been played through on physical devices. Before App Store release, play the complete new-player flow on iPhone and iPad, including the initial egg, practice, hatch, care, collection, backup/restore, app restart, offline launch, sound and accessibility settings. Check VoiceOver, larger text, safe areas, keyboard interactions, and reduced motion. TestFlight submission is separate from App Review approval.
 
 The App Store release also needs final screenshots, description, support and privacy-policy URLs, age/content declarations, and a deliberate decision about the Kids category. Review the included and custom scripture content with the intended audience. The in-game privacy explanation describes current behavior; update it if future services collect or transmit data.
+
+## Pet-first home replacement (build 5)
+
+Source: `9c88a356e4d1bcf725b81fb371be157aa072a39f`. EAS staging snapshot: `6397af7` in `/tmp/scribbies-eas-pet-home-release`.
+
+- Build: https://expo.dev/accounts/maksidaa/projects/scribbies/builds/ddce5711-f513-4b62-8f32-3e77170d33d6
+- Automatic submission: https://expo.dev/accounts/maksidaa/projects/scribbies/submissions/f9ec47e1-789d-44ae-8d09-ebb4e540a396
+- At 23:29 UTC, the build was in progress. TestFlight availability has not yet been confirmed.
+
+This replacement opens on the saved pet or a first egg, with a compact icon toolbar and large care/learning buttons. It preserves music, voices, current art, and saves. Fifty-one tests pass, including a controller-level first-player loop that reaches hatch and feeding without visiting exploration. This is code-level validation with mocked browser boundaries, not a physical-device playthrough.
+
+Build 4 (audio with the previous home) signed successfully, but its submission was still queued before build 5 started. Use build 5 or newer to review the revised home.
