@@ -28,6 +28,10 @@ The web app saves locally; the native app uses Capacitor Preferences. A previous
 
 Compatible original `sb` saves migrate automatically without deleting the original save. Not every original creature has a corresponding adventure species. The original application is preserved as `classic.html`; original source art remains under `js/creatures/`. Classic features such as Firebase accounts and trading are not part of the new release.
 
+## Audio
+
+Two original procedural themes accompany exploration and camp. Each of the eighteen species has a distinct synthesized voice, with age and activity variations for greetings, feeding, play, hatching, and evolution. Music and effects have independent switches and volume controls, available from the top-bar speaker button as well as family settings. Music starts on a user gesture, fades lower during practice, fades out for read-aloud, and pauses in the background. All synthesis runs on-device and works offline; there are no external music streams or recorded voices.
+
 ## Artwork
 
 Original CSS and SVG creatures remain the basis of the collection. Fox and axolotl rendering and selected baby designs have been refined. New meadow and camp illustrations and the Luma guardian are in `art-source/`, with optimized shipping assets in `public/assets/`. Source prompts are documented in `docs/`. The app includes idle, hatch, care, growth, and reward motion, with a reduced-motion setting.

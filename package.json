@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "build": "node scripts/prepare-art.mjs && vite build && node scripts/service-worker.mjs",
+    "build": "node scripts/prepare-art.mjs && node scripts/prepare-art-study.mjs && vite build && node scripts/service-worker.mjs",
     "test": "node --test tests/*.test.mjs",
     "check": "node --check src/app.js && node --check src/game.js && node --check src/storage.js && npm test",
     "preview": "vite preview --host 127.0.0.1",

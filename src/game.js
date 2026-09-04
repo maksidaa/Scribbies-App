@@ -2,7 +2,7 @@ import {VERSES,REGIONS,SPECIES,CHARMS,speciesById,nodeId} from './data.js';
 export const SAVE_KEY='scribbies.adventure.v2';
 export const dayKey=(date=new Date())=>`${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
 export const yesterday=(date=new Date())=>{const d=new Date(date);d.setDate(d.getDate()-1);return dayKey(d)};
-export const createState=()=>({version:2,name:'Explorer',xp:0,coins:30,berries:3,streak:0,lastPractice:null,active:null,buddies:[],completed:{},verses:structuredClone(VERSES),daily:{day:dayKey(),practices:0,care:false,claimed:false},settings:{sound:true,motion:true},charms:['none'],processed:[],legacyImported:false});
+export const createState=()=>({version:2,name:'Explorer',xp:0,coins:30,berries:3,streak:0,lastPractice:null,active:null,buddies:[],completed:{},verses:structuredClone(VERSES),daily:{day:dayKey(),practices:0,care:false,claimed:false},settings:{sound:true,music:true,musicVolume:.55,effectsVolume:.7,motion:true},charms:['none'],processed:[],legacyImported:false});
 export function refreshDay(state,date=new Date()){
  const day=dayKey(date);if(state.daily.day!==day)state.daily={day,practices:0,care:false,claimed:false};
  return state;

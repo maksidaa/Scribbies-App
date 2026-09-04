@@ -15,7 +15,8 @@ export function validateState(raw){
  for(const v of VERSES){const found=s.verses.find(x=>x.id===v.id);if(found)Object.assign(found,{ref:v.ref,text:v.text,source:v.source,topic:v.topic,custom:false});else s.verses.push(structuredClone(v))}
  for(let r=0;r<REGIONS.length;r++)for(let n=0;n<6;n++){const key=`${r}-${n}`;if(raw.completed?.[key])s.completed[key]={stars:Math.max(1,integer(raw.completed[key].stars,3)),date:date(raw.completed[key].date)}}
  if(raw.daily&&date(raw.daily.day))s.daily={day:raw.daily.day,practices:integer(raw.daily.practices,1000),care:raw.daily.care===true,claimed:raw.daily.claimed===true};
- s.settings={sound:raw.settings?.sound!==false,motion:raw.settings?.motion!==false};
+ const volume=(v,fallback)=>Number.isFinite(v)?Math.max(0,Math.min(1,v)):fallback;
+ s.settings={sound:raw.settings?.sound!==false,music:typeof raw.settings?.music==='boolean'?raw.settings.music:raw.settings?.sound!==false,musicVolume:volume(raw.settings?.musicVolume,.55),effectsVolume:volume(raw.settings?.effectsVolume,.7),motion:raw.settings?.motion!==false};
  s.charms=CHARMS.filter(c=>c.id==='none'||raw.charms?.includes?.(c.id)).map(c=>c.id);
  for(const b of s.buddies)if(!s.charms.includes(b.charm))b.charm='none';
  s.processed=Array.isArray(raw.processed)?raw.processed.filter(id=>typeof id==='string').slice(-150).map(id=>id.slice(0,100)):[];
