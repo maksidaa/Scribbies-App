@@ -8,6 +8,8 @@
 - Bundle identifier: `com.maksidaa.scribbies`
 - Apple team: `3Y49S926NK`
 - Marketing version: `2.0.0`
+- App Store Connect app: `6808803908`
+- TestFlight: https://appstoreconnect.apple.com/apps/6808803908/testflight/ios
 
 Stake Admin's EAS project and App Store Connect app are separate. Never use its app ID for a Scribbies submission. Credentials remain in the existing EAS/Apple credential stores, outside this repository.
 
@@ -24,7 +26,7 @@ npx --yes eas-cli@23.2.0 build --platform ios --profile production --auto-submit
 
 Use a new staging directory each time. The custom EAS workflow runs all checks, builds web assets, refreshes the native asset folder, assigns signing credentials and the remote build number, then archives and exports with Fastlane. It uses Swift Package Manager; it does not run React Native prebuild or CocoaPods.
 
-After the initial App Store Connect entry is created, retain Scribbies' returned numeric app ID in `submit.production.ios.ascAppId` in the source `eas.json`. EAS manages incrementing build numbers remotely. Do not commit signing keys, provisioning profiles, credentials JSON, or exported IPAs.
+Scribbies' numeric App Store Connect ID is saved in `submit.production.ios.ascAppId`. The existing team distribution certificate and EAS Submit API key are assigned to this separate app. Once credentials are configured, `--non-interactive` can be added to the build command. EAS manages incrementing build numbers remotely. Do not commit signing keys, provisioning profiles, credentials JSON, or exported IPAs.
 
 ## Validation
 
