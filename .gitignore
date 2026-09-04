@@ -1,2 +1,17 @@
 .DS_Store
 .claude/
+node_modules/
+dist/
+*.tgz
+*.log
+.env*
+!.env.example
+ios/App/App/public/
+ios/App/DerivedData/
+credentials.json
+*.p12
+*.p8
+*.mobileprovision
+*.ipa
+*.xcarchive/
+.expo/

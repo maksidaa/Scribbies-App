@@ -1,0 +1,21 @@
+{
+  "cli": { "version": ">= 23.2.0", "appVersionSource": "remote" },
+  "build": {
+    "production": {
+      "distribution": "store",
+      "autoIncrement": true,
+      "node": "22.22.0",
+      "ios": {
+        "config": "ios-capacitor.yml",
+        "scheme": "App",
+        "buildConfiguration": "Release",
+        "image": "latest"
+      }
+    }
+  },
+  "submit": {
+    "production": {
+      "ios": { "appleId": "adgoodwin82@gmail.com", "appleTeamId": "3Y49S926NK" }
+    }
+  }
+}

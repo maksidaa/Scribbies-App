@@ -1,0 +1,526 @@
+@keyframes bounce-slow{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%,75%{transform:translateX(-5px)}50%{transform:translateX(5px)}}
+@keyframes wiggle{0%,100%{transform:rotate(0deg)}25%{transform:rotate(-8deg) translateY(-2px)}75%{transform:rotate(8deg) translateY(-2px)}}
+@keyframes penguin-waddle{0%,30%{transform:rotate(0deg)}35%{transform:rotate(-2deg)}40%{transform:rotate(2deg)}45%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}55%{transform:rotate(-2deg)}60%{transform:rotate(2deg)}65%,100%{transform:rotate(0deg)}}
+@keyframes penguin-foot-l{0%,30%{transform:rotate(0deg) translateY(0)}35%{transform:rotate(8deg) translateY(-4px)}40%{transform:rotate(0deg) translateY(0)}45%{transform:rotate(8deg) translateY(-4px)}50%{transform:rotate(0deg) translateY(0)}55%{transform:rotate(8deg) translateY(-4px)}60%,100%{transform:rotate(0deg) translateY(0)}}
+@keyframes penguin-foot-r{0%,32%{transform:rotate(0deg) translateY(0)}37%{transform:rotate(-8deg) translateY(-4px)}42%{transform:rotate(0deg) translateY(0)}47%{transform:rotate(-8deg) translateY(-4px)}52%{transform:rotate(0deg) translateY(0)}57%{transform:rotate(-8deg) translateY(-4px)}62%,100%{transform:rotate(0deg) translateY(0)}}
+@keyframes penguin-flip-l{0%,30%{transform:rotate(15deg)}35%{transform:rotate(45deg)}38%{transform:rotate(15deg)}42%{transform:rotate(45deg)}45%{transform:rotate(15deg)}50%{transform:rotate(45deg)}53%{transform:rotate(15deg)}58%{transform:rotate(45deg)}62%,100%{transform:rotate(15deg)}}
+@keyframes penguin-flip-r{0%,30%{transform:rotate(-15deg)}35%{transform:rotate(-45deg)}38%{transform:rotate(-15deg)}42%{transform:rotate(-45deg)}45%{transform:rotate(-15deg)}50%{transform:rotate(-45deg)}53%{transform:rotate(-15deg)}58%{transform:rotate(-45deg)}62%,100%{transform:rotate(-15deg)}}
+@keyframes penguin-tail{0%,30%{transform:translateX(-50%) rotate(0deg)}35%,40%,45%,50%,55%,60%{transform:translateX(-50%) rotate(5deg)}37%,42%,47%,52%,57%{transform:translateX(-50%) rotate(-5deg)}65%,100%{transform:translateX(-50%) rotate(0deg)}}
+@keyframes duck-waddle{0%,30%{transform:rotate(0deg)}35%{transform:rotate(-4deg)}40%{transform:rotate(4deg)}45%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}55%{transform:rotate(-4deg)}60%{transform:rotate(4deg)}65%,100%{transform:rotate(0deg)}}
+@keyframes duck-leg-l{0%,30%{transform:rotate(0deg)}35%{transform:rotate(15deg)}40%{transform:rotate(0deg)}45%{transform:rotate(15deg)}50%{transform:rotate(0deg)}55%{transform:rotate(15deg)}60%,100%{transform:rotate(0deg)}}
+@keyframes duck-leg-r{0%,32%{transform:rotate(0deg)}37%{transform:rotate(-15deg)}42%{transform:rotate(0deg)}47%{transform:rotate(-15deg)}52%{transform:rotate(0deg)}57%{transform:rotate(-15deg)}62%,100%{transform:rotate(0deg)}}
+@keyframes duck-wing-l{0%,100%{transform:rotate(15deg)}50%{transform:rotate(-20deg)}}
+@keyframes duck-wing-r{0%,100%{transform:rotate(-15deg)}50%{transform:rotate(20deg)}}
+@keyframes duck-quack{0%,70%,100%{transform:translateX(-50%) translateY(0)}75%,85%,95%{transform:translateX(-50%) translateY(3px)}80%,90%{transform:translateX(-50%) translateY(0)}}
+@keyframes duck-tail-wag{0%,30%{transform:translateX(-50%) rotate(0deg)}35%,45%,55%{transform:translateX(-50%) rotate(10deg)}40%,50%,60%{transform:translateX(-50%) rotate(-10deg)}65%,100%{transform:translateX(-50%) rotate(0deg)}}
+@keyframes duck-head-bob{0%,100%{transform:translateY(0)}25%,75%{transform:translateY(-2px)}}
+@keyframes rooster-strut{0%,100%{transform:rotate(0deg) translateY(0)}25%{transform:rotate(-2deg) translateY(-2px)}50%{transform:rotate(0deg) translateY(0)}75%{transform:rotate(2deg) translateY(-2px)}}
+@keyframes rooster-leg-l{0%,100%{transform:rotate(0deg)}25%{transform:rotate(12deg)}50%{transform:rotate(0deg)}75%{transform:rotate(-4deg)}}
+@keyframes rooster-leg-r{0%,100%{transform:rotate(0deg)}25%{transform:rotate(-4deg)}50%{transform:rotate(0deg)}75%{transform:rotate(12deg)}}
+@keyframes rooster-wing{0%,100%{transform:rotate(3deg)}50%{transform:rotate(-5deg)}}
+@keyframes rooster-crow{0%,70%,100%{transform:rotate(0deg)}75%,85%{transform:rotate(-12deg) translateY(-3px)}80%,90%{transform:rotate(-8deg) translateY(-1px)}}
+@keyframes rooster-tail-sway{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+@keyframes rooster-wattle{0%,100%{transform:translateX(-50%) rotate(0deg)}50%{transform:translateX(-50%) rotate(4deg)}}
+@keyframes rooster-beak-crow{0%,70%,100%{transform:translateX(-50%) translateY(0)}75%,85%{transform:translateX(-50%) translateY(4px)}80%,90%{transform:translateX(-50%) translateY(2px)}}
+@keyframes rooster-eye-look{0%,20%{top:3px;left:3px}25%,35%{top:3px;left:1px}40%,55%{top:2px;left:3px}60%,75%{top:3px;left:4px}80%,95%{top:4px;left:2px}100%{top:3px;left:3px}}
+@keyframes rooster-blink{0%,92%,100%{transform:scaleY(1)}93%,99%{transform:scaleY(0.1)}}
+@keyframes baby-arm-wave{0%,100%{transform:rotate(-15deg)}25%{transform:rotate(-25deg) translateY(-3px)}50%{transform:rotate(-10deg)}75%{transform:rotate(-20deg) translateY(-2px)}}
+@keyframes baby-leg-kick{0%,100%{transform:rotate(0deg)}20%{transform:rotate(-12deg)}40%{transform:rotate(8deg)}60%{transform:rotate(-8deg)}80%{transform:rotate(10deg)}}
+@keyframes glow{0%,100%{filter:drop-shadow(0 0 5px rgba(168,85,247,0.5))}50%{filter:drop-shadow(0 0 15px rgba(168,85,247,0.8))}}
+@keyframes sparkle{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.7;transform:scale(1.1)}}
+@keyframes collectXP{0%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-80vh) scale(0.5);opacity:0}}
+@keyframes pop-in{0%{transform:scale(0);opacity:0}50%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}
+@keyframes pulse-grow{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes pulse-gentle{0%,100%{opacity:1}50%{opacity:0.85}}
+@keyframes practice-bounce{0%{transform:scale(1) translateY(0)}30%{transform:scale(1.15) translateY(-8px)}60%{transform:scale(1.05) translateY(-2px)}100%{transform:scale(1) translateY(0)}}
+@keyframes practice-sad{0%{transform:rotate(0deg)}20%{transform:rotate(-8deg)}40%{transform:rotate(8deg)}60%{transform:rotate(-5deg)}80%{transform:rotate(5deg)}100%{transform:rotate(0deg)}}
+@keyframes practice-celebrate{0%{transform:scale(1) rotate(0deg)}25%{transform:scale(1.2) rotate(-6deg)}50%{transform:scale(1.25) translateY(-10px)}75%{transform:scale(1.2) rotate(6deg)}100%{transform:scale(1) rotate(0deg)}}
+@keyframes float-up{0%{transform:translateY(0) scale(0);opacity:0}20%{transform:translateY(-10px) scale(1.2);opacity:1}100%{transform:translateY(-40px) scale(0.8);opacity:0}}
+@keyframes float-up-hearts{0%{transform:translateY(0) scale(0);opacity:0}15%{transform:translateY(-5px) scale(1.3);opacity:1}100%{transform:translateY(-50px) scale(0.5);opacity:0}}
+@keyframes practice-hearts-float{0%{transform:translateY(0) translateX(-50%) scale(0.3);opacity:0}10%{transform:translateY(-10px) translateX(-50%) scale(1);opacity:1}70%{opacity:1}100%{transform:translateY(-120px) translateX(-50%) scale(0.6);opacity:0}}
+@keyframes food-fly{0%{transform:translateY(150px) scale(1);opacity:1}60%{transform:translateY(20px) scale(0.8);opacity:1}100%{transform:translateY(0) scale(0);opacity:0}}
+@keyframes reaction-pop{0%{transform:translate(-50%,-50%) scale(0);opacity:0}50%{transform:translate(-50%,-50%) scale(1.3);opacity:1}100%{transform:translate(-50%,-50%) scale(1);opacity:1}}
+@keyframes message-slide{0%{transform:translateY(20px);opacity:0}100%{transform:translateY(0);opacity:1}}
+@keyframes teen-tail-sway{0%,100%{transform:translateY(-50%) rotate(0deg)}30%{transform:translateY(-50%) rotate(-8deg)}70%{transform:translateY(-50%) rotate(6deg)}}
+@keyframes teen-body-breathe{0%,100%{transform:translateY(-50%) scale(1)}50%{transform:translateY(-50%) scale(1.02,0.98)}}
+@keyframes teen-leg-walk{0%,100%{transform:rotate(0deg)}25%{transform:rotate(8deg)}75%{transform:rotate(-6deg)}}
+@keyframes teen-arm-wave{0%,100%{transform:rotate(45deg)}50%{transform:rotate(60deg)}}
+@keyframes teen-snake-slither{0%,100%{transform:translateY(-50%) skewX(0deg)}30%{transform:translateY(-50%) skewX(3deg)}70%{transform:translateY(-50%) skewX(-3deg)}}
+@keyframes teen-snake-writhe{0%,100%{transform:scaleX(1) skewY(0deg)}25%{transform:scaleX(1.03) skewY(1.5deg)}50%{transform:scaleX(0.98) skewY(-1deg)}75%{transform:scaleX(1.02) skewY(-1.5deg)}}
+@keyframes sleep-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.015)}}
+@keyframes float-z{0%{opacity:0;transform:translate(0,0) scale(0.5)}20%{opacity:1}80%{opacity:1}100%{opacity:0;transform:translate(20px,-40px) scale(1.2)}}
+@keyframes float-z-delayed{0%{opacity:0;transform:translate(0,0) scale(0.5)}20%{opacity:1}80%{opacity:1}100%{opacity:0;transform:translate(25px,-50px) scale(1.3)}}
+@keyframes flamingo-sway{0%,100%{transform:rotate(-1deg) translateY(0)}50%{transform:rotate(1deg) translateY(-8px)}}
+@keyframes flamingo-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes neck-bob{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+@keyframes wing-flutter-l{0%,100%{transform:rotate(20deg)}50%{transform:rotate(30deg)}}
+@keyframes wing-flutter-r{0%,100%{transform:rotate(-20deg)}50%{transform:rotate(-30deg)}}
+@keyframes tail-wag{0%,100%{transform:rotate(-20deg)}50%{transform:rotate(-10deg)}}
+@keyframes tuft-sway{0%,100%{transform:rotate(var(--base-rotate, 0deg))}50%{transform:rotate(calc(var(--base-rotate, 0deg) + 10deg))}}
+@keyframes flamingo-upper-leg-tuck{0%,40%{transform:rotate(5deg)}45%,95%{transform:rotate(60deg)}100%{transform:rotate(5deg)}}
+@keyframes flamingo-lower-leg-fold{0%,40%{transform:rotate(0deg)}45%,95%{transform:rotate(-140deg)}100%{transform:rotate(0deg)}}
+@keyframes flamingo-foot-tuck{0%,40%{transform:rotate(0deg) scale(1)}45%,95%{transform:rotate(50deg) scale(0.7)}100%{transform:rotate(0deg) scale(1)}}
+@keyframes swan-float{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-3px) rotate(0.5deg)}50%{transform:translateY(-5px) rotate(0deg)}75%{transform:translateY(-3px) rotate(-0.5deg)}}
+@keyframes swan-wing-left{0%,100%{transform:rotate(0deg)}25%{transform:rotate(-2deg)}50%{transform:rotate(-4deg)}75%{transform:rotate(-2deg)}}
+@keyframes swan-wing-right{0%,100%{transform:rotate(0deg)}25%{transform:rotate(2deg)}50%{transform:rotate(4deg)}75%{transform:rotate(2deg)}}
+@keyframes swing-custom{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}}
+@keyframes breathe-custom{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.05);opacity:0.9}}
+@keyframes bounce-in{0%{transform:scale(0.3);opacity:0}50%{transform:scale(1.05)}70%{transform:scale(0.95)}100%{transform:scale(1);opacity:1}}
+@keyframes drowsy-sway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+@keyframes awake-idle{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes happy-bounce{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-8px) scale(1.02)}}
+@keyframes sparkle-float{0%,100%{opacity:0.5;transform:translateY(0) scale(0.8)}50%{opacity:1;transform:translateY(-5px) scale(1.1)}}
+@keyframes excited-bounce{0%,100%{transform:translateY(0) scale(1)}25%{transform:translateY(-12px) scale(1.05)}50%{transform:translateY(-2px) scale(0.98)}75%{transform:translateY(-10px) scale(1.03)}}
+@keyframes particle-burst{0%{opacity:0;transform:translateY(10px) scale(0.5)}30%{opacity:1;transform:translateY(-15px) scale(1)}100%{opacity:0;transform:translateY(-30px) scale(0.7)}}
+@keyframes ready-shake{0%,100%{transform:translateX(0) scale(1)}10%{transform:translateX(-3px) scale(1.02)}20%{transform:translateX(3px) scale(1.02)}30%{transform:translateX(-3px) scale(1.01)}40%{transform:translateX(3px) scale(1.01)}50%{transform:translateX(0) translateY(-5px) scale(1.03)}60%{transform:translateX(-2px)}70%{transform:translateX(2px)}80%{transform:translateX(-2px)}90%{transform:translateX(2px)}}
+@keyframes rainbow-glow{0%{filter:drop-shadow(0 0 12px rgba(255,100,100,0.7))}25%{filter:drop-shadow(0 0 15px rgba(255,200,100,0.7))}50%{filter:drop-shadow(0 0 12px rgba(100,255,150,0.7))}75%{filter:drop-shadow(0 0 15px rgba(150,100,255,0.7))}100%{filter:drop-shadow(0 0 12px rgba(255,100,100,0.7))}}
+@keyframes rainbow-sparkle{0%{opacity:0;transform:translateY(20px) rotate(0deg) scale(0.3)}50%{opacity:1;transform:translateY(-10px) rotate(180deg) scale(1.2)}100%{opacity:0;transform:translateY(-30px) rotate(360deg) scale(0.5)}}
+@keyframes confetti-fall{0%{opacity:1;transform:translateY(0) rotate(0deg) scale(1)}100%{opacity:0;transform:translateY(100vh) rotate(720deg) scale(0.5)}}
+@keyframes tn-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes tn-glow-pulse{0%,100%{opacity:0.6;transform:scale(1)}50%{opacity:1;transform:scale(1.05)}}
+@keyframes tn-shadow-pulse{0%,100%{opacity:0.4;transform:translateX(-50%) scale(1)}50%{opacity:0.25;transform:translateX(-50%) scale(0.85)}}
+@keyframes adult-shadow-pulse{0%,100%{opacity:0.35;transform:translateX(-50%) scale(1)}50%{opacity:0.2;transform:translateX(-50%) scale(0.9)}}
+@keyframes egg-shadow-pulse{0%,100%{opacity:0.3;transform:translateX(-50%) scale(1)}50%{opacity:0.15;transform:translateX(-50%) scale(0.85)}}
+@keyframes blob-shadow-pulse{0%,100%{opacity:0.3;transform:translateX(-50%) scale(1)}50%{opacity:0.18;transform:translateX(-50%) scale(0.88)}}
+@keyframes bl-float{0%,100%{transform:translateY(0px)}50%{transform:translateY(-6px)}}
+@keyframes bl-fluff-pulse{0%,100%{box-shadow:0 0 0 3px rgba(255,255,255,0.4),0 0 0 6px rgba(236,72,153,0.3),0 0 0 9px rgba(168,85,247,0.2),0 4px 12px rgba(124,58,237,0.4)}50%{box-shadow:0 0 0 4px rgba(255,255,255,0.5),0 0 0 8px rgba(236,72,153,0.4),0 0 0 12px rgba(168,85,247,0.3),0 4px 12px rgba(124,58,237,0.5)}}
+@keyframes bl-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes bl-arm-wiggle{0%,100%{transform:rotate(-25deg) translateY(0)}25%{transform:rotate(-10deg) translateY(-3px)}50%{transform:rotate(-20deg) translateY(-1px)}75%{transform:rotate(-5deg) translateY(-4px)}}
+@keyframes bl-leg-wiggle{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-4px) rotate(-5deg)}50%{transform:translateY(-2px) rotate(0deg)}75%{transform:translateY(-5px) rotate(5deg)}}
+@keyframes flapLeft{0%,100%{transform:translateY(-50%) rotate(0deg)}50%{transform:translateY(-50%) rotate(-25deg)}}
+@keyframes flapRight{0%,100%{transform:translateY(-50%) rotate(0deg)}50%{transform:translateY(-50%) rotate(25deg)}}
+@keyframes wing-flap-left{0%,100%{transform:translateY(-50%) rotate(-5deg) scaleY(1)}50%{transform:translateY(-50%) rotate(-35deg) scaleY(1.1)}}
+@keyframes wing-flap-right{0%,100%{transform:translateY(-50%) rotate(5deg) scaleY(1)}50%{transform:translateY(-50%) rotate(35deg) scaleY(1.1)}}
+@keyframes tail-sway{0%,100%{transform:rotate(0deg) translateX(0)}50%{transform:rotate(-8deg) translateX(-2px)}}
+@keyframes head-bob{0%,100%{transform:translateY(0) translateX(-50%)}50%{transform:translateY(-3px) translateX(-50%)}}
+@keyframes neck-sway{0%,100%{transform:rotate(15deg)}50%{transform:rotate(18deg)}}
+@keyframes peacock-fan{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.05)}}
+@keyframes peacock-fan-dance{0%,15%{transform:rotate(0deg) translateY(0) scale(0.6)}35%{transform:rotate(var(--angle)) translateY(var(--y)) scale(1)}40%,60%{transform:rotate(calc(var(--angle) + 1deg)) translateY(var(--y)) scale(1.02)}65%{transform:rotate(calc(var(--angle) - 1deg)) translateY(var(--y)) scale(1.02)}70%{transform:rotate(var(--angle)) translateY(var(--y)) scale(1)}85%,100%{transform:rotate(0deg) translateY(0) scale(0.6)}}
+@keyframes peacock-strut{0%,100%{transform:translateY(0) rotate(0deg)}12%{transform:translateY(-3px) rotate(1deg)}25%{transform:translateY(0) rotate(0deg)}37%{transform:translateY(-3px) rotate(-1deg)}50%{transform:translateY(0) rotate(0deg)}62%{transform:translateY(-3px) rotate(1deg)}75%{transform:translateY(0) rotate(0deg)}87%{transform:translateY(-3px) rotate(-1deg)}}
+@keyframes peacock-leg-left{0%,100%{transform:rotate(0deg)}12%{transform:rotate(12deg) translateY(-2px)}25%{transform:rotate(0deg)}37%{transform:rotate(-6deg)}50%{transform:rotate(0deg)}62%{transform:rotate(12deg) translateY(-2px)}75%{transform:rotate(0deg)}87%{transform:rotate(-6deg)}}
+@keyframes peacock-leg-right{0%,100%{transform:rotate(0deg)}12%{transform:rotate(-6deg)}25%{transform:rotate(0deg)}37%{transform:rotate(12deg) translateY(-2px)}50%{transform:rotate(0deg)}62%{transform:rotate(-6deg)}75%{transform:rotate(0deg)}87%{transform:rotate(12deg) translateY(-2px)}}
+@keyframes peacock-shimmer{0%{filter:brightness(1) hue-rotate(0deg)}25%{filter:brightness(1.1) hue-rotate(8deg)}50%{filter:brightness(1.2) hue-rotate(0deg)}75%{filter:brightness(1.1) hue-rotate(-8deg)}100%{filter:brightness(1) hue-rotate(0deg)}}
+@keyframes peacock-crest{0%,100%{transform:rotate(0deg)}50%{transform:rotate(12deg)}}
+@keyframes owl-head-scan{0%,15%{transform:rotate(0deg)}20%,35%{transform:rotate(-55deg)}40%,55%{transform:rotate(55deg)}60%,100%{transform:rotate(0deg)}}
+@keyframes owl-eye-look{0%,10%{transform:translate(0,0)}15%,25%{transform:translate(-2px,-3px)}30%,40%{transform:translate(0,-4px)}45%,55%{transform:translate(2px,-3px)}60%,70%{transform:translate(0,0)}75%,85%{transform:translate(0,-2px)}90%,100%{transform:translate(0,0)}}
+@keyframes owl-wing-flap-l{0%,100%{transform:rotate(12deg)}50%{transform:rotate(-25deg)}}
+@keyframes owl-wing-flap-r{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(25deg)}}
+@keyframes owl-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
+@keyframes ladybug-bob{0%,30%{transform:translateY(0)}15%{transform:translateY(-3px)}40%,70%{transform:translateY(0)}85%{transform:translateY(-3px)}100%{transform:translateY(0)}}
+@keyframes ladybug-scuttle-a{0%,30%,70%,100%{transform:rotate(var(--base-rot,0deg))}5%,15%,25%,75%,85%,95%{transform:rotate(calc(var(--base-rot,0deg) - 12deg)) translateY(-3px)}10%,20%,80%,90%{transform:rotate(var(--base-rot,0deg))}}
+@keyframes ladybug-scuttle-b{0%,30%,70%,100%{transform:rotate(calc(var(--base-rot,0deg) - 12deg)) translateY(-3px)}5%,15%,25%,75%,85%,95%{transform:rotate(var(--base-rot,0deg))}10%,20%,80%,90%{transform:rotate(calc(var(--base-rot,0deg) - 12deg)) translateY(-3px)}}
+@keyframes ladybug-antenna{0%,30%{transform:rotate(-15deg)}35%{transform:rotate(-8deg)}40%{transform:rotate(-20deg)}45%{transform:rotate(-8deg)}50%{transform:rotate(-18deg)}65%,100%{transform:rotate(-15deg)}}
+@keyframes ladybug-shine{0%,100%{opacity:0.4}50%{opacity:0.6}}
+@keyframes dragonfly-hover{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes dragonfly-flutter-fore{0%{transform:rotate(0deg) scaleY(1)}25%{transform:rotate(3deg) scaleY(0.85)}50%{transform:rotate(0deg) scaleY(0.2)}75%{transform:rotate(-3deg) scaleY(0.85)}100%{transform:rotate(0deg) scaleY(1)}}
+@keyframes dragonfly-flutter-hind{0%{transform:rotate(0deg) scaleY(1)}25%{transform:rotate(-2deg) scaleY(0.85)}50%{transform:rotate(0deg) scaleY(0.2)}75%{transform:rotate(2deg) scaleY(0.85)}100%{transform:rotate(0deg) scaleY(1)}}
+@keyframes dragonfly-tail-pulse{0%,100%{filter:brightness(1);box-shadow:0 0 3px #22d3ee}50%{filter:brightness(1.3);box-shadow:0 0 10px #22d3ee}}
+@keyframes dragonfly-tail-sway{0%,100%{transform:rotate(3deg)}50%{transform:rotate(-3deg)}}
+@keyframes dragonfly-antenna-sway{0%,100%{transform:rotate(-20deg)}50%{transform:rotate(-12deg)}}
+@keyframes dragonfly-leg-twitch{0%,100%{transform:rotate(0deg)}50%{transform:rotate(4deg)}}
+@keyframes fly-hover{0%,100%{transform:translateY(0) scale(1) rotate(0deg)}5%{transform:translateY(-5px) scale(1) rotate(2deg)}10%{transform:translateY(-8px) scale(1.1) rotate(-1deg)}20%{transform:translateY(-12px) scale(1.35) rotate(0deg)}25%{transform:translateY(-10px) scale(1.4) rotate(-8deg)}30%{transform:translateY(-8px) scale(1.4) rotate(10deg)}35%{transform:translateY(-12px) scale(1.4) rotate(-6deg)}40%{transform:translateY(-10px) scale(1.4) rotate(8deg)}45%{transform:translateY(-8px) scale(1.35) rotate(0deg)}55%{transform:translateY(-10px) scale(1.2) rotate(3deg)}65%{transform:translateY(-5px) scale(1.1) rotate(-2deg)}75%{transform:translateY(-8px) scale(1.05) rotate(1deg)}85%{transform:translateY(-3px) scale(1) rotate(-1deg)}95%{transform:translateY(-6px) scale(1) rotate(2deg)}}
+@keyframes fly-wing-buzz{0%{transform:scaleY(1) rotate(0deg)}25%{transform:scaleY(0.3) rotate(5deg)}50%{transform:scaleY(1) rotate(0deg)}75%{transform:scaleY(0.3) rotate(-5deg)}100%{transform:scaleY(1) rotate(0deg)}}
+@keyframes fly-leg-dangle{0%,100%{transform:rotate(var(--base-rot,0deg))}50%{transform:rotate(calc(var(--base-rot,0deg) + 8deg))}}
+@keyframes fly-antenna-twitch{0%,100%{transform:rotate(-15deg)}30%{transform:rotate(-20deg)}60%{transform:rotate(-10deg)}}
+@keyframes beetle-idle{0%,100%{transform:translateY(0) rotate(0deg)}15%{transform:translateY(-2px) rotate(1deg)}30%{transform:translateY(0) rotate(0deg)}45%{transform:translateY(-3px) rotate(-1deg)}60%{transform:translateY(-1px) rotate(0deg)}75%{transform:translateY(-2px) rotate(1deg)}90%{transform:translateY(0) rotate(-0.5deg)}}
+@keyframes beetle-leg-twitch{0%,85%,100%{transform:rotate(0deg)}88%{transform:rotate(8deg)}91%{transform:rotate(-5deg)}94%{transform:rotate(6deg)}97%{transform:rotate(0deg)}}
+@keyframes beetle-elytra-l{0%,70%,100%{transform:rotateY(0deg)}72%,95%{transform:rotateY(-85deg)}}
+@keyframes beetle-elytra-r{0%,70%,100%{transform:rotateY(0deg)}72%,95%{transform:rotateY(85deg)}}
+@keyframes beetle-elytra-open-l{0%,70%,100%{transform:rotate(0deg)}72%,95%{transform:rotate(55deg)}}
+@keyframes beetle-elytra-open-r{0%,70%,100%{transform:rotate(0deg)}72%,95%{transform:rotate(-55deg)}}
+@keyframes beetle-flight-wing-l{0%,70%,100%{opacity:0;transform:translateX(0) rotate(0deg)}72%{opacity:1;transform:translateX(-95px) rotate(-8deg)}74%,78%,82%,86%,90%{opacity:1;transform:translateX(-95px) rotate(-15deg)}76%,80%,84%,88%,92%{opacity:1;transform:translateX(-95px) rotate(3deg)}94%{opacity:1;transform:translateX(-95px) rotate(-8deg)}95%{opacity:0;transform:translateX(0) rotate(0deg)}}
+@keyframes beetle-flight-wing-r{0%,70%,100%{opacity:0;transform:translateX(0) rotate(0deg)}72%{opacity:1;transform:translateX(95px) rotate(8deg)}74%,78%,82%,86%,90%{opacity:1;transform:translateX(95px) rotate(15deg)}76%,80%,84%,88%,92%{opacity:1;transform:translateX(95px) rotate(-3deg)}94%{opacity:1;transform:translateX(95px) rotate(8deg)}95%{opacity:0;transform:translateX(0) rotate(0deg)}}
+@keyframes beetle-antenna{0%,100%{transform:rotate(-20deg)}50%{transform:rotate(-12deg)}}
+@keyframes mandible-snap-l{0%,60%,100%{transform:rotate(0deg)}70%,90%{transform:rotate(38deg)}80%{transform:rotate(35deg)}}
+@keyframes mandible-snap-r{0%,60%,100%{transform:rotate(0deg)}70%,90%{transform:rotate(-38deg)}80%{transform:rotate(-35deg)}}
+@keyframes bee-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes bee-wing-l{0%{transform:rotateY(5deg)}100%{transform:rotateY(70deg)}}
+@keyframes bee-wing-r{0%{transform:rotateY(-5deg)}100%{transform:rotateY(-70deg)}}
+@keyframes ant-sway{0%,100%{transform:rotate(-15deg)}50%{transform:rotate(-30deg)}}
+@keyframes firefly-float{0%,100%{transform:translateY(0)}25%{transform:translateY(-8px)}50%{transform:translateY(-4px)}75%{transform:translateY(-10px)}}
+@keyframes firefly-elytra-l{0%,70%,100%{transform:rotate(0deg)}75%,95%{transform:rotate(35deg)}}
+@keyframes firefly-elytra-r{0%,70%,100%{transform:rotate(0deg)}75%,95%{transform:rotate(-35deg)}}
+@keyframes firefly-flight-wing-l{0%,70%,100%{opacity:0;transform:translateX(0)}72%{opacity:1;transform:translateX(-95px)}74%,78%,82%,86%,90%{opacity:1;transform:translateX(-95px) rotate(-12deg)}76%,80%,84%,88%,92%{opacity:1;transform:translateX(-95px) rotate(5deg)}94%{opacity:1;transform:translateX(-95px)}95%{opacity:0;transform:translateX(0)}}
+@keyframes firefly-flight-wing-r{0%,70%,100%{opacity:0;transform:translateX(0)}72%{opacity:1;transform:translateX(95px)}74%,78%,82%,86%,90%{opacity:1;transform:translateX(95px) rotate(12deg)}76%,80%,84%,88%,92%{opacity:1;transform:translateX(95px) rotate(-5deg)}94%{opacity:1;transform:translateX(95px)}95%{opacity:0;transform:translateX(0)}}
+@keyframes firefly-antenna-l{0%,100%{transform:rotate(-20deg)}50%{transform:rotate(-30deg)}}
+@keyframes firefly-antenna-r{0%,100%{transform:rotate(20deg)}50%{transform:rotate(30deg)}}
+@keyframes firefly-glow{0%,45%{opacity:1;box-shadow:0 0 25px #f5f99a,0 0 45px rgba(245,250,150,0.6),0 0 65px rgba(245,250,150,0.3)}50%,95%{opacity:0.15;box-shadow:0 0 5px rgba(200,210,100,0.2)}100%{opacity:1;box-shadow:0 0 25px #f5f99a,0 0 45px rgba(245,250,150,0.6),0 0 65px rgba(245,250,150,0.3)}}
+@keyframes firefly-glow-seg1{0%,45%{background:linear-gradient(180deg,#6a6a4a,#8b8b6a,#b0b080);box-shadow:0 0 8px rgba(180,190,100,0.4)}50%,95%{background:linear-gradient(180deg,#3a3a2a,#4a4a3a,#5a5a4a);box-shadow:none}100%{background:linear-gradient(180deg,#6a6a4a,#8b8b6a,#b0b080);box-shadow:0 0 8px rgba(180,190,100,0.4)}}
+@keyframes firefly-ambient{0%,45%{opacity:0.4;transform:translateX(-50%) scale(1)}50%,95%{opacity:0;transform:translateX(-50%) scale(0.6)}100%{opacity:0.4;transform:translateX(-50%) scale(1)}}
+@keyframes firefly-halo{0%,45%{opacity:0.7;box-shadow:0 0 60px 30px rgba(255,255,140,0.5),0 0 100px 50px rgba(255,255,100,0.3),0 0 140px 70px rgba(255,255,80,0.15)}50%,95%{opacity:0;box-shadow:0 0 20px 10px rgba(255,255,140,0.05)}100%{opacity:0.7;box-shadow:0 0 60px 30px rgba(255,255,140,0.5),0 0 100px 50px rgba(255,255,100,0.3),0 0 140px 70px rgba(255,255,80,0.15)}}
+@keyframes bee-zoom{0%,100%{transform:translate(0,60px) scale(1)}5%{transform:translate(8px,50px) scale(1.2)}10%{transform:translate(-10px,35px) scale(1.8)}15%{transform:translate(12px,15px) scale(3)}20%{transform:translate(-15px,-10px) scale(4.5)}25%{transform:translate(18px,-25px) scale(6)}28%{transform:translate(-20px,-30px) scale(6.2)}31%{transform:translate(22px,-25px) scale(6)}34%{transform:translate(-18px,-28px) scale(6.2)}37%{transform:translate(20px,-22px) scale(5.8)}40%{transform:translate(-15px,-18px) scale(5)}45%{transform:translate(12px,-5px) scale(4)}50%{transform:translate(-10px,10px) scale(3)}55%{transform:translate(8px,25px) scale(2)}60%{transform:translate(-6px,40px) scale(1.5)}65%{transform:translate(4px,50px) scale(1.2)}70%{transform:translate(-3px,58px) scale(1)}80%{transform:translate(2px,62px) scale(1)}90%{transform:translate(-2px,60px) scale(1)}}
+@keyframes flamingo-stand{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+@keyframes toucan-bob{0%,100%{transform:rotate(0deg) translateY(0)}20%{transform:rotate(2deg) translateY(-4px)}40%{transform:rotate(-2deg) translateY(0)}60%{transform:rotate(1deg) translateY(-2px)}80%{transform:rotate(-1deg) translateY(0)}}
+@keyframes toucan-head-turn{0%,45%{transform:scaleX(1)}50%,95%{transform:scaleX(-1)}100%{transform:scaleX(1)}}
+@keyframes toucan-beak-clack{0%,70%,100%{transform:rotate(0deg)}75%,85%{transform:rotate(15deg)}80%,90%{transform:rotate(0deg)}}
+@keyframes toucan-blink{0%,94%,100%{transform:scaleY(1)}95%,99%{transform:scaleY(0.1)}}
+@keyframes toucan-tail-wag{0%,100%{transform:rotate(125deg) scaleY(-1)}50%{transform:rotate(135deg) scaleY(-1)}}
+@keyframes toucan-hop{0%,60%,100%{transform:translateY(0)}65%{transform:translateY(-8px)}70%{transform:translateY(0)}75%{transform:translateY(-5px)}80%{transform:translateY(0)}}
+@keyframes toucan-wing-flap{0%,100%{transform:rotate(-5deg) scaleY(1)}15%{transform:rotate(-45deg) scaleY(0.9)}30%{transform:rotate(15deg) scaleY(1.05)}45%{transform:rotate(-30deg) scaleY(0.95)}60%{transform:rotate(10deg) scaleY(1)}75%{transform:rotate(-20deg) scaleY(0.95)}90%{transform:rotate(5deg) scaleY(1)}}
+@keyframes beak-shimmer{0%,100%{opacity:0.2}50%{opacity:0.5}}
+@keyframes tropical-float{0%,100%{transform:translateY(0) rotate(0deg);opacity:0.7}50%{transform:translateY(-20px) rotate(15deg);opacity:0.3}}
+@keyframes axo-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes axo-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes axo-tail-swish{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(8deg)}}
+@keyframes gill-fan-l-1{0%,100%{transform:rotate(35deg)}50%{transform:rotate(45deg)}}
+@keyframes gill-fan-l-2{0%,100%{transform:rotate(0deg)}50%{transform:rotate(5deg)}}
+@keyframes gill-fan-l-3{0%,100%{transform:rotate(-35deg)}50%{transform:rotate(-25deg)}}
+@keyframes gill-fan-r-1{0%,100%{transform:rotate(-35deg)}50%{transform:rotate(-45deg)}}
+@keyframes gill-fan-r-2{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-5deg)}}
+@keyframes gill-fan-r-3{0%,100%{transform:rotate(35deg)}50%{transform:rotate(25deg)}}
+@keyframes axo-leg-paddle-l{0%,100%{transform:rotate(25deg)}50%{transform:rotate(40deg)}}
+@keyframes axo-leg-paddle-r{0%,100%{transform:rotate(-25deg)}50%{transform:rotate(-40deg)}}
+@keyframes axo-leg-back-l{0%,100%{transform:rotate(10deg)}50%{transform:rotate(20deg)}}
+@keyframes axo-leg-back-r{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(-20deg)}}
+@keyframes axo-eye-look{0%,40%,100%{transform:translateX(0)}45%,95%{transform:translateX(2px)}}
+@keyframes axo-happy-wiggle{0%,85%,100%{transform:rotate(0deg)}87%{transform:rotate(-3deg)}89%{transform:rotate(3deg)}91%{transform:rotate(-2deg)}93%{transform:rotate(2deg)}95%{transform:rotate(0deg)}}
+@keyframes narwhal-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes narwhal-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes narwhal-tail-flip{0%,100%{transform:translateX(-50%) translateY(0) scaleY(1)}50%{transform:translateX(-50%) translateY(-30px) scaleY(0.7)}}
+@keyframes narwhal-tusk-wobble{0%,100%{transform:translateX(-50%) rotate(-2deg)}50%{transform:translateX(-50%) rotate(2deg)}}
+@keyframes narwhal-flip-l{0%,100%{transform:rotate(25deg)}50%{transform:rotate(40deg)}}
+@keyframes narwhal-flip-r{0%,100%{transform:rotate(-25deg)}50%{transform:rotate(-40deg)}}
+@keyframes jelly-pulse{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-15px) scale(1.02,0.98)}}
+@keyframes jelly-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes jelly-tentacle{0%,100%{transform:scaleX(1) skewX(0deg) translateY(0)}50%{transform:scaleX(1.1) skewX(5deg) translateY(10px)}}
+@keyframes jelly-frill{0%,100%{transform:scaleX(1) skewX(0deg)}50%{transform:scaleX(1.08) skewX(6deg)}}
+@keyframes bubble-rise{0%{transform:translateY(0) scale(1);opacity:0.8}50%{opacity:0.9}100%{transform:translateY(-200px) scale(0.6);opacity:0}}
+@keyframes bubble-rise-slow{0%{transform:translateY(0) scale(1);opacity:0.7}50%{opacity:0.85}100%{transform:translateY(-220px) scale(0.5);opacity:0}}
+@keyframes bubble-wobble{0%,100%{transform:translateX(0)}50%{transform:translateX(3px)}}
+@keyframes octo-float{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-8px) rotate(2deg)}50%{transform:translateY(-12px) rotate(0deg)}75%{transform:translateY(-8px) rotate(-2deg)}}
+@keyframes octo-blink{0%,92%,100%{transform:scaleY(1)}94%,98%{transform:scaleY(0.1)}}
+@keyframes octo-eye-look{0%,20%{transform:translate(0,0)}22%,28%{transform:translate(3px,-1px)}30%,38%{transform:translate(-2px,1px)}40%,48%{transform:translate(0,-4px)}50%,58%{transform:translate(2px,0)}60%,68%{transform:translate(-1px,-3px)}70%,90%{transform:translate(0,0)}92%,96%{transform:translate(0,-5px)}}
+@keyframes octo-eye-look-around{0%,15%{transform:translate(0,0)}18%,28%{transform:translate(0,-6px)}30%,38%{transform:translate(4px,-4px)}40%,48%{transform:translate(4px,0)}50%,55%{transform:translate(0,0)}58%,68%{transform:translate(-4px,-4px)}70%,78%{transform:translate(-4px,0)}80%,88%{transform:translate(0,-5px)}90%,100%{transform:translate(0,0)}}
+@keyframes alien-float{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-10px) rotate(1deg)}50%{transform:translateY(-15px) rotate(0deg)}75%{transform:translateY(-10px) rotate(-1deg)}}
+@keyframes alien-blink{0%,92%,100%{transform:scaleY(1)}94%,98%{transform:scaleY(0.1)}}
+@keyframes alien-eye-look{0%,10%{transform:translate(-50%,-50%)}12%,22%{transform:translate(-50%,-58%)}24%,34%{transform:translate(-42%,-55%)}36%,46%{transform:translate(-42%,-50%)}48%,58%{transform:translate(-50%,-50%)}60%,70%{transform:translate(-58%,-55%)}72%,82%{transform:translate(-58%,-50%)}84%,94%{transform:translate(-50%,-45%)}96%,100%{transform:translate(-50%,-50%)}}
+@keyframes alien-waddle{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-3px) rotate(-2deg)}50%{transform:translateY(0) rotate(0deg)}75%{transform:translateY(-3px) rotate(2deg)}}
+@keyframes alien-antenna-l{0%,100%{transform:rotate(-15deg)}25%{transform:rotate(-25deg)}50%{transform:rotate(-10deg)}75%{transform:rotate(-20deg)}}
+@keyframes alien-antenna-r{0%,100%{transform:rotate(15deg)}25%{transform:rotate(25deg)}50%{transform:rotate(10deg)}75%{transform:rotate(20deg)}}
+@keyframes alien-glow{0%,100%{opacity:0.6;transform:scale(1)}50%{opacity:1;transform:scale(1.2)}}
+@keyframes alien-arm-wave-l{0%,100%{transform:rotate(20deg)}50%{transform:rotate(35deg)}}
+@keyframes alien-arm-wave-r{0%,100%{transform:rotate(-20deg)}50%{transform:rotate(-35deg)}}
+@keyframes alien-happy{0%,80%,100%{transform:rotate(0deg)}82%{transform:rotate(-3deg)}84%{transform:rotate(3deg)}86%{transform:rotate(-2deg)}88%{transform:rotate(2deg)}}
+@keyframes flying-eye-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes flying-eye-look{0%,100%{transform:translate(0,0)}25%{transform:translate(2px,-1px)}50%{transform:translate(-1px,1px)}75%{transform:translate(-2px,-1px)}}
+@keyframes orbit-spin{0%{transform:rotateX(70deg) rotateZ(0deg)}100%{transform:rotateX(70deg) rotateZ(360deg)}}
+@keyframes flame-flicker{0%,100%{opacity:0.6;transform:scaleY(1)}50%{opacity:1;transform:scaleY(1.15)}}
+@keyframes octo-tentacle-1{0%,100%{transform:rotate(-5deg) scaleX(1)}50%{transform:rotate(8deg) scaleX(1.05)}}
+@keyframes octo-tentacle-2{0%,100%{transform:rotate(5deg) scaleX(1)}50%{transform:rotate(-8deg) scaleX(1.05)}}
+@keyframes octo-tentacle-3{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(5deg)}}
+@keyframes octo-tentacle-4{0%,100%{transform:rotate(8deg)}50%{transform:rotate(-5deg)}}
+@keyframes octo-head-squish{0%,100%{transform:scale(1,1)}50%{transform:scale(1.03,0.97)}}
+@keyframes octo-color-shift{0%,100%{filter:hue-rotate(0deg)}50%{filter:hue-rotate(15deg)}}
+@keyframes octo-sucker-pulse{0%,100%{transform:scale(1);opacity:0.6}50%{transform:scale(1.2);opacity:0.8}}
+@keyframes octo-happy-wiggle{0%,70%,100%{transform:rotate(0deg)}72%{transform:rotate(-5deg)}74%{transform:rotate(5deg)}76%{transform:rotate(-4deg)}78%{transform:rotate(4deg)}80%{transform:rotate(0deg)}}
+@keyframes octo-fin-left{0%,100%{transform:rotate(-15deg) scaleY(1)}50%{transform:rotate(-25deg) scaleY(0.9)}}
+@keyframes octo-fin-right{0%,100%{transform:rotate(15deg) scaleY(1)}50%{transform:rotate(25deg) scaleY(0.9)}}
+@keyframes octo-brow-raise{0%,85%,100%{transform:translateY(0) rotate(-8deg)}88%,95%{transform:translateY(-2px) rotate(-12deg)}}
+@keyframes octo-ink-squirt{0%,90%,100%{transform:scale(0);opacity:0}92%{transform:scale(1);opacity:0.6}96%{transform:scale(1.5) translateY(10px);opacity:0.3}}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
+@keyframes snake-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes gecko-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
+@keyframes gecko-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes gecko-tail-sway{0%,100%{transform:rotate(0deg) translateX(0)}50%{transform:rotate(-8deg) translateX(-2px)}}
+@keyframes gecko-eye-look{0%,45%,100%{transform:translateX(0)}50%,95%{transform:translateX(5px)}}
+@keyframes gecko-tongue-extend{0%,88%,100%{clip-path:inset(100% 0 0 0)}90%,96%{clip-path:inset(0 0 0 0)}}
+@keyframes gecko-tongue-lick{0%,88%,100%{transform:rotate(0deg)}91%{transform:rotate(-8deg)}93%{transform:rotate(8deg)}95%{transform:rotate(-5deg)}97%{transform:rotate(0deg)}}
+@keyframes gecko-mouth-open{0%,86%,100%{transform:translateX(-50%) rotate(-2deg) scaleY(1)}88%,99%{transform:translateX(-50%) rotate(-2deg) scaleY(2.5)}}
+@keyframes gecko-mouth-inside{0%,86%,100%{opacity:0;transform:translateX(-50%) scaleY(0)}88%,99%{opacity:1;transform:translateX(-50%) scaleY(1)}}
+@keyframes gecko-leg-burst{0%,70%,100%{transform:rotate(var(--leg-rest))}72%,74%,76%,78%{transform:rotate(var(--leg-run1))}73%,75%,77%,79%{transform:rotate(var(--leg-run2))}}
+@keyframes frog-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+@keyframes frog-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes frog-paw-wiggle{0%,40%,60%,100%{transform:scale(1)}50%{transform:scale(1.1) rotate(15deg)}}
+@keyframes frog-croak{0%,80%,100%{transform:translateX(-50%) scale(1)}90%{transform:translateX(-50%) scale(1.3)}}
+@keyframes frog-fly-buzz{0%{transform:translate(-80px,0) scale(1) rotate(0deg)}6%{transform:translate(-40px,-10px) scale(1) rotate(10deg)}14%{transform:translate(20px,-25px) scale(1) rotate(-5deg)}22%{transform:translate(60px,-15px) scale(1) rotate(15deg)}30%{transform:translate(80px,5px) scale(1) rotate(-10deg)}38%{transform:translate(50px,20px) scale(1) rotate(20deg)}46%{transform:translate(20px,0px) scale(1) rotate(-15deg)}54%{transform:translate(40px,-20px) scale(1) rotate(10deg)}62%{transform:translate(70px,10px) scale(1) rotate(-5deg)}70%{transform:translate(55px,25px) scale(1) rotate(15deg)}78%{transform:translate(60px,15px) scale(1) rotate(0deg)}80%{transform:translate(60px,15px) scale(0) rotate(0deg)}95%{transform:translate(60px,15px) scale(0) rotate(0deg)}95.1%{transform:translate(-80px,0) scale(0) rotate(0deg)}98%{transform:translate(-80px,0) scale(1) rotate(0deg)}100%{transform:translate(-80px,0) scale(1) rotate(0deg)}}
+@keyframes frog-fly-wings{0%,100%{transform:scaleY(1)}50%{transform:scaleY(0.3)}}
+@keyframes frog-tongue-shoot{0%,75%{transform:translateY(0) scaleY(0);opacity:0}76%{transform:translateY(0) scaleY(0);opacity:1}77%{transform:translateY(0) scaleY(0.4);opacity:1}79%{transform:translateY(0) scaleY(1);opacity:1}83%{transform:translateY(-10px) scaleY(1.1);opacity:1}87%{transform:translateY(0) scaleY(0.6);opacity:1}90%{transform:translateY(0) scaleY(0);opacity:0}100%{transform:translateY(0) scaleY(0);opacity:0}}
+@keyframes frog-eye-track{0%{transform:translate(-6px,0)}6%{transform:translate(-4px,-1px)}14%{transform:translate(2px,-3px)}22%{transform:translate(5px,-2px)}30%{transform:translate(6px,0)}38%{transform:translate(4px,2px)}46%{transform:translate(2px,0)}54%{transform:translate(3px,-2px)}62%{transform:translate(5px,1px)}70%{transform:translate(4px,2px)}78%{transform:translate(5px,2px)}80%{transform:translate(5px,2px)}85%{transform:translate(0,0)}90%{transform:translate(-6px,0)}100%{transform:translate(-6px,0)}}
+@keyframes frog-mouth-open{0%,74%,93%,100%{transform:translateX(-50%) scaleY(1)}76%,90%{transform:translateX(-50%) scaleY(2.5)}}
+@keyframes frog-mouth-inside{0%,74%,93%,100%{opacity:0;transform:translateX(-50%) scaleY(0)}76%,90%{opacity:1;transform:translateX(-50%) scaleY(1)}}
+@keyframes frog-hop{0%,70%,100%{transform:translateY(0) scale(1)}76%{transform:translateY(-25px) scale(1.05,0.95)}82%{transform:translateY(-30px) scale(0.95,1.05)}88%{transform:translateY(-10px) scale(1.02,0.98)}}
+@keyframes frog-leg-jump{0%,70%,100%{transform:translateY(0)}76%{transform:translateY(25px)}82%{transform:translateY(30px)}84%{transform:translateY(15px)}86%{transform:translateY(0)}88%,92%{transform:translateY(0)}}
+@keyframes turtle-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes turtle-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes turtle-tail-wiggle{0%,100%{transform:rotate(-20deg)}50%{transform:rotate(20deg)}}
+@keyframes turtle-walk-left{0%,100%{transform:rotate(-15deg)}50%{transform:rotate(10deg)}}
+@keyframes turtle-walk-right{0%,100%{transform:rotate(15deg)}50%{transform:rotate(-10deg)}}
+@keyframes turtle-head-tuck{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+@keyframes cobra-sway{0%{transform:rotate(-2deg) translateY(0)}100%{transform:rotate(2deg) translateY(-5px)}}
+@keyframes cobra-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes cobra-tail-wag{0%{transform:rotate(-10deg)}100%{transform:rotate(-35deg)}}
+@keyframes cobra-tongue{0%,70%{transform:scaleY(0)}75%{transform:scaleY(1.2) rotate(5deg)}80%{transform:scaleY(1.1) rotate(-5deg)}85%{transform:scaleY(1) rotate(0deg)}90%,100%{transform:scaleY(0)}}
+@keyframes emerald-sway{0%{transform:rotate(-2deg) translateY(0)}100%{transform:rotate(2deg) translateY(-5px)}}
+@keyframes emerald-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes emerald-tail-wag{0%{transform:rotate(-10deg)}100%{transform:rotate(-35deg)}}
+@keyframes emerald-tongue{0%,70%{transform:scaleY(0)}75%{transform:scaleY(1.2) rotate(5deg)}80%{transform:scaleY(1.1) rotate(-5deg)}85%{transform:scaleY(1) rotate(0deg)}90%,100%{transform:scaleY(0)}}
+@keyframes snake-eye-look{0%,40%{transform:translateX(0)}45%,85%{transform:translateX(2px)}90%,100%{transform:translateX(0)}}
+@keyframes purple-sway{0%{transform:rotate(-2deg) translateY(0)}100%{transform:rotate(2deg) translateY(-5px)}}
+@keyframes purple-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes purple-tail-wag{0%{transform:rotate(-10deg)}100%{transform:rotate(-35deg)}}
+@keyframes purple-tongue{0%,70%{transform:scaleY(0)}75%{transform:scaleY(1.2) rotate(5deg)}80%{transform:scaleY(1.1) rotate(-5deg)}85%{transform:scaleY(1) rotate(0deg)}90%,100%{transform:scaleY(0)}}
+@keyframes rattle-buzz{0%,100%{transform:rotate(0deg)}50%{transform:rotate(25deg)}}
+@keyframes rattle-slither{0%,100%{transform:scaleX(1) skewY(0deg)}25%{transform:scaleX(1.03) skewY(1.5deg)}50%{transform:scaleX(0.98) skewY(-1deg)}75%{transform:scaleX(1.02) skewY(1deg)}}
+@keyframes rattle-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes rattle-tongue{0%,80%,100%{transform:translateX(-50%) scaleY(0)}85%,92%,98%{transform:translateX(-50%) scaleY(1)}}
+@keyframes rattle-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes coiled-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes coiled-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes coiled-tongue{0%,70%{transform:scaleY(0)}75%{transform:scaleY(1.2)}85%{transform:scaleY(1)}90%{transform:scaleY(0)}}
+@keyframes coiled-rattle{0%{transform:rotate(0deg)}100%{transform:rotate(15deg)}}
+@keyframes rainbow-bounce{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-15px) rotate(1deg)}}
+@keyframes rainbow-wiggle{0%,100%{transform:scaleX(1) skewY(0deg)}25%{transform:scaleX(1.05) skewY(2deg)}75%{transform:scaleX(0.95) skewY(-2deg)}}
+@keyframes rainbow-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes rainbow-tongue{0%,80%,100%{transform:translateX(-50%) scaleY(0)}85%,92%,98%{transform:translateX(-50%) scaleY(1)}}
+@keyframes pcobra-sway{0%{transform:rotate(-2deg) translateY(0)}100%{transform:rotate(2deg) translateY(-5px)}}
+@keyframes pcobra-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes pcobra-tail{0%{transform:rotate(-10deg)}100%{transform:rotate(-35deg)}}
+@keyframes pcobra-tongue{0%,70%{transform:scaleY(0)}75%{transform:scaleY(1.2) rotate(5deg)}80%{transform:scaleY(1.1) rotate(-5deg)}85%{transform:scaleY(1) rotate(0deg)}90%,100%{transform:scaleY(0)}}
+@keyframes fcobra-sway{0%{transform:rotate(-2deg) translateY(0)}100%{transform:rotate(2deg) translateY(-5px)}}
+@keyframes fcobra-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes fcobra-tail{0%{transform:rotate(-10deg)}100%{transform:rotate(-35deg)}}
+@keyframes fcobra-tongue{0%,70%{transform:scaleY(0)}75%{transform:scaleY(1.2) rotate(5deg)}80%{transform:scaleY(1.1) rotate(-5deg)}85%{transform:scaleY(1) rotate(0deg)}90%,100%{transform:scaleY(0)}}
+@keyframes fcobra-flicker{0%{transform:translateX(-50%) rotate(45deg) scale(1);filter:brightness(1)}50%{transform:translateX(-50%) rotate(45deg) scale(0.95,1.05)}100%{transform:translateX(-50%) rotate(45deg) scale(1.02);filter:brightness(1.2)}}
+@keyframes icobra-sway{0%{transform:rotate(-2deg) translateY(0)}100%{transform:rotate(2deg) translateY(-5px)}}
+@keyframes icobra-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes icobra-tail{0%{transform:rotate(-10deg)}100%{transform:rotate(-35deg)}}
+@keyframes icobra-tongue{0%,70%{transform:scaleY(0)}75%{transform:scaleY(1.2) rotate(5deg)}80%{transform:scaleY(1.1) rotate(-5deg)}85%{transform:scaleY(1) rotate(0deg)}90%,100%{transform:scaleY(0)}}
+@keyframes icobra-snow{0%,100%{transform:translateY(0) rotate(0deg);opacity:0.6}50%{transform:translateY(-8px) rotate(30deg);opacity:1}}
+@keyframes icobra-mist{0%,100%{opacity:0.4;transform:translateX(-50%) scale(1)}50%{opacity:0.7;transform:translateX(-50%) scale(1.1)}}
+@keyframes cobra-hood-flare{0%,100%{transform:scaleX(1) scaleY(1)}15%{transform:scaleX(1.08) scaleY(1.03)}30%{transform:scaleX(1.12) scaleY(1.05)}50%{transform:scaleX(1.08) scaleY(1.03)}70%{transform:scaleX(1) scaleY(1)}}
+@keyframes cobra-hypnotic-rise{0%,100%{transform:translateY(0)}25%{transform:translateY(-8px)}50%{transform:translateY(-4px)}75%{transform:translateY(-10px)}}
+@keyframes cobra-head-sway{0%,100%{transform:rotate(0deg) translateX(0)}20%{transform:rotate(-4deg) translateX(-3px)}40%{transform:rotate(2deg) translateX(2px)}60%{transform:rotate(-3deg) translateX(-2px)}80%{transform:rotate(3deg) translateX(2px)}}
+@keyframes cobra-neck-sway{0%,100%{transform:rotate(0deg)}20%{transform:rotate(-3deg)}40%{transform:rotate(1.5deg)}60%{transform:rotate(-2deg)}80%{transform:rotate(2deg)}}
+@keyframes python-pulse{0%,100%{transform:scale(1)}30%{transform:scale(1.02)}50%{transform:scale(0.98)}80%{transform:scale(1.01)}}
+@keyframes python-head-sway{0%,100%{transform:rotate(0deg) translateX(0)}20%{transform:rotate(-3deg) translateX(-2px)}50%{transform:rotate(2deg) translateX(2px)}80%{transform:rotate(-1deg) translateX(-1px)}}
+@keyframes snake-head-tilt{0%,30%{transform:rotate(0deg)}35%{transform:rotate(-8deg)}40%,70%{transform:rotate(0deg)}75%{transform:rotate(6deg)}80%,100%{transform:rotate(0deg)}}
+@keyframes egg-hatch-wiggle{0%,100%{transform:rotate(0deg) translateX(0)}10%{transform:rotate(-8deg) translateX(-2px)}30%{transform:rotate(8deg) translateX(2px)}50%{transform:rotate(-6deg) translateX(-1px)}70%{transform:rotate(6deg) translateX(1px)}90%{transform:rotate(-3deg) translateX(-0.5px)}}
+@keyframes egg-wiggle{0%,100%{transform:rotate(0deg) translateX(0)}20%{transform:rotate(-5deg) translateX(-1px)}60%{transform:rotate(5deg) translateX(1px)}}
+@keyframes egg-rock{0%,100%{transform:rotate(0deg)}25%{transform:rotate(-3deg)}75%{transform:rotate(3deg)}}
+@keyframes egg-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.003)}}
+@keyframes star-float{0%{transform:translateY(0) scale(1) rotate(0deg);opacity:1}50%{transform:translateY(-30px) scale(1.2) rotate(180deg);opacity:0.8}100%{transform:translateY(-60px) scale(0.5) rotate(360deg);opacity:0}}
+@keyframes music-float{0%{transform:translateY(0) translateX(0) scale(1);opacity:0.9}50%{transform:translateY(-25px) translateX(10px) scale(1.1);opacity:0.7}100%{transform:translateY(-50px) translateX(-5px) scale(0.8);opacity:0}}
+@keyframes spark-burst{0%{transform:scale(0) rotate(0deg);opacity:1}50%{transform:scale(1.5) rotate(180deg);opacity:0.8}100%{transform:scale(0.3) rotate(360deg);opacity:0}}
+@keyframes smoke-rise{0%{transform:translateY(0) scale(1);opacity:0.4}50%{transform:translateY(-40px) scale(1.5);opacity:0.25}100%{transform:translateY(-80px) scale(2);opacity:0}}
+@keyframes mystical-swirl{0%{transform:rotate(0deg) scale(1);opacity:0.3}50%{transform:rotate(180deg) scale(1.2);opacity:0.5}100%{transform:rotate(360deg) scale(1);opacity:0.3}}
+@keyframes heart-pop{0%{transform:scale(0) translateY(0);opacity:1}30%{transform:scale(1.3) translateY(-10px);opacity:0.9}100%{transform:scale(0.6) translateY(-40px);opacity:0}}
+@keyframes crack-glow{0%,100%{opacity:0.3;filter:brightness(1)}50%{opacity:0.8;filter:brightness(1.5)}}
+@keyframes energy-pulse{0%{transform:scale(0.8);opacity:0.2}50%{transform:scale(1.3);opacity:0.5}100%{transform:scale(0.8);opacity:0.2}}
+@keyframes hatch-shake{0%,100%{transform:rotate(0deg) translateX(0)}5%{transform:rotate(-12deg) translateX(-8px)}10%{transform:rotate(12deg) translateX(8px)}15%{transform:rotate(-10deg) translateX(-6px)}20%{transform:rotate(10deg) translateX(6px)}25%{transform:rotate(-8deg) translateX(-4px)}30%{transform:rotate(8deg) translateX(4px)}35%,65%{transform:rotate(0deg) translateX(0)}70%{transform:rotate(-15deg) translateX(-10px)}75%{transform:rotate(15deg) translateX(10px)}80%{transform:rotate(-12deg) translateX(-8px)}85%{transform:rotate(12deg) translateX(8px)}90%{transform:rotate(-8deg) translateX(-5px)}95%{transform:rotate(8deg) translateX(5px)}}
+@keyframes hatch-crack-appear{0%{opacity:0;transform:scaleY(0)}100%{opacity:1;transform:scaleY(1)}}
+@keyframes hatch-light-burst{0%{opacity:0;transform:scale(0.5)}50%{opacity:1;transform:scale(1.5)}100%{opacity:0;transform:scale(3)}}
+@keyframes hatch-shell-fly{0%{opacity:1;transform:translate(0,0) rotate(0deg)}100%{opacity:0;transform:translate(var(--fly-x),var(--fly-y)) rotate(var(--fly-rot))}}
+@keyframes hatch-creature-pop{0%{opacity:0;transform:scale(0) translateY(50px)}60%{opacity:1;transform:scale(1.2) translateY(-20px)}80%{transform:scale(0.9) translateY(5px)}100%{transform:scale(1) translateY(0)}}
+@keyframes hatch-confetti{0%{opacity:1;transform:translateY(0) rotate(0deg)}100%{opacity:0;transform:translateY(200px) rotate(720deg)}}
+@keyframes hatch-glow-pulse{0%,100%{box-shadow:0 0 30px rgba(251,191,36,0.5),0 0 60px rgba(251,191,36,0.3)}50%{box-shadow:0 0 50px rgba(251,191,36,0.8),0 0 100px rgba(251,191,36,0.5)}}
+@keyframes hatch-text-pop{0%{opacity:0;transform:scale(0.5) translateY(20px)}50%{transform:scale(1.1) translateY(-5px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes evo-spin-fast{0%{transform:rotate(0deg) scale(1)}25%{transform:rotate(180deg) scale(1.05)}50%{transform:rotate(360deg) scale(0.95)}75%{transform:rotate(540deg) scale(1.1)}100%{transform:rotate(720deg) scale(1)}}
+@keyframes evo-shake-intense{0%,100%{transform:translateX(0) translateY(0)}10%{transform:translateX(-8px) translateY(-3px)}20%{transform:translateX(8px) translateY(3px)}30%{transform:translateX(-6px) translateY(-5px)}40%{transform:translateX(6px) translateY(5px)}50%{transform:translateX(-10px) translateY(-2px)}60%{transform:translateX(10px) translateY(2px)}70%{transform:translateX(-5px) translateY(-4px)}80%{transform:translateX(5px) translateY(4px)}90%{transform:translateX(-3px) translateY(-1px)}}
+@keyframes evo-glow-buildup{0%{box-shadow:0 0 10px rgba(251,191,36,0.3)}50%{box-shadow:0 0 40px rgba(251,191,36,0.6),0 0 80px rgba(168,85,247,0.4)}100%{box-shadow:0 0 80px rgba(251,191,36,1),0 0 120px rgba(168,85,247,0.8),0 0 160px rgba(236,72,153,0.6)}}
+@keyframes evo-smoke-burst{0%{opacity:0;transform:scale(0.3)}30%{opacity:0.8;transform:scale(1.2)}100%{opacity:0;transform:scale(2.5)}}
+@keyframes evo-lightning{0%,100%{opacity:0}10%,30%{opacity:1}20%,40%{opacity:0}50%{opacity:1}60%,80%{opacity:0}70%,90%{opacity:1}}
+@keyframes evo-star-explode{0%{opacity:1;transform:translate(0,0) scale(1) rotate(0deg)}100%{opacity:0;transform:translate(var(--ex),var(--ey)) scale(0.3) rotate(360deg)}}
+@keyframes evo-ring-expand{0%{opacity:0.8;transform:translate(-50%,-50%) scale(0.5)}100%{opacity:0;transform:translate(-50%,-50%) scale(3)}}
+@keyframes evo-flash{0%{opacity:0}50%{opacity:1}100%{opacity:0}}
+@keyframes buddy-levitate{
+      0%,100%{transform:translateY(0) rotateX(2deg) rotateY(-1deg)}
+      25%{transform:translateY(-8px) rotateX(1deg) rotateY(1deg)}
+      50%{transform:translateY(-12px) rotateX(-1deg) rotateY(2deg)}
+      75%{transform:translateY(-6px) rotateX(0deg) rotateY(-2deg)}
+    }
+@keyframes shadow-float{
+      0%,100%{transform:translateX(-50%) scale(1);opacity:0.3}
+      25%{transform:translateX(-50%) scale(0.92);opacity:0.25}
+      50%{transform:translateX(-50%) scale(0.85);opacity:0.2}
+      75%{transform:translateX(-50%) scale(0.9);opacity:0.22}
+    }
+@keyframes aura-pulse{
+      0%,100%{transform:translate(-50%,-50%) scale(1);opacity:0.15}
+      50%{transform:translate(-50%,-50%) scale(1.1);opacity:0.25}
+    }
+@keyframes bird-hop{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-12px)}
+    }
+@keyframes float-indicator{0%,100%{transform:translateY(0px)}50%{transform:translateY(-5px)}}
+@keyframes happy-bounce{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-15px) scale(1.05)}}
+@keyframes reject-shake{0%,100%{transform:translateX(0) rotate(0deg)}10%{transform:translateX(-8px) rotate(-3deg)}30%{transform:translateX(8px) rotate(3deg)}50%{transform:translateX(-6px) rotate(-2deg)}70%{transform:translateX(6px) rotate(2deg)}90%{transform:translateX(-3px) rotate(-1deg)}}
+@keyframes snake-wave{0%,100%{transform:translateY(0)}25%{transform:translateY(-3px)}75%{transform:translateY(3px)}}
+@keyframes rattle-shake{0%,100%{transform:rotate(0deg)}10%{transform:rotate(-8deg)}30%{transform:rotate(8deg)}50%{transform:rotate(-6deg)}70%{transform:rotate(6deg)}90%{transform:rotate(-4deg)}}
+@keyframes tongue-flick{0%,100%{transform:translateY(0) scaleY(0.3)}15%{transform:translateY(0) scaleY(1)}30%,70%{transform:translateY(0) scaleY(1)}85%{transform:translateY(0) scaleY(0.3)}}
+@keyframes ear-wiggle-l{0%,90%,100%{transform:rotate(-25deg)}92%{transform:rotate(-35deg)}94%{transform:rotate(-20deg)}96%{transform:rotate(-30deg)}}
+@keyframes ear-wiggle-r{0%,92%,100%{transform:rotate(25deg)}94%{transform:rotate(35deg)}96%{transform:rotate(15deg)}98%{transform:rotate(30deg)}}
+@keyframes tail-swish{0%,100%{transform:rotate(-15deg)}50%{transform:rotate(0deg)}}
+@keyframes fox-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes fox-blink-l{0%,90%,100%{transform:rotate(-12deg) scaleY(1)}93%,97%{transform:rotate(-12deg) scaleY(0.1)}}
+@keyframes fox-blink-r{0%,90%,100%{transform:scaleX(-1) rotate(-12deg) scaleY(1)}93%,97%{transform:scaleX(-1) rotate(-12deg) scaleY(0.1)}}
+@keyframes horse-bounce{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-12px) rotate(1deg)}}
+@keyframes horse-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes horse-tail-swish{0%,100%{transform:rotate(10deg)}50%{transform:rotate(-25deg)}}
+@keyframes horse-leg-kick{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes horse-ear-twitch{0%,85%,100%{transform:rotate(-15deg)}90%{transform:rotate(-5deg)}}
+@keyframes cow-graze{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-8px) rotate(-1deg)}}
+@keyframes cow-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes cow-tail-swish{0%,100%{transform:rotate(5deg)}50%{transform:rotate(-20deg)}}
+@keyframes cow-chew{0%,8%{transform:translateX(0)}10%{transform:translateX(4px)}14%{transform:translateX(-2px)}18%{transform:translateX(3px)}22%,30%{transform:translateX(0)}33%{transform:translateX(-4px)}37%{transform:translateX(2px)}41%{transform:translateX(-3px)}45%,55%{transform:translateX(0)}58%{transform:translateX(3px)}62%{transform:translateX(-4px)}66%{transform:translateX(2px)}70%,80%{transform:translateX(0)}83%{transform:translateX(-3px)}87%{transform:translateX(4px)}91%{transform:translateX(-2px)}95%,100%{transform:translateX(0)}}
+@keyframes grass-wiggle{0%,100%{transform:rotate(-5deg)}25%{transform:rotate(8deg)}50%{transform:rotate(-3deg)}75%{transform:rotate(10deg)}}
+@keyframes hand-wave-l{0%,100%{transform:rotate(-35deg)}50%{transform:rotate(5deg) translateY(-2px)}}
+@keyframes hand-wave-r{0%,100%{transform:rotate(35deg)}50%{transform:rotate(-5deg) translateY(-2px)}}
+@keyframes bunny-hop{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+@keyframes egg-wobble{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+@keyframes egg-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+@keyframes egg-glow{0%,100%{filter:brightness(1)}50%{filter:brightness(1.1)}}
+@keyframes egg-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes lava-pulse{0%,100%{opacity:0.7;filter:blur(4px)}50%{opacity:1;filter:blur(6px)}}
+@keyframes sparkle-twinkle{0%,100%{opacity:0.5;transform:scale(0.8)}50%{opacity:1;transform:scale(1.2)}}
+@keyframes card-shine{0%{left:-100%}50%{left:150%}100%{left:150%}}
+@keyframes alien-glow{0%,100%{box-shadow:0 0 15px rgba(34,211,238,0.4)}50%{box-shadow:0 0 25px rgba(34,211,238,0.7)}}
+@keyframes bunny-blink{0%,90%,100%{transform:scaleY(1)}95%{transform:scaleY(0)}}
+@keyframes bunny-ear-wiggle{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(-20deg)}}
+@keyframes tail-wiggle{0%,100%{transform:scale(1)}50%{transform:scale(1.1) rotate(5deg)}}
+@keyframes kitty-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes kitty-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes paw-step{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes koala-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes koala-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes koala-ear-wiggle-l{0%,90%,100%{transform:rotate(0deg)}92%{transform:rotate(-10deg)}95%{transform:rotate(5deg)}}
+@keyframes koala-ear-wiggle-r{0%,92%,100%{transform:rotate(0deg)}94%{transform:rotate(10deg)}97%{transform:rotate(-5deg)}}
+@keyframes sniff{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.05)}}
+@keyframes joyful-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes tail-wag{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+@keyframes tail-wag-diagonal{0%,100%{transform:rotate(-35deg)}50%{transform:rotate(-15deg)}}
+@keyframes puppy-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes puppy-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes panting{0%,100%{height:12px}50%{height:18px}}
+@keyframes puppy-ear-l{0%,100%{transform:rotate(20deg)}50%{transform:rotate(10deg)}}
+@keyframes puppy-ear-r{0%,100%{transform:rotate(-20deg)}50%{transform:rotate(-10deg)}}
+@keyframes mouse-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes raccoon-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes raccoon-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes red-panda-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes red-panda-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes sloth-hang{0%,100%{transform:translateY(0) rotate(-0.5deg)}50%{transform:translateY(-12px) rotate(0.5deg)}}
+@keyframes sloth-blink{0%,95%,100%{transform:scaleY(1)}97%{transform:scaleY(0.1)}}
+@keyframes arm-sway-l{0%,100%{transform:rotate(30deg)}50%{transform:rotate(38deg)}}
+@keyframes arm-sway-r{0%,100%{transform:rotate(-30deg)}50%{transform:rotate(-38deg)}}
+@keyframes leg-wiggle-bl{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(-10deg)}}
+@keyframes leg-wiggle-br{0%,100%{transform:rotate(6deg)}50%{transform:rotate(10deg)}}
+@keyframes hand-wave-l-horiz{0%,100%{transform:rotate(-90deg)}50%{transform:rotate(-75deg)}}
+@keyframes hand-wave-r-horiz{0%,100%{transform:rotate(90deg)}50%{transform:rotate(75deg)}}
+@keyframes panda-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes panda-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes arm-wave{0%,100%{transform:rotate(80deg)}50%{transform:rotate(20deg)}}
+@keyframes squirrel-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes bear-bounce{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-8px) rotate(1deg)}}
+@keyframes bear-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes bear-wave-l{0%,100%{transform:rotate(15deg)}50%{transform:rotate(25deg)}}
+@keyframes bear-wave-r{0%,100%{transform:rotate(-15deg)}50%{transform:rotate(-25deg)}}
+@keyframes bear-tail-wiggle{0%,100%{transform:rotate(0deg)}50%{transform:rotate(8deg)}}
+@keyframes bear-ear-l{0%,100%{transform:rotate(0deg)}30%{transform:rotate(-8deg)}60%{transform:rotate(3deg)}}
+@keyframes bear-ear-r{0%,100%{transform:rotate(0deg)}30%{transform:rotate(8deg)}60%{transform:rotate(-3deg)}}
+@keyframes bear-paw-l{0%,100%{transform:rotate(-8deg)}25%{transform:rotate(-12deg)}50%{transform:rotate(-5deg)}75%{transform:rotate(-10deg)}}
+@keyframes bear-paw-r{0%,100%{transform:rotate(8deg)}25%{transform:rotate(12deg)}50%{transform:rotate(5deg)}75%{transform:rotate(10deg)}}
+@keyframes squirrel-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes squirrel-tail-swish{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+@keyframes squirrel-ear-l{0%,100%{transform:rotate(-15deg)}50%{transform:rotate(-25deg)}}
+@keyframes squirrel-ear-r{0%,100%{transform:rotate(15deg)}50%{transform:rotate(25deg)}}
+@keyframes fairy-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes fairy-wing-left{0%,100%{transform:rotate(-15deg)}50%{transform:rotate(-30deg)}}
+@keyframes fairy-wing-right{0%,100%{transform:rotate(15deg)}50%{transform:rotate(30deg)}}
+@keyframes fairy-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes star-rise{0%{transform:translateY(0);opacity:0}20%{opacity:1}80%{opacity:1}100%{transform:translateY(-120px);opacity:0}}
+@keyframes unicorn-float{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-14px) rotate(0.5deg)}}
+@keyframes unicorn-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes horn-glow{0%,100%{box-shadow:0 0 15px rgba(255,215,0,0.5),0 0 30px rgba(255,215,0,0.3)}50%{box-shadow:0 0 25px rgba(255,215,0,0.8),0 0 50px rgba(255,215,0,0.5),0 0 70px rgba(255,215,0,0.3)}}
+@keyframes ear-twitch-l{0%,85%,100%{transform:rotate(-15deg)}88%{transform:rotate(-22deg)}91%{transform:rotate(-12deg)}94%{transform:rotate(-18deg)}}
+@keyframes ear-twitch-r{0%,80%,100%{transform:rotate(15deg)}83%{transform:rotate(22deg)}86%{transform:rotate(10deg)}89%{transform:rotate(20deg)}}
+@keyframes eye-sparkle{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.7;transform:scale(1.2)}}
+@keyframes eye-look{0%,40%,100%{transform:translateX(0)}45%,55%{transform:translateX(2px)}60%,70%{transform:translateX(-1px)}}
+@keyframes iridescent-shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes mane-flow{0%,100%{transform:translateX(0) skewX(0deg)}50%{transform:translateX(2px) skewX(-2deg)}}
+@keyframes horn-sparkle-orbit{0%{transform:rotate(0deg) translateX(20px) rotate(0deg);opacity:0}20%{opacity:1}80%{opacity:1}100%{transform:rotate(360deg) translateX(20px) rotate(-360deg);opacity:0}}
+@keyframes unicorn-tail-swish{0%,100%{transform:rotate(10deg)}50%{transform:rotate(-25deg)}}
+@keyframes unicorn-leg-kick{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes horn-tip-starburst{0%,100%{transform:scale(1) rotate(0deg);opacity:0.9}25%{transform:scale(1.3) rotate(90deg);opacity:1}50%{transform:scale(1) rotate(180deg);opacity:0.9}75%{transform:scale(1.3) rotate(270deg);opacity:1}}
+@keyframes horn-tip-pulse{0%,100%{transform:scale(0.8);opacity:0.6}50%{transform:scale(1.2);opacity:1}}
+@keyframes horn-tip-rays{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+@keyframes pegasus-float{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-8px) rotate(-0.3deg)}50%{transform:translateY(-16px) rotate(0deg)}75%{transform:translateY(-8px) rotate(0.3deg)}}
+@keyframes pegasus-wing-left{0%,100%{transform:rotate(-5deg) translateY(0)}25%{transform:rotate(-35deg) translateY(-15px)}50%{transform:rotate(-15deg) translateY(-5px)}75%{transform:rotate(-40deg) translateY(-20px)}}
+@keyframes pegasus-wing-right{0%,100%{transform:rotate(5deg) translateY(0)}25%{transform:rotate(35deg) translateY(-15px)}50%{transform:rotate(15deg) translateY(-5px)}75%{transform:rotate(40deg) translateY(-20px)}}
+@keyframes pegasus-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes pegasus-tail-flow{0%,100%{transform:rotate(8deg) skewX(0deg)}33%{transform:rotate(-15deg) skewX(3deg)}66%{transform:rotate(12deg) skewX(-2deg)}}
+@keyframes pegasus-prance-left{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-10px) rotate(-5deg)}}
+@keyframes pegasus-prance-right{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-6px) rotate(3deg)}}
+@keyframes cloud-drift{0%,100%{transform:translateX(0) scale(1);opacity:0.8}50%{transform:translateX(5px) scale(1.05);opacity:1}}
+@keyframes trex-stomp{0%,100%{transform:translateY(0) rotate(0deg)}20%{transform:translateY(-15px) rotate(-2deg)}40%{transform:translateY(0) rotate(0deg)}60%{transform:translateY(-12px) rotate(2deg)}80%{transform:translateY(0) rotate(0deg)}}
+@keyframes trex-roar{0%,70%,100%{transform:translateY(0) rotate(0deg)}75%,85%{transform:translateY(8px) rotate(3deg)}80%{transform:translateY(2px) rotate(1deg)}}
+@keyframes trex-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes trex-eye-look{0%,100%{transform:translate(0,0)}15%{transform:translate(4px,0)}30%{transform:translate(4px,3px)}45%{transform:translate(-2px,2px)}60%{transform:translate(-3px,-2px)}75%{transform:translate(2px,-2px)}90%{transform:translate(0,0)}}
+@keyframes trex-arm-wave{0%{transform:rotate(15deg)}100%{transform:rotate(50deg)}}
+@keyframes trex-arm-wave-reverse{0%{transform:rotate(-15deg)}100%{transform:rotate(-50deg)}}
+@keyframes trex-tail-sway{0%,100%{transform:rotate(5deg)}50%{transform:rotate(-12deg)}}
+@keyframes bronto-float{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-8px) rotate(-1deg)}50%{transform:translateY(-15px) rotate(0deg)}75%{transform:translateY(-8px) rotate(1deg)}}
+@keyframes bronto-neck{0%,100%{transform:rotate(0deg)}50%{transform:rotate(8deg)}}
+@keyframes bronto-tail-sway{0%,100%{transform:rotate(10deg)}50%{transform:rotate(-15deg)}}
+@keyframes bronto-neck-peer{0%,100%{transform:rotate(0deg)}50%{transform:rotate(8deg)}}
+@keyframes bronto-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes stego-stomp{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes stego-tail{0%,100%{transform:rotate(0deg)}50%{transform:rotate(12deg)}}
+@keyframes stego-tail-sway{0%,100%{transform:rotate(0deg)}50%{transform:rotate(12deg)}}
+@keyframes stego-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes liltrex-stomp{0%,100%{transform:translateY(0) scaleY(1) rotate(0deg)}15%{transform:translateY(-15px) scaleY(0.95) rotate(-2deg)}30%{transform:translateY(0) scaleY(1.02) rotate(0deg)}45%{transform:translateY(-12px) scaleY(0.96) rotate(2deg)}60%{transform:translateY(0) scaleY(1) rotate(0deg)}}
+@keyframes liltrex-tail-sway{0%,100%{transform:rotate(5deg)}50%{transform:rotate(-12deg)}}
+@keyframes liltrex-arm-left{from{transform:rotate(15deg)}to{transform:rotate(50deg)}}
+@keyframes liltrex-arm-right{from{transform:rotate(-15deg)}to{transform:rotate(-50deg)}}
+@keyframes liltrex-blink{0%,90%,100%{transform:scaleY(1)}93%,97%{transform:scaleY(0.1)}}
+@keyframes liltrex-eye-look{0%,100%{transform:translate(0,0)}15%{transform:translate(10px,-2px)}30%{transform:translate(10px,5px)}45%{transform:translate(-8px,3px)}60%{transform:translate(-8px,-3px)}75%{transform:translate(5px,0)}90%{transform:translate(0,4px)}}
+@keyframes liltrex-chomp{0%,50%,100%{transform:translateY(0) rotate(0deg)}60%{transform:translateY(6px) rotate(2deg)}65%{transform:translateY(0) rotate(0deg)}75%{transform:translateY(8px) rotate(-2deg)}80%{transform:translateY(0) rotate(0deg)}90%{transform:translateY(10px) rotate(3deg)}95%{transform:translateY(0) rotate(0deg)}}
+@keyframes trex-breathe{0%,100%{transform:scaleY(1) scaleX(1)}50%{transform:scaleY(1.08) scaleX(1.03)}}
+@keyframes trex-head-bob{0%,100%{transform:rotate(0deg) translateY(0)}25%{transform:rotate(-3deg) translateY(-5px)}50%{transform:rotate(2deg) translateY(3px)}75%{transform:rotate(-2deg) translateY(-3px)}}
+@keyframes bronto-graze{0%,20%,100%{transform:rotate(0deg)}30%{transform:rotate(25deg)}40%{transform:rotate(20deg)}50%{transform:rotate(28deg)}60%{transform:rotate(22deg)}70%{transform:rotate(0deg)}}
+@keyframes bronto-body-sway{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(2deg)}}
+@keyframes bronto-munch{0%,40%,45%,50%,55%,100%{transform:scaleY(1)}42%,52%{transform:scaleY(0.92)}}
+@keyframes stego-head-scan{0%,100%{transform:rotate(0deg) translateX(0)}20%{transform:rotate(-20deg) translateX(-8px)}40%{transform:rotate(-15deg) translateX(-5px)}60%{transform:rotate(20deg) translateX(8px)}80%{transform:rotate(15deg) translateX(5px)}}
+@keyframes stego-plate-glow{0%,100%{filter:brightness(1) drop-shadow(0 0 2px #fbbf24)}25%{filter:brightness(1.4) drop-shadow(0 0 12px #fbbf24)}50%{filter:brightness(1.1) drop-shadow(0 0 4px #fbbf24)}75%{filter:brightness(1.5) drop-shadow(0 0 15px #fbbf24)}}
+@keyframes stego-happy-stomp{0%,100%{transform:translateY(0)}10%{transform:translateY(-8px)}20%{transform:translateY(0)}30%{transform:translateY(-6px)}40%{transform:translateY(0)}}
+@keyframes stego-leg-stomp{0%,45%,55%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes trex-leg-left{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-12px) rotate(-15deg)}50%{transform:translateY(0) rotate(5deg)}75%{transform:translateY(0) rotate(0deg)}}
+@keyframes trex-leg-right{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(0) rotate(5deg)}75%{transform:translateY(-12px) rotate(-15deg)}}
+@keyframes bronto-leg-front-left{0%,100%{transform:translateY(0) rotate(0deg)}30%{transform:translateY(-8px) rotate(-8deg)}60%{transform:translateY(0) rotate(3deg)}}
+@keyframes bronto-leg-front-right{0%,100%{transform:translateY(0) rotate(0deg)}15%{transform:translateY(0) rotate(3deg)}45%{transform:translateY(-8px) rotate(-8deg)}75%{transform:translateY(0) rotate(0deg)}}
+@keyframes bronto-leg-back-left{0%,100%{transform:translateY(0) rotate(0deg)}20%{transform:translateY(0) rotate(2deg)}50%{transform:translateY(-6px) rotate(-6deg)}80%{transform:translateY(0) rotate(0deg)}}
+@keyframes bronto-leg-back-right{0%,100%{transform:translateY(0) rotate(0deg)}35%{transform:translateY(-6px) rotate(-6deg)}65%{transform:translateY(0) rotate(2deg)}}
+@keyframes stego-leg-front-left{0%,100%{transform:translateY(0) rotate(0deg)}20%{transform:translateY(-10px) rotate(-12deg)}40%{transform:translateY(0) rotate(4deg)}60%{transform:translateY(0) rotate(0deg)}}
+@keyframes stego-leg-front-right{0%,100%{transform:translateY(0) rotate(0deg)}40%{transform:translateY(0) rotate(0deg)}60%{transform:translateY(-10px) rotate(-12deg)}80%{transform:translateY(0) rotate(4deg)}}
+@keyframes stego-leg-back-left{0%,100%{transform:translateY(0) rotate(0deg)}30%{transform:translateY(-8px) rotate(-10deg)}50%{transform:translateY(0) rotate(3deg)}70%{transform:translateY(0) rotate(0deg)}}
+@keyframes stego-leg-back-right{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(0) rotate(0deg)}70%{transform:translateY(-8px) rotate(-10deg)}90%{transform:translateY(0) rotate(3deg)}}
+@keyframes liltrex-leg-left{0%,100%{transform:translateY(0) rotate(0deg)}20%{transform:translateY(-15px) rotate(-20deg)}40%{transform:translateY(0) rotate(8deg)}60%{transform:translateY(0) rotate(0deg)}}
+@keyframes liltrex-leg-right{0%,100%{transform:translateY(0) rotate(0deg)}40%{transform:translateY(0) rotate(0deg)}60%{transform:translateY(-15px) rotate(-20deg)}80%{transform:translateY(0) rotate(8deg)}}
+@keyframes chimera-hover{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes chimera-wing-left{0%,100%{transform:rotate(-5deg) scaleY(1)}50%{transform:rotate(-25deg) scaleY(0.9)}}
+@keyframes chimera-wing-right{0%,100%{transform:rotate(5deg) scaleY(1)}50%{transform:rotate(25deg) scaleY(0.9)}}
+@keyframes chimera-mantis-left{0%,70%,100%{transform:rotate(20deg)}80%{transform:rotate(-30deg)}85%{transform:rotate(-20deg)}90%{transform:rotate(-35deg)}}
+@keyframes chimera-mantis-right{0%,70%,100%{transform:rotate(-20deg)}80%{transform:rotate(30deg)}85%{transform:rotate(20deg)}90%{transform:rotate(35deg)}}
+@keyframes chimera-tail{0%,100%{transform:rotate(-5deg)}30%{transform:rotate(15deg)}60%{transform:rotate(-10deg)}80%{transform:rotate(8deg)}}
+@keyframes chimera-rattle{0%,60%,100%{transform:rotate(0deg)}65%{transform:rotate(15deg)}70%{transform:rotate(-15deg)}75%{transform:rotate(12deg)}80%{transform:rotate(-12deg)}85%{transform:rotate(8deg)}90%{transform:rotate(-8deg)}}
+@keyframes chimera-antenna{0%,100%{transform:rotate(-15deg)}50%{transform:rotate(15deg)}}
+@keyframes chimera-eye-scan{0%,100%{transform:translate(0,0)}25%{transform:translate(3px,-2px)}50%{transform:translate(-2px,2px)}75%{transform:translate(2px,1px)}}
+@keyframes chimera-shell-shimmer{0%,100%{filter:hue-rotate(0deg) brightness(1)}50%{filter:hue-rotate(30deg) brightness(1.2)}}
+@keyframes chimera-leg-walk{0%,100%{transform:rotate(0deg)}25%{transform:rotate(-20deg)}75%{transform:rotate(20deg)}}
+@keyframes phoenix-hover{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-15px) rotate(-1deg)}50%{transform:translateY(-8px) rotate(0deg)}75%{transform:translateY(-12px) rotate(1deg)}}
+@keyframes phoenix-wing-left{0%,100%{transform:rotate(10deg) scaleY(1)}50%{transform:rotate(-20deg) scaleY(0.95)}}
+@keyframes phoenix-wing-right{0%,100%{transform:rotate(-10deg) scaleY(1)}50%{transform:rotate(20deg) scaleY(0.95)}}
+@keyframes phoenix-tail-flow{0%,100%{transform:rotate(0deg) scaleX(1)}25%{transform:rotate(8deg) scaleX(1.02)}50%{transform:rotate(0deg) scaleX(0.98)}75%{transform:rotate(-8deg) scaleX(1.02)}}
+@keyframes phoenix-flame-flicker{0%,100%{opacity:0.8;transform:scaleY(1) translateY(0)}25%{opacity:1;transform:scaleY(1.1) translateY(-3px)}50%{opacity:0.9;transform:scaleY(0.95) translateY(0)}75%{opacity:1;transform:scaleY(1.05) translateY(-2px)}}
+@keyframes phoenix-glow-pulse{0%,100%{filter:brightness(1) drop-shadow(0 0 10px #f97316)}50%{filter:brightness(1.2) drop-shadow(0 0 25px #fbbf24)}}
+@keyframes phoenix-ember-rise{0%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-80px) scale(0.3);opacity:0}}
+@keyframes phoenix-crest-wave{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+@keyframes phoenix-eye-glow{0%,100%{box-shadow:0 0 8px #fef3c7}50%{box-shadow:0 0 15px #fbbf24,0 0 25px #f97316}}
+@keyframes phoenix-eye-blink{0%,45%,55%,100%{transform:scaleY(1)}50%{transform:scaleY(0.1)}}
+@keyframes phoenix-eye-look{0%,100%{transform:translate(-50%,-50%)}25%{transform:translate(-60%,-50%)}75%{transform:translate(-40%,-50%)}}
+@keyframes phoenix-leg-flame{0%,100%{transform:scaleY(1) translateY(0);opacity:0.8}50%{transform:scaleY(1.3) translateY(-3px);opacity:1}}
+@keyframes sleep-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
+@keyframes trex-stomp{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes bronto-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}

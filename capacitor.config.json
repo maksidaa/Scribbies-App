@@ -1,0 +1,6 @@
+{
+  "appId": "com.maksidaa.scribbies",
+  "appName": "Scribbies",
+  "webDir": "dist",
+  "ios": { "contentInset": "never", "backgroundColor": "#f8f7fc" }
+}
