@@ -30,6 +30,14 @@ Scribbies' numeric App Store Connect ID is saved in `submit.production.ios.ascAp
 
 ## Validation
 
+On September 4, 2026, EAS successfully signed and archived version 2.0.0 (build 3):
+https://expo.dev/accounts/maksidaa/projects/scribbies/builds/af55b0a5-3f7f-4cef-96d3-285c46522ecf
+
+Automatic TestFlight delivery was scheduled with the existing EAS Submit key:
+https://expo.dev/accounts/maksidaa/projects/scribbies/submissions/1a78e362-d3f1-45d1-8a58-7b672ae4970b
+
+At 22:25 UTC, the submission was still queued during Expo's reported submission-service incident. This is not a confirmation that Apple has received or processed the build. Check the submission before retrying to avoid duplicate uploads.
+
 The first development pass passed 33 automated tests, the production web build, dependency auditing (zero reported vulnerabilities), and an unsigned Xcode simulator compilation. Tests cover creature lifecycle, every adventure encounter, all species being obtainable, rewards being applied once, daily caps, memorization modes and spaced review, save recovery, legacy migration, escaping, and template rendering.
 
 These checks do not establish that the app has been played through on physical devices. Before App Store release, play the complete new-player flow on iPhone and iPad, including egg choice, practice, hatch, care, collection, backup/restore, app restart, offline launch, sound and accessibility settings. Check VoiceOver, larger text, safe areas, keyboard interactions, and reduced motion. TestFlight submission is separate from App Review approval.
