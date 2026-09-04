@@ -50,7 +50,7 @@ Source: `9c88a356e4d1bcf725b81fb371be157aa072a39f`. EAS staging snapshot: `6397a
 
 - Build: https://expo.dev/accounts/maksidaa/projects/scribbies/builds/ddce5711-f513-4b62-8f32-3e77170d33d6
 - Automatic submission: https://expo.dev/accounts/maksidaa/projects/scribbies/submissions/f9ec47e1-789d-44ae-8d09-ebb4e540a396
-- At 23:29 UTC, the build was in progress. TestFlight availability has not yet been confirmed.
+- EAS finished signing and archiving build 5 successfully at 23:30:55 UTC on September 4, 2026. At 23:31 UTC its automatic submission was IN_QUEUE. This confirms the build succeeded; Apple receipt and TestFlight availability have not yet been confirmed.
 
 This replacement opens on the saved pet or a first egg, with a compact icon toolbar and large care/learning buttons. It preserves music, voices, current art, and saves. Fifty-one tests pass, including a controller-level first-player loop that reaches hatch and feeding without visiting exploration. This is code-level validation with mocked browser boundaries, not a physical-device playthrough.
 
