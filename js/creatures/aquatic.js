@@ -15,21 +15,21 @@ function renderAdultAquatic(variantIndex){
   <!-- Tail with fin -->
   <div style="position:absolute;width:107px;height:67px;right:-27px;top:73px;z-index:5;transform-origin:left center;animation:axo-tail-swish 3s ease-in-out infinite;">
     <svg viewBox="0 0 160 100" style="overflow:visible;">
-      <path d="M 0,20 Q 80,0 145,45 Q 155,50 145,55 Q 80,100 0,80 Z" fill="rgba(255, 175, 204, 0.5)" stroke="#fb6f92" stroke-width="1.5"/>
+      <path d="M 0,20 Q 80,0 145,45 Q 155,50 145,55 Q 80,100 0,80 Z" fill="rgba(255, 175, 204, 0.78)" stroke="#fb6f92" stroke-width="1.5"/>
       <path d="M 0,35 Q 70,30 120,50 Q 70,70 0,65 Z" fill="#ffafcc" stroke="#fb6f92" stroke-width="3"/>
     </svg>
   </div>
 
   <!-- Back Legs with paddle animation -->
-  <div style="position:absolute;width:16px;height:21px;background:radial-gradient(ellipse at 40% 30%, #ffe5ec, #ffafcc);border:2px solid #fb6f92;border-radius:8px;top:123px;left:63px;transform-origin:top center;animation:axo-leg-back-l 2s ease-in-out infinite;z-index:19;"></div>
-  <div style="position:absolute;width:16px;height:21px;background:radial-gradient(ellipse at 40% 30%, #ffe5ec, #ffafcc);border:2px solid #fb6f92;border-radius:8px;top:123px;right:63px;transform-origin:top center;animation:axo-leg-back-r 2s ease-in-out infinite 0.5s;z-index:19;"></div>
+  <div style="position:absolute;width:16px;height:21px;background:radial-gradient(ellipse at 32% 24%,#fff4f7 0%,#ffd3e2 32%,#ffafcc 68%,#f888b2 100%);border:2px solid #fb6f92;border-radius:8px;top:123px;left:63px;transform-origin:top center;animation:axo-leg-back-l 2s ease-in-out infinite;z-index:19;"></div>
+  <div style="position:absolute;width:16px;height:21px;background:radial-gradient(ellipse at 32% 24%,#fff4f7 0%,#ffd3e2 32%,#ffafcc 68%,#f888b2 100%);border:2px solid #fb6f92;border-radius:8px;top:123px;right:63px;transform-origin:top center;animation:axo-leg-back-r 2s ease-in-out infinite 0.5s;z-index:19;"></div>
 
   <!-- Front Legs with paddle animation -->
-  <div style="position:absolute;width:16px;height:21px;background:radial-gradient(ellipse at 40% 30%, #ffe5ec, #ffafcc);border:2px solid #fb6f92;border-radius:8px;top:107px;left:43px;transform-origin:top center;animation:axo-leg-paddle-l 2s ease-in-out infinite;z-index:19;"></div>
-  <div style="position:absolute;width:16px;height:21px;background:radial-gradient(ellipse at 40% 30%, #ffe5ec, #ffafcc);border:2px solid #fb6f92;border-radius:8px;top:107px;right:43px;transform-origin:top center;animation:axo-leg-paddle-r 2s ease-in-out infinite 0.5s;z-index:19;"></div>
+  <div style="position:absolute;width:16px;height:21px;background:radial-gradient(ellipse at 32% 24%,#fff4f7 0%,#ffd3e2 32%,#ffafcc 68%,#f888b2 100%);border:2px solid #fb6f92;border-radius:8px;top:107px;left:43px;transform-origin:top center;animation:axo-leg-paddle-l 2s ease-in-out infinite;z-index:19;"></div>
+  <div style="position:absolute;width:16px;height:21px;background:radial-gradient(ellipse at 32% 24%,#fff4f7 0%,#ffd3e2 32%,#ffafcc 68%,#f888b2 100%);border:2px solid #fb6f92;border-radius:8px;top:107px;right:43px;transform-origin:top center;animation:axo-leg-paddle-r 2s ease-in-out infinite 0.5s;z-index:19;"></div>
 
   <!-- Body -->
-  <div style="position:absolute;width:100px;height:67px;background:radial-gradient(ellipse at 40% 30%, #ffe5ec, #ffafcc);border:3px solid #fb6f92;border-radius:50% 50% 42% 42% / 65% 65% 38% 38%;top:73px;left:50px;z-index:20;overflow:hidden;">
+  <div style="position:absolute;width:100px;height:67px;background:radial-gradient(ellipse at 32% 24%,#fff4f7 0%,#ffd3e2 32%,#ffafcc 68%,#f888b2 100%);border:3px solid #fb6f92;border-radius:50% 50% 42% 42% / 65% 65% 38% 38%;top:73px;left:50px;z-index:20;overflow:hidden;">
     <div style="position:absolute;width:60px;height:40px;background:radial-gradient(ellipse at 50% 30%, #ffe5ec, #ffafcc);border-radius:50%;bottom:-10px;left:50%;transform:translateX(-50%);"></div>
   </div>
 
@@ -46,13 +46,13 @@ function renderAdultAquatic(variantIndex){
     <div style="position:absolute;width:43px;height:11px;background:radial-gradient(ellipse at 50% 50%, #ff8fab, #ff5d8f);border:2px solid #fb6f92;border-radius:13px;z-index:-1;top:30px;right:-23px;transform-origin:left center;transform:rotate(35deg);animation:gill-fan-r-3 3s ease-in-out infinite;"></div>
 
     <!-- Head Shape -->
-    <div style="width:100%;height:100%;background:radial-gradient(ellipse at 40% 30%, #ffe5ec, #ffafcc);border:3px solid #fb6f92;border-radius:55% 55% 45% 45% / 65% 65% 35% 35%;position:relative;z-index:41;">
+    <div style="width:100%;height:100%;background:radial-gradient(ellipse at 32% 24%,#fff4f7 0%,#ffd3e2 32%,#ffafcc 68%,#f888b2 100%);border:3px solid #fb6f92;border-radius:55% 55% 45% 45% / 65% 65% 35% 35%;position:relative;z-index:41;">
       <!-- Eyes with look animation -->
       <div style="position:absolute;top:32px;width:100%;display:flex;justify-content:center;gap:47px;">
-        <div style="width:12px;height:12px;background:#2d2323;border-radius:50%;position:relative;animation:axo-blink 5s infinite;">
+        <div style="width:12px;height:12px;background:radial-gradient(circle at 30% 25%,#654451,#2d2334);border-radius:50%;position:relative;animation:axo-blink 5s infinite;">
           <div style="position:absolute;width:4px;height:4px;background:white;border-radius:50%;top:2px;left:2px;animation:axo-eye-look 6s ease-in-out infinite;"></div>
         </div>
-        <div style="width:12px;height:12px;background:#2d2323;border-radius:50%;position:relative;animation:axo-blink 5s infinite;">
+        <div style="width:12px;height:12px;background:radial-gradient(circle at 30% 25%,#654451,#2d2334);border-radius:50%;position:relative;animation:axo-blink 5s infinite;">
           <div style="position:absolute;width:4px;height:4px;background:white;border-radius:50%;top:2px;left:2px;animation:axo-eye-look 6s ease-in-out infinite;"></div>
         </div>
       </div>

@@ -1,0 +1,18 @@
+{
+  "expo": {
+    "name": "Scribbies",
+    "slug": "scribbies",
+    "owner": "maksidaa",
+    "version": "2.0.0",
+    "icon": "./public/assets/icon-1024.png",
+    "ios": {
+      "bundleIdentifier": "com.maksidaa.scribbies",
+      "supportsTablet": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6da06cea-5738-45f1-a11c-8d47d3ee4c6b"
+      }
+    }
+  }
+}

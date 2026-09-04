@@ -1,0 +1,15 @@
+{
+  "tool": "built-in image_gen",
+  "assets": [
+    {
+      "name": "meadow-map",
+      "path": "/Users/adamgoodwin/.codex/generated_images/01a06e53-59cb-7c22-9aa4-55b46a82079d/exec-9a618b00-9881-4520-8e92-1db82fc226d4.png",
+      "prompt": "Use case: stylized-concept. Asset type: meadow-map, full-bleed landscape background illustration for an original children's scripture memorization creature-collecting game Scribbies. Output landscape 1536x1024. Beautiful high-angle isometric storybook game world map, a cozy green valley with rounded trees framing outer edges, little peach roof cottage near lower left, pale winding trail from lower left through broad open grassy central clearings to a small luminous ancient tree at upper right, turquoise brook and wooden bridge upper middle. Soft hand-painted 3D toy diorama, lush emerald mint golden greens, creamy sunlight, charming polished family adventure game aesthetic, painterly details. Enough open space for later overlay of six UI node markers around normalized positions (17%,74%),(35%,60%),(52%,72%),(68%,52%),(54%,31%),(77%,22%); DO NOT draw the markers. Whole landscape fills the frame, not floating on blank background. No characters, creatures, text, labels, numbers, logos, watermark, or baked UI."
+    },
+    {
+      "name": "camp-glade",
+      "path": "/Users/adamgoodwin/.codex/generated_images/01a06e53-59cb-7c22-9aa4-55b46a82079d/exec-dd6f5b19-34b5-4de1-94e4-4896a2fb27f8.png",
+      "prompt": "Use case: stylized-concept. Asset type: camp-glade, full-bleed landscape background illustration for an original children's scripture memorization creature-collecting game Scribbies. Output landscape 1536x1024. Ground-level cozy forest campsite clearing, sunlit green grass in lower center empty for a later creature overlay, small coral-orange canvas tent at far left, round lush trees at sides, warm string lights between branches in upper area, distant mint forest and gentle stream, little tree stump and small mushrooms on right edge. Polished soft hand-painted 3D toy-diorama and storybook family adventure game aesthetic, magical golden afternoon, emerald mint golden greens with creamy warm sunlight, polished painterly details. Wide calm composition, central grassy clearing open and usable. No characters, creatures, text, labels, numbers, logos, watermark, or baked UI."
+    }
+  ]
+}

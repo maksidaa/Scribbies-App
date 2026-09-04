@@ -1,67 +1,56 @@
-# Scripture Buddy
+# Scribbies
 
-A gamified scripture memorization app that helps you learn and master scriptures and inspirational quotes through various interactive practice modes.
+A scripture memorization game about hatching and raising creatures. Open directly on your egg or pet. Warm it, learn a short verse, hatch it, feed it, and play together. Exploration is a separate shortcut.
 
-## Features
+## Play and develop
 
-### Core Features
-- **XP System**: Earn experience points for daily logins and practice sessions
-- **Daily Streaks**: Build momentum with consecutive daily logins
-- **Mastery Levels**: Track progress from "New" to "Mastered" for each verse
-- **Buddy Pet**: Virtual companion that starts as an egg (waiting to hatch!)
-- **Daily Goals**: Complete 3 practice sessions per day
+```sh
+npm ci
+npm run dev
+```
 
-### Practice Modes
-1. **Predict** (⭐ - Easy): Predict the next word with multiple choice
-2. **Fill Blanks** (⭐⭐): Fill in missing words (every 4th word)
-3. **Word Jumble** (⭐⭐⭐): Arrange scrambled words in correct order
-4. **First Letters** (⭐⭐⭐⭐): Type words using first-letter hints
-5. **Full Recall** (⭐⭐⭐⭐⭐): Recite the entire verse from memory
+The local preview runs at http://127.0.0.1:5173. `npm run check` validates the game logic and render templates. `npm run build` creates the production app and an offline asset cache in `dist/`.
 
-### Verse Management
-- Add custom scriptures and quotes
-- Organize with tags (Faith, Hope, Charity, etc.)
-- Edit and delete verses
-- Track mastery progress for each verse
+## The adventure
 
-## How to Use
+- Eighteen collectible species, three habitats, and eighteen trail encounters. A fresh game receives its first egg immediately; returning games keep their selected companion.
+- Eggs earn warmth through practice and care. Hatched companions grow through baby, teen, adult, and radiant stages.
+- Feed berries, buy snacks with earned leaves, play a matching game, choose a companion, and wear charms from the baby stage onward. Pets stay safe when the player takes a break.
+- Five memorization modes: next-word recognition, missing words, word order, first-letter prompts, and full recall. Reading and optional on-device speech precede practice.
+- Recognition alone cannot earn full mastery. Later-day unassisted recall earns the highest level; due dates bring learned verses back for review.
+- A grown-up area for custom verses, backup, restore, sound and motion settings, and resetting progress.
 
-1. **Open**: Simply open `index.html` in any web browser
-2. **Start with defaults**: App comes preloaded with 12 starter verses
-3. **Practice**: Choose a practice mode and start memorizing
-4. **Add verses**: Go to "Verses" tab and click "+ Add"
-5. **Track progress**: View your XP, streak, and stats on the home screen
+The included passages use the King James Version. Custom verses keep the wording entered by a parent. Parents should select passages and translations appropriate for their child.
 
-## Technical Details
+## Saves and privacy
 
-- **Single-file app**: Everything in one HTML file
-- **No server required**: Runs entirely in the browser
-- **Data storage**: Uses localStorage for persistence
-- **Styling**: TailwindCSS via CDN
-- **Mobile-friendly**: Responsive design optimized for mobile devices
+The web app saves locally; the native app uses Capacitor Preferences. A previous snapshot protects against a damaged latest save. JSON backup and restore are available in the grown-up area; iOS uses the native share sheet. There are no game accounts, analytics, ads, chat, real-money purchases, or backend services in this edition. The private web host has its own access and hosting services.
 
-## Data Storage
+Compatible original `sb` saves migrate automatically without deleting the original save. Not every original creature has a corresponding adventure species. The original application is preserved as `classic.html`; original source art remains under `js/creatures/`. Classic features such as Firebase accounts and trading are not part of the new release.
 
-All data is stored locally in your browser's localStorage under the key `sb`. To reset:
-- Go to Settings tab and click "Reset Progress", or
-- Clear your browser's localStorage
+## Audio
 
-## XP Rewards
+Two original procedural themes accompany exploration and camp. Each of the eighteen species has a distinct synthesized voice, with age and activity variations for greetings, feeding, play, hatching, and evolution. Music and effects have independent switches and volume controls, available from the top-bar speaker button as well as family settings. Music starts on a user gesture, fades lower during practice, fades out for read-aloud, and pauses in the background. All synthesis runs on-device and works offline; there are no external music streams or recorded voices.
 
-- Daily login: +10 XP
-- First practice of the day: +15 XP bonus
-- Predict mode: 1-5 XP (based on accuracy)
-- Fill Blanks: +5 XP
-- Word Jumble: +7 XP
-- First Letters: +8 XP
-- Full Recall: +10-15 XP (15 for perfect score)
-- Mastering a verse: +50 XP
-- 7-day streak milestone: +50 XP
-- 30-day streak milestone: +200 XP
+## Artwork
 
-## Starter Verses
+Original CSS and SVG creatures remain the basis of the collection. Fox and axolotl rendering and selected baby designs have been refined. New meadow and camp illustrations and the Luma guardian are in `art-source/`, with optimized shipping assets in `public/assets/`. Source prompts are documented in `docs/`. The app includes idle, hatch, care, growth, and reward motion, with a reduced-motion setting.
 
-Includes 12 preloaded verses:
-- LDS scriptures (Alma, Moroni, 2 Nephi, Ether, D&C, Mosiah)
-- Bible verses (Proverbs, Philippians, Joshua)
-- Quotes from LDS leaders (Uchtdorf, Hinckley, Holland)
+`npm run build` regenerates the combined creature module and legacy keyframes. Edit original creature files, not `src/creature-art.js`.
+
+## iOS and release
+
+```sh
+npm run ios:sync
+npm run ios:open
+```
+
+The native app is `com.maksidaa.scribbies`, version 2.0.0. It uses the same developer team as Stake Admin, with a separate EAS project and app identity. See [the release guide](docs/ios-release.md) for the EAS workflow and validation limits.
+
+## Home interaction rules
+
+Home is a single pet scene with a compact header, four inventory/exploration shortcuts, one growth meter, and three large care buttons. No introduction, daily-task list, chapter map, achievement panel, or navigation sidebar appears above the pet. Details open in dismissible sheets. Home remains reachable from every secondary screen, and unfinished learning asks before leaving.
+
+The Learn button selects a due review or the first unfinished verse and an appropriate practice mode automatically. New learners begin with word recognition, then progress through word order and recall. Full mode and verse selection stays available in Verses. Completing practice returns home; an egg at 60 warmth hatches with a direct tap. Music, voices, read-aloud ducking, and reduced motion remain supported.
+
+See `docs/art-style.md` for the draft art standard and `/art-review.html` for the original/proposed Hopple comparison. The proposed creature redesign is not applied to the collection until the user reviews it. Firebase sign-in and friend trading remain separate restoration work; they are preserved in `classic.html`, not represented as working shortcuts in the new home.

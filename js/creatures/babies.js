@@ -241,7 +241,7 @@ function renderBlob(categoryKey){
   return `<div style="position:relative;">${design}${shadowHTML}</div>`;
 }
 
-function renderBaby(categoryKey){
+function renderBaby(categoryKey, speciesId){
   const category=categoryKey||S.creatureCategory||'birds';
 
   // Category-specific baby designs - CUTE creatures (not geometric!)
@@ -433,6 +433,15 @@ function renderBaby(categoryKey){
     `
   };
 
-  return babyDesigns[category]||babyDesigns.birds;
+  let design = babyDesigns[category]||babyDesigns.birds;
+  // Preserve the hand-authored stage structure while keeping a baby's palette
+  // and ears recognizable as the same species that will grow up later.
+  if(speciesId === 'hopple') {
+    for(const [from,to] of Object.entries({'#fbbf24':'#fffdfd','#d97706':'#eee5ed','#b45309':'#c9b8ce','#57534e':'#d98ba5','#1c1917':'#a66985'})) design=design.split(from).join(to);
+    design=design.split('top:22%;width:23px;height:30px;').join('top:1%;width:19px;height:49px;');
+  }
+  if(speciesId === 'pip') for(const [from,to] of Object.entries({'#fbbf24':'#ede8f0','#d97706':'#b8a9c2','#b45309':'#87778f'})) design=design.split(from).join(to);
+  if(speciesId === 'bramble') for(const [from,to] of Object.entries({'#fbbf24':'#f5b08c','#d97706':'#c26b45','#b45309':'#8f493b'})) design=design.split(from).join(to);
+  return design;
 }
 
